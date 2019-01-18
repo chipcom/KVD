@@ -11,7 +11,6 @@ static sforever := "FOREVER"
 // Описываем класс TDataAccessDB
 CREATE CLASS TDataAccessDB
 	VISIBLE:
-  
 		METHOD GetByID( nID )
 		METHOD currentRecord()
 		METHOD previousRecord()
@@ -19,7 +18,8 @@ CREATE CLASS TDataAccessDB
 		METHOD GetList( )
 		METHOD GetByAttribute( cAttribute, cValue )
 		METHOD Reconstruct()
-  
+		METHOD Index( lNecessarily )
+
 		METHOD New( )
 		METHOD Delete( object, is_cycle, is_delete, is_lock )
 		METHOD Save( hbArray )
@@ -27,9 +27,7 @@ CREATE CLASS TDataAccessDB
 		METHOD GUse( lRegim )
 		METHOD RUse()
 		METHOD EUse()
-		
 	PROTECTED:
-	
 	HIDDEN:
 		VAR oDescr			AS OBJECT	INIT nil
 		METHOD G_UseDB( lTryForever, lExcluUse, lREADONLY )
@@ -41,9 +39,44 @@ ENDCLASS
 // конец описания класса
 **************************************
 
-METHOD New( )	CLASS TDataAccessDB
+METHOD New()	CLASS TDataAccessDB
 	return self
 
+* 23.11.18 - процедура переиндексирования файла БД объекта
+METHOD procedure Index( lNecessarily )	CLASS TDataAccessDB
+	local item
+	local key, cName
+
+	HB_Default( @lNecessarily, .f. ) 
+	if isnil( ::oDescr )
+		::oDescr := TDescriptorDBF():New( Self:ClassName )
+	endif
+
+	if ! empty( ::oDescr:IndexFile() )
+		dbUseArea( .t., ;          // new
+				, ;            // rdd
+				::oDescr:FileName, ;       // db
+				::oDescr:AliasFile(), ;      // alias
+				.f., ;  // if(<.sh.> .or. <.ex.>, !<.ex.>, nil)
+				.t., ;   // readonly
+				'RU866' ;
+		)
+		for each item in ::oDescr:IndexFile()
+			cName := item[ 1 ] + '.ntx'
+			key := item[ 2 ]
+			if lNecessarily
+				index on &key to &cName progress
+			else
+				if files_time( ::oDescr:FileName, cName ) .or. ;
+						files_time( ::oDescr:FileName, cName )
+					index on &key to &cName progress
+				endif
+			endif
+		next
+		( ::oDescr:AliasFile())->( dbCloseArea() )
+	endif
+	return nil
+	
 * возвращает id - записи (номер записи в файле БД), в случае ошибки возвращает -1
 METHOD Save( hbArray )	 CLASS TDataAccessDB
 	local cOldArea, cAlias
@@ -58,8 +91,24 @@ METHOD Save( hbArray )	 CLASS TDataAccessDB
 		if ::GUse( .t. )
 			cAlias := Select()
 			if lNew
-				if !::AddRecN()
-					return retCode
+				if upper( ::oDescr:AliasFile() ) == upper( 'TPatientExtDB' ) ;
+						.or. upper( ::oDescr:AliasFile() ) == upper( 'TPatientAddDB' ) ;
+						.or. upper( ::oDescr:AliasFile() ) == upper( 'THumanExtDB' ) ;
+						.or. upper( ::oDescr:AliasFile() ) == upper( 'THumanAddDB' )
+					if (cAlias)->(lastrec()) >= nId
+						(cAlias)->(dbGoto(nID))
+						if !::G_RLock( FOREVER )
+							return retCode
+						endif
+					else
+						do while (cAlias)->(lastrec()) < nId
+							(cAlias)->( dbAppend() )
+						enddo
+					endif
+				else
+					if !::AddRecN()
+						return retCode
+					endif
 				endif
 				nID := (cAlias)->( recno() )
 			else
@@ -68,6 +117,7 @@ METHOD Save( hbArray )	 CLASS TDataAccessDB
 					return retCode
 				endif
 			endif
+			
 			for each xValue in ::oDescr:StructFile()
 				(cAlias)->&(xValue[ 1 ]) := hbArray[ xValue[ 1 ] ]
 			next
@@ -77,10 +127,17 @@ METHOD Save( hbArray )	 CLASS TDataAccessDB
 					.and. upper( ::oDescr:AliasFile() ) != upper( 'TIncompatibleServiceDB' ) ;
 					.and. upper( ::oDescr:AliasFile() ) != upper( 'TPlannedMonthlyStaffDB' ) ;
 					.and. upper( ::oDescr:AliasFile() ) != upper( 'TContractServiceDB' ) ;
-					.and. upper( ::oDescr:AliasFile() ) != upper( 'THumanDB' ) ;
+					.and. upper( ::oDescr:AliasFile() ) != upper( 'Tk_prim1DB' ) ;
 					.and. upper( ::oDescr:AliasFile() ) != upper( 'TContractPayerDB' ) ;
+					.and. upper( ::oDescr:AliasFile() ) != upper( 'TDisabilityDB' ) ;
+					.and. upper( ::oDescr:AliasFile() ) != upper( 'TForeignCitizenDB' ) ;
+					.and. upper( ::oDescr:AliasFile() ) != upper( 'TDubleFIODB' ) ;
+					.and. upper( ::oDescr:AliasFile() ) != upper( 'TMOKISMODB' ) ;
+					.and. upper( ::oDescr:AliasFile() ) != upper( 'TMOHISMODB' ) ;
 					.and. upper( ::oDescr:AliasFile() ) != upper( 'TNapravlenie263' )
 				(cAlias)->KOD := nID
+					&& .and. upper( ::oDescr:AliasFile() ) != upper( 'TPatientDB' ) ;
+					&& .and. upper( ::oDescr:AliasFile() ) != upper( 'THumanDB' ) ;
 			endif
 			(cAlias)->( dbCommit() )
 			(cAlias)->( dbCloseArea() )

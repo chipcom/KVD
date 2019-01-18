@@ -13,7 +13,7 @@ CREATE CLASS THuman	INHERIT	TBaseObjectBLL
 		PROPERTY Gender AS CHARACTER READ getGender WRITE setGender										// пол
 		PROPERTY DOB AS DATE READ getDOB WRITE setDOB														// дата рождения
 		PROPERTY Vzros_Reb AS NUMERIC READ getVzros_Reb WRITE setVzros_Reb								// 0-взрослый, 1-ребенок, 2-подросток
-		PROPERTY Address AS STRING READ getAddress WRITE setAddress										// адрес регистрации
+		PROPERTY AddressReg AS STRING READ getAddressReg WRITE setAddressReg										// адрес регистрации
 		PROPERTY PlaceWork AS STRING READ getPlaceWork WRITE setPlaceWork								// место работы или причина безработности
 		PROPERTY Working AS NUMERIC READ getWorking WRITE setWorking										// 0-работающий, 1-неработающий
 		
@@ -56,10 +56,19 @@ CREATE CLASS THuman	INHERIT	TBaseObjectBLL
 		PROPERTY IDSchet AS NUMERIC READ getIDSchet WRITE setIDSchet								// код счета
 		PROPERTY Ishod AS NUMERIC READ getIshod WRITE setIshod
 		
+		PROPERTY PolicyOMS AS OBJECT READ getPolicyOMS WRITE setPolicyOMS							// объект описывающий полис ОМС
+		
+		PROPERTY ExtendInfo AS OBJECT READ getExtendInfo WRITE setExtendInfo							// объекта THumanExt ( human_.dbf  )
+		PROPERTY AddInfo AS OBJECT READ getAddInfo WRITE setAddInfo								// объект THumanAdd ( human_2.dbf )
+		
 		METHOD New( nID, lNew, lDeleted )
 		
-		
+		ACCESS setID
+		ASSIGN setID( param )	INLINE ::setID( param )
 	HIDDEN:
+		DATA FExtendInfo	AS OBJECT INIT nil	// для хранения объекта THumanExt ( human_.dbf )
+		DATA FAddInfo	AS OBJECT INIT nil	// для хранения объекта THumanAdd ( human_2.dbf )
+		
 		DATA FCode INIT 0
 		DATA FIDCardFile INIT 0
 		DATA FTreatmentCode INIT 0
@@ -67,7 +76,7 @@ CREATE CLASS THuman	INHERIT	TBaseObjectBLL
 		DATA FGender INIT 'М'
 		DATA FDOB INIT ctod( '' )
 		DATA FVzros_Reb INIT 0
-		DATA FAddress INIT space( 50 )
+		DATA FAddressReg INIT space( 50 )
 		DATA FPlaceWork INIT space( 50 )
 		DATA FWorking INIT 0
 		
@@ -111,84 +120,91 @@ CREATE CLASS THuman	INHERIT	TBaseObjectBLL
 		DATA FIDSchet INIT 0
 		DATA FIshod INIT 0
 		
-		METHOD getCode
+		METHOD getExtendInfo
+		METHOD setExtendInfo( param )
+		METHOD getAddInfo
+		METHOD setAddInfo( param )
+
+		METHOD getCode					INLINE ::FCode
 		METHOD setCode( param )
-		METHOD getIDCardFile
+		METHOD getIDCardFile				INLINE ::FIDCardFile
 		METHOD setIDCardFile( param )
-		METHOD getTreatmentCode
+		METHOD getTreatmentCode			INLINE ::FTreatmentCode
 		METHOD setTreatmentCode( param )
-		METHOD getFIO
-		METHOD getFIO1251
+		METHOD getFIO					INLINE ::FFIO
+		METHOD getFIO1251				INLINE win_OEMToANSI( ::FFIO )
 		METHOD setFIO( param )
-		METHOD getGender
+		METHOD getGender					INLINE ::FGender
 		METHOD setGender( param )
-		METHOD getDOB
+		METHOD getDOB					INLINE ::FDOB
 		METHOD setDOB( param )
-		METHOD getVzros_Reb
+		METHOD getVzros_Reb				INLINE ::FVzros_Reb
 		METHOD setVzros_Reb( param )
-		METHOD getAddress
-		METHOD setAddress( param )
-		METHOD getPlaceWork
+		METHOD getAddressReg				INLINE ::FAddressReg
+		METHOD setAddressReg( param )
+		METHOD getPlaceWork				INLINE ::FPlaceWork
 		METHOD setPlaceWork( cText )
-		METHOD getWorking
+		METHOD getWorking				INLINE ::FWorking
 		METHOD setWorking( param )
 		
 		METHOD getMainDiagnosis( nIndex )
 		METHOD setMainDiagnosis( nIndex, cValue )
 		METHOD getDiagnosis( nIndex )
 		METHOD setDiagnosis( nIndex, cVal )
-		METHOD getDiagnosisPlus
+		METHOD getDiagnosisPlus			INLINE ::FDiagnosisPlus
 		METHOD setDiagnosisPlus( cValue )
 
-		METHOD getObrashen
+		METHOD getObrashen				INLINE ::FObrashen
 		METHOD setObrashen( param )
-		METHOD getKomu
+		METHOD getKomu					INLINE ::FKomu
 		METHOD setKomu( nNum )
-		METHOD getInsuranceID
+		METHOD getInsuranceID			INLINE ::FInsuranceID
 		METHOD setInsuranceID( nNum )
-		METHOD getZa_Smo
+		METHOD getZa_Smo					INLINE ::FZa_Smo
 		METHOD setZa_Smo( nNum )
-		METHOD getPolicy
+		METHOD getPolicy					INLINE ::FPolicy
 		METHOD setPolicy( cText )
 		METHOD getDepartment
-		METHOD getIDDepartment
+		METHOD getIDDepartment			INLINE FIDDepartment
 		METHOD setDepartment( param )
 		METHOD getSubdivision
-		METHOD getIDSubdivision
+		METHOD getIDSubdivision			INLINE ::FIDSubdivision
 		METHOD setSubdivision( param )
-		METHOD getUchDoc
+		METHOD getUchDoc					INLINE ::FUchDoc
 		METHOD setUchDoc( param )
-		METHOD getMi_Git
+		METHOD getMi_Git					INLINE ::FMi_Git
 		METHOD setMi_Git( nNum )
-		METHOD getAreaCodeResidence
+		METHOD getAreaCodeResidence		INLINE ::FAreaCodeResidence
 		METHOD setAreaCodeResidence( nNum )
-		METHOD getMest_Inog
+		METHOD getMest_Inog				INLINE ::FMest_Inog
 		METHOD setMest_Inog( nNum )
-		METHOD getFinanceAreaCode
+		METHOD getFinanceAreaCode		INLINE ::FFinanceAreaCode
 		METHOD setFinanceAreaCode( nNum )
-		METHOD getRegLech
+		METHOD getRegLech				INLINE ::FRegLech
 		METHOD setRegLech( nNum )
-		METHOD getBeginTreatment
+		METHOD getBeginTreatment			INLINE ::FBeginTreatment
 		METHOD setBeginTreatment( dValue )
-		METHOD getEndTreatment
+		METHOD getEndTreatment			INLINE ::FEndTreatment
 		METHOD setEndTreatment( dValue )
 		METHOD getTotal( nIndex )
 		METHOD setTotal( nIndex, nValue )
-		METHOD getDisabilitySheet
+		METHOD getDisabilitySheet		INLINE ::FDisabilitySheet
 		METHOD setDisabilitySheet( param )
 		METHOD getDateDisabilitySheet( nIndex )
 		METHOD setDateDisabilitySheet( nIndex, param )
-		METHOD getDateAddLU
+		METHOD getDateAddLU				INLINE ::FDateAddLU
 		METHOD setDateAddLU( dValue )
 		METHOD getUser
-		METHOD getIDUser
+		METHOD getIDUser					INLINE ::FIDUser
 		METHOD setUser( obj )
-		METHOD getNextVizit
+		METHOD getNextVizit				INLINE ::FNextVizit
 		METHOD setNextVizit( param )
-		METHOD getIDSchet
+		METHOD getIDSchet				INLINE ::FIDSchet
 		METHOD setIDSchet( param )
-		METHOD getIshod
+		METHOD getIshod					INLINE ::FIshod
 		METHOD setIshod( param )
+		METHOD getPolicyOMS
+		METHOD setPolicyOMS( param )
 ENDCLASS
 
 METHOD New( nID, lNew, lDeleted )		CLASS THuman
@@ -196,35 +212,104 @@ METHOD New( nID, lNew, lDeleted )		CLASS THuman
 	::super:new( nID, lNew, lDeleted )
 	return self
 	
-METHOD function getIDDepartment()				CLASS THuman
-	return ::FIDDepartment
+METHOD procedure setID( param )	CLASS THuman
 
-METHOD function getIDSubdivision()				CLASS THuman
-	return ::FIDSubdivision
+	if isnumber( param ) .and. param != 0
+		::FID := param
+		if ! isnil( ::FExtendInfo )
+			// оповестим класс TExtendInfo
+			if __objHasMsgAssigned( ::FExtendInfo, 'setID' )
+				__objSendMsg( ::FExtendInfo, 'setID', param )
+			endif
+		endif
+		if ! isnil( ::FAddInfo )
+			// оповестим класс TAddInfo
+			if __objHasMsgAssigned( ::FAddInfo, 'setID' )
+				__objSendMsg( ::FAddInfo, 'setID', param )
+			endif
+		endif
+	endif
+	return
 
-METHOD function getIshod()				CLASS THuman
-	return ::FIshod
+METHOD function getPolicyOMS()						CLASS THuman
+	local oPolicy
+
+	if ::FExtendInfo == nil
+		::FExtendInfo := THumanExtDB():getByID( ::ID )
+	endif
+	oPolicy := TPolicyOMS():New( ::FExtendInfo:PolicyType, ::FExtendInfo:PolicySeries, ::FExtendInfo:PolicyNumber, ;
+				::FExtendInfo:SMO ) //, ::FExtendInfo:BeginPolicy, ::FPolicyPeriod )
+	&& oPolicy:OKATOInogSMO := ::FExtendInfo:KvartalHouse
+	oPolicy:OKATOInogSMO := ::FExtendInfo:OKATO
+	oPolicy:Owner := self
+	return oPolicy
+
+METHOD procedure setPolicyOMS( param )				CLASS THuman
+
+	if isobject( param) .and. param:classname == upper( 'TPolicyOMS' )
+		if ::FExtendInfo == nil
+			::FExtendInfo := THumanExtDB():getByID( ::ID )
+		endif
+		::FPolicy := alltrim( param:PolicySeries ) + ;
+				if( ! empty( param:PolicyNumber ), ' ' + alltrim( param:PolicyNumber ), '' )
+		::FExtendInfo:PolicyType := param:PolicyType
+		::FExtendInfo:PolicySeries := param:PolicySeries
+		::FExtendInfo:PolicyNumber := param:PolicyNumber
+		::FExtendInfo:SMO := param:SMO
+		&& ::FExtendInfo:BeginPolicy := param:BeginPolicy
+		&& ::FPolicyPeriod := param:PolicyPeriod
+		&& ::FExtendInfo:KvartalHouse := param:OKATOInogSMO
+		::FExtendInfo:OKATO := param:OKATOInogSMO
+	endif
+	return
+
+METHOD function getExtendInfo()	CLASS THuman
+	
+	if isnil( ::FExtendInfo )
+		if ::IsNew
+			::FExtendInfo := THumanExt():New()
+		else
+			::FExtendInfo := THumanExtDB():GetByID( ::ID )			// получим объект дополнительной информации о пациенте
+		endif
+	endif
+	return ::FExtendInfo
+
+METHOD procedure setExtendInfo( param )	CLASS THuman
+
+	if isobject( param ) .and. param:classname == upper( 'THumanExt' )
+		::FExtendInfo := param
+	endif
+	return
+
+METHOD function getAddInfo()	CLASS THuman
+	
+	if ::IsNew
+		::FAddInfo := THumanAdd():New()
+	else
+		if isnil( ::FAddInfo )
+			::FAddInfo := THumanAddDB:GetByID( ::FID )			// получим объект дополнительной информации о пациенте
+		endif
+	endif
+	return ::FAddInfo
+
+METHOD procedure setAddInfo( param )	CLASS THuman
+
+	if isobject( param ) .and. param:classname == upper( 'THumanAdd' )
+		::FAddInfo := param
+	endif
+	return
 
 METHOD procedure setIshod( param )		CLASS THuman
 	::FIshod := param
 	return
 
-METHOD function getIDSchet()				CLASS THuman
-	return ::FIDSchet
-
 METHOD procedure setIDSchet( param )		CLASS THuman
 	::FIDSchet := param
 	return
 
-METHOD function getNextVizit()				CLASS THuman
-	return ::FNextVizit
-
 METHOD procedure setNextVizit( dValue )		CLASS THuman
 	::FNextVizit := dValue
 	return
-
-METHOD function getIDUser() CLASS THuman
-	return ::FIDUser
 
 METHOD function getUser() CLASS THuman
 
@@ -245,9 +330,6 @@ METHOD procedure setUser( param ) CLASS THuman
 	endif
 	&& ::FUser := tmpObj
 	return
-
-METHOD function getDateAddLU()				CLASS THuman
-	return ::FDateAddLU
 
 METHOD procedure setDateAddLU( dValue )		CLASS THuman
 	::FDateAddLU := dValue
@@ -276,9 +358,6 @@ METHOD procedure setDateDisabilitySheet( nIndex, nValue )				CLASS THuman
 	endswitch
 	return
 
-METHOD function getDisabilitySheet()				CLASS THuman
-	return ::FDisabilitySheet
-
 METHOD procedure setDisabilitySheet( param )		CLASS THuman
 	::FDisabilitySheet := param
 	return
@@ -306,22 +385,13 @@ METHOD procedure setTotal( nIndex, nValue )				CLASS THuman
 	endswitch
 	return
 
-METHOD function getBeginTreatment()				CLASS THuman
-	return ::FBeginTreatment
-
 METHOD procedure setBeginTreatment( dValue )		CLASS THuman
 	::FBeginTreatment := dValue
 	return
 
-METHOD function getEndTreatment()					CLASS THuman
-	return ::FEndTreatment
-
 METHOD procedure setEndTreatment( dValue )		CLASS THuman
 	::FEndTreatment := dValue
 	return
-	
-METHOD function getRegLech()		CLASS THuman
-	return ::FRegLech
 	
 METHOD procedure setRegLech( nNum )		CLASS THuman
 
@@ -330,9 +400,6 @@ METHOD procedure setRegLech( nNum )		CLASS THuman
 	endif
 	return
 
-METHOD function getFinanceAreaCode()		CLASS THuman
-	return ::FFinanceAreaCode
-	
 METHOD procedure setFinanceAreaCode( nNum )		CLASS THuman
 
 	if nNum != ::FFinanceAreaCode
@@ -340,9 +407,6 @@ METHOD procedure setFinanceAreaCode( nNum )		CLASS THuman
 	endif
 	return
 
-METHOD function getMest_Inog()		CLASS THuman
-	return ::FMest_Inog
-	
 METHOD procedure setMest_Inog( nNum )		CLASS THuman
 
 	if nNum != ::FMest_Inog
@@ -350,9 +414,6 @@ METHOD procedure setMest_Inog( nNum )		CLASS THuman
 	endif
 	return
 
-METHOD function getAreaCodeResidence()		CLASS THuman
-	return ::FAreaCodeResidence
-	
 METHOD procedure setAreaCodeResidence( nNum )		CLASS THuman
 
 	if nNum != ::FAreaCodeResidence
@@ -360,9 +421,6 @@ METHOD procedure setAreaCodeResidence( nNum )		CLASS THuman
 	endif
 	return
 
-METHOD function getMi_Git()		CLASS THuman
-	return ::FMi_Git
-	
 METHOD procedure setMi_Git( nNum )		CLASS THuman
 
 	if nNum != ::FMi_Git
@@ -370,9 +428,6 @@ METHOD procedure setMi_Git( nNum )		CLASS THuman
 	endif
 	return
 
-METHOD function getUchDoc()		CLASS THuman
-	return ::FUchDoc
-	
 METHOD procedure setUchDoc( param )		CLASS THuman
 
 	::FUchDoc := param
@@ -418,9 +473,6 @@ METHOD procedure setSubdivision( param ) CLASS THuman
 	endif
 	return
 
-METHOD function getPolicy()		CLASS THuman
-	return ::FPolicy
-
 METHOD procedure setPolicy( cText )		CLASS THuman
 
 	if alltrim( cText ) != alltrim( ::FPolicy )
@@ -428,9 +480,6 @@ METHOD procedure setPolicy( cText )		CLASS THuman
 	endif
 	return
 
-METHOD function getZa_Smo()		CLASS THuman
-	return ::FZa_Smo
-	
 METHOD procedure setZa_Smo( nNum )		CLASS THuman
 
 	if nNum != ::FZa_Smo
@@ -438,9 +487,6 @@ METHOD procedure setZa_Smo( nNum )		CLASS THuman
 	endif
 	return
 
-METHOD function getInsuranceID()		CLASS THuman
-	return ::FInsuranceID
-	
 METHOD procedure setInsuranceID( nNum )		CLASS THuman
 
 	if nNum != ::FInsuranceID
@@ -448,9 +494,6 @@ METHOD procedure setInsuranceID( nNum )		CLASS THuman
 	endif
 	return
 
-METHOD function getKomu()		CLASS THuman
-	return ::FKomu
-	
 METHOD procedure setKomu( nNum )		CLASS THuman
 
 	if nNum != ::FKomu
@@ -458,17 +501,11 @@ METHOD procedure setKomu( nNum )		CLASS THuman
 	endif
 	return
 
-METHOD function getObrashen()		CLASS THuman
-	return ::FObrashen
-	
 METHOD procedure setObrashen( param )		CLASS THuman
 
 	::FObrashen := param
 	return
 
-METHOD function getDiagnosisPlus()		CLASS THuman
-	return ::FDiagnosisPlus
-	
 METHOD procedure setDiagnosisPlus( param )		CLASS THuman
 
 	::FDiagnosisPlus := param
@@ -544,18 +581,12 @@ METHOD procedure setDiagnosis( nIndex, cVal ) CLASS THuman
 	endswitch
 	return
 
-METHOD function getWorking()		CLASS THuman
-	return ::FWorking
-	
 METHOD procedure setWorking( nNum )		CLASS THuman
 
 	if nNum != ::FWorking
 		::FWorking := nNum
 	endif
 	return
-
-METHOD function getPlaceWork()		CLASS THuman
-	return ::FPlaceWork
 
 METHOD procedure setPlaceWork( param )		CLASS THuman
 
@@ -564,9 +595,6 @@ METHOD procedure setPlaceWork( param )		CLASS THuman
 	endif
 	return
 
-METHOD function getVzros_Reb()		CLASS THuman
-	return ::FVzros_Reb
-	
 METHOD procedure setVzros_Reb( param )		CLASS THuman
 
 	if param != ::FVzros_Reb
@@ -574,16 +602,10 @@ METHOD procedure setVzros_Reb( param )		CLASS THuman
 	endif
 	return
 
-METHOD function getAddress()		CLASS THuman
-	return ::FAddress
+METHOD procedure setAddressReg( param )		CLASS THuman
 
-METHOD procedure setAddress( param )		CLASS THuman
-
-	::FAddress := param
+	::FAddressReg := param
 	return
-
-METHOD function getDOB()		CLASS THuman
-	return ::FDOB
 
 METHOD procedure setDOB( param )		CLASS THuman
 
@@ -591,9 +613,6 @@ METHOD procedure setDOB( param )		CLASS THuman
 		::FDOB := param
 	endif
 	return
-
-METHOD function getGender()		CLASS THuman
-	return ::FGender
 
 METHOD procedure setGender( param )		CLASS THuman
 	local ch := upper( left( param, 1 ) )
@@ -605,11 +624,8 @@ METHOD procedure setGender( param )		CLASS THuman
 	endif
 	return
 
-METHOD function getFIO1251()		CLASS THuman
-	return win_OEMToANSI( ::FFIO )
-
-METHOD function getFIO()		CLASS THuman
-	return ::FFIO
+&& METHOD function getFIO1251()		CLASS THuman
+	&& return win_OEMToANSI( ::FFIO )
 
 METHOD procedure setFIO( param )		CLASS THuman
 
@@ -618,23 +634,14 @@ METHOD procedure setFIO( param )		CLASS THuman
 	endif
 	return
 
-METHOD function getTreatmentCode()	CLASS THuman
-	return ::FTreatmentCode
-	
 METHOD procedure setTreatmentCode( param )	CLASS THuman
 	::FTreatmentCode := param
 	return
 
-METHOD function getIDCardFile()	CLASS THuman
-	return ::FIDCardFile
-	
 METHOD procedure setIDCardFile( param )	CLASS THuman
 	::FIDCardFile := param
 	return
 
-METHOD function getCode()	CLASS THuman
-	return ::FCode
-	
 METHOD procedure setCode( param )	CLASS THuman
 	::FCode := param
 	return

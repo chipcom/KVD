@@ -6,6 +6,7 @@
 CREATE CLASS TCommittee		INHERIT	TBaseObjectBLL
 
 	VISIBLE:
+		PROPERTY Code AS NUMERIC READ getCode WRITE setCode				// служебный
 		PROPERTY Name AS STRING READ getName WRITE setName				// Название
 		PROPERTY Name1251 READ getName1251								//
 		PROPERTY FullName AS STRING READ getFullName WRITE setFullName	// Полное наименование
@@ -20,12 +21,8 @@ CREATE CLASS TCommittee		INHERIT	TBaseObjectBLL
 		PROPERTY SourceFinance AS NUMERIC READ getSource WRITE setSource	// Источник финансирования
 		PROPERTY Bank AS OBJECT READ getBank WRITE setBank				// объект банка контрагента
 
-		PROPERTY Code AS NUMERIC READ getCode WRITE setCode				// служебный
-
-		METHOD New( nId, nCode, cName, cFName, cINN, cAddress, cPhone, oBank, ;
-					cOKONH, cOKPO, nParaklinika, nSourceFinance, lNew, lDeleted )
+		METHOD New( nId, lNew, lDeleted )
 		METHOD Clone()
-	
 	PROTECTED:
 		DATA FCode			INIT 0				//
 		DATA FName			INIT space( 30 )
@@ -158,22 +155,7 @@ METHOD Clone()		 CLASS TCommittee
 	oTarget := ::super:Clone()
 	return oTarget
 
-METHOD New( nId, nCode, cName, cFName, cINN, cAddress, cPhone, oBank, ;
-			cOKONH, cOKPO, nParaklinika, nSourceFinance, lNew, lDeleted )		 CLASS TCommittee
+METHOD New( nId, lNew, lDeleted )		 CLASS TCommittee
 
-	::FNew 			:= hb_defaultValue( lNew, .t. )
-	::FDeleted		:= hb_defaultValue( lDeleted, .f. )
-	::FID			:= hb_defaultValue( nID, 0 )
-	
-	::FCode			:= hb_defaultvalue( nCode, 0 )
-	::FName			:= hb_defaultvalue( cName, space( 30 ) )
-	::FFullName		:= hb_defaultvalue( cFName, space( 70 ) )
-	::FAddress		:= hb_defaultvalue( cAddress, space( 50 ) )
-	::FINN			:= hb_defaultvalue( cINN, space( 20 ) )
-	::FPhone		:= hb_defaultvalue( cPhone, space( 8 ) )
-	::FBank			:= oBank
-	::FOKONH		:= hb_defaultvalue( cOKONH, space( 15 ) )
-	::FOKPO			:= hb_defaultvalue( cOKPO, space( 15 ) )
-	::FPara			:= hb_defaultvalue( nParaklinika, 0 )
-	::FSource		 := hb_defaultvalue( nSourceFinance, 0 )
+	::super:new( nID, lNew, lDeleted )
 	return self

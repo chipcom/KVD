@@ -87,18 +87,19 @@ METHOD FillFromHash( hbArray )     CLASS TCommitteeDB
 
 	oBank := TBank():New( hbArray[ 'BANK' ], hbArray[ 'R_SCHET' ], hbArray[ 'K_SCHET' ], hbArray[ 'SMFO' ] )
 	obj := TCommittee():New( hbArray[ 'ID' ], ;
-			hbArray[ 'KOD' ], ;
-			hbArray[ 'NAME' ], ;
-			hbArray[ 'FNAME' ], ;
-			hbArray[ 'INN' ], ;
-			hbArray[ 'ADRES' ], ;
-			hbArray[ 'TELEFON' ], ;
-			oBank, ;
-			hbArray[ 'OKONH' ], ;
-			hbArray[ 'OKPO' ], ;
-			hbArray[ 'PARAKL' ], ;
-			hbArray[ 'IST_FIN' ], ;
 			hbArray[ 'REC_NEW' ], ;
 			hbArray[ 'DELETED' ] ;
 			)
+	obj:Code			:= hbArray[ 'KOD' ]
+	obj:Name			:= hbArray[ 'NAME' ]
+	obj:FullName		:= hbArray[ 'FNAME' ]
+	obj:INN				:= hbArray[ 'INN' ]
+	obj:Address			:= hbArray[ 'ADRES' ]
+	obj:Phone			:= hbArray[ 'TELEFON' ]
+	obj:Bank			:= oBank
+	obj:OKONH			:= hbArray[ 'OKONH' ]
+	obj:OKPO			:= hbArray[ 'OKPO' ]
+	obj:Paraclinika		:= hbArray[ 'PARAKL' ]
+	obj:SourceFinance	:= hbArray[ 'IST_FIN' ]
+
 	return obj

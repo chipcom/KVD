@@ -97,9 +97,9 @@ function ListObjectsBrowse( cObjName, oBox, listObjects, nI,;
 	endif
 	
 	if lSelect
-		fl_edit := .f.
-		bGetFunc := nil
-		fl_ins_del := { .f., .f., .f., .f. }
+		&& fl_edit := .f.
+		&& bGetFunc := nil
+		&& fl_ins_del := { .f., .f., .f., .f. }
 	endif
 	for counter := 1 to len( aProperties ) // получим имена выводимых свойств объекта
 		aadd( aViewProperty, aProperties[ counter, 1 ] )
@@ -147,9 +147,14 @@ function ListObjectsBrowse( cObjName, oBox, listObjects, nI,;
 	if ! oBox:HasMessageLine
 		strMessage := aMessage[ 1 ] + ' ' + aMessage[ 8 ]
 		if lSelect
+			strMessage += iif( fl_ins_del[ 1 ], ' ' + aMessage[ 2 ], '' )
+			strMessage += iif( fl_ins_del[ 4 ],  ' ' + aMessage[ 3 ], '' )
 			strMessage += iif( lMultiSelect, ' ' + '^<Ins>^ установить/снять отметку', '' )
 			strMessage += iif( lMultiSelect, ' ' + '^<+/->^ для всех', '' )
 			strMessage += ' ' + aMessage[ 7 ]
+			If fl_edit .and. ! empty( cStatusString )
+				strMessage += ' ' + alltrim( cStatusString )
+			endif
 		else
 			strMessage += iif( fl_ins_del[ 1 ], ' ' + aMessage[ 2 ], '' )
 			strMessage += iif( fl_ins_del[ 4 ],  ' ' + aMessage[ 3 ], '' )
@@ -168,7 +173,7 @@ function ListObjectsBrowse( cObjName, oBox, listObjects, nI,;
 		oBox:MessageLine := strMessage
 	endif
 	oBox:View()
-	
+
 	oBrowse:= TBrowseNew( nTop + 1, nLeft + 1, nBottom, nRight - 1 )
 	oBrowse:headSep := arr_Browse[ 1 ]
 	oBrowse:colSep  := arr_Browse[ 2 ]
@@ -409,7 +414,8 @@ function ListObjectsBrowse( cObjName, oBox, listObjects, nI,;
 					&& endif
 				&& endif
 // РЕЖИМ РЕДАКТИРОВАНИЯ
-			case ! lSelect .and. nKey == K_INS .and. fl_ins_del[ 1 ] .and. fl_edit // вставка строки
+			&& case ! lSelect .and. nKey == K_INS .and. fl_ins_del[ 1 ] .and. fl_edit // вставка строки
+			case nKey == K_INS .and. fl_ins_del[ 1 ] .and. fl_edit // вставка строки
 				If ( locObject:= &( cObjName )():New( ) ) != nil
 					lRet := eval( bGetFunc, oBrowse, listObjects, locObject, K_INS )
 					if lRet
@@ -443,8 +449,7 @@ function ListObjectsBrowse( cObjName, oBox, listObjects, nI,;
 					endif
 				endif
 			case lSelect .and. nKey == K_ENTER
-				&& if lSelect
-					lCont := .f.
+				lCont := .f.
 			case ! lSelect .and. nKey == K_ENTER
 				&& elseif fl_edit .and. fl_ins_del[ 3 ]
 				if fl_edit .and. fl_ins_del[ 3 ]

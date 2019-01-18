@@ -14,6 +14,7 @@ CREATE CLASS TDepartmentDB	INHERIT	TBaseObjectDB
 		METHOD GetByID( nID )
 		METHOD GetByCode( nCode )
 		METHOD GetList( dBegin, dEnd, oUser )
+		METHOD IsTalon( param )
 		METHOD NumberOfDepartments( dBegin, dEnd )
 		METHOD MenuDepartments()
 	HIDDEN:
@@ -37,6 +38,19 @@ METHOD GetByID( nID )					CLASS TDepartmentDB
 	
 METHOD GetByCode( nCode )				CLASS TDepartmentDB
   return ::GetByID( nCode )
+
+METHOD IsTalon( param )	CLASS TDepartmentDB
+	local oRow := nil
+	local ret := .f.
+	
+	HB_Default( @param, sys_date )
+	for each oRow in ::super:GetList()
+		if between_date( oRow[ 'DBEGIN' ], oRow[ 'DEND' ], param ) .and. oRow[ 'IS_TALON' ] == 1
+			ret := .t.
+			exit
+		endif
+	next
+	return ret
   
 METHOD NumberOfDepartments( dBegin, dEnd )	CLASS TDepartmentDB
 	local oRow := nil

@@ -2,6 +2,7 @@
 #include 'hbhash.ch'
 #include 'common.ch'
 #include 'property.ch'
+#include 'function.ch'
 
 CREATE CLASS THumanDB	INHERIT	TBaseObjectDB
 
@@ -9,6 +10,7 @@ CREATE CLASS THumanDB	INHERIT	TBaseObjectDB
 		METHOD New()
 		METHOD Save( oHuman )
 		METHOD getByID ( nID )
+		METHOD getListCaseNotReestrbyPatient( param )
 		METHOD HasSubdivision( param )				// определить используется ли отделение в расчетах
 	HIDDEN:
 		METHOD FillFromHash( hbArray )
@@ -16,6 +18,45 @@ ENDCLASS
 
 METHOD New()		CLASS THumanDB
 	return self
+
+METHOD function getListCaseNotReestrbyPatient( param, _Human_kod )
+	local aReturn := {}
+	local cOldArea
+	local cAlias
+	local cFind := ''
+	local nIdPatient := 0
+	local obj
+	
+	DEFAULT _Human_kod TO 0
+	if isnumber( param ) .and. param != 0
+		cFind := str( param, 7 )
+		nIdPatient := param
+	elseif isobject( param ) .and. param:ClassName() == upper( 'TPatient' )
+		cFind := str( param:ID, 7 )
+		nIdPatient := param:ID
+	else
+		return ret
+	endif
+	
+	cOldArea := Select( )
+	if ::super:RUse()
+		cAlias := Select( )
+		(cAlias)->(dbSetOrder( 2 ))
+		if (cAlias)->(dbSeek( cFind ))
+			do while (cAlias)->kod_k == nIdPatient .and. !(cAlias)->(eof())
+				if !empty( hArray := ::super:currentRecord() )
+					obj := ::FillFromHash( hArray )
+					if emptyall( obj:Schet, obj:human_:Reestr ) .and. _Human_kod != obj:ID
+						aadd( aReturn, obj:ID )
+					endif
+				endif
+				(cAlias)->(dbSkip())
+			enddo
+		endif
+		(cAlias)->( dbCloseArea() )
+		dbSelectArea( cOldArea )
+	endif
+	return aReturn
 
 METHOD function HasSubdivision ( param )		 CLASS THumanDB
 	local nSub := 0, i := 0
@@ -62,58 +103,69 @@ METHOD Save( oHuman ) CLASS THumanDB
 	local aHash := nil
 
 // доработать	
-	&& if upper( oHuman:classname() ) == upper( 'THuman' )
-		&& aHash := hb_Hash()
-		&& hb_HAutoAdd( aHash, HB_HAUTOADD_ALWAYS )
-		&& hb_hSet(aHash, hbArray[ 'KOD_K' ], oHuman:IDCardFile )
-		&& hb_hSet(aHash, hbArray[ 'TIP_H' ], oHuman:TreatmentCode )
-		&& hb_hSet(aHash, hbArray[ 'FIO' ], oHuman:FIO )
-		&& hb_hSet(aHash, hbArray[ 'POL' ], oHuman:Gender )
-		&& hb_hSet(aHash, hbArray[ 'DATE_R' ], oHuman:DOB )
-		&& hb_hSet(aHash, hbArray[ 'VZROS_REB' ], oHuman:Vzros_Reb )
-		&& hb_hSet(aHash, hbArray[ 'ADRES' ], oHuman:Address )
-		&& hb_hSet(aHash, hbArray[ 'MR_DOL' ], oHuman:PlaceWork )
-		&& hb_hSet(aHash, hbArray[ 'RAB_NERAB' ], oHuman:Working )
-		&& hb_hSet(aHash, hbArray[ 'KOD_DIAG' ], oHuman:MainDiagnosis )
-		&& hb_hSet(aHash, hbArray[ 'KOD_DIAG2' ], oHuman:MainDiagnosis2 )
-		&& hb_hSet(aHash, hbArray[ 'KOD_DIAG3' ], oHuman:MainDiagnosis3 )
-		&& hb_hSet(aHash, hbArray[ 'KOD_DIAG4' ], oHuman:MainDiagnosis4 )
-		&& hb_hSet(aHash, hbArray[ 'SOPUT_B1' ], oHuman:Diagnosis1 )
-		&& hb_hSet(aHash, hbArray[ 'SOPUT_B2' ], oHuman:Diagnosis2 )
-		&& hb_hSet(aHash, hbArray[ 'SOPUT_B3' ], oHuman:Diagnosis3 )
-		&& hb_hSet(aHash, hbArray[ 'SOPUT_B4' ], oHuman:Diagnosis4 )
-		&& hb_hSet(aHash, hbArray[ 'DIAG_PLUS' ], oHuman:DiagnosisPlus )
-		&& hb_hSet(aHash, hbArray[ 'OBRASHEN' ], oHuman:Obrashen )
-		&& hb_hSet(aHash, hbArray[ 'KOMU' ], oHuman:Komu )
-		&& hb_hSet(aHash, hbArray[ 'STR_CRB' ], oHuman:InsurenceID )
-		&& hb_hSet(aHash, hbArray[ 'ZA_SMO' ], oHuman:Za_Smo )
-		&& hb_hSet(aHash, hbArray[ 'POLIS' ], oHuman:Policy )
-		&& hb_hSet(aHash, hbArray[ 'LPU' ], oHuman:Deaprtment )
-		&& hb_hSet(aHash, hbArray[ 'OTD' ], oHuman:Subdivision )
-		&& hb_hSet(aHash, hbArray[ 'UCH_DOC' ]  , oHuman:UchDoc )
-		&& hb_hSet(aHash, hbArray[ 'MI_GIT' ], oHuman:Mi_Git )
-		&& hb_hSet(aHash, hbArray[ 'RAJON_GIT' ], oHuman:AreaCodeResidence )
-		&& hb_hSet(aHash, hbArray[ 'MEST_INOG' ], oHuman:Mest_Inog )
-		&& hb_hSet(aHash, hbArray[ 'RAJON' ], oHuman:FinanceAreaCode )
-		&& hb_hSet(aHash, hbArray[ 'REG_LECH' ], oHuman:RegLech )
-		&& hb_hSet(aHash, hbArray[ 'N_DATA' ], oHuman:BeginTreatment )
-		&& hb_hSet(aHash, hbArray[ 'K_DATA' ], oHuman:EndTreatment )
-		&& hb_hSet(aHash, hbArray[ 'CENA' ], oHuman:Total )
-		&& hb_hSet(aHash, hbArray[ 'CENA_1' ], oHuman:Total_1 )
-		&& hb_hSet(aHash, hbArray[ 'BOLNICH' ], oHuman:DisabilitySheet )
+	if upper( oHuman:classname() ) == upper( 'THuman' )
+		aHash := hb_Hash()
+		hb_HAutoAdd( aHash, HB_HAUTOADD_ALWAYS )
+		hb_hSet(aHash, 'KOD_K', oHuman:IDCardFile )
+		hb_hSet(aHash, 'TIP_H', oHuman:TreatmentCode )
+		hb_hSet(aHash, 'FIO', oHuman:FIO )
+		hb_hSet(aHash, 'POL', oHuman:Gender )
+		hb_hSet(aHash, 'DATE_R', oHuman:DOB )
+		hb_hSet(aHash, 'VZROS_REB', oHuman:Vzros_Reb )
+		hb_hSet(aHash, 'ADRES', oHuman:AddressReg )
+		hb_hSet(aHash, 'MR_DOL', oHuman:PlaceWork )
+		hb_hSet(aHash, 'RAB_NERAB', oHuman:Working )
+		hb_hSet(aHash, 'KOD_DIAG', oHuman:MainDiagnosis )
+		hb_hSet(aHash, 'KOD_DIAG2', oHuman:MainDiagnosis2 )
+		hb_hSet(aHash, 'KOD_DIAG3', oHuman:MainDiagnosis3 )
+		hb_hSet(aHash, 'KOD_DIAG4', oHuman:MainDiagnosis4 )
+		hb_hSet(aHash, 'SOPUT_B1', oHuman:Diagnosis1 )
+		hb_hSet(aHash, 'SOPUT_B2', oHuman:Diagnosis2 )
+		hb_hSet(aHash, 'SOPUT_B3', oHuman:Diagnosis3 )
+		hb_hSet(aHash, 'SOPUT_B4', oHuman:Diagnosis4 )
+		hb_hSet(aHash, 'DIAG_PLUS', oHuman:DiagnosisPlus )
+		hb_hSet(aHash, 'OBRASHEN', oHuman:Obrashen )
+		hb_hSet(aHash, 'KOMU', oHuman:Komu )
+		hb_hSet(aHash, 'STR_CRB', oHuman:InsurenceID )
+		hb_hSet(aHash, 'ZA_SMO', oHuman:Za_Smo )
+		hb_hSet(aHash, 'POLIS', oHuman:Policy )
+		hb_hSet(aHash, 'LPU', oHuman:Deaprtment )
+		hb_hSet(aHash, 'OTD', oHuman:Subdivision )
+		hb_hSet(aHash, 'UCH_DOC', oHuman:UchDoc )
+		hb_hSet(aHash, 'MI_GIT', oHuman:Mi_Git )
+		hb_hSet(aHash, 'RAJON_GIT', oHuman:AreaCodeResidence )
+		hb_hSet(aHash, 'MEST_INOG', oHuman:Mest_Inog )
+		hb_hSet(aHash, 'RAJON', oHuman:FinanceAreaCode )
+		hb_hSet(aHash, 'REG_LECH', oHuman:RegLech )
+		hb_hSet(aHash, 'N_DATA', oHuman:BeginTreatment )
+		hb_hSet(aHash, 'K_DATA', oHuman:EndTreatment )
+		hb_hSet(aHash, 'CENA', oHuman:Total )
+		hb_hSet(aHash, 'CENA_1', oHuman:Total_1 )
+		hb_hSet(aHash, 'BOLNICH', oHuman:DisabilitySheet )
 		
-		&& hb_hSet(aHash, hbArray[ 'DATE_B_1' ], dtoc4( oHuman:BeginDisabilitySheet ) )
-		&& hb_hSet(aHash, hbArray[ 'DATE_B_2' ], dtoc4( oHuman:EndDisabilitySheet ) )
-		&& hb_hSet(aHash, hbArray[ 'DATE_E' ], dtoc4( oHuman:DateAddLU ) )
-		&& hb_hSet(aHash, hbArray[ 'KOD_P' ], chr( oHuman:IDUser ) )
-		&& hb_hSet(aHash, hbArray[ 'DATE_OPL' ], dtoc4( oHuman:NextVizit ) )
-		&& hb_hSet(aHash, hbArray[ 'SCHET' ], oHuman:Schet )
-		&& hb_hSet(aHash, hbArray[ 'ISHOD' ], oHuman:Ishod )
-		&& if ( ret := ::super:Save( aHash ) ) != -1
-			&& oHuman:ID := ret
-			&& oHuman:IsNew := .f.
-		&& endif
-	&& endif
+		hb_hSet(aHash, 'DATE_B_1', dtoc4( oHuman:BeginDisabilitySheet ) )
+		hb_hSet(aHash, 'DATE_B_2', dtoc4( oHuman:EndDisabilitySheet ) )
+		hb_hSet(aHash, 'DATE_E', dtoc4( oHuman:DateAddLU ) )
+		hb_hSet(aHash, 'KOD_P', chr( oHuman:IDUser ) )
+		hb_hSet(aHash, 'DATE_OPL', dtoc4( oHuman:NextVizit ) )
+		hb_hSet(aHash, 'SCHET', oHuman:Schet )
+		hb_hSet(aHash, 'ISHOD', oHuman:Ishod )
+
+		hb_hSet(aHash, 'ID',			oHuman:ID )
+		hb_hSet(aHash, 'REC_NEW',		oHuman:IsNew )
+		hb_hSet(aHash, 'DELETED',		oHuman:IsDeleted )
+		if ( ret := ::super:Save( aHash ) ) != -1
+			oHuman:ID := ret
+			oHuman:IsNew := .f.
+			// сохраним зависимые объекты
+			if ! isnil( oHuman:ExtendInfo )
+				THumanExtDB():Save( oHuman:ExtendInfo )
+			endif
+			if ! isnil( oHuman:AddInfo )
+				THumanAddDB():Save( oHuman:AddInfo )
+			endif
+		endif
+	endif
 	return ret
 
 METHOD FillFromHash( hbArray )     CLASS THumanDB
@@ -130,7 +182,7 @@ METHOD FillFromHash( hbArray )     CLASS THumanDB
 	obj:Gender := hbArray[ 'POL' ]
 	obj:DOB := hbArray[ 'DATE_R' ]
 	obj:Vzros_Reb := hbArray[ 'VZROS_REB' ]
-	obj:Address := hbArray[ 'ADRES' ]    
+	obj:AddressReg := hbArray[ 'ADRES' ]    
 	obj:PlaceWork := hbArray[ 'MR_DOL' ]
 	obj:Working := hbArray[ 'RAB_NERAB' ]
 	obj:MainDiagnosis := hbArray[ 'KOD_DIAG' ]

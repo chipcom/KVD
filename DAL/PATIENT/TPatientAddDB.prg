@@ -7,13 +7,54 @@ CREATE CLASS TPatientAddDB	INHERIT	TBaseObjectDB
 	VISIBLE:
 		METHOD New()
 		METHOD getByID ( nID )
-		METHOD Save( oAdd )
+		METHOD getDublicateSinglePolicyNumber()
+		METHOD Save( param )
 	HIDDEN:
 		METHOD FillFromHash( hbArray )
 ENDCLASS
 
 METHOD New()		CLASS TPatientAddDB
 	return self
+	
+METHOD getDublicateSinglePolicyNumber()		CLASS TPatientAddDB
+	local ret := {}
+	local listID := {}
+	local cOldArea, cAlias
+	local mis, i
+	local j := 0
+	local atmp, rec
+
+	cOldArea := Select()
+	if ::super:RUse()
+		cAlias := Select()
+		(cAlias)->( dbGoTop() )
+		do while ! (cAlias)->( eof() )
+			if ! empty( (cAlias)->KOD_MIS )
+				mis := alltrim( (cAlias)->KOD_MIS )
+				rec := (cAlias)->( recno() )
+				if ( i := hb_ascan( listID, { | x | x[ 1 ] == mis } ) ) == 0
+					atmp := {}
+					aadd( atmp, rec )
+					aadd( listID, { mis, atmp } )
+				else
+					atmp := listID[ i, 2 ]
+					aadd( atmp, rec )
+					listID[ i, 2 ] := atmp
+				endif
+			endif
+			(cAlias)->(dbSkip())
+		enddo
+		(cAlias)->( dbCloseArea() )
+		dbSelectArea( cOldArea )
+		if len( listID ) > 0
+			for i := 1 to len( listID )
+				if len( listID[ i, 2 ] ) > 1
+					j++
+				endif
+			next
+		endif
+	endif
+	return ret
 	
 METHOD getByID ( nID )		 CLASS TPatientAddDB
 	local hArray := nil
@@ -24,33 +65,37 @@ METHOD getByID ( nID )		 CLASS TPatientAddDB
 	endif
 	return ret
 
-METHOD Save( oAdd ) CLASS TPatientAddDB
+METHOD Save( param ) CLASS TPatientAddDB
 	local ret := .f.
 	local aHash := nil
 
-	&& if upper( oAdd:classname() ) == upper( 'TPatientAdd' )
-		&& aHash := hb_Hash()
-		&& hb_HAutoAdd( aHash, HB_HAUTOADD_ALWAYS )
-		&& hb_hSet( aHash, 'KOD_TF', oAdd:CodeTF )
-		&& hb_hSet( aHash, 'KOD_MIS', oAdd:SinglePolicyNumber )
-		&& hb_hSet( aHash, 'KOD_AK', oAdd:AmbulatoryCard )
-		&& hb_hSet( aHash, 'TIP_PR', oAdd:AttachmentStatus )
-		&& hb_hSet( aHash, 'MO_PR', oAdd:MOCodeAttachment )
-		&& hb_hSet( aHash, 'DATE_PR', oAdd:DateAttachment )
-		&& hb_hSet( aHash, 'SNILS_VR', oAdd:DoctorSNILS )
-		&& hb_hSet( aHash, 'PC1', oAdd:PC1 )
-		&& hb_hSet( aHash, 'PC2', oAdd:PC2 )
-		&& hb_hSet( aHash, 'PC3', oAdd:PC3 )
-		&& hb_hSet( aHash, 'PC4', oAdd:PC4 )
-		&& hb_hSet( aHash, 'PC5', oAdd:PC5 )
-		&& hb_hSet( aHash, 'PN1', oAdd:PN1 )
-		&& hb_hSet( aHash, 'PN2', oAdd:PN2 )
-		&& hb_hSet( aHash, 'PN3', oAdd:PN3 )
-		&& if ( ret := ::super:Save( aHash ) ) != -1
-			&& oAdd:ID := ret
-			&& oAdd:IsNew := .f.
-		&& endif
-	&& endif
+	if upper( param:classname() ) == upper( 'TPatientAdd' )
+		aHash := hb_Hash()
+		hb_HAutoAdd( aHash, HB_HAUTOADD_ALWAYS )
+		hb_hSet( aHash, 'KOD_TF',	param:CodeTF )
+		hb_hSet( aHash, 'KOD_MIS',	param:SinglePolicyNumber )
+		hb_hSet( aHash, 'KOD_AK',	param:AmbulatoryCard )
+		hb_hSet( aHash, 'TIP_PR',	param:AttachmentStatus )
+		hb_hSet( aHash, 'MO_PR',	param:MOCodeAttachment )
+		hb_hSet( aHash, 'DATE_PR',	param:DateAttachment )
+		hb_hSet( aHash, 'SNILS_VR',	param:DoctorSNILS )
+		hb_hSet( aHash, 'PC1',		param:PC1 )
+		hb_hSet( aHash, 'PC2',		param:PC2 )
+		hb_hSet( aHash, 'PC3',		param:PC3 )
+		hb_hSet( aHash, 'PC4',		param:PC4 )
+		hb_hSet( aHash, 'PC5',		param:PC5 )
+		hb_hSet( aHash, 'PN1',		param:PN1 )
+		hb_hSet( aHash, 'PN2',		param:PN2 )
+		hb_hSet( aHash, 'PN3',		param:PN3 )
+		
+		hb_hSet(aHash, 'ID',			param:ID )
+		hb_hSet(aHash, 'REC_NEW',		param:IsNew )
+		hb_hSet(aHash, 'DELETED',		param:IsDeleted )
+		if ( ret := ::super:Save( aHash ) ) != -1
+			param:ID := ret
+			param:IsNew := .f.
+		endif
+	endif
 	return ret
 
 METHOD FillFromHash( hbArray )     CLASS TPatientAddDB

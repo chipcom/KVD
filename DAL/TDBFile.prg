@@ -1,47 +1,97 @@
-#include "hbclass.ch"
-#include "..\_mylib_hbt\function.ch"
+#include 'hbclass.ch'
+#include 'common.ch'
+#include 'property.ch'
+#include 'function.ch'
 
 CREATE CLASS TDBFile
-
-	HIDDEN:
-
-		VAR _cFileName		AS STRING	INIT ""
-		VAR _aStructFile		AS ARRAY	INIT {}
-		VAR _aIndexFile		AS ARRAY	INIT {}
-		VAR _cAlias			AS STRING	INIT ""
-		VAR _cDescription	AS STRING	INIT ""
-	
-		VAR _bBeforeReconstruct    INIT ''	// для дальнейшего
-		VAR _bAfterReconstruct     INIT ''	// для дальнейшего
-	
-	
 	VISIBLE:
-		METHOD FileName( Param )	INLINE	iif( param == nil, ::_cFileName, ::_cFileName := param )
-		METHOD IndexFile( Param )	INLINE	iif( param == nil, ::_aIndexFile, ::_aIndexFile := param )
-		METHOD AliasFile( Param )	INLINE	iif( param == nil, ::_cAlias, ::_cAlias := param )
-		METHOD StructFile( Param )	INLINE	iif( param == nil, ::_aStructFile, ::_aStructFile := param )
-		METHOD Description()		INLINE	::_cDescription
+		PROPERTY FileName AS STRING READ getFileName WRITE setFileName
+		PROPERTY IndexFile AS ARRAY READ getIndexFile WRITE setIndexFile
+		PROPERTY AliasFile AS STRING READ getAlias WRITE setAlias
+		PROPERTY StructFile AS ARRAY READ getStructure WRITE setStructure
+		PROPERTY Description AS STRING READ getDescription
 		
 		METHOD New( cFileName, aIndexFile, cAlias, cDescription )
-
+	HIDDEN:
+		DATA FFileName		AS STRING	INIT ''
+		DATA FStructFile	AS ARRAY	INIT {}
+		DATA FIndexFile		AS ARRAY	INIT {}
+		DATA FAlias			AS STRING	INIT ''
+		DATA FDescription	AS STRING	INIT ''
+	
+		DATA FbBeforeReconstruct    INIT ''	// для дальнейшего
+		DATA FbAfterReconstruct     INIT ''	// для дальнейшего
+		
+		METHOD getFileName
+		METHOD setFileName( param )
+		METHOD getIndexFile
+		METHOD setIndexFile( param )
+		METHOD getAlias
+		METHOD setAlias( param )
+		METHOD getStructure
+		METHOD setStructure( param )
+		METHOD getDescription
 ENDCLASS
+
+METHOD function getFileName		CLASS TDBFile
+	return ::FFileName
+
+METHOD procedure setFileName( param )
+
+	if ischaracter( param )
+		::FFileName := alltrim( param )
+	endif
+	return
+
+METHOD function getIndexFile		CLASS TDBFile
+	return ::FIndexFile
+
+METHOD procedure setIndexFile( param )
+
+	if isarray( param )
+		::FIndexFile := param
+	endif
+	return
+
+METHOD function getAlias		CLASS TDBFile
+	return ::FAlias
+
+METHOD procedure setAlias( param )
+
+	if ischaracter( param )
+		::FAlias := alltrim( param )
+	endif
+	return
+
+METHOD function getStructure		CLASS TDBFile
+	return ::FStructFile
+
+METHOD procedure setStructure( param )
+
+	if isarray( param )
+		::FStructFile := param
+	endif
+	return
+
+METHOD function getDescription		CLASS TDBFile
+	return ::FDescription
 
 // Конструктор
 METHOD New( cFileName, aIndexFile, cAlias, aStructFile, cDescription )		CLASS TDBFile
 
-	HB_Default( @cFileName, "" ) 
-	HB_Default( @cAlias, "" ) 
-	HB_Default( @cDescription, "" ) 
+	HB_Default( @cFileName, '' ) 
+	HB_Default( @cAlias, '' ) 
+	HB_Default( @cDescription, '' ) 
 	HB_Default( @aStructFile, {} ) 
 	HB_Default( @aIndexFile, {} ) 
 
-	If Empty( cFileName)
-		Return Nil
-	EndIf
-	::_cFileName	:=	cFileName
-	::_aStructFile	:=	aStructFile
-	::_aIndexFile	:=	aIndexFile
-	::_cAlias		:=	cAlias
-	::_cDescription	:=	cDescription
+	if empty( cFileName)
+		return nil
+	endif
+	::FFileName	:=	cFileName
+	::FStructFile	:=	aStructFile
+	::FIndexFile	:=	aIndexFile
+	::FAlias		:=	cAlias
+	::FDescription	:=	cDescription
 	
-	Return Self
+	return self

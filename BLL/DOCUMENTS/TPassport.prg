@@ -1,5 +1,6 @@
 #include 'hbclass.ch'
 #include 'property.ch'
+#include 'common.ch'
 
 // класс описывающий удостоверение личности физического лица, не привязан к конкретному файлу БД
 CREATE CLASS TPassport
@@ -17,24 +18,24 @@ CREATE CLASS TPassport
 			{ 'Загранпасп.гражд.СССР     ', 2,  0,	'ЗГПАСПОРТ',		'99',	'0999999' }, ;
 			{ 'Свид-во о рождении (РФ)   ', 3,  1,	'СВ-ВО О РОЖ.РФ',	'R-ББ',	'999999' }, ;
 			{ 'Уд-ние личности офицера   ', 4,  0,	'УДОСТ ОФИЦЕРА',	'ББ',	'999999' }, ;
-			{ 'Справка об освобождении   ', 5,  1,	'СПРАВКА ОБ ОСВ',	'',		'SSSSSSSSSSSSSSSSSSSSSSSSS' }, ;
+			{ 'Справка об освобождении   ', 5,  1,	'СПРАВКА ОБ ОСВ',	'',		'SSSSSSSSSSSSSSSSSSSS' }, ;
 			{ 'Паспорт Минморфлота       ', 6,  0,	'ПАСПОРТ МОРФЛТ',	'ББ',	'999999' }, ;
 			{ 'Военный билет             ', 7,  0,	'ВОЕННЫЙ БИЛЕТ',	'ББ',	'0999999' }, ;
 			{ 'Дипл.паспорт гражд.РФ     ', 8,  0,	'ДИППАСПОРТ РФ',	'99',	'9999999' }, ;
-			{ 'Иностранный паспорт       ', 9,  1,	'ИНОСТР ПАСПОРТ',	'',		'SSSSSSSSSSSSSSSSSSSSSSSSS' }, ;
-			{ 'Свидетельство...беженца   ', 10, 0,	'СВИД БЕЖЕНЦА',		'',		'SSSSSSSSSSSSSSSSSSSSSSSSS' }, ;
-			{ 'Вид на жительство         ', 11, 1,	'ВИД НА ЖИТЕЛЬ',	'',		'SSSSSSSSSSSSSSSSSSSSSSSSS' }, ;
-			{ 'Удост-ие беженца в РФ     ', 12, 1,	'УДОСТ БЕЖЕНЦА',	'',		'SSSSSSSSSSSSSSSSSSSSSSSSS' }, ;
-			{ 'Врем.уд.личн.гражд.РФ     ', 13, 1,	'ВРЕМ УДОСТ',		'',		'SSSSSSSSSSSSSSSSSSSSSSSSS' }, ;
-			{ 'Паспорт гражд.России      ', 14, 1,	'паспорт России',	'99 99','999999' }, ;
+			{ 'Иностранный паспорт       ', 9,  1,	'ИНОСТР ПАСПОРТ',	'',		'SSSSSSSSSSSSSSSSSSSS' }, ;
+			{ 'Свидетельство...беженца   ', 10, 0,	'СВИД БЕЖЕНЦА',		'',		'SSSSSSSSSSSSSSSSSSSS' }, ;
+			{ 'Вид на жительство         ', 11, 1,	'ВИД НА ЖИТЕЛЬ',	'',		'SSSSSSSSSSSSSSSSSSSS' }, ;
+			{ 'Удост-ие беженца в РФ     ', 12, 1,	'УДОСТ БЕЖЕНЦА',	'',		'SSSSSSSSSSSSSSSSSSSS' }, ;
+			{ 'Врем.уд.личн.гражд.РФ     ', 13, 1,	'ВРЕМ УДОСТ',		'',		'SSSSSSSSSSSSSSSSSSSS' }, ;
+			{ 'Паспорт гражд.России      ', 14, 1,	'ПАСПОРТ РОССИИ',	'99 99','999999' }, ;
 			{ 'Загранпасп.гражд.РФ       ', 15, 1,	'ЗПАСПОРТ РФ',		'99',	'9999999' }, ;
 			{ 'Паспорт моряка            ', 16, 0,	'ПАСПОРТ МОРЯКА',	'ББ',	'0999999' }, ;
 			{ 'Военный билет оф.запаса   ', 17, 0,	'ВОЕН БИЛЕТ ОЗ',	'ББ',	'0999999' }, ;
-			{ 'Иные документы            ', 18, 1,	'ПРОЧЕЕ',			'',		'SSSSSSSSSSSSSSSSSSSSSSSSS' }, ;
-			{ 'Док-т инос.гражданина     ', 21, 0,	'ИНОСТР ГРАЖДАН',	'',		'' }, ;
-			{ 'Док-т лица без гражданства', 22, 0,	'ЛИЦО БЕЗ ГРАЖД',	'',		'' }, ;
-			{ 'Разр-ие на врем.проживание', 23, 0,	'РАЗР НА ВР.ПР.',	'',		'' }, ;
-			{ 'Свид-во о рожд.(не в РФ)  ', 24, 0,	'СВ.О РОЖ.НЕ РФ',	'',		'' } }
+			{ 'Иные документы            ', 18, 1,	'ПРОЧЕЕ',			'',		'SSSSSSSSSSSSSSSSSSSS' }, ;
+			{ 'Док-т инос.гражданина     ', 21, 0,	'ИНОСТР ГРАЖДАН',	'',		'SSSSSSSSSSSSSSSSSSSS' }, ;
+			{ 'Док-т лица без гражданства', 22, 0,	'ЛИЦО БЕЗ ГРАЖД',	'',		'SSSSSSSSSSSSSSSSSSSS' }, ;
+			{ 'Разр-ие на врем.проживание', 23, 0,	'РАЗР НА ВР.ПР.',	'',		'SSSSSSSSSSSSSSSSSSSS' }, ;
+			{ 'Свид-во о рожд.(не в РФ)  ', 24, 0,	'СВ.О РОЖ.НЕ РФ',	'',		'SSSSSSSSSSSSSSSSSSSS' } }
 
 // В графе "Шаблон серии, номера" приведены данные для контроля значения серии, номера документа.
 // Шаблон состоит из символов "R", "Б", "9", "0", "S", "-" (тире) и " " (пробел).
@@ -65,6 +66,7 @@ CREATE CLASS TPassport
 ENDCLASS
 
 METHOD New( nType, cSeries, cNumber, nIDIssue, dIssue ) CLASS TPassport
+	&& ::FDocumentType := hb_defaultvalue( nType, 14 )
 	::FDocumentType := hb_defaultvalue( nType, 0 )
 	::FDocumentSeries := left( hb_defaultvalue( cSeries, space( 10 ) ), 10 )
 	::FDocumentNumber := left( hb_defaultvalue( cNumber, space( 20 ) ), 20 )
@@ -127,7 +129,8 @@ METHOD FUNCTION GetAsString( format ) CLASS TPassport
 		case alltrim( itm ) == 'NNN'
 			s := alltrim( ::FDocumentNumber )
 		case alltrim( itm ) == 'ISSUE'
-			if ( oPublisher := TPublisherDB():getByID( ::FIDIssue ) ) != nil
+			oPublisher := TPublisherDB():getByID( ::FIDIssue )
+			if ! isnil( oPublisher )
 				s := alltrim( oPublisher:Name() )
 			endif
 		case alltrim( itm ) == 'DATE'

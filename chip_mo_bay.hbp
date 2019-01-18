@@ -39,11 +39,11 @@ hbmzip.hbc
 ..\2.x\xmlparse.c
 ..\2.x\hxmldoc.prg
 #..\2.x\mo_main.prg
-..\2.x\mo_kart.prg
+#..\2.x\mo_kart.prg
 ..\2.x\mo_func.prg
 ..\2.x\mo_func1.prg
 ..\2.x\mo_func2.prg
-..\2.x\mo_adres.prg
+#..\2.x\mo_adres.prg
 ..\2.x\mo_init.prg
 ..\2.x\mo_regi.prg
 ..\2.x\mo_oms.prg
@@ -107,6 +107,7 @@ hbmzip.hbc
 .\mo_main_bay.prg
 .\mo_spr_bay.prg
 .\mo_spri_bay.prg
+.\mo_kart_bay.prg
 
 ### подсистема доступа к данным
 .\DAL\TDBFile.prg
@@ -125,7 +126,8 @@ hbmzip.hbc
 .\DAL\ORGANIZATION\TCompanyDMSDB.prg
 .\DAL\ORGANIZATION\TCompanyVzaimDB.prg
 .\DAL\ORGANIZATION\T_Mo_podrDB.prg
-.\DAL\ORGANIZATION\CommonDB.prg
+.\DAL\ORGANIZATION\TPlaceOfWorkDB.prg
+.\DAL\ORGANIZATION\T_mo_smoDB.prg
 #
 .\DAL\SECURITY\TUserDB.prg
 .\DAL\SECURITY\TRoleUserDB.prg
@@ -146,6 +148,20 @@ hbmzip.hbc
 .\DAL\Patient\TPatientDB.prg
 .\DAL\Patient\TPatientAddDB.prg
 .\DAL\Patient\TPatientExtDB.prg
+.\DAL\Patient\TDisabilityDB.prg
+.\DAL\Patient\Tk_prim1DB.prg
+.\DAL\Patient\TMo_kismoDB.prg
+.\DAL\Patient\TMo_hismoDB.prg
+.\DAL\Patient\TForeignCitizenDB.prg
+.\DAL\Patient\TRepresentativeDB.prg
+.\DAL\Patient\TDubleFIODB.prg
+# Адресная информация
+.\DAL\AddressInfo\T_okatorDB.prg
+.\DAL\AddressInfo\T_okatooDB.prg
+.\DAL\AddressInfo\T_okatosDB.prg
+.\DAL\AddressInfo\T_okatos8DB.prg
+.\DAL\AddressInfo\T_okatoo8DB.prg
+.\DAL\AddressInfo\TAddressStringDB.prg
 # Платные услуги
 .\DAL\CONTRACT\TContractPayerDB.prg
 .\DAL\CONTRACT\TContractServiceDB.prg
@@ -179,6 +195,8 @@ hbmzip.hbc
 .\DAL\Services\2018\T_mo8depDB.prg
 # ОМС
 .\DAL\OMS\THumanDB.prg
+.\DAL\OMS\THumanExtDB.prg
+.\DAL\OMS\THumanAddDB.prg
 # классы файлов справочников
 .\DAL\DICT\T_Mo_unitDB.prg
 .\DAL\DICT\TT005DB.prg
@@ -203,11 +221,13 @@ hbmzip.hbc
 .\BLL\ORGANIZATION\TCompanyVzaim.prg
 .\BLL\ORGANIZATION\TCommittee.prg
 .\BLL\ORGANIZATION\TInsuranceCompany.prg
-.\BLL\ORGANIZATION\Common.prg
+.\BLL\ORGANIZATION\TPlaceOfWork.prg
 .\BLL\ORGANIZATION\TBank.prg
+.\BLL\ORGANIZATION\T_mo_smo.prg
 #
 .\BLL\DOCUMENTS\TPublisher.prg
 .\BLL\DOCUMENTS\TPassport.prg
+.\BLL\DOCUMENTS\TPolicyOMS.prg
 #
 .\BLL\ICD10\TICD10.prg
 .\BLL\ICD10\TICD10Class.prg
@@ -219,10 +239,26 @@ hbmzip.hbc
 #
 .\BLL\MEDICAL\TSlugba.prg
 # Пациенты
-.\BLL\Patient\TAddressOKATO.prg
 .\BLL\Patient\TPatient.prg
 .\BLL\Patient\TPatientAdd.prg
 .\BLL\Patient\TPatientExt.prg
+.\BLL\Patient\TDisability.prg
+.\BLL\Patient\Tk_prim1.prg
+.\BLL\Patient\TMo_kismo.prg
+.\BLL\Patient\TMo_hismo.prg
+.\BLL\Patient\TForeignCitizen.prg
+.\BLL\Patient\TRepresentative.prg
+.\BLL\Patient\TDubleFIO.prg
+# Адресная информация
+.\BLL\AddressInfo\TAddressOKATO.prg
+.\BLL\AddressInfo\TAddressInfo.prg
+.\BLL\AddressInfo\T_okator.prg
+.\BLL\AddressInfo\T_okatoo.prg
+.\BLL\AddressInfo\T_okatos.prg
+.\BLL\AddressInfo\T_okatos8.prg
+.\BLL\AddressInfo\T_okatoo8.prg
+.\BLL\AddressInfo\TAddressString.prg
+.\BLL\AddressInfo\TSRF.prg
 # Платные услуги
 .\BLL\CONTRACT\TContractPayer.prg
 .\BLL\CONTRACT\TContractService.prg
@@ -256,11 +292,14 @@ hbmzip.hbc
 .\BLL\Services\2018\T_mo8dep.prg
 # ОМС
 .\BLL\OMS\THuman.prg
+.\BLL\OMS\THumanExt.prg
+.\BLL\OMS\THumanAdd.prg
 # классы файлов справочников
 .\BLL\DICT\T_Mo_unit.prg
 .\BLL\DICT\TT005.prg
 .\BLL\DICT\TT006.prg
 .\BLL\DICT\TT007.prg
+.\BLL\DICT\TCountry.prg
 
 # системные функции
 .\SYSTEM\TWorkingUser.prg
@@ -297,7 +336,7 @@ hbmzip.hbc
 .\FUNC\ErrorSYS.prg
 .\FUNC\Print_Sh.prg
 .\FUNC\CreateReportHTML.prg
-
+.\FUNC\findElementInListObjects.prg
 #
 #
 .\MEDICAL\Slugba.prg
@@ -307,7 +346,7 @@ hbmzip.hbc
 .\ORGANIZATION\Department.prg
 .\ORGANIZATION\Subdivision.prg
 .\ORGANIZATION\ExternalOrganization.prg
-.\ORGANIZATION\CommonView.prg
+.\ORGANIZATION\PlaceOfWork.prg
 #
 
 # подсистема доступа и безопасности
@@ -317,7 +356,10 @@ hbmzip.hbc
 .\SECURITY\ReportUsersOutput.prg
 
 # Классы для описания документов
-#.\Documents\Passport.prg
+.\Documents\Passport.prg
+.\Documents\Publisher.prg
+.\Documents\PolicyOMS.prg
+.\Documents\Disability.prg
 
 # подсистема Международного классификатора болезней
 .\MKB10\ICD10.prg
@@ -379,6 +421,15 @@ hbmzip.hbc
 #
 .\EMPLOYEES\Employee.prg
 .\EMPLOYEES\ReportEmployeeOutput.prg
+#
+#
+# Регистратура
+.\RegisterOffice\editKartotek.prg
+.\RegisterOffice\viewDuplicateRecords.prg
+.\RegisterOffice\funcRegisterOffice.prg
+#
+# Адресная информация
+.\AddressInfo\mo_adres_bay.PRG
 #
 #
 # файлы для ОМС

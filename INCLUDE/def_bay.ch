@@ -6,3 +6,8 @@
 #DEFINE AUDIT_INS 1
 #DEFINE AUDIT_EDIT 2
 #DEFINE AUDIT_DEL 3
+
+// константы для обработки событий
+#define CH_NOTIFY 1
+#define CH_ATTR_CLASS 2
+#define CH_COMMAND 3
