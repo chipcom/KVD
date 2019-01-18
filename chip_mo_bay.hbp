@@ -347,6 +347,7 @@ hbmzip.hbc
 .\ORGANIZATION\Subdivision.prg
 .\ORGANIZATION\ExternalOrganization.prg
 .\ORGANIZATION\PlaceOfWork.prg
+.\ORGANIZATION\CommonView.prg
 #
 
 # подсистема доступа и безопасности
