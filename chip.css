@@ -1,0 +1,203 @@
+/*@media screen {*/ /* Стиль для отображения в браузере */
+p.bodyp {
+		font-size:small;
+		font-family:"Times New Roman";
+		page-break-inside:avoid
+	}
+th.thleft {
+		border-left:solid black 1pt;border-top:solid black 1pt;border-right:none;border-bottom:solid black 1pt;
+		padding:0in 0in 0in 0in;margin:0in 0in 0in 0in;page-break-inside:avoid
+	}
+th.thleft-wo-bottom {
+		border-left:solid black 1pt;
+		border-top:solid black 1pt;
+		border-right:none;
+		border-bottom:none;
+		padding:0in 0in 0in 0in;
+		margin:0in 0in 0in 0in;
+		page-break-inside:avoid
+	}
+th.thright {
+		border-right:solid black 1pt;
+	}
+td.td1 {
+		padding-bottom:0;
+		padding-top:0;
+		padding-left:0;
+		padding-right:0;
+		margin-bottom:0;
+		margin-top:0;
+		margin-left:0;
+		margin-right:0;
+		font-size:small;
+		font-family:"Times New Roman";
+		border-left:solid black 1pt;
+		border-bottom:solid black 1pt
+	}
+td.td11 {
+		padding-bottom:0;
+		padding-top:0;
+		padding-left:0;
+		padding-right:0;
+		margin-bottom:0;
+		margin-top:0;
+		margin-left:0;
+		margin-right:0;
+		font-size:small;
+		font-family:"Times New Roman";
+		border-left:solid black 1pt;
+		border-bottom:dotted black 1pt
+	}
+td.td111 {
+		width:50.00pt;
+		border:none;
+		border-bottom:solid black 1px;
+		padding:0in 1.4pt 0in 1.4pt
+	}
+td.td1-medium {
+		padding-bottom:1pt;
+		padding-top:1pt;
+		padding-left:5pt;
+		padding-right:5pt;
+		margin-bottom:0;
+		margin-top:0;
+		margin-left:0;
+		margin-right:0;
+		font-size:14pt;
+		font-family:"Times New Roman";
+		border-left:solid black 1pt;
+		border-bottom:solid black 1pt;
+	}
+td.td613 {
+		font-size:small;
+		border:none;
+		padding:0in 1.4pt 0in 1.4pt;
+	}
+td.p1 {
+		font-weight:bold;
+	}
+td.td3 {
+		padding-bottom:0;
+		padding-top:0;
+		padding-left:0;
+		padding-right:0;
+		margin-bottom:0;
+		margin-top:0;
+		margin-left:0;
+		margin-right:0;
+		font-size:small;
+		font-family:"Times New Roman";
+		border-left:solid black 1pt;
+		border-right:solid black 1pt;
+		border-bottom:solid black 1pt
+	}
+td.td31 {
+		padding-bottom:0;
+		padding-top:0;
+		padding-left:0;
+		padding-right:0;
+		margin-bottom:0;
+		margin-top:0;
+		margin-left:0;
+		margin-right:0;
+		font-size:small;
+		font-family:"Times New Roman";
+		border-left:solid black 1pt;
+		border-right:solid black 1pt;
+		border-bottom:dotted black 1pt
+	}
+td.td3-medium {
+		padding-bottom:0;
+		padding-top:0;
+		padding-left:5pt;
+		padding-right:5pt;
+		margin-bottom:0;
+		margin-top:0;
+		margin-left:0;
+		margin-right:0;
+		font-size:14pt;
+		font-family:"Times New Roman";
+		border-left:solid black 1pt;
+		border-right:solid black 1pt;
+		border-bottom:solid black 1pt
+	}
+td.subtotal {
+		font-size:75%;
+		font-weight:bold;
+	}
+td.total {
+		font-size:100%;
+		font-weight:bold;
+	}
+p.p1 {
+		font-weight:bold;
+		padding-bottom:0;
+		padding-top:0;
+		padding-left:0;
+		padding-right:0;
+		margin-bottom:0;
+		margin-top:0;
+		margin-left:0;
+		margin-right:0;
+	}
+p.p2 {
+		font-weight:nornmal;
+		padding-bottom:0;
+		padding-top:1.4pt;
+		padding-left:0;
+		padding-right:0;
+		margin-bottom:0;
+		margin-top:0;
+		margin-left:0;
+		margin-right:0;
+	}
+.tab {
+		border: 0px;
+	}
+		
+.head {
+		background: rgb(206,220,231); /* Old browsers */
+		background: -moz-linear-gradient(top,  rgba(206,220,231,1) 0%, rgba(89,106,114,1) 100%); /* FF3.6+ */
+		background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(206,220,231,1)), color-stop(100%,rgba(89,106,114,1))); /* Chrome,Safari4+ */
+		background: -webkit-linear-gradient(top,  rgba(206,220,231,1) 0%,rgba(89,106,114,1) 100%); /* Chrome10+,Safari5.1+ */
+		background: -o-linear-gradient(top,  rgba(206,220,231,1) 0%,rgba(89,106,114,1) 100%); /* Opera 11.10+ */
+		background: -ms-linear-gradient(top,  rgba(206,220,231,1) 0%,rgba(89,106,114,1) 100%); /* IE10+ */
+		background: linear-gradient(to bottom,  rgba(206,220,231,1) 0%,rgba(89,106,114,1) 100%); /* W3C */
+		filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#cedce7", endColorstr="#596a72",GradientType=0 ); /* IE6-9 */
+	}
+		
+/*th.thleft {
+		border-left:solid black 1pt;
+		border-top:solid black 1pt;
+		border-right:none;
+		border-bottom:solid black 1pt;
+		padding:0in 1.4pt 0in 1.4pt;
+		page-break-inside:avoid
+	}
+th.thleft-wo-bottom {
+		border-left:solid black 1pt;
+		border-top:solid black 1pt;
+		border-right:none;
+		border-bottom:none;
+		padding:0in 1.4pt 0in 1.4pt;
+		page-break-inside:avoid
+	}
+*/
+	
+/* https://stackoverflow.com/questions/35767368/how-to-make-highlighted-table-with-rowspan */
+/*.row:hover td, .row:hover + .addrow td {
+		background:#00FF33;
+		color:red;
+		font-size:14px;
+		}
+.row:hover td:hover ~ tr {
+		background:#00FF33;
+		color:red;
+		font-size:14px;
+	}
+*/
+/*}*/
+
+@media print {
+		form {display: none}
+	}

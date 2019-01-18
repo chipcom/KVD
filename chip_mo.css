@@ -1,0 +1,130 @@
+@media screen { /* Стиль для отображения в браузере */
+	body {
+		font-family: Arial, Verdana, sans-serif; /* Семейство шрифтов */
+	}
+
+	table {
+		border-collapse: collapse;
+		width: 100%
+	}
+	table {
+/*		border: 1px solid #666; */
+	}
+	th {
+		background-color: #4CAF50;
+		color: white;
+	}	
+	th {
+		border: 1px solid #666;
+	}	
+	tr {
+		border: 1px solid #666;
+	}	
+	div.title {
+		margin-bottom: 2%;
+	}
+	div.title h1 {
+		text-align: center;
+		font: bold 14pt;
+		margin: 0;
+	}
+	div.title h2 {
+		text-align: center;
+		font: bold 12pt;
+		margin: 0;
+	}
+	div.title h3 {
+		text-align: center;
+		font: bold 11pt;
+		margin: 0;
+	}
+	.cervice {
+		margin: 0;
+		padding-left: 200px;
+		text-align: left;
+	}
+	td.total-string {
+/*		border: 1px solid #666; */
+		text-align: right;
+		font: bold 14pt;
+		margin: 0;
+	}
+	td.subtotal-string {
+/*		border: 1px solid #666; */
+		text-align: right;
+		font: 12pt;
+		margin: 0;
+	}
+	td.quantity {
+/*		border: 1px solid #666; */
+		margin: 0;
+		text-align: center;
+	}
+	td.date {
+/*		border: 1px solid #666; */
+		margin: 0;
+		text-align: center;
+	}
+	td.total-quantity {
+/*		border: 1px solid #666; */
+		text-align: center;
+		font: 12pt;
+		margin: 0;
+	}
+	td.sum {
+/*		border: 1px solid #666; */
+		text-align: right;
+		margin: 0;
+	}
+	td.total-sum {
+/*		border: 1px solid #666; */
+		text-align: right;
+		font: 12pt;
+		margin: 0;
+	}
+	div.totalreport {
+		border: 1px dotted black;
+		margin-right: 0%;
+		margin-left: 0%;
+		margin-top: 1%;
+		margin-bottom: 1%;
+	}
+	.totalreport #CaptionTotal {
+		text-align: left;
+		font: bold 14pt;
+	}
+/*	table.Statistics {
+		width: 100%;
+		border: 1px solid black; 
+		padding: 5px;
+	}
+	table.Statistics {
+		border: 1px solid black;
+		padding: 5px;
+	}
+*/	
+/*	tbody > tr:nth-child(odd) { background-color: #EAF2D3; } */
+	tbody > tr:hover { background-color: #E0E0FF; }
+}
+
+@media print { /* Стиль для печати */
+	form {display: none}
+	thead {display: table-header-group;}
+	tfoot {display: table-header-group;}
+	
+	body {
+		font-family: Arial, Verdana,  sans-serif; /* Семейство шрифтов */
+	}
+	div.totalreport {
+/*		border: 1px dotted black; */
+		margin-right: 0%;
+		margin-left: 0%;
+		margin-top: 1%;
+		margin-bottom: 1%;
+	}
+	.totalreport #CaptionTotal {
+		text-align: left;
+		font: bold 14pt;
+	}
+	
+}

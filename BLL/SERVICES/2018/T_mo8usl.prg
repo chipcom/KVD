@@ -1,0 +1,155 @@
+#include 'hbclass.ch'
+#include 'hbhash.ch'
+#include 'property.ch'
+#include 'chip_mo.ch'
+#include 'common.ch'
+
+// файл '_mo8usl.dbf'
+CREATE CLASS T_mo8usl	INHERIT	TBaseObjectBLL
+	VISIBLE:
+		PROPERTY Shifr		READ getShifr
+		PROPERTY Shifr1251	READ getShifr1251
+		PROPERTY Name 		READ getName
+		PROPERTY Name1251 	READ getName1251
+		PROPERTY ST			READ getST
+		PROPERTY USL_OK		READ getUSL_OK
+		PROPERTY USL_OKS	READ getUSL_OKS
+		PROPERTY UNIT_CODE	READ getUnitCode
+		PROPERTY UNITS		READ getUnits
+		PROPERTY BUKVA		READ getBukva
+		PROPERTY VMP_F		READ getVMP_F
+		PROPERTY VMP_S		READ getVMP_S
+		PROPERTY IDSP		READ getIDSP
+		PROPERTY IDSPS		READ getIDSPS
+		PROPERTY KSLP		READ getKSLP
+		PROPERTY KSLPS		READ getKSLPS
+		PROPERTY KIRO		READ getKIRO
+		PROPERTY KIROS		READ getKIROS
+		PROPERTY UETV		READ getUETV
+		PROPERTY UETD		READ getUETD
+		PROPERTY TYPE_KSG	READ getType_KSG
+		PROPERTY DATEBEG	READ getDateBegin
+		PROPERTY DATEEND	READ getDateEnd
+		
+		METHOD New( nId, lNew, lDeleted )
+	HIDDEN:
+		DATA FSHIFR		INIT space( 10 )
+		DATA FNAME		INIT space( 255 )
+		DATA FST		INIT 0
+		DATA FUSL_OK	INIT 0
+		DATA FUSL_OKS	INIT space( 4 )
+		DATA FUNIT_CODE	INIT 0
+		DATA FUNITS		INIT space( 16 )
+		DATA FBUKVA		INIT space( 10 )
+		DATA FVMP_F		INIT space( 2 )
+		DATA FVMP_S		INIT space( 8 )
+		DATA FIDSP		INIT space( 2 )
+		DATA FIDSPS		INIT space( 8 )
+		DATA FKSLP		INIT 0
+		DATA FKSLPS		INIT space( 10 )
+		DATA FKIRO		INIT 0
+		DATA FKIROS		INIT space( 10 )
+		DATA FUETV		INIT 0
+		DATA FUETD		INIT 0
+		DATA FTYPE_KSG	INIT 0
+		DATA FDATEBEG	INIT ctod( '' )
+		DATA FDATEEND	INIT ctod( '' )
+
+		METHOD getShifr
+		METHOD getShifr1251
+		METHOD getName
+		METHOD getName1251
+		METHOD getST
+		METHOD getUSL_OK
+		METHOD getUSL_OKS
+		METHOD getUnitCode
+		METHOD getUnits
+		METHOD getBukva
+		METHOD getVMP_F
+		METHOD getVMP_S
+		METHOD getIDSP
+		METHOD getIDSPS
+		METHOD getKSLP
+		METHOD getKSLPS
+		METHOD getKIRO
+		METHOD getKIROS
+		METHOD getUETV
+		METHOD getUETD
+		METHOD getType_KSG
+		METHOD getDateBegin
+		METHOD getDateEnd
+ENDCLASS
+
+METHOD FUNCTION getShifr()		CLASS T_mo8usl
+	return ::FSHIFR
+
+METHOD FUNCTION getShifr1251()	CLASS T_mo8usl
+	return win_OEMToANSI( ::FSHIFR )
+
+METHOD FUNCTION getName()			CLASS T_mo8usl
+	return ::FNAME
+
+METHOD FUNCTION getName1251()		CLASS T_mo8usl
+	return win_OEMToANSI( ::FNAME )
+
+METHOD FUNCTION getST()			CLASS T_mo8usl
+	return ::FST
+
+METHOD FUNCTION getUSL_OK()		CLASS T_mo8usl
+	return ::FUSL_OK
+
+METHOD FUNCTION getUSL_OKS()		CLASS T_mo8usl
+	return ::FUSL_OKS
+
+METHOD FUNCTION getUnitCode()		CLASS T_mo8usl
+	return ::FUNIT_CODE
+
+METHOD FUNCTION getUnits()		CLASS T_mo8usl
+	return ::FUNITS
+
+METHOD FUNCTION getBukva()		CLASS T_mo8usl
+	return ::FBUKVA
+
+METHOD FUNCTION getVMP_F()		CLASS T_mo8usl
+	return ::FVMP_F
+
+METHOD FUNCTION getVMP_S()		CLASS T_mo8usl
+	return ::FVMP_S
+
+METHOD FUNCTION getIDSP()			CLASS T_mo8usl
+	return ::FIDSP
+
+METHOD FUNCTION getIDSPS()		CLASS T_mo8usl
+	return ::FIDSPS
+
+METHOD FUNCTION getKSLP()			CLASS T_mo8usl
+	return ::FKSLP
+
+METHOD FUNCTION getKSLPS()		CLASS T_mo8usl
+	return ::FKSLPS
+
+METHOD FUNCTION getKIRO()			CLASS T_mo8usl
+	return ::FKIRO
+
+METHOD FUNCTION getKIROS()		CLASS T_mo8usl
+	return ::FKIROS
+
+METHOD FUNCTION getUETV()			CLASS T_mo8usl
+	return ::FUETV
+
+METHOD FUNCTION getUETD()			CLASS T_mo8usl
+	return ::FUETD
+
+METHOD FUNCTION getType_KSG()		CLASS T_mo8usl
+	return ::FTYPE_KSG
+
+METHOD FUNCTION getDateBegin()	CLASS T_mo8usl
+	return ::FDATEBEG
+
+METHOD FUNCTION getDateEnd()		CLASS T_mo8usl
+	return ::FDATEEND
+
+METHOD New( nId, lNew, lDeleted ) CLASS T_mo8usl
+
+	::super:new( nID, lNew, lDeleted )
+	return self

@@ -1,0 +1,83 @@
+TContract - класс описывающий договор на оказание платных услуг
+
+Свойства:
+	Patient - пациент ( объект )
+	Department - подразделение, где оказана услуга  ( объект )
+	Subdivision - отделение, где оказана услуга  ( объект )
+	SendDoctor - направивший доктор ( объект )
+	BeginTreatment - дата начала лечения
+	EndTreatment - дата окончания лечения
+	DateCloseLU - дата закрытия листа учета
+	
+	MainDiagnosis - шифр осн.болезни
+	Diagnosis1 - шифр 1-ой сопутствующей болезни
+	Diagnosis2 - шифр 2-ой сопутствующей болезни
+	Diagnosis3 - шифр 3-ой сопутствующей болезни
+	Diagnosis4 - шифр 4-ой сопутствующей болезни
+	Diagnosis5 - шифр 5-ой сопутствующей болезни
+	
+	Total - стоимость лечения
+	TypeService - способ оплаты договора ( 0-платная, 1-д/страх., 2-в/зачет )
+	
+	IdExternalOrg - идентификатор предприятия / добровольного СМО
+	PolisSMO - полис по добровольному страх-ию
+	LetterSMO - № гарантийного письма по ДМС
+	DateLetterSMO - дата гарантийного письма по ДМС
+	LetterSMO2 - № 2-го гарантийного письма по ДМС
+	DateLetterSMO2 - дата 2-го гарантийного письма по ДМС
+	
+	PayerFIO - ФИО плательщика
+	PayerINN - ИНН плательщика
+	EmailPayer - электронная почта плательщика
+
+	HasCheque - признак наличия чека
+	
+	DatePay - дата оплаты договора
+	NumberReceiptBook - номер квитанционной книжки
+	ReceiptNumber - номер чека, квитанции
+	
+	DateCashbox - дата записи
+	TimeCashbox - время записи
+	TypeCashbox - тип кассы
+	TypeOfBankCard - ТИП банковской карты
+	TotalBank - сумма, оплаченная по банковской карте
+	IsCashbox - касса (0-без кассы,1-чек,2-нет чека)
+	
+	DateBackMoney - дата возврата
+	BackMoney - сумма возврата
+	DateMoneyBack - возврат дата записи
+	TimeMoneyBack - возврат время записи
+	TypeCashboxMoneyBack - возврат тип кассы
+
+	SerialNumberFR - зав.номер кассы
+	SerialNumberFRBack - зав.номер кассы на какой произведен возврат
+	
+	Cashier - пользователь создавшего договор ( объект )
+	CashierBack - пользователь выполнивший возврат ( объект )
+Методы:
+	New( nId, lNew, lDeleted )
+	Save()
+	
+	Services()
+	AddService( obj )
+	RemoveService( obj )
+	deleteAllServices()
+	Recount()
+	CountShifrServices() - число услуг с различными шифрами в договоре
+	
+	GetByID( nID )
+	GetListByPatient( nIdPatient, oUser )
+	GetListBySubdivision( nIdSubdivision )
+	GetListByDate( beginDate, endDate )	// получить список договоров в периоде дат
+	GetListByTypeAndIDPayer( nType, nIdOrg )
+	getListByCondition( aHash )
+	getListContractByDateService( date1, date2 )	// получить список контрактов услуги которых оказаны в промежутке дат date1 и date2
+	getListContractByEndTreatment( date1, date2 )	// получить список контрактов дата окончания которых промежутке дат date1 и date2
+	getListContractByDateCloseLU( date1, date2 )	// получить список контрактов дата закрытия листа которых учета промежутке дат date1 и date2
+	getListContractByDatePayment( date1, date2, user )	// получить список контрактов дата оплаты которых в промежутке дат date1 и date2
+	getListContractByDateRefund( date1, date2, user )	// получить список контрактов по дате, возврат оплаты которых в промежутке дат date1 и date2
+	getListContractByDateWithoutCheck( date1, date2, user )	// получить список контрактов без чеков оплаты по дате, возврат оплаты которых в промежутке дат date1 и date2
+	getResultWorkShift( date1, numberFR )					// получить результат работы за смену по конкретной ККТ на дату
+	MaxLenShifr()					// возвращет максимальную длину шифра в списке услуг
+	
+	forJSON()
