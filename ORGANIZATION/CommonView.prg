@@ -78,14 +78,14 @@ static function editCommon( oBrowse, aObjects, oCommon, nKey )
 			fl := .t.
 		endif
 	elseif ( hb_user_curUser:IsAdmin() ) .and. ( nKey == K_F2 ) .and. ( typeClass == 3 )
-		removeDuplicateTPublisher()
+		removeDublicateTPublisher()
 		oBrowse:refreshAll()
 		fl := .t.
 	endif
 	Return fl
 	
 * удаление дубликатов организаций, выдающих документы
-function removeDuplicateTPublisher()
+function removeDublicateTPublisher()
 	Static sk
 	Local buf, s1, s2, k1, k2, hGauge, r
 	local firstSelect, secondSelect
