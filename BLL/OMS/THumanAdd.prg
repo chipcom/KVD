@@ -57,7 +57,7 @@ CREATE CLASS THumanAdd	INHERIT	TBaseObjectBLL
 		DATA FWeightPrematureBaby2 INIT 0
 		DATA FWeightPrematureBaby3 INIT 0
 		
-		DATA FPC1	INIT space( 10 )
+		DATA FPC1	INIT space( 20 )
 		DATA FPC2	INIT space( 10 )
 		DATA FPC3	INIT space( 10 )
 		DATA FPC4	INIT space( 10 )
@@ -264,26 +264,28 @@ METHOD function getPC( index )				CLASS THumanAdd
 
 METHOD procedure setPC( index, param )		CLASS THumanAdd
 
-	switch index
-		case 1
-			::FPC1 := param
-			exit
-		case 2
-			::FPC2 := param
-			exit
-		case 3
-			::FPC3 := param
-			exit
-		case 4
-			::FPC4 := param
-			exit
-		case 5
-			::FPC5 := param
-			exit
-		case 6
-			::FPC6 := param
-			exit
-	endswitch
+	if ischaracter( param )
+		switch index
+			case 1
+				::FPC1 := param
+				exit
+			case 2
+				::FPC2 := param
+				exit
+			case 3
+				::FPC3 := param
+				exit
+			case 4
+				::FPC4 := param
+				exit
+			case 5
+				::FPC5 := param
+				exit
+			case 6
+				::FPC6 := param
+				exit
+		endswitch
+	endif
 	return
 
 METHOD function getPN( index )				CLASS THumanAdd
