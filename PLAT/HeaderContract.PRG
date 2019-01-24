@@ -8,6 +8,7 @@
 * 08.06.17 layoutContracts( oBrowse, aList ) - формирование колонок для отображения списка договоров
 
 #include 'hbthread.ch'
+#include "getexit.ch"
 #include 'inkey.ch'
 #include 'common.ch'
 #include 'function.ch'
