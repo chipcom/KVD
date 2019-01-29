@@ -12,8 +12,12 @@ function settingsWorkPlace( r, c )
 	local mas_fun := { 'addedEquipment()', ;
 			'nastr_rab_mesto()' }
 			
-	DEFAULT r TO T_ROW, c TO T_COL + 5
-	popup_prompt( r, c, 1, mas_pmt, mas_msg, mas_fun )
+	local sItem
+	
+	&& DEFAULT r TO T_ROW, c TO T_COL + 5
+	DEFAULT r TO T_ROW, c TO T_COL - 20
+	sItem := popup_prompt( r, c, 1, mas_pmt, mas_msg, mas_fun )
+alertx(sItem)
 	return nil
 
 #DEFINE COM_NONE	1
@@ -28,12 +32,21 @@ function addedEquipment()
 						{ 'COM2 ', COM2 }, ;
 						{ 'COM3 ', COM3 } }
 	static cgreen := 'G+/B'											// цвет для меток
-	local buf
+	static group_ini := 'RAB_MESTO'
 	
+	local ar, sr
 	local hb_kkt_Equipment := TSettingEquipment():New( 'Workplace' )		// переменная для настроек оборудования
 	local iFind := 0, iCount := 0, item, oBox
 	
 	private mComPort, m1ComPort, cComPort := hb_kkt_Equipment:ComPort	// ()
+	private mm_reader := { { 'нет', space( 50 ) }, { 'подключить', '1' } }, m1m_reader
+	
+	ar := GetIniSect( tmp_ini, group_ini )
+	sr := a2default( ar, 'sc_reader' )
+	if ! empty( sr )
+		mm_reader[ 2, 1 ] := sr
+		mm_reader[ 2, 2 ] := padr( sr, 50 )
+	endif
 	
 	oBox := TBox():New( 1, 0, 22, 78, .t. )
 	oBox:Caption := 'Настройка подключаеиого оборудования'
@@ -42,7 +55,6 @@ function addedEquipment()
 	oBox:Color := cDataCGet
 	oBox:View()
 		
-	&& buf := box_shadow( 1, 0, 22, 78, 'B+/B' )
 	for each item in mmComPort
 		iCount++
 		if alltrim( item[ 1 ] ) == alltrim( cComPort )
@@ -53,25 +65,22 @@ function addedEquipment()
 	m1ComPort := if( iFind == 0, 1, iFind )
 	mComPort := inieditspr( A__MENUVERT, mmComPort, m1ComPort )
 	
-	&& setcolor(cDataCGet)
 	ix := 2
-	&& ClrLines( 1, maxrow() - 1 )
 	// выбор последовательного порта к которому подключен сканер штрих-кода
 	@ ix, 2 SAY 'Сканер штрих-кода:' color cgreen
 	@ ++ix, 2 say 'Порт: ' get mComPort ;
 		reader { | x | menu_reader( x, mmComPort, A__MENUVERT ) }
-		
-	&& status_key( '^<Esc>^ - выход без записи;  ^<PgDn>^ - подтверждение ввода' )
+	@ ++ix, 2 SAY 'Устройство чтения смарт-карт:' color cgreen
+	@ ++ix, 2 say 'Тип: ' get mm_reader ;
+		reader { | x | menu_reader( x, mm_reader, A__MENUVERT ) }
+
 	myread()
-	if lastkey() != K_ESC .and. f_Esc_Enter( 1 )
+	&& read
+	&& if lastkey() != K_ESC .and. f_Esc_Enter( 1 )
+	if f_Esc_Enter( 1 )
 		hb_kkt_Equipment:ComPort := mmComPort[ m1ComPort, 1 ]
 		hb_kkt_Equipment:Save()
 	endif
-	&& if f_Esc_Enter( 1 )
-		&& hb_kkt_Equipment:ComPort := mmComPort[ m1ComPort, 1 ]
-		&& hb_kkt_Equipment:Save()
-	&& endif
-	&& rest_box( buf )
 	return nil
 
 * 29.01.19
