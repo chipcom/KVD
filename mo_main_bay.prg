@@ -1312,14 +1312,20 @@ aadd(func_menu, {"readme2wordpad()",;
                  "view_errors()"})
 
 // перестройка меню
+
+hb_AIns( first_menu[ len( first_menu ) ], 5, 'Настройка ~рабочего места', .t. )
+hb_AIns( first_message[ len( first_message ) ], 4, 'Настройка рабочего места', .t. )
+&& hb_AIns( func_menu[ len( func_menu ) ], 4, 'nastr_rab_mesto()', .t. )
+hb_AIns( func_menu[ len( func_menu ) ], 4, 'settingsWorkPlace()', .t. )
 if hb_user_curUser:IsAdmin()
-	hb_AIns( first_menu[ len( first_menu ) ], 5, '~Настройки системы', .t. )
-	hb_AIns( first_message[ len( first_message ) ], 4, 'Настройка общих параметров системы', .t. )
-	hb_AIns( func_menu[ len( func_menu ) ], 4, 'settingsSystem()', .t. )
+	hb_AIns( first_menu[ len( first_menu ) ], 6, '~Настройки системы', .t. )
+	hb_AIns( first_message[ len( first_message ) ], 5, 'Настройка общих параметров системы', .t. )
+	hb_AIns( func_menu[ len( func_menu ) ], 5, 'settingsSystem()', .t. )
 endif
-hb_AIns( first_menu[ len( first_menu ) ], 5 + if( hb_user_curUser:IsAdmin(), 1, 0 ), 'Отправка ~сообщения', .t. )
-hb_AIns( first_message[ len( first_message ) ], 4 + if( hb_user_curUser:IsAdmin(), 1, 0 ), 'Отправка сообщения работающим пользователям', .t. )
-hb_AIns( func_menu[ len( func_menu ) ], 4 + if( hb_user_curUser:IsAdmin(), 1, 0 ), 'SendMessage()', .t. )
+hb_AIns( first_menu[ len( first_menu ) ], 6 + if( hb_user_curUser:IsAdmin(), 1, 0 ), 'Отправка ~сообщения', .t. )
+hb_AIns( first_message[ len( first_message ) ], 5 + if( hb_user_curUser:IsAdmin(), 1, 0 ), 'Отправка сообщения работающим пользователям', .t. )
+hb_AIns( func_menu[ len( func_menu ) ], 5 + if( hb_user_curUser:IsAdmin(), 1, 0 ), 'SendMessage()', .t. )
+
 // конец перестройки меню
 
 // добавим переиндексирование некоторых файлов внутри задачи

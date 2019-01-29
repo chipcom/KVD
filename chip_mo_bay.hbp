@@ -273,6 +273,7 @@ hbmzip.hbc
 # система настройки
 .\SETTINGS\settingsSystem.prg
 .\SETTINGS\TSettingSystem.prg
+.\SETTINGS\SettingsWorkPlace.prg
 
 # разные функции
 #
