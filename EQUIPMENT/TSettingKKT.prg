@@ -5,8 +5,8 @@
 CREATE CLASS TSettingKKT
 
 	VISIBLE:
-		METHOD New( )
-		METHOD Save( )
+		METHOD New( file )
+		METHOD Save()
 		
 		PROPERTY TypeKKT READ getTypeKKT WRITE setTypeKKT					// тип ККМ
 		PROPERTY FRNumber READ getFRNumber WRITE setFRNumber					// заводской номер ККМ

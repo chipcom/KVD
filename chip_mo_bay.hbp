@@ -363,10 +363,11 @@ hbmzip.hbc
 #
 #
 # файлы для используемого оборудования .\EQUIPMENT\
+.\EQUIPMENT\TSettingEquipment.prg
+.\EQUIPMENT\TSettingKKT.prg
 #
 ## контрольно-кассовая техника
 ##
-.\EQUIPMENT\KKT\TSettingKKT.prg
 .\EQUIPMENT\KKT\TOperationCheck.prg
 .\EQUIPMENT\KKT\TCloseCheck.prg
 .\EQUIPMENT\KKT\TCorrectionCheck.prg
