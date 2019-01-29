@@ -50,8 +50,8 @@ METHOD New( file ) CLASS TSettingEquipment
 		GET cSCReader			SECTION 'Smart Card Reader' ENTRY 'Type'	OF oIni DEFAULT 'Нет'
 	ENDINI
 	::_objINI := oIni
-	::FComPortScanner := cComPort
-	::FSCReader := cSCReader
+	::FComPortScanner := alltrim( cComPort )
+	::FSCReader := padr( cSCReader, 50 )
 	return self
 	
 METHOD Save() CLASS TSettingEquipment

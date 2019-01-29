@@ -16,8 +16,66 @@ function settingsWorkPlace( r, c )
 	popup_prompt( r, c, 1, mas_pmt, mas_msg, mas_fun )
 	return nil
 
+#DEFINE COM_NONE	1
+#DEFINE COM1		2
+#DEFINE COM2		3
+#DEFINE COM3		4
+
 * 29.01.19
 function addedEquipment()
+	static mmComPort := { { 'Нет  ', COM_NONE }, ;
+						{ 'COM1 ', COM1 }, ;
+						{ 'COM2 ', COM2 }, ;
+						{ 'COM3 ', COM3 } }
+	static cgreen := 'G+/B'											// цвет для меток
+	local buf
+	
+	local hb_kkt_Equipment := TSettingEquipment():New( 'Workplace' )		// переменная для настроек оборудования
+	local iFind := 0, iCount := 0, item, oBox
+	
+	private mComPort, m1ComPort, cComPort := hb_kkt_Equipment:ComPort	// ()
+	
+	oBox := TBox():New( 1, 0, 22, 78, .t. )
+	oBox:Caption := 'Настройка подключаеиого оборудования'
+	oBox:CaptionColor := color8
+	oBox:MessageLine := '^<Esc>^ - выход без записи;  ^<PgDn>^ - подтверждение ввода'
+	oBox:Color := cDataCGet
+	oBox:View()
+		
+	&& buf := box_shadow( 1, 0, 22, 78, 'B+/B' )
+	for each item in mmComPort
+		iCount++
+		if alltrim( item[ 1 ] ) == alltrim( cComPort )
+			iFind := iCount
+			exit
+		endif
+	next
+	m1ComPort := if( iFind == 0, 1, iFind )
+	mComPort := inieditspr( A__MENUVERT, mmComPort, m1ComPort )
+	
+	&& setcolor(cDataCGet)
+	ix := 2
+	&& ClrLines( 1, maxrow() - 1 )
+	// выбор последовательного порта к которому подключен сканер штрих-кода
+	@ ix, 2 SAY 'Сканер штрих-кода:' color cgreen
+	@ ++ix, 2 say 'Порт: ' get mComPort ;
+		reader { | x | menu_reader( x, mmComPort, A__MENUVERT ) }
+		
+	&& status_key( '^<Esc>^ - выход без записи;  ^<PgDn>^ - подтверждение ввода' )
+	myread()
+	if lastkey() != K_ESC .and. f_Esc_Enter( 1 )
+		hb_kkt_Equipment:ComPort := mmComPort[ m1ComPort, 1 ]
+		hb_kkt_Equipment:Save()
+	endif
+	&& if f_Esc_Enter( 1 )
+		&& hb_kkt_Equipment:ComPort := mmComPort[ m1ComPort, 1 ]
+		&& hb_kkt_Equipment:Save()
+	&& endif
+	&& rest_box( buf )
+	return nil
+
+* 29.01.19
+function addedEquipment1()
 	static group_ini := "RAB_MESTO"
 	&& static mm_wdir := {{'в папку рабочего каталога "OwnChipArchiv"',0},;
 					&& {"в другое место",1}}

@@ -1315,7 +1315,6 @@ aadd(func_menu, {"readme2wordpad()",;
 
 hb_AIns( first_menu[ len( first_menu ) ], 5, 'Настройка ~рабочего места', .t. )
 hb_AIns( first_message[ len( first_message ) ], 4, 'Настройка рабочего места', .t. )
-&& hb_AIns( func_menu[ len( func_menu ) ], 4, 'nastr_rab_mesto()', .t. )
 hb_AIns( func_menu[ len( func_menu ) ], 4, 'settingsWorkPlace()', .t. )
 if hb_user_curUser:IsAdmin()
 	hb_AIns( first_menu[ len( first_menu ) ], 6, '~Настройки системы', .t. )
