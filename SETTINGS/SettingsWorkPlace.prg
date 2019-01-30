@@ -15,31 +15,30 @@ function settingsWorkPlace( r, c )
 	local sItem
 	
 	&& DEFAULT r TO T_ROW, c TO T_COL + 5
-	DEFAULT r TO T_ROW, c TO T_COL - 20
+	&& DEFAULT r TO T_ROW, c TO T_COL - 20
+	HB_Default( @r, T_ROW ) 
+	HB_Default( @c, T_COL - 20 ) 
+
 	sItem := popup_prompt( r, c, 1, mas_pmt, mas_msg, mas_fun )
 alertx(sItem)
 	return nil
 
-#DEFINE COM_NONE	1
-#DEFINE COM1		2
-#DEFINE COM2		3
-#DEFINE COM3		4
-
 * 29.01.19
 function addedEquipment()
-	static mmComPort := { { 'Нет  ', COM_NONE }, ;
-						{ 'COM1 ', COM1 }, ;
-						{ 'COM2 ', COM2 }, ;
-						{ 'COM3 ', COM3 } }
 	static cgreen := 'G+/B'											// цвет для меток
 	static group_ini := 'RAB_MESTO'
 	
 	local ar, sr
 	local hb_kkt_Equipment := TSettingEquipment():New( 'Workplace' )		// переменная для настроек оборудования
 	local iFind := 0, iCount := 0, item, oBox
+	local mmComPort := {}, i := 0
 	
 	private mComPort, m1ComPort, cComPort := hb_kkt_Equipment:ComPort	// ()
 	private mm_reader := { { 'нет', space( 50 ) }, { 'подключить', '1' } }, m1m_reader
+	
+	for each item in getListCOMPorts()
+		aadd( mmComPort, { item, ++i } )
+	next
 	
 	ar := GetIniSect( tmp_ini, group_ini )
 	sr := a2default( ar, 'sc_reader' )
@@ -54,7 +53,7 @@ function addedEquipment()
 	oBox:MessageLine := '^<Esc>^ - выход без записи;  ^<PgDn>^ - подтверждение ввода'
 	oBox:Color := cDataCGet
 	oBox:View()
-		
+	
 	for each item in mmComPort
 		iCount++
 		if alltrim( item[ 1 ] ) == alltrim( cComPort )

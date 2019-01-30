@@ -269,6 +269,7 @@ hbmzip.hbc
 .\SYSTEM\TBox.prg
 .\SYSTEM\TVersion.prg
 .\SYSTEM\TListObjects.prg
+.\SYSTEM\OSFunction.prg
 
 # система настройки
 .\SETTINGS\settingsSystem.prg
