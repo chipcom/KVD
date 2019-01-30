@@ -52,6 +52,21 @@ HB_LANGSELECT("RU866")
    NEXT
    ?
 
+   ? "Win_SerialPort"
+   FOR EACH i IN oWMI:ExecQuery( "SELECT * FROM Win32_PnPEntity WHERE ClassGuid = '{50DD5230-BA8A-11D1-BF5D-0000F805F530}'" )
+      IF HB_ISSTRING( i:Name )
+		?
+         && ? i:Name
+		 && ? i:Description
+         ? i:Caption
+		 ? i:DeviceID
+		 ? i:ClassGUID
+		 && ? i:Status
+		 && ? i:SystemName
+      ENDIF
+   NEXT
+   ?
+
    && nIndex := 1
    && FOR EACH i IN oWMI:ExecQuery( "SELECT * FROM Win32_Bios" )
 
