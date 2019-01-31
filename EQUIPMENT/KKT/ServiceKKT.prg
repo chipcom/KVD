@@ -270,15 +270,14 @@ function CashInOut( type )
 function isFiscalReg( param )
 	return param != KKT_OFF .and. param != KKT_NONE
 
-* 04.04.18 - настройка кассового аппарата
+* 31.01.19 - настройка кассового аппарата
 function SetupKKT()
 	static mm_da_net := { { 'да ', 1 }, { 'нет', 2 } }
-	static mmTypeKKT := { { 'Не использовать ККМ     ', KKT_NONE }, ;
-						{ 'ККМ off-Line            ', KKT_OFF }, ;
-						{ 'ККМ Штрих-М: Драйвер ФР ', KKT_SHTRIH } }
+	static mmTypeKKT := { { 'Не использовать ККТ     ', KKT_NONE }, ;
+						{ 'ККТ off-Line            ', KKT_OFF }, ;
+						{ 'ККТ Штрих-М: Драйвер ФР ', KKT_SHTRIH } }
 	static cgreen := 'G+/B'											// цвет для меток
 	local buf
-	&& local nSecond := 0 												// вторая колонка ввода
 	
 	
 	***************
@@ -291,10 +290,6 @@ function SetupKKT()
 	private mFabricNumber := iif( Empty( getSetKKT():FRNumber ), space( 16 ), getSetKKT():FRNumber )
 	private mDateInKKT := Date()
 	private mTimeInKKT := Time()
-	// private mnGroup1 := getSetKKT():getTax( 1 ), ;
-			// mnGroup2 := getSetKKT():getTax( 2 ), ;
-			// mnGroup3 := getSetKKT():getTax( 3 ), ;
-			// mnGroup4 := getSetKKT():getTax( 4 )
 	private mnkassa := 'Запуск', m1nkassa
 	private mSetDate := 'Установить', m1SetDate
 	private mSetTime := 'Установить', m1SetTime
@@ -344,7 +339,6 @@ function SetupKKT()
 	if isFiscalReg( m1typeKKT )
 		@ ++ix, 2 SAY 'Системные параметры:' color cgreen
 	endif
-//	nSecond := ix + 1
 	if isFiscalReg( m1typeKKT )
 		@ ++ix, 2 SAY 'Драйвер установлен:'
 		@ ix, col() + 1 SAY if( getDrvFR():Driver != nil, 'Да', 'Нет' ) color 'R/B+'
@@ -362,11 +356,6 @@ function SetupKKT()
 		@ ++ix, 2 say 'Пароль системного администратора: ' get mpassAdmin  pict '99'
 		@ ++ix, 2 say 'Открывать денежный ящик при начале печати?' get mopenDrawer ;
 			reader { | x | menu_reader( x, mm_da_net, A__MENUVERT, , ,.f. ) }
-////		вторая колонка ввода
-		// @   nSecond, 50 say 'Налоговая группа 1' get mnGroup1  pict '99.99'
-		// @ ++nSecond, 50 say 'Налоговая группа 2' get mnGroup2  pict '99.99'
-		// @ ++nSecond, 50 say 'Налоговая группа 3' get mnGroup3  pict '99.99'
-		// @ ++nSecond, 50 say 'Налоговая группа 4' get mnGroup4  pict '99.99'
 		// дата и время
 		@ ++ix, 2 SAY 'Дата и время:' color cgreen
 		@ ++ix, 2 say 'Дата:  ' get mDateInKKT picture '99.99.9999'
@@ -441,10 +430,6 @@ function SetupKKT()
 		getSetKKT():EnableTypePay4 := iif( m1vid4Enable == 2, .f., .t. )
 		getSetKKT():NameTypePay4 := mnVid4Name
 		getSetKKT():FRNumber := mFabricNumber
-		// getSetKKT():setTax( 1, round( mnGroup1, 2 ) )
-		// getSetKKT():setTax( 2, round( mnGroup2, 2 ) )
-		// getSetKKT():setTax( 3, round( mnGroup3, 2 ) )
-		// getSetKKT():setTax( 4, round( mnGroup4, 2 ) )
 		getSetKKT():Save()
 		ClearDrvFR()
 		loadVariableKKT()

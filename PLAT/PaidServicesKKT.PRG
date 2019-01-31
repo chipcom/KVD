@@ -57,12 +57,12 @@ function ExtendedReport( r, c )
 	popup_prompt( r, c, 1, mas_pmt, mas_msg, mas_fun )
 	return nil
 
-***** 04.04.18 режимы работы с кассой
+***** 31.01.19 режимы работы с кассой
 *
 function fr_nastrojka( k )
-	static si1 := 1, si2 := 1
-	local mas_pmt := {}, mas_msg := {}, mas_fun := {}, j
-	local buf := savescreen()
+	static si1 := 1//, si2 := 1
+	local mas_pmt := {}, mas_msg := {}, mas_fun := {}//, j
+	&& local buf := savescreen()
 	
 	HB_Default( @k, 1 ) 
 	do case
@@ -92,7 +92,7 @@ function fr_nastrojka( k )
 				aadd( mas_msg, 'Продолжение печати при обрыве ленты' )
 				aadd( mas_fun, 'ContinuePrintAfterError()' )
 					// -----
-				aadd( mas_pmt, '~Аннулирование непробитого чека' )
+				aadd( mas_pmt, '~Аннулирование не пробитого чека' )
 				aadd( mas_msg, 'Аннулирование чека при ошибке печати' )
 				aadd( mas_fun, 'CancelCheck()' )
 			endif
