@@ -14,7 +14,9 @@ CREATE CLASS TComDescription
 						}
 						
 		CLASSDATA aMenuDataBits AS ARRAY INIT { { '4', 1 }, { '5', 2 }, { '6', 3 }, { '7', 4 }, { '8', 5 } }
-		CLASSDATA aMenuParity AS ARRAY INIT { { 'Чет   ', 1 }, { 'Нечет ', 2 }, { 'Нет  ', 3 }, { 'Маркер', 4 }, { 'Пробел', 5 }	}
+		CLASSDATA aMenuParity AS ARRAY INIT { { 'Чет   ', 1 }, { 'Нечет ', 2 }, { 'Нет  ', 3 }, { 'Маркер', 4 }, { 'Пробел', 5 } }
+		CLASSDATA aMenuStopBits AS ARRAY INIT { { "1  ", 1 }, { "1.5", 2 }, { "2  ", 3 } }
+		CLASSDATA aMenuXonXoffFlow AS ARRAY INIT { { "Xon / Xoff", 1 }, { "Аппаратное", 2 }, { "Нет       ", 3 } }
 
 		METHOD New( cPortName )
 		
@@ -22,11 +24,15 @@ CREATE CLASS TComDescription
 		PROPERTY BaudRate READ getBaudRate WRITE setBaudRate		// COM-BaudRate
 		PROPERTY DataBits READ getDataBits WRITE setDataBits		// COM-DataBits
 		PROPERTY Parity READ getParity WRITE setParity		// COM-Parity
+		PROPERTY StopBits READ getStopBits WRITE setStopBits		// COM-StopBits
+		PROPERTY XonXoffFlow READ getFlow WRITE setFlow			// COM-XonXoffFlow
 	HIDDEN:
 		DATA FPort		INIT space( 5 )
 		DATA FBaudRate	INIT 9600
 		DATA FDataBits	INIT 8
 		DATA FParity	INIT space( 6 )
+		DATA FStopBits	INIT 1
+		DATA FXonXoffFlow INIT space( 10 )
 
 		METHOD getPort					INLINE ::FPort
 		METHOD setPort( param )			INLINE ::FPort := param
@@ -36,6 +42,10 @@ CREATE CLASS TComDescription
 		METHOD setDataBits( param )		INLINE ::FDataBits := param
 		METHOD getParity					INLINE ::FParity
 		METHOD setParity( param )		INLINE ::FParity := param
+		METHOD getStopBits				INLINE ::FStopBits
+		METHOD setStopBits( param )		INLINE ::FStopBits := param
+		METHOD getFlow					INLINE ::FXonXoffFlow
+		METHOD setFlow( param )			INLINE ::FXonXoffFlow := param
 END CLASS
 
 METHOD New( cPort )						CLASS TComDescription

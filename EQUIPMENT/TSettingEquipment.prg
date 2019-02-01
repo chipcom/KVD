@@ -14,6 +14,8 @@ CREATE CLASS TSettingEquipment
 		PROPERTY ComPortBaudRate READ getComPortBaudRate WRITE setComPortBaudRate		// COM-BaudRate
 		PROPERTY ComPortDataBits READ getComPortDataBits WRITE setComPortDataBits		// COM-DataBits
 		PROPERTY ComPortParity READ getComPortParity WRITE setComPortParity		// COM-Parity
+		PROPERTY ComPortStopBits READ getComPortStopBits WRITE setComPortStopBits		// COM-StopBits
+		PROPERTY ComPortXonXoffFlow READ getComPortXonXoffFlow WRITE setComPortXonXoffFlow		// COM-XonXoffFlow
 		PROPERTY SCReader READ getSCReader WRITE setSCReader					//
 	HIDDEN:
 		VAR _objINI
@@ -22,6 +24,8 @@ CREATE CLASS TSettingEquipment
 		DATA FComPortBaudRate	INIT 9600
 		DATA FComPortDataBits	INIT 8
 		DATA FComPortParity		INIT space( 6 )
+		DATA FComPortStopBits	INIT 1
+		DATA FComPortXonXoffFlow INIT space( 10 )
 		DATA FSCReader			INIT space( 50 )
 
 		METHOD getTypeKKT
@@ -34,6 +38,10 @@ CREATE CLASS TSettingEquipment
 		METHOD setComPortDataBits( param )
 		METHOD getComPortParity
 		METHOD setComPortParity( param )
+		METHOD getComPortStopBits
+		METHOD setComPortStopBits( param )
+		METHOD getComPortXonXoffFlow
+		METHOD setComPortXonXoffFlow( param )
 		
 		METHOD getSCReader
 		METHOD setSCReader( param )
@@ -89,10 +97,30 @@ METHOD procedure setComPortParity( param )		CLASS TSettingEquipment
 	endif
 	return
 
-METHOD function getSCReader()				CLASS TSettingEquipment
+METHOD function getComPortStopBits()				CLASS TSettingEquipment
+	return ::FComPortStopBits
+
+METHOD procedure setComPortStopBits( param )		CLASS TSettingEquipment
+
+	if isnumber( param )
+		::FComPortStopBits := param
+	endif
+	return
+
+METHOD function getComPortXonXoffFlow()			CLASS TSettingEquipment
+	return ::FComPortXonXoffFlow
+
+METHOD procedure setComPortXonXoffFlow( param )	CLASS TSettingEquipment
+
+	if ischaracter( param )
+		::FComPortXonXoffFlow := alltrim( param )
+	endif
+	return
+
+METHOD function getSCReader()						CLASS TSettingEquipment
 	return ::FSCReader
 
-METHOD procedure setSCReader( param )	CLASS TSettingEquipment
+METHOD procedure setSCReader( param )			CLASS TSettingEquipment
 
 	if ischaracter( param )
 		::FSCReader := alltrim( param )
@@ -101,22 +129,26 @@ METHOD procedure setSCReader( param )	CLASS TSettingEquipment
 
 METHOD New( file ) CLASS TSettingEquipment
 	local typeKKT
-	local cComPort, cSCReader, nComBaudRate, nComDataBits, cParity
+	local cPort, cSCReader, nBaudRate, nDataBits, cParity, nStopBits, cXonXoff
 		 
 	INI oIni FILE file
-		GET typeKKT				SECTION 'KKT' ENTRY 'Type'							OF oIni DEFAULT 1
-		GET cComPort				SECTION 'Scanner Barcode' ENTRY 'COM port'	OF oIni DEFAULT 'Нет'
-		GET nComBaudRate			SECTION 'Scanner Barcode' ENTRY 'BaudRate'	OF oIni DEFAULT 9600
-		GET nComDataBits			SECTION 'Scanner Barcode' ENTRY 'DataBits'	OF oIni DEFAULT 8
+		GET typeKKT				SECTION 'KKT' ENTRY 'Type'					OF oIni DEFAULT 1
+		GET cPort				SECTION 'Scanner Barcode' ENTRY 'COM port'	OF oIni DEFAULT 'Нет'
+		GET nBaudRate			SECTION 'Scanner Barcode' ENTRY 'BaudRate'	OF oIni DEFAULT 9600
+		GET nDataBits			SECTION 'Scanner Barcode' ENTRY 'DataBits'	OF oIni DEFAULT 8
 		GET cParity				SECTION 'Scanner Barcode' ENTRY 'Parity'	OF oIni DEFAULT 'Нет'
+		GET nStopBits			SECTION 'Scanner Barcode' ENTRY 'StopBits'	OF oIni DEFAULT 1
+		GET cXonXoff				SECTION 'Scanner Barcode' ENTRY 'XonXoffFlow'	OF oIni DEFAULT 'Нет'
 		GET cSCReader			SECTION 'Smart Card Reader' ENTRY 'Type'	OF oIni DEFAULT 'Нет'
 	ENDINI
 	::_objINI := oIni
 	::FTypeKKT := typeKKT
-	::FComPortScanner := alltrim( cComPort )
-	::FComPortBaudRate := nComBaudRate
-	::FComPortDataBits := nComDataBits
+	::FComPortScanner := alltrim( cPort )
+	::FComPortBaudRate := nBaudRate
+	::FComPortDataBits := nDataBits
 	::FComPortParity := cParity
+	::FComPortStopBits := nStopBits
+	::FComPortXonXoffFlow := cXonXoff
 	::FSCReader := padr( cSCReader, 50 )
 	return self
 	
@@ -127,5 +159,7 @@ METHOD Save() CLASS TSettingEquipment
 	SET SECTION 'Scanner Barcode' ENTRY 'BaudRate'		TO ::FComPortBaudRate	OF ::_objINI
 	SET SECTION 'Scanner Barcode' ENTRY 'DataBits'		TO ::FComPortDataBits	OF ::_objINI
 	SET SECTION 'Scanner Barcode' ENTRY 'Parity'			TO ::FComPortParity		OF ::_objINI
+	SET SECTION 'Scanner Barcode' ENTRY 'StopBits'		TO ::FComPortStopBits	OF ::_objINI
+	SET SECTION 'Scanner Barcode' ENTRY 'XonXoffFlow'	TO ::FComPortXonXoffFlow	OF ::_objINI
 	SET SECTION 'Smart Card Reader' ENTRY 'Type'			TO ::FSCReader			OF ::_objINI
 	return nil
