@@ -201,7 +201,7 @@ function InitDriverFR()
 	checkDriverFR()
 	return nil
 
-* 04.04.18 - создает (возвращает) объект драйвера фискального регистратора
+* 01.02.19 - создает (возвращает) объект драйвера фискального регистратора
 function checkDriverFR()
 	local exchangeStatus, messageStatus, messageCount, documentNumber, dateDoc, timeDoc
 	local strMessage := ''
@@ -230,7 +230,7 @@ function checkDriverFR()
 		oKKT:Open( oSettings, hb_user_curUser:PasswordFR() )
 		oKKT:SetOperatorKKT( hb_user_curUser:PasswordFR, alltrim( hb_user_curUser:FIO ) )
 		hb_kkt := oKKT
-		hb_kkt:CheckExchangeStatus( .f. )
+//		hb_kkt:CheckExchangeStatus( .f. )
 		ret := .t.
 	endif
 	return ret

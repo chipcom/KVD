@@ -366,6 +366,7 @@ hbmzip.hbc
 # файлы для используемого оборудования .\EQUIPMENT\
 .\EQUIPMENT\TSettingEquipment.prg
 .\EQUIPMENT\TSettingKKT.prg
+.\EQUIPMENT\ComPort\TComDescription.prg
 #
 ## контрольно-кассовая техника
 ##
