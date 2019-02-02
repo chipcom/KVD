@@ -48,9 +48,9 @@ CREATE CLASS TComDescription
 		METHOD setFlow( param )			INLINE ::FXonXoffFlow := param
 END CLASS
 
-METHOD New( cPort )						CLASS TComDescription
+METHOD New( cPortName )						CLASS TComDescription
 
-	if ischaracter( cPortName ) .and. Left( ::cPortName, 3 ) == 'COM'
+	if ischaracter( cPortName ) .and. upper( Left( cPortName, 3 ) ) == 'COM'
 		::FPort := alltrim( cPortName )
 	endif
 	return self
