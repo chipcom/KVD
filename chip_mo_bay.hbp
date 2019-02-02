@@ -308,10 +308,12 @@ hbmzip.hbc
 .\SYSTEM\TBox.prg
 .\SYSTEM\TVersion.prg
 .\SYSTEM\TListObjects.prg
+.\SYSTEM\OSFunction.prg
 
 # система настройки
 .\SETTINGS\settingsSystem.prg
 .\SETTINGS\TSettingSystem.prg
+.\SETTINGS\SettingsWorkPlace.prg
 
 # разные функции
 #
@@ -405,10 +407,12 @@ hbmzip.hbc
 #
 #
 # файлы для используемого оборудования .\EQUIPMENT\
+.\EQUIPMENT\TSettingEquipment.prg
+.\EQUIPMENT\TSettingKKT.prg
+.\EQUIPMENT\ComPort\TComDescription.prg
 #
 ## контрольно-кассовая техника
 ##
-.\EQUIPMENT\KKT\TSettingKKT.prg
 .\EQUIPMENT\KKT\TOperationCheck.prg
 .\EQUIPMENT\KKT\TCloseCheck.prg
 .\EQUIPMENT\KKT\TCorrectionCheck.prg

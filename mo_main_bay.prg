@@ -14,9 +14,9 @@
 #include "..\_mylib_hbt\edit_spr.ch"
 #include "chip_mo.ch"
 
-Static _version := {2,8,2}
-Static char_version := "d"
-Static _date_version := "27.01.19г."
+Static _version := {2,8,3}
+Static char_version := ""
+Static _date_version := "01.02.19г."
 Static __s_full_name := "ЧИП + Учёт работы Медицинской Организации"
 Static __s_version
 
@@ -48,7 +48,7 @@ FOR EACH s IN hb_AParams() // анализ входных параметров
 NEXT
 //
 Public kod_VOUNC := '101004'
-Public kod_LIS   := '125901'
+Public kod_LIS   := {'125901','805965'}
 //
 Public DELAY_SPRD := 0 // время задержки для разворачивания строк
 Public sdbf := ".DBF", sntx := ".NTX", stxt := ".TXT", szip := ".ZIP",;
@@ -1312,14 +1312,19 @@ aadd(func_menu, {"readme2wordpad()",;
                  "view_errors()"})
 
 // перестройка меню
+
+hb_AIns( first_menu[ len( first_menu ) ], 5, 'Настройка ~рабочего места', .t. )
+hb_AIns( first_message[ len( first_message ) ], 4, 'Настройка рабочего места', .t. )
+hb_AIns( func_menu[ len( func_menu ) ], 4, 'settingsWorkPlace()', .t. )
 if hb_user_curUser:IsAdmin()
-	hb_AIns( first_menu[ len( first_menu ) ], 5, '~Настройки системы', .t. )
-	hb_AIns( first_message[ len( first_message ) ], 4, 'Настройка общих параметров системы', .t. )
-	hb_AIns( func_menu[ len( func_menu ) ], 4, 'settingsSystem()', .t. )
+	hb_AIns( first_menu[ len( first_menu ) ], 6, '~Настройки системы', .t. )
+	hb_AIns( first_message[ len( first_message ) ], 5, 'Настройка общих параметров системы', .t. )
+	hb_AIns( func_menu[ len( func_menu ) ], 5, 'settingsSystem()', .t. )
 endif
-hb_AIns( first_menu[ len( first_menu ) ], 5 + if( hb_user_curUser:IsAdmin(), 1, 0 ), 'Отправка ~сообщения', .t. )
-hb_AIns( first_message[ len( first_message ) ], 4 + if( hb_user_curUser:IsAdmin(), 1, 0 ), 'Отправка сообщения работающим пользователям', .t. )
-hb_AIns( func_menu[ len( func_menu ) ], 4 + if( hb_user_curUser:IsAdmin(), 1, 0 ), 'SendMessage()', .t. )
+hb_AIns( first_menu[ len( first_menu ) ], 6 + if( hb_user_curUser:IsAdmin(), 1, 0 ), 'Отправка ~сообщения', .t. )
+hb_AIns( first_message[ len( first_message ) ], 5 + if( hb_user_curUser:IsAdmin(), 1, 0 ), 'Отправка сообщения работающим пользователям', .t. )
+hb_AIns( func_menu[ len( func_menu ) ], 5 + if( hb_user_curUser:IsAdmin(), 1, 0 ), 'SendMessage()', .t. )
+
 // конец перестройки меню
 
 // добавим переиндексирование некоторых файлов внутри задачи

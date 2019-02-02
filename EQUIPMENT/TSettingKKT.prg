@@ -5,8 +5,8 @@
 CREATE CLASS TSettingKKT
 
 	VISIBLE:
-		METHOD New( )
-		METHOD Save( )
+		METHOD New( file )
+		METHOD Save()
 		
 		PROPERTY TypeKKT READ getTypeKKT WRITE setTypeKKT					// тип ККМ
 		PROPERTY FRNumber READ getFRNumber WRITE setFRNumber					// заводской номер ККМ
@@ -33,8 +33,6 @@ CREATE CLASS TSettingKKT
 		PROPERTY SizeFileLogError READ FSizeLogFile WRITE SetSizeLogError
 		
 		METHOD OtherTypePay()		INLINE	( ::FEnableTypePay2 .or. ::FEnableTypePay3 .or. ::FEnableTypePay4 )	
-		// METHOD getTax( nGroup )
-		// METHOD setTax( nGroup, nTax)
 	HIDDEN:
 		VAR _objINI
 		DATA FTypeKKT			INIT 1
@@ -57,10 +55,6 @@ CREATE CLASS TSettingKKT
 		DATA FNameTypePay4		INIT space( 24 )
 		DATA FAutoPKO			INIT .f.
 		
-		// VAR nTax1			AS NUMERIC		INIT 0.0			// ставка налога в налоговой группе 1
-		// VAR nTax2			AS NUMERIC		INIT 0.0			// ставка налога в налоговой группе 2
-		// VAR nTax3			AS NUMERIC		INIT 0.0			// ставка налога в налоговой группе 3
-		// VAR nTax4			AS NUMERIC		INIT 0.0			// ставка налога в налоговой группе 4
 		DATA cFabricNumber		AS CHARACTER	INIT space( 16 )		// заводской номер ККМ
 		
 		DATA FLogError					INIT .f.					// вести лог-файл ошибок кассы или нет
@@ -114,55 +108,55 @@ END CLASS
 METHOD function getAutoPKO()					CLASS TSettingKKT
 	return ::FAutoPKO
 
-METHOD procedure setAutoPKO( param )		CLASS TSettingKKT
+METHOD procedure setAutoPKO( param )			CLASS TSettingKKT
 
 	::FAutoPKO := param
 	return
 
-METHOD function getNameTypePay4()					CLASS TSettingKKT
+METHOD function getNameTypePay4()				CLASS TSettingKKT
 	return ::FNameTypePay4
 
-METHOD procedure setNameTypePay4( param )		CLASS TSettingKKT
+METHOD procedure setNameTypePay4( param )	CLASS TSettingKKT
 
 	::FNameTypePay4 := param
 	return
 
-METHOD function getEnableTypePay4()				CLASS TSettingKKT
+METHOD function getEnableTypePay4()			CLASS TSettingKKT
 	return ::FEnableTypePay4
 
-METHOD procedure setEnableTypePay4( param )		CLASS TSettingKKT
+METHOD procedure setEnableTypePay4( param )	CLASS TSettingKKT
 
 	::FEnableTypePay4 := param
 	return
 
-METHOD function getNameTypePay3()					CLASS TSettingKKT
+METHOD function getNameTypePay3()				CLASS TSettingKKT
 	return ::FNameTypePay3
 
-METHOD procedure setNameTypePay3( param )		CLASS TSettingKKT
+METHOD procedure setNameTypePay3( param )	CLASS TSettingKKT
 
 	::FNameTypePay3 := param
 	return
 
-METHOD function getEnableTypePay3()				CLASS TSettingKKT
+METHOD function getEnableTypePay3()			CLASS TSettingKKT
 	return ::FEnableTypePay3
 
-METHOD procedure setEnableTypePay3( param )		CLASS TSettingKKT
+METHOD procedure setEnableTypePay3( param )	CLASS TSettingKKT
 
 	::FEnableTypePay3 := param
 	return
 
-METHOD function getNameTypePay2()					CLASS TSettingKKT
+METHOD function getNameTypePay2()				CLASS TSettingKKT
 	return ::FNameTypePay2
 
-METHOD procedure setNameTypePay2( param )		CLASS TSettingKKT
+METHOD procedure setNameTypePay2( param )	CLASS TSettingKKT
 
 	::FNameTypePay2 := param
 	return
 
-METHOD function getEnableTypePay2()				CLASS TSettingKKT
+METHOD function getEnableTypePay2()			CLASS TSettingKKT
 	return ::FEnableTypePay2
 
-METHOD procedure setEnableTypePay2( param )		CLASS TSettingKKT
+METHOD procedure setEnableTypePay2( param )	CLASS TSettingKKT
 
 	::FEnableTypePay2 := param
 	return
@@ -202,7 +196,7 @@ METHOD procedure setChangeEnable( param )	CLASS TSettingKKT
 METHOD function getPrintPatient()				CLASS TSettingKKT
 	return ::FPrintPatient
 
-METHOD procedure setPrintPatient( param )		CLASS TSettingKKT
+METHOD procedure setPrintPatient( param )	CLASS TSettingKKT
 
 	::FPrintPatient := param
 	return
@@ -239,7 +233,7 @@ METHOD procedure setNumPOS( param )		CLASS TSettingKKT
 	::FNumPOS := param
 	return
 
-METHOD function getAdminPass()				CLASS TSettingKKT
+METHOD function getAdminPass()			CLASS TSettingKKT
 	return ::FAdminPass
 
 METHOD procedure setAdminPass( param )	CLASS TSettingKKT
@@ -255,18 +249,17 @@ METHOD procedure setFRNumber( param )	CLASS TSettingKKT
 	::FFRNumber := param
 	return
 
-METHOD function getTypeKKT()				 CLASS TSettingKKT
+METHOD function getTypeKKT()				CLASS TSettingKKT
 	return ::FTypeKKT
 
-METHOD procedure setTypeKKT( param )		 CLASS TSettingKKT
+METHOD procedure setTypeKKT( param )		CLASS TSettingKKT
 
 	::FTypeKKT := param
 	return
 
-METHOD New( file ) CLASS TSettingKKT
-	local tKKT, admPass, opnDrawer, autoPKO, prtDoctor, prtPatient						//, mBank
+METHOD New( file )						CLASS TSettingKKT
+	local tKKT, admPass, opnDrawer, autoPKO, prtDoctor, prtPatient
 	local lChange, lPrintChange, nNumPOS, cNamePOS, lPrintCodUsl, lPrintNameUsl
-	// Local nTax1, nTax2, nTax3, nTax4
 	local lEnableVid2, lEnableVid3, lEnableVid4, cNameVid2, cNameVid3, cNameVid4
 	local cFabricNumber
 		 
@@ -282,10 +275,6 @@ METHOD New( file ) CLASS TSettingKKT
 		GET lPrintChange		SECTION 'KKT' ENTRY 'PrintChange'					OF oIni DEFAULT .t.
 		GET lPrintCodUsl		SECTION 'KKT' ENTRY 'PrintShifrUslugi'				OF oIni DEFAULT .t.
 		GET lPrintNameUsl	SECTION 'KKT' ENTRY 'PrintNameUslugi'				OF oIni DEFAULT .t.
-		// GET nTax1			SECTION 'KKT' ENTRY 'Tax Group 1'				OF oIni DEFAULT 0.0
-		// GET nTax2			SECTION 'KKT' ENTRY 'Tax Group 2'				OF oIni DEFAULT 0.0
-		// GET nTax3			SECTION 'KKT' ENTRY 'Tax Group 3'				OF oIni DEFAULT 0.0
-		// GET nTax4			SECTION 'KKT' ENTRY 'Tax Group 4'				OF oIni DEFAULT 0.0
 		GET lEnableVid2		SECTION 'KKT' ENTRY 'EnablePayment_2'				OF oIni DEFAULT .t.
 		GET cNameVid2		SECTION 'KKT' ENTRY 'NamePayment_2'					OF oIni DEFAULT 'КАРТОЙ МИР'
 		GET lEnableVid3		SECTION 'KKT' ENTRY 'EnablePayment_3'				OF oIni DEFAULT .f.
@@ -318,10 +307,6 @@ METHOD New( file ) CLASS TSettingKKT
 	::FNameTypePay4 := PadR( cNameVid4, 24 )
 	::FFRNumber := cFabricNumber
 	::FAutoPKO := autoPKO
-	// ::nTax1 := nTax1
-	// ::nTax2 := nTax2
-	// ::nTax3 := nTax3
-	// ::nTax4 := nTax4
 	return self
 
 METHOD Save() CLASS TSettingKKT
@@ -337,10 +322,6 @@ METHOD Save() CLASS TSettingKKT
 	SET SECTION 'KKT' ENTRY 'PrintChange'					TO ::FPrintChange		OF ::_objINI
 	SET SECTION 'KKT' ENTRY 'PrintShifrUslugi'				TO ::FPrintCodeUsl		OF ::_objINI
 	SET SECTION 'KKT' ENTRY 'PrintNameUslugi'				TO ::FPrintNameUsl		OF ::_objINI
-	// SET SECTION 'KKT' ENTRY 'Tax Group 1'				TO ::nTax1				OF ::_objINI
-	// SET SECTION 'KKT' ENTRY 'Tax Group 2'				TO ::nTax2				OF ::_objINI
-	// SET SECTION 'KKT' ENTRY 'Tax Group 3'				TO ::nTax3				OF ::_objINI
-	// SET SECTION 'KKT' ENTRY 'Tax Group 4'				TO ::nTax4				OF ::_objINI
 	SET SECTION 'KKT' ENTRY 'EnablePayment_2'				TO ::FEnableTypePay2		OF ::_objINI
 	SET SECTION 'KKT' ENTRY 'NamePayment_2'					TO ::FNameTypePay2		OF ::_objINI
 	SET SECTION 'KKT' ENTRY 'EnablePayment_3'				TO ::FEnableTypePay3		OF ::_objINI
@@ -350,37 +331,6 @@ METHOD Save() CLASS TSettingKKT
 	SET SECTION 'KKT' ENTRY 'Fabric number'					TO ::FFRNumber			OF ::_objINI
 	SET SECTION 'KKT' ENTRY 'AutoPKO'						TO ::FAutoPKO			OF ::_objINI
 	SET SECTION 'KKT' ENTRY 'Logging error KKT'				TO ::FLogError			OF ::_objINI
-	SET SECTION 'KKT' ENTRY 'Name log-error file KKT'			TO ::FNameLogFile		OF ::_objINI
-	SET SECTION 'KKT' ENTRY 'Max size log-error file KKT'		TO ::FSizeLogFile		OF ::_objINI
+	SET SECTION 'KKT' ENTRY 'Name log-error file KKT'		TO ::FNameLogFile		OF ::_objINI
+	SET SECTION 'KKT' ENTRY 'Max size log-error file KKT'	TO ::FSizeLogFile		OF ::_objINI
 	return nil
-
-// METHOD getTax( nGroup ) CLASS TSettingKKT
-	// Local nRet := 0.0
-	
-	// Do Case
-		// Case nGroup == 1
-			// nRet := ::nTax1
-		// Case nGroup == 2
-			// nRet := ::nTax2
-		// Case nGroup == 3
-			// nRet := ::nTax3
-		// Case nGroup == 4
-			// nRet := ::nTax4
-	// EndCase
-	
-	// return nRet
-
-// METHOD setTax( nGroup, nTax ) CLASS TSettingKKT
-	
-	// If nGroup == 1
-		// ::nTax1 := nTax
-	// ElseIf nGroup == 2
-		// ::nTax2 := nTax
-	// ElseIf nGroup == 3
-		// ::nTax3 := nTax
-	// ElseIf nGroup == 4
-		// ::nTax4 := nTax
-	// EndIf
-	
-	// return Nil
-	
