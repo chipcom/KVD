@@ -3,6 +3,7 @@
 #include 'function.ch'
 #include 'edit_spr.ch'
 #include 'chip_mo.ch'
+#include 'common.ch'
 
 // виды используемых ККМ
 #define KKT_NONE 1
@@ -35,13 +36,14 @@ function addedEquipment()
 						{ 'ККТ off-Line            ', KKT_OFF }, ;
 						{ 'ККТ Штрих-М: Драйвер ФР ', KKT_SHTRIH } }
 	local hb_kkt_Equipment := TSettingEquipment():New( 'Equipment' )		// переменная для настроек оборудования
-	local oCom := TComDescription():New( hb_kkt_Equipment:ScannerPort )
+	local oCom
 	
+	oCom := TComDescription():New( hb_kkt_Equipment:ScannerPort )
 	private mnkassa := 'Настройка', m1nkassa
 	private mComSet := 'Настройка', m1ComSet
 	private mtypeKKT, m1typeKKT := hb_kkt_Equipment:TypeKKT
-	private mComPort, m1ComPort, cComPort := oCom:PortName
 	private mSmartCard, m1SmartCard, cSmartCard := hb_kkt_Equipment:SCReader
+	private mComPort, m1ComPort, cComPort := oCom:PortName
 	
 	oCom:BaudRate := hb_kkt_Equipment:ScannerBaudRate
 	oCom:DataBits := hb_kkt_Equipment:ScannerDataBits
@@ -64,7 +66,7 @@ function addedEquipment()
 	oBox:Color := cDataCGet
 	oBox:View()
 	
-	iFind := hb_ascan( mmComPort, { | row | alltrim( row[ 1 ] ) == alltrim( cComPort ) } )
+	iFind := hb_ascan( mmComPort, { | row | alltrim( lower( row[ 1 ] ) ) == alltrim( lower( cComPort ) ) } )
 	m1ComPort := if( iFind == 0, 1, iFind )
 	mComPort := inieditspr( A__MENUVERT, mmComPort, m1ComPort )
 	

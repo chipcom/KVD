@@ -28,6 +28,8 @@ hbmzip.hbc
 -lhbnf
 -lhbtip
 
+-lclr
+
 
 #-shared
 -mt

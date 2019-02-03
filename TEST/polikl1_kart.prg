@@ -4,8 +4,11 @@
 #include 'function.ch'
 #include 'edit_spr.ch'
 #include 'chip_mo.ch'
+#include 'common.ch'
 
-***** 02.02.19 возврат кода по картотеке
+#include 'hbthread.ch'
+
+***** 03.02.19 возврат кода по картотеке
 function polikl1_kart()
 	static sesc := '^<Esc>^ выход  '
 	static senter := '^<Enter>^ ввод  '
@@ -17,7 +20,12 @@ function polikl1_kart()
 	
 	local tmp1, tmp_help := chm_help_code, mkod := -1, i, fl_number := .t., ;
 		k1 := 0, k2 := 1, str_sem, mbukva := '', tmp_color, buf, buf24, ar, s
-		
+	
+	local oSetEquipment := TSettingEquipment():New( 'Equipment' )
+	local oScanner := TComDescription():New( oSetEquipment:ScannerPort )
+	local oWinPort
+	local pThID
+	
 	chm_help_code := 1//HK_shablon_fio
 	// обмен информацией с программой Smart Delta Systems
 	import_kart_from_sds()
@@ -35,6 +43,15 @@ function polikl1_kart()
 	s_polis   := ar[ 3 ]
 	s_snils   := ar[ 4 ]
 	name_reader := ar[ 5 ]
+
+	if lower( alltrim( oScanner:PortName ) ) != 'нет'
+		// откроем COM-порт на котором подключен сканер
+		oWinPort := win_com():Init( oScanner:PortName, WIN_CBR_9600, WIN_ODDPARITY, 7, WIN_ONESTOPBIT )
+		if oWinPort:Open()
+			// запустим новый поток для управления сканером штрих-кода
+			pThID := hb_threadStart( HB_THREAD_MEMVARS_COPY, @readBarcode(), oWinPort )
+		endif
+	endif
 	
 	do while .t.	// главный цикл ввода
 		buf24 := save_maxrow()
@@ -82,6 +99,12 @@ function polikl1_kart()
 		setcolor( tmp_color )
 		rest_box( buf24 )
 		rest_box( buf )
+		
+		if ! isnil( pThID )
+			// выключим поток для управления сканером штрих-кода
+			hb_threadQuitRequest( pThID )
+			oWinPort:Close()
+		endif
 		
 		if lastkey() == K_F10
 			s_regim := iif( ++s_regim == 4, 1, s_regim )
@@ -177,3 +200,42 @@ function polikl1_kart()
 									{ 's_polis'  , s_polis      }, ;
 									{ 's_snils'  , s_snils      } } )
 	return mkod
+
+* 03.02.19
+* функция чтения штрих-кода со сканера подключенного к COM-порту
+function readBarcode( oWinPort )
+	local cString := space( 132 )
+	local lCTSHold, lDSRHold, lDCDHold, lXoffHold, lXoffSent, nInQueue, nOutQueue
+	local char, cOMScode := '', sResult
+	local oCLR, oAssembly, oClass
+	
+	do while .t.
+		if oWinPort:QueueStatus( @lCTSHold, @lDSRHold, @lDCDHold, @lXoffHold, @lXoffSent, @nInQueue, @nOutQueue )
+			if nInQueue == 132
+				oWinPort:Read( @cString, 132 )
+				cString	:= substr( cString, 1, 130 )
+				cOMScode := ''
+				for each char in cString
+					cOMScode += hb_NumToHex( asc( char ), 2 )
+				next
+				// Creating new CLR runtime (look %WINDIR%\Microsoft.NET\Framework for installed versions)
+				oCLR := CLR_RUNTIME():New( 'v4.0.30319' )
+
+				// Loading assembly (DLL)
+				oAssembly := oCLR:LoadAssembly( 'Chip.Harbour' )
+				// Calling constructor for type 'Chip.Harbour' with different arguments
+				oClass := oAssembly:CreateInstance( 'Chip.Harbour.getXMLPolicyOMS' )
+				sResult := oClass:Call( 'decodePolicyOMS', cOMScode )
+				sResult[ 3 ] := hb_Translate( sResult[ 3 ], 'UTF8', 'cp866' )
+				sResult[ 4 ] := hb_Translate( sResult[ 4 ], 'UTF8', 'cp866' )
+				sResult[ 5 ] := hb_Translate( sResult[ 5 ], 'UTF8', 'cp866' )
+				sResult[ 6 ] := substr( sResult[ 6 ], 1, 10 )
+				sResult[ 7 ] := substr( sResult[ 7 ], 1, 10 )
+				sResult[ 8 ] := hb_Translate( sResult[ 8 ], 'UTF8', 'cp866' )
+				win_alertx( win_OEMToANSI( sResult[ 3 ] + ' ' + sResult[ 4 ] + ' ' + sResult[ 5 ] ) )
+			endif
+		else
+		endif
+		hb_idleSleep( 0.5 )
+	enddo
+	return nil
