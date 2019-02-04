@@ -218,24 +218,44 @@ function readBarcode( oWinPort )
 				for each char in cString
 					cOMScode += hb_NumToHex( asc( char ), 2 )
 				next
-				// Creating new CLR runtime (look %WINDIR%\Microsoft.NET\Framework for installed versions)
-				oCLR := CLR_RUNTIME():New( 'v4.0.30319' )
+				&& // Creating new CLR runtime (look %WINDIR%\Microsoft.NET\Framework for installed versions)
+				&& oCLR := CLR_RUNTIME():New( 'v4.0.30319' )
 
-				// Loading assembly (DLL)
-				oAssembly := oCLR:LoadAssembly( 'Chip.Harbour' )
-				// Calling constructor for type 'Chip.Harbour' with different arguments
-				oClass := oAssembly:CreateInstance( 'Chip.Harbour.getXMLPolicyOMS' )
-				sResult := oClass:Call( 'decodePolicyOMS', cOMScode )
-				sResult[ 3 ] := hb_Translate( sResult[ 3 ], 'UTF8', 'cp866' )
-				sResult[ 4 ] := hb_Translate( sResult[ 4 ], 'UTF8', 'cp866' )
-				sResult[ 5 ] := hb_Translate( sResult[ 5 ], 'UTF8', 'cp866' )
-				sResult[ 6 ] := substr( sResult[ 6 ], 1, 10 )
-				sResult[ 7 ] := substr( sResult[ 7 ], 1, 10 )
-				sResult[ 8 ] := hb_Translate( sResult[ 8 ], 'UTF8', 'cp866' )
-				win_alertx( win_OEMToANSI( sResult[ 3 ] + ' ' + sResult[ 4 ] + ' ' + sResult[ 5 ] ) )
+				&& // Loading assembly (DLL)
+				&& oAssembly := oCLR:LoadAssembly( 'Chip.Harbour' )
+				&& // Calling constructor for type 'Chip.Harbour' with different arguments
+				&& oClass := oAssembly:CreateInstance( 'Chip.Harbour.getXMLPolicyOMS' )
+				&& sResult := oClass:Call( 'decodePolicyOMS', cOMScode )
+				&& sResult[ 3 ] := hb_Translate( sResult[ 3 ], 'UTF8', 'cp866' )
+				&& sResult[ 4 ] := hb_Translate( sResult[ 4 ], 'UTF8', 'cp866' )
+				&& sResult[ 5 ] := hb_Translate( sResult[ 5 ], 'UTF8', 'cp866' )
+				&& sResult[ 6 ] := substr( sResult[ 6 ], 1, 10 )
+				&& sResult[ 7 ] := substr( sResult[ 7 ], 1, 10 )
+				&& sResult[ 8 ] := hb_Translate( sResult[ 8 ], 'UTF8', 'cp866' )
+				&& sResult := decodeOMS( cOMScode )
+				&& win_alertx( win_OEMToANSI( sResult[ 3 ] + ' ' + sResult[ 4 ] + ' ' + sResult[ 5 ] ) )
+				&& win_alertx( str( sResult ) )
 			endif
 		else
 		endif
 		hb_idleSleep( 0.5 )
 	enddo
 	return nil
+
+function decodeOMS( cPolicyOMS )
+	local ret := ''
+	local cENP, chr, enp := '', i
+
+	cENP := substr( cPolicyOMS, 4, 6 )
+	&& for i := 4 to 10
+	for each chr in cENP
+		&& enp += hb_NumToHex( asc( cPolicyOMS[ i ] ), 2 )
+		enp += hb_NumToHex( asc( chr ), 2 )
+	next
+&& win_alertx( str( len( enp ) ) )
+	
+	&& ret := HexaToDec( enp )
+	ret := hb_HexToNum( enp )
+	ret := val( enp )
+win_alertx( alltrim( hb_ntos( ret ) ) )
+	return ret
