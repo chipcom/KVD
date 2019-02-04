@@ -25,7 +25,7 @@ procedure main( ... )
 	&& ? fio
 	&& decode( fio )
 	?
-	? myfunc(1)
+	? myfunc(barcode_data_V2)
 	?
 	
 	&& ?'Нажмите любую клавишу...'
@@ -33,14 +33,17 @@ procedure main( ... )
 	return
 
 #pragma BEGINDUMP
-//	#include <extend.h>
 	#include "hbapi.h"
-	#include ".\pcbcode.h"
+	#include "hbwapi.h"
+	#include "pcbcode.h"
 	#include <math.h>
 	
 	HB_FUNC( MYFUNC )
 	{
-		BARCODE_T1 st;
+		const char * szText    = hb_parcx( 1 );
+		BARCODE_T1 code;
+		HMODULE hPcbcode = GetModuleHandle( TEXT( "pcbcode.dll" ) );
+		
 //		double x = hb_parnd(1);
 //		hb_retnd(sin(x));
 		hb_retc( "returned from MYFUNC()\n" );

@@ -23,16 +23,16 @@ typedef unsigned long DWORD;
 typedef unsigned short WORD;
 typedef unsigned __int64 DWORD64;
 
-typedef struct _SYSTEMTIME {
-  WORD wYear;
-  WORD wMonth;
-  WORD wDayOfWeek;
-  WORD wDay;
-  WORD wHour;
-  WORD wMinute;
-  WORD wSecond;
-  WORD wMilliseconds;
-} SYSTEMTIME, *PSYSTEMTIME, *LPSYSTEMTIME;
+//typedef struct _SYSTEMTIME {
+//  WORD wYear;
+//  WORD wMonth;
+//  WORD wDayOfWeek;
+//  WORD wDay;
+//  WORD wHour;
+//  WORD wMinute;
+//  WORD wSecond;
+//  WORD wMilliseconds;
+//} SYSTEMTIME, *PSYSTEMTIME, *LPSYSTEMTIME;
 //Данная структура описывает заголовок штрих-кода
 typedef struct
 {
