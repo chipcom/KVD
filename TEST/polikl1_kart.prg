@@ -18,6 +18,9 @@ function polikl1_kart()
 	static sF11 := '^<F11>^ читать электронный полис'
 	static s_regim := 1, s_shablon := '', s_polis := '', s_snils := ''
 	
+	&& local testScan := "0200000000363D804E9DB3A17503BF84E869B9C3BF39C3A175AA5341C3800000000000000000000000000000000000000000000000000000000000000283EB0000015CEA680D9CDDEF0209E9F91FFEA628328CD157144B634204BAC30F573FF2E1021BDC2A28B2DD50A2761E4CF75FFCDBFBA71EAFC548AD07D38DC82A7D674BD09A"
+	&& local oCLR, oAssembly, oClass
+	
 	local tmp1, tmp_help := chm_help_code, mkod := -1, i, fl_number := .t., ;
 		k1 := 0, k2 := 1, str_sem, mbukva := '', tmp_color, buf, buf24, ar, s
 	
@@ -25,7 +28,25 @@ function polikl1_kart()
 	local oScanner := TComDescription():New( oSetEquipment:ScannerPort )
 	local oWinPort
 	local pThID
+
+	// Creating new CLR runtime (look %WINDIR%\Microsoft.NET\Framework for installed versions)
+	oCLR := CLR_RUNTIME():New('v4.0.30319')
+
+	&& // Loading assembly (DLL)
+	&& oAssembly := oCLR:LoadAssembly('Chip.Harbour')
 	
+	&& // Calling constructor for type 'Chip.Harbour.getXMLPolicyOMS' with different arguments
+	&& oClass := oAssembly:CreateInstance( 'Chip.Harbour.getXMLPolicyOMS' )
+	&& sResult := oClass:Call( 'decodePolicyOMS', testScan )
+	&& alertx(sResult[1])
+	&& alertx(sResult[2])
+	&& alertx(hb_Translate( sResult[3], 'UTF8', 'cp866' ))
+	&& alertx(hb_Translate( sResult[4], 'UTF8', 'cp866' ))
+	&& alertx(hb_Translate( sResult[5], 'UTF8', 'cp866' ))
+	&& alertx(substr( sResult[6], 1, 10 ))
+	&& alertx(substr( sResult[7], 1, 10 ))
+	&& alertx(hb_Translate( sResult[8], 'UTF8', 'cp866' ))
+
 	chm_help_code := 1//HK_shablon_fio
 	// обмен информацией с программой Smart Delta Systems
 	import_kart_from_sds()
@@ -218,14 +239,15 @@ function readBarcode( oWinPort )
 				for each char in cString
 					cOMScode += hb_NumToHex( asc( char ), 2 )
 				next
-				&& // Creating new CLR runtime (look %WINDIR%\Microsoft.NET\Framework for installed versions)
-				&& oCLR := CLR_RUNTIME():New( 'v4.0.30319' )
-
-				&& // Loading assembly (DLL)
-				&& oAssembly := oCLR:LoadAssembly( 'Chip.Harbour' )
-				&& // Calling constructor for type 'Chip.Harbour' with different arguments
-				&& oClass := oAssembly:CreateInstance( 'Chip.Harbour.getXMLPolicyOMS' )
-				&& sResult := oClass:Call( 'decodePolicyOMS', cOMScode )
+				// Creating new CLR runtime (look %WINDIR%\Microsoft.NET\Framework for installed versions)
+				oCLR := CLR_RUNTIME():New('v4.0.30319')
+			
+				// Loading assembly (DLL)
+				oAssembly := oCLR:LoadAssembly( 'Chip.Harbour' )
+				
+				// Calling constructor for type 'Chip.Harbour.getXMLPolicyOMS' with different arguments
+				oClass := oAssembly:CreateInstance( 'Chip.Harbour.getXMLPolicyOMS' )
+				sResult := oClass:Call( 'decodePolicyOMS', cOMScode )
 				&& sResult[ 3 ] := hb_Translate( sResult[ 3 ], 'UTF8', 'cp866' )
 				&& sResult[ 4 ] := hb_Translate( sResult[ 4 ], 'UTF8', 'cp866' )
 				&& sResult[ 5 ] := hb_Translate( sResult[ 5 ], 'UTF8', 'cp866' )

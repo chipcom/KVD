@@ -25,7 +25,8 @@ procedure main( ... )
 	&& ? fio
 	&& decode( fio )
 	?
-	? myfunc(barcode_data_V2)
+	? hb_Translate( myfunc(barcode_data_V2), 'cp1251', 'cp866' )
+	? 
 	?
 	
 	&& ?'Нажмите любую клавишу...'
@@ -34,20 +35,89 @@ procedure main( ... )
 
 #pragma BEGINDUMP
 	#include "hbapi.h"
-	#include "hbwapi.h"
+	#include <windows.h>
+	#include <locale.h>
+//	#include "hbwapi.h"
 	#include "pcbcode.h"
-	#include <math.h>
+//	#include <math.h>
 	
 	HB_FUNC( MYFUNC )
 	{
 		const char * szText    = hb_parcx( 1 );
-		BARCODE_T1 code;
-		HMODULE hPcbcode = GetModuleHandle( TEXT( "pcbcode.dll" ) );
+		setlocale( LC_ALL, "Russian" );
+		BYTE bar_code_data_V1[]  = 
+		{
+			0x01, 0x00, 0x16, 0xE9, 0x59, 0xAF, 0x0F, 0x3A, 
+			0x6C, 0x53, 0xE6, 0x84, 0xD3, 0x77, 0x71, 0xCE, 
+			0xEF, 0x39, 0xDF, 0x38, 0x71, 0x1D, 0xE4, 0xFC, 
+			0xD2, 0x76, 0x85, 0xDF, 0x35, 0x41, 0x9C, 0x03, 
+			0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
+			0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
+			0x00, 0x00, 0x00, 0x02, 0x71, 0xD3, 0x00, 0x00, 
+			0x00, 0xEF, 0x4A, 0x04, 0xBD, 0xB8, 0x00, 0xF6, 
+			0x18, 0x01, 0x7D, 0xDE, 0x3F, 0x6B, 0x9C, 0x4B, 
+			0x45, 0x92, 0xFB, 0x28, 0xEB, 0x75, 0xEF, 0x1E, 
+			0x0D, 0x22, 0x74, 0xBD, 0x0F, 0x57, 0x37, 0x72, 
+			0x84, 0xF0, 0x24, 0x69, 0x69, 0x8A, 0x8C, 0xAC, 
+			0x4A, 0x91, 0x2F, 0xE7, 0x4D, 0x77, 0x3A, 0xF6, 
+			0xFC, 0x0C, 0x8D, 0x71, 0x51, 0x5C, 0xB8, 0x81, 
+			0x76, 0xEC, 0x04, 0xA4, 0x14, 0xB1, 0x79, 0xAD, 
+			0x00, 0xAC, 0x54, 0x82, 0x95, 0x03, 0x39, 0x72, 
+			0xDC, 0x82 
+		};
 		
-//		double x = hb_parnd(1);
-//		hb_retnd(sin(x));
-		hb_retc( "returned from MYFUNC()\n" );
+		DWORD dwLength	= 130;
+		BARCODE_T1 T1   = {0};
+		
+		DWORD dwError		= DecomposeBarcode(&bar_code_data_V1[0], dwLength, &T1);
+		
+		//Вывод на консоль
+		printf("Тип штрих-кода:         %d\r\n", T1.Header.BarcodeType);
+		printf("Номер полиса ОМС:       %016I64d\r\n", T1.Body.PolicyNumber);
+		printf("Фамилия:                %s\r\n", T1.Body.LastName);
+		printf("Имя:                    %s\r\n", T1.Body.FirstName);
+		printf("Отчество:               %s\r\n", T1.Body.Patronymic);
+		printf("Дата рождения:          %02d.%02d.%04d\r\n", T1.Body.BirthDate.wDay,T1.Body.BirthDate.wMonth,T1.Body.BirthDate.wYear);
+		printf("Срок действия полиса    %02d.%02d.%04d\r\n", T1.Body.ExpireDate.wDay,T1.Body.ExpireDate.wMonth,T1.Body.ExpireDate.wYear);
+		printf("Пол                     %s\r\n", T1.Body.Sex == 1 ? "Мужской":"Женский");
+		if( dwError != 0 ) {
+			ErrorExit("DecomposeBarcode");
+		}
+		hb_retc( T1.Body.LastName );
 	}
+	
+	void ErrorExit(LPTSTR lpszFunction) 
+	{ 
+		CHAR szBuf[80]={0}; 
+		LPVOID lpMsgBuf;
+		DWORD dw = GetLastError(); 
+		DWORD ch_count = FormatMessage(
+			FORMAT_MESSAGE_ALLOCATE_BUFFER | 
+			FORMAT_MESSAGE_FROM_HMODULE,
+			GetModuleHandle("pcbcode.dll"),
+			dw,
+			MAKELANGID(LANG_RUSSIAN, SUBLANG_DEFAULT),
+			(LPTSTR) &lpMsgBuf,
+			0, NULL );
+		if( ch_count == 0 )
+		{
+			FormatMessage(
+					FORMAT_MESSAGE_ALLOCATE_BUFFER | 
+					FORMAT_MESSAGE_FROM_SYSTEM,
+					NULL,
+					dw,
+					MAKELANGID(LANG_RUSSIAN, SUBLANG_DEFAULT),
+					(LPTSTR) &lpMsgBuf,
+					0, NULL );
+		}
+		sprintf(szBuf, 
+			"%s failed with error %d: %s", 
+			lpszFunction, dw, lpMsgBuf); 
+		printf(szBuf);
+		//MessageBox(NULL, szBuf, "Error", MB_OK); 
+		LocalFree(lpMsgBuf);
+		ExitProcess(dw); 
+	}	
 #pragma ENDDUMP
 
 && function decodeOMS( cData )

@@ -25,6 +25,7 @@ hbmzip.hbc
 -lhbnf
 -lhbtip
 -lhbmisc
+-lpcbcode.lib
 
 
 #-shared
