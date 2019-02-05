@@ -1,30 +1,13 @@
 
 ############################
-#для HwGUI
--iC:\harbour\hwgui\include
--LC:\harbour\hwgui\lib
 #
-xhb.hbc
-hbssl.hbc
-hbmzip.hbc
 
 # Include section
--i..\..\include
+-i..\include
 
 
 ############################
--lxhb
--lhbxpp
--lhbct
 -lhbwin
--lxhb
--lhbmzip
--lminizip
--gui
--lhwgui
--lhbnf
--lhbtip
--lhbmisc
 -lpcbcode.lib
 
 
@@ -35,8 +18,10 @@ hbmzip.hbc
 -odecode
 
 decode.prg
+decodeBarcodeOMS.prg
+
 #TBARCODE_OMS.prg
-errorsys.prg
+#errorsys.prg
 #
 #для отладки
-#..\..\func\xtoc.prg
+xtoc_temp.prg
