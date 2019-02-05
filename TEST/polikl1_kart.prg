@@ -30,7 +30,7 @@ function polikl1_kart()
 	local pThID
 
 	// Creating new CLR runtime (look %WINDIR%\Microsoft.NET\Framework for installed versions)
-	oCLR := CLR_RUNTIME():New('v4.0.30319')
+	&& oCLR := CLR_RUNTIME():New('v4.0.30319')
 
 	&& // Loading assembly (DLL)
 	&& oAssembly := oCLR:LoadAssembly('Chip.Harbour')
@@ -222,41 +222,20 @@ function polikl1_kart()
 									{ 's_snils'  , s_snils      } } )
 	return mkod
 
-* 03.02.19
+* 05.02.19
 * функция чтения штрих-кода со сканера подключенного к COM-порту
 function readBarcode( oWinPort )
 	local cString := space( 132 )
 	local lCTSHold, lDSRHold, lDCDHold, lXoffHold, lXoffSent, nInQueue, nOutQueue
-	local char, cOMScode := '', sResult
-	local oCLR, oAssembly, oClass
+	local sResult
 	
 	do while .t.
 		if oWinPort:QueueStatus( @lCTSHold, @lDSRHold, @lDCDHold, @lXoffHold, @lXoffSent, @nInQueue, @nOutQueue )
 			if nInQueue == 132
 				oWinPort:Read( @cString, 132 )
 				cString	:= substr( cString, 1, 130 )
-				cOMScode := ''
-				for each char in cString
-					cOMScode += hb_NumToHex( asc( char ), 2 )
-				next
-				// Creating new CLR runtime (look %WINDIR%\Microsoft.NET\Framework for installed versions)
-				oCLR := CLR_RUNTIME():New('v4.0.30319')
-			
-				// Loading assembly (DLL)
-				oAssembly := oCLR:LoadAssembly( 'Chip.Harbour' )
-				
-				// Calling constructor for type 'Chip.Harbour.getXMLPolicyOMS' with different arguments
-				oClass := oAssembly:CreateInstance( 'Chip.Harbour.getXMLPolicyOMS' )
-				sResult := oClass:Call( 'decodePolicyOMS', cOMScode )
-				&& sResult[ 3 ] := hb_Translate( sResult[ 3 ], 'UTF8', 'cp866' )
-				&& sResult[ 4 ] := hb_Translate( sResult[ 4 ], 'UTF8', 'cp866' )
-				&& sResult[ 5 ] := hb_Translate( sResult[ 5 ], 'UTF8', 'cp866' )
-				&& sResult[ 6 ] := substr( sResult[ 6 ], 1, 10 )
-				&& sResult[ 7 ] := substr( sResult[ 7 ], 1, 10 )
-				&& sResult[ 8 ] := hb_Translate( sResult[ 8 ], 'UTF8', 'cp866' )
-				&& sResult := decodeOMS( cOMScode )
-				&& win_alertx( win_OEMToANSI( sResult[ 3 ] + ' ' + sResult[ 4 ] + ' ' + sResult[ 5 ] ) )
-				&& win_alertx( str( sResult ) )
+				sResult := decodeBarcodeOMS( cString )
+				win_alertx( sResult[ 3 ] + ' ' + sResult[ 4 ] + ' ' + sResult[ 5 ] )
 			endif
 		else
 		endif
@@ -264,20 +243,46 @@ function readBarcode( oWinPort )
 	enddo
 	return nil
 
-function decodeOMS( cPolicyOMS )
-	local ret := ''
-	local cENP, chr, enp := '', i
+* 05.02.19
+#pragma BEGINDUMP
+	#include "hbapi.h"
+	#include "hbapiitm.h"
+	#include <windows.h>
+	#include "pcbcode.h"
 
-	cENP := substr( cPolicyOMS, 4, 6 )
-	&& for i := 4 to 10
-	for each chr in cENP
-		&& enp += hb_NumToHex( asc( cPolicyOMS[ i ] ), 2 )
-		enp += hb_NumToHex( asc( chr ), 2 )
-	next
-&& win_alertx( str( len( enp ) ) )
-	
-	&& ret := HexaToDec( enp )
-	ret := hb_HexToNum( enp )
-	ret := val( enp )
-win_alertx( alltrim( hb_ntos( ret ) ) )
-	return ret
+	HB_FUNC( DECODEBARCODEOMS )
+	{
+		BYTE * szText    = hb_parcx( 1 );
+		
+		PHB_ITEM pArray = hb_itemArrayNew( 8 );
+		DWORD dwLength	= 130;
+		BARCODE_T1 T1   = {0};
+		
+		char strPolicy[ 16 ];
+		char strDateDOB[ 10 ];
+		char strDateExpire[ 10 ];
+		
+		DWORD dwError		= DecomposeBarcode( &szText[ 0 ], dwLength, &T1 );
+		
+		if( dwError != 0 ) {
+//			ErrorExit("DecomposeBarcode");
+		}
+		
+		hb_arraySetNI( pArray, 1, T1.Header.BarcodeType );
+		sprintf( strPolicy, "%016I64d", T1.Body.PolicyNumber );
+		hb_arraySetC( pArray, 2, strPolicy );
+		
+		hb_arraySetC( pArray, 3, T1.Body.LastName );
+		hb_arraySetC( pArray, 4, T1.Body.FirstName );
+		hb_arraySetC( pArray, 5, T1.Body.Patronymic );
+		hb_arraySetC( pArray, 6, T1.Body.Sex == 1 ? "М":"Ж" );
+		
+		sprintf( strDateDOB, "%02d.%02d.%04d", T1.Body.BirthDate.wDay,T1.Body.BirthDate.wMonth,T1.Body.BirthDate.wYear );
+		hb_arraySetC( pArray, 7, strDateDOB );
+		
+		sprintf( strDateExpire, "%02d.%02d.%04d", T1.Body.ExpireDate.wDay,T1.Body.ExpireDate.wMonth,T1.Body.ExpireDate.wYear );
+		hb_arraySetC( pArray, 8, strDateExpire );
+	  
+		hb_itemReturnRelease( pArray );
+	}
+#pragma ENDDUMP

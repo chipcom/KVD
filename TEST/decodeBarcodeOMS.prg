@@ -3,12 +3,10 @@
 	#include <windows.h>
 	#include <locale.h>
 	#include "pcbcode.h"
-	
+
 	HB_FUNC( DECODEBARCODEOMS )
 	{
-//		const char * szText    = hb_parcx( 1 );
-//		unsigned char  *pBuffer = ( unsigned char * ) hb_parc( 1 );
-//		BYTE  bar_code_data_V1 = ( BYTE * ) hb_parc( 1 );
+		const BYTE * szText    = hb_parcx( 1 );
 		
 		setlocale( LC_ALL, "Russian" );
 		BYTE bar_code_data_V1[]  = 
@@ -55,6 +53,8 @@
 		PHB_ITEM pArray = hb_itemArrayNew( 8 );
 		
 		DWORD dwLength	= 130;
+		
+		
 		BARCODE_T1 T1   = {0};
 		
 		char strPolicy[16];
@@ -64,7 +64,6 @@
 		char strDateExpire[10];
 		
 		DWORD dwError		= DecomposeBarcode(&bar_code_data_V1[0], dwLength, &T1);
-//		DWORD dwError		= DecomposeBarcode(&bar_code_data_V1, dwLength, &T1);
 		
 		//Вывод на консоль
 //		printf("Тип штрих-кода:         %d\r\n", T1.Header.BarcodeType);
@@ -100,7 +99,8 @@
 	  
 		hb_itemReturnRelease( pArray );
 	}
-	
+
+
 //	void ErrorExit(LPTSTR lpszFunction) 
 //	{ 
 //		CHAR szBuf[80]={0}; 

@@ -28,7 +28,8 @@ hbmzip.hbc
 -lhbnf
 -lhbtip
 
--lclr
+# библиотека для декодирования штрих-кодов ОМС
+-lpcbcode.lib
 
 
 #-shared

@@ -24,4 +24,4 @@ decodeBarcodeOMS.prg
 #errorsys.prg
 #
 #для отладки
-xtoc_temp.prg
+#xtoc_temp.prg
