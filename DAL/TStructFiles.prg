@@ -2296,12 +2296,12 @@ METHOD New() CLASS TStructFiles
 					{ 'TIP',		'N',	1,	0 }, ;
 					{ 'SELO',		'N',	1,	0 } ;
 					}
-	cAlias := '_OKATOO'
+	cAlias := 'OBLAST'
 	aIndex := { ;
-				{ exe_dir + '_okato', 'okato' }, ;
-				{ exe_dir + '_okaton', 'substr( okato, 1, 5 ) + upper( substr( name, 1, 30 ) )' } ;
+				{ cur_dir + '_okato', 'okato' }, ;
+				{ cur_dir + '_okaton', 'substr( okato, 1, 5 ) + upper( substr( name, 1, 30 ) )' } ;
 				}
-	hb_hSet( ::hbFiles, cClassName, TDBFile( ):New( cName, aIndex, cAlias, aEtalonDB, 'справочник _okatoo' ) )
+	hb_hSet( ::hbFiles, cClassName, TDBFile( ):New( cName, aIndex, cAlias, aEtalonDB, 'справочник ОКАТО областей' ) )
 //---------
 
 // справочник _okatoo8
@@ -2317,8 +2317,8 @@ METHOD New() CLASS TStructFiles
 					}
 	cAlias := '_OKATOO8'
 	aIndex := { ;
-				{ exe_dir + '_okato8', 'okato' }, ;
-				{ exe_dir + '_okaton8', 'substr( okato, 1, 5 ) + upper( substr( name, 1, 30 ) )' } ;
+				{ cur_dir + '_okato8', 'okato' }, ;
+				{ cur_dir + '_okaton8', 'substr( okato, 1, 5 ) + upper( substr( name, 1, 30 ) )' } ;
 				}
 	hb_hSet( ::hbFiles, cClassName, TDBFile( ):New( cName, aIndex, cAlias, aEtalonDB, 'справочник _okatoo8' ) )
 //---------
@@ -2330,12 +2330,12 @@ METHOD New() CLASS TStructFiles
 					{ 'OKATO',		'C',	2,	0 }, ;
 					{ 'NAME',		'C',   72,	0 } ;
 					}
-	cAlias := '_OKATOR'
+	cAlias := 'REGION'
 	aIndex := { ;
-				{ exe_dir + '_okatr', 'okato' }, ;
-				{ exe_dir + '_okatrn', 'okato + upper( substr( name, 1, 30 ) )' } ;
+				{ cur_dir + '_okatr', 'okato' }, ;
+				{ cur_dir + '_okatrn', 'okato + upper( substr( name, 1, 30 ) )' } ;
 				}
-	hb_hSet( ::hbFiles, cClassName, TDBFile( ):New( cName, aIndex, cAlias, aEtalonDB, 'справочник _okator' ) )
+	hb_hSet( ::hbFiles, cClassName, TDBFile( ):New( cName, aIndex, cAlias, aEtalonDB, 'справочник ОКАТО регионов' ) )
 //---------
 
 // справочник _okatos
@@ -2351,10 +2351,10 @@ METHOD New() CLASS TStructFiles
 					}
 	cAlias := '_OKATOS'
 	aIndex := { ;
-				{ exe_dir + '_okats', 'okato' }, ;
-				{ exe_dir + '_okatsn', 'substr( okato, 1, 8 ) + upper( substr( name, 1, 30 ) )' } ;
+				{ cur_dir + '_okats', 'okato' }, ;
+				{ cur_dir + '_okatsn', 'substr( okato, 1, 8 ) + upper( substr( name, 1, 30 ) )' } ;
 				}
-	hb_hSet( ::hbFiles, cClassName, TDBFile( ):New( cName, aIndex, cAlias, aEtalonDB, 'справочник _okatos' ) )
+	hb_hSet( ::hbFiles, cClassName, TDBFile( ):New( cName, aIndex, cAlias, aEtalonDB, 'справочник ОКАТО село' ) )
 //---------
 
 // справочник _okatos8
@@ -2370,15 +2370,30 @@ METHOD New() CLASS TStructFiles
 					}
 	cAlias := '_OKATOS8'
 	aIndex := { ;
-				{ exe_dir + '_okats8', 'okato' }, ;
-				{ exe_dir + '_okatsn8', 'substr( okato, 1, 8 ) + upper( substr( name, 1, 30 ) )' } ;
+				{ cur_dir + '_okats8', 'okato' }, ;
+				{ cur_dir + '_okatsn8', 'substr( okato, 1, 8 ) + upper( substr( name, 1, 30 ) )' } ;
+				}
+	hb_hSet( ::hbFiles, cClassName, TDBFile( ):New( cName, aIndex, cAlias, aEtalonDB, 'справочник _okatos8' ) )
+//---------
+
+// справочник двойных фамилий
+	cClassName := Upper( 'TDubleFIODB' )
+	cName := dir_server + 'mo_kfio' + sdbf
+	aEtalonDB := 	{ ;
+					{ 'KOD',	'N',	7,	0 }, ; // код человека по kartotek.dbf
+					{ 'FAM',	'C',	40,	0 }, ;
+					{ 'IM',		'C',	40,	0 }, ;
+					{ 'OT',		'C',	40,	0 } ;
+					}
+	cAlias := 'TDubleFIODB'
+	aIndex := { ;
 				}
 	hb_hSet( ::hbFiles, cClassName, TDBFile( ):New( cName, aIndex, cAlias, aEtalonDB, 'справочник _okatos8' ) )
 //---------
 
 // справочник human
 	cClassName := Upper( 'THumanDB' )
-	cName := cur_dir + 'human' + sdbf
+	cName := dir_server + 'human' + sdbf
 	aEtalonDB := 	{ ;
 					{ 'KOD'      ,   'N',     7,     0 }, ; // код (номер записи)
 					{ 'KOD_K'    ,   'N',     7,     0 }, ; // код по картотеке
@@ -2425,7 +2440,7 @@ METHOD New() CLASS TStructFiles
 					{ 'SCHET'    ,   'N',     6,     0 }, ; // код счета
 					{ 'ISHOD'    ,   'N',     3,     0 } ;
 					}
-	cAlias := 'HUMANDB'
+	cAlias := 'THUMANDB'
 	aIndex := { ;
 				{ dir_server + 'humank', 'str( kod, 7 )' }, ;
 				{ dir_server + 'humankk', 'str( if( kod > 0, kod_k, 0 ), 7 ) + str( tip_h, 1 )' }, ;
@@ -2433,6 +2448,97 @@ METHOD New() CLASS TStructFiles
 				{ dir_server + 'humand', 'dtos( k_data ) + uch_doc' }, ;
 				{ dir_server + 'humano', 'date_opl' }, ;
 				{ dir_server + 'humans', 'str( schet, 6 ) + str( tip_h, 1 ) + upper( substr( fio, 1, 20 ) )' } ;
+				}
+	hb_hSet( ::hbFiles, cClassName, TDBFile( ):New( cName, aIndex, cAlias, aEtalonDB, 'справочник human' ) )
+
+// справочник human_
+	cClassName := Upper( 'THumanExtDB' )
+	cName := dir_server + 'human_' + sdbf
+	aEtalonDB := 	{ ;
+				{ 'DISPANS',	'C',	16,	0 }, ; // то, что вводится по <F10>
+				{ 'STATUS_ST',	'C',	10,	0 }, ; // статус стоматологического пациента;проверка по собственному справочнику МО для стоматологии
+				{ 'POVOD',		'N',	 2,	0 }, ; // повод обращения
+				{ 'TRAVMA',		'N',	 2,	0 }, ; // вид травмы
+				{ 'ID_PAC',		'C',	36,	0 }, ; // код записи о пациенте;GUID пациента в листе учета;создается при добавлении записи
+				{ 'ID_C',		'C',	36,	0 }, ; // код случая оказания;GUID листа учета;создается при добавлении записи
+				{ 'VPOLIS',		'N',	 1,	0 }, ; // вид полиса (от 1 до 3);1-старый,2-врем.,3-новый;по умолчанию 1 - старый
+				{ 'SPOLIS',		'C',	10,	0 }, ; // серия полиса
+				{ 'NPOLIS',		'C',	20,	0 }, ; // номер полиса
+				{ 'SMO',		'C',	 5,	0 }, ; // реестровый номер СМО возвращается с реестром из ТФОМС, иногродние = 34
+				{ 'OKATO',		'C',	 5,	0 }, ; // ОКАТО территории страхования возвращается с реестром из ТФОМС для иногородних
+				{ 'NOVOR',		'N',	 2,	0 }, ; // признак новорожденного 0-нет, 1,2,... - порядковый номер новорожденного ребенка
+				{ 'DATE_R2',	'D',	 8,	0 }, ; // дата рождения ребенка для NOVOR > 0;
+				{ 'POL2',		'C',	 1,	0 }, ; // пол ребенка для NOVOR > 0;
+				{ 'USL_OK',		'N',	 2,	0 }, ; // условия оказания медицинской помощи по справочнику V006
+				{ 'VIDPOM',		'N',	 4,	0 }, ; // вид помощи по справочнику V008
+				{ 'PROFIL',		'N',	 3,	0 }, ; // профиль по справочнику V002
+				{ 'IDSP',		'N',	 2,	0 }, ; // код способа оплаты мед.помощи по справочнику V010
+				{ 'NPR_MO',		'C',	 6,	0 }, ; // код МО, направившего на лечение по справочнику T001
+				{ 'FORMA14',	'C',	 6,	0 }, ; // для стат.формы 14 в первых 4 байтах: планово/экстренно, доставлен скорой помощью, проведено вскрытие, установлено расхождение
+				{ 'KOD_DIAG0',	'C',	 6,	0 }, ; // диагноз первичный
+				{ 'RSLT_NEW',	'N',	 3,	0 }, ; // результат обращения/госпитализации по справочнику V009
+				{ 'ISHOD_NEW',	'N',	 3,	0 }, ; // исход заболевания по справочнику V012
+				{ 'VRACH',		'N',	 4,	0 }, ; // лечащий врач (врач, закрывший талон)
+				{ 'PRVS',		'N',	 9,	0 }, ; // Специальность врача по справочнику V004, с минусом - по справочнику V015
+				{ 'RODIT_DR',	'D',	 8,	0 }, ; // дата рождения родителя (для human->bolnich=2)
+				{ 'RODIT_POL',	'C',	 1,	0 }, ; // пол родителя (для human->bolnich=2)
+				{ 'DATE_E2',	'C',	 4,	0 }, ; // дата редактирования листа учета
+				{ 'KOD_P2',		'C',	 1,	0 }, ; // код пользователя, исправившего л/у
+				{ 'PZTIP',		'N',	 2,	0 }, ; // тип план-заказа от 1 до 99
+				{ 'PZKOL',		'N',	 6,	2 }, ; // кол-во выполненного план-заказа
+				{ 'ST_VERIFY',	'N',	 1,	0 }, ; // стадия проверки: 0-после редактирования; от 5 до 9-проверено
+				{ 'KOD_UP',		'N',	 7,	0 }, ; // номер предыдущей записи (в случае повторного выставления в другом счёте)
+				{ 'OPLATA',		'N',	 1,	0 }, ; // тип оплаты;0,1 или 2, 1 - в счет, 2 - ред-ие; 9-счёт не оплачен и сделана копия л/у
+				{ 'SUMP',		'N',	10,	2 }, ; // сумма, принятая к оплате СМО (ТФОМС);всего;
+				{ 'SANK_MEK',	'N',	10,	2 }, ; // финансовые санкции (МЭК);суммарные;
+				{ 'SANK_MEE',	'N',	10,	2 }, ; // финансовые санкции (МЭЭ);суммарные;
+				{ 'SANK_EKMP',	'N',	10,	2 }, ; // финансовые санкции (ЭКМП);суммарные;
+				{ 'REESTR',		'N',	 6,	0 }, ; // код (последнего) реестра;по файлу "mo_rees"
+				{ 'REES_NUM',	'N',	 2,	0 }, ; // номер отправки реестра в ТФОМСа;в реестре первый раз отправили = 1, после исправления отправили второй раз = 2, и т.д.;
+				{ 'REES_ZAP',	'N',	 6,	0 }, ; // номер позиции записи в реестре;поле "IDCASE" (и "ZAP") в реестре случаев
+				{ 'SCHET_NUM',	'N',	 2,	0 }, ; // номер отправки счёта в ТФОМС;в счёте первый раз отправили = 0, после отказа в оплате и исправления отправили второй раз = 1, и т.д.;
+				{ 'SCHET_ZAP',	'N',	 6,	0 } ;  // номер позиции записи в счете;поле "IDCASE" (и "ZAP") в реестре счетов;сформировать по индексу humans для schet > 0
+				}
+	cAlias := 'THumanExtDB'
+	aIndex := { ;
+				}
+	hb_hSet( ::hbFiles, cClassName, TDBFile( ):New( cName, aIndex, cAlias, aEtalonDB, 'справочник human' ) )
+
+// справочник human_2
+	cClassName := Upper( 'THumanAddDB' )
+	cName := dir_server + 'human_2' + sdbf
+	aEtalonDB := 	{ ;
+				{ 'OSL1',		'C',	 6,	0 }, ; // шифр 1-ого диагноза осложнения заболевания
+				{ 'OSL2',		'C',	 6,	0 }, ; // шифр 2-ого диагноза осложнения заболевания
+				{ 'OSL3',		'C',	 6,	0 }, ; // шифр 3-ого диагноза осложнения заболевания
+				{ 'NPR_DATE',	'D',	 8,	0 }, ; // Дата направления, выданного МО, указанной в NPR_MO
+				{ 'PROFIL_K',	'N',	 3,	0 }, ; // профиль койки по справочнику V020 (стационар и дневной стационар)
+				{ 'VMP',		'N',	 1,	0 }, ; // 0-нет,1-да ВМП
+				{ 'VIDVMP',		'C',	12,	0 }, ; // вид ВМП по справочнику V018
+				{ 'METVMP',		'N',	 4,	0 }, ; // метод ВМП по справочнику V019
+				{ 'TAL_NUM',	'C',	20,	0 }, ; // Номер талона на ВМП
+				{ 'TAL_D',		'D',	 8,	0 }, ; // Дата выдачи талона на ВМП
+				{ 'TAL_P',		'D',	 8,	0 }, ; // Дата планируемой госпитализации в соответствии с талоном на ВМП
+				{ 'P_PER',		'N',	 1,	0 }, ; // Признак поступления/перевода 1-4
+				{ 'VNR',		'N',	 4,	0 }, ; // вес недоношенного ребёнка (лечится ребёнок)
+				{ 'VNR1',		'N',	 4,	0 }, ; // вес 1-го недоношенного ребёнка (лечится мать)
+				{ 'VNR2',		'N',	 4,	0 }, ; // вес 2-го недоношенного ребёнка (лечится мать)
+				{ 'VNR3',		'N',	 4,	0 }, ; // вес 3-го недоношенного ребёнка (лечится мать)
+				{ 'PC1',		'C',	20,	0 }, ; // КСЛП (в 2017 - в первом знаке 1-3 - кол-во стентов в коронарных сосудах)
+				{ 'PC2',		'C',	10,	0 }, ; // КИРО
+				{ 'PC3',		'C',	10,	0 }, ; // дополнительный критерий
+				{ 'PC4',		'C',	10,	0 }, ;
+				{ 'PC5',		'C',	10,	0 }, ; //
+				{ 'PC6',		'C',	10,	0 }, ; //
+				{ 'PN1',		'N',	10,	0 }, ; // для реабилитации пациентов после кохлеарной имплантации
+				{ 'PN2',		'N',	10,	0 }, ; // для абортов
+				{ 'PN3',		'N',	10,	0 }, ; // код согласования с программами SDS/ЛИС
+				{ 'PN4',		'N',	10,	0 }, ; // двойные л/у (1-ый л/у - ссылка на 2-ой лист, (2-ой л/у - ссылка на 1-ый лист)
+				{ 'PN5',		'N',	10,	0 }, ; // 
+				{ 'PN6',		'N',	10,	0 };  // 
+				}
+	cAlias := 'THumanAddDB'
+	aIndex := { ;
 				}
 	hb_hSet( ::hbFiles, cClassName, TDBFile( ):New( cName, aIndex, cAlias, aEtalonDB, 'справочник human' ) )
 
@@ -2447,6 +2553,104 @@ METHOD New() CLASS TStructFiles
 //		;
 //				}
 //	hb_hSet( ::hbFiles, cClassName, TDBFile( ):New( cName, aIndex, cAlias, aEtalonDB, 'справочник listinform' ) )
+//---------
+
+// информация по инвалидам
+	cClassName := Upper( 'TDisabilityDB' )
+	cName := dir_server + 'kart_inv' + sdbf
+	aEtalonDB := { ;
+				{ 'KOD',		'N',	7,	0}, ; // код (номер записи по БД kartotek)
+				{ 'DATE_INV',	'D',	8,	0}, ; // дата первичного установления инвалидности
+				{ 'PRICH_INV',	'N',	2,	0}, ; // причина первичного установления инвалидности
+				{ 'DIAG_INV',	'C',	5,	0} ;  // 
+				}
+	cAlias := 'TDisabilityDB'
+	aIndex := { ;
+				}
+	hb_hSet( ::hbFiles, cClassName, TDBFile( ):New( cName, aIndex, cAlias, aEtalonDB, 'информация по инвалидам' ) )
+//---------
+
+// 
+	cClassName := Upper( 'Tk_prim1DB' )
+	cName := dir_server + 'k_prim1' + sdbf
+	aEtalonDB := { ;
+				{ 'KOD',	'N',	7,	0 }, ;
+				{ 'STROKE',	'N',	1,	0 }, ;
+				{ 'NAME',	'C',	60,	0 } ;
+				}
+	cAlias := 'Tk_prim1DB'
+	aIndex := { ;
+				{ dir_server + 'k_prim1', 'str( kod, 7 ) + str( stroke, 1 )' } ;
+				}
+	hb_hSet( ::hbFiles, cClassName, TDBFile():New( cName, aIndex, cAlias, aEtalonDB, '' ) )
+//---------
+
+// иногородние страховые компании
+	cClassName := Upper( 'TMo_kismoDB' )
+	cName := dir_server + 'mo_kismo' + sdbf
+	aEtalonDB := { ;
+				{ 'KOD',	'N',	7,	0 }, ;	// ID пациента
+				{ 'SMO_NAME','C',  100,	0 } ;	// наименование иногородней СМО
+				}
+	cAlias := 'TMOKISMODB'
+	aIndex := { ;
+				}
+	hb_hSet( ::hbFiles, cClassName, TDBFile():New( cName, aIndex, cAlias, aEtalonDB, 'иногородние страховые компании' ) )
+//---------
+
+// иногородние страховые компании
+	cClassName := Upper( 'TMo_hismoDB' )
+	cName := dir_server + 'mo_hismo' + sdbf
+	aEtalonDB := { ;
+				{ 'KOD',	'N',	7,	0 }, ;	// ID пациента
+				{ 'SMO_NAME','C',  100,	0 } ;	// наименование иногородней СМО
+				}
+	cAlias := 'TMOHISMODB'
+	aIndex := { ;
+				}
+	hb_hSet( ::hbFiles, cClassName, TDBFile():New( cName, aIndex, cAlias, aEtalonDB, 'иногородние страховые компании' ) )
+//---------
+
+// сведения об иностранных гражданах
+	cClassName := Upper( 'TForeignCitizenDB' )
+	cName := dir_server + 'mo_kinos' + sdbf
+	aEtalonDB := { ;
+				{ 'KOD',		'N',	7,	0 }, ; // ID пациента
+				{ 'OSN_PREB',	'N',	2,	0 }, ; // основание пребывания в РФ
+				{ 'ADRES_PRO',	'C',	60,	0 }, ; // адрес проживания в Волг.обл.
+				{ 'MIGR_KARTA',	'C',	20,	0 }, ; // данные миграционной карты
+				{ 'DATE_P_G',	'D',	8,	0 }, ; // дата пересечения границы
+				{ 'DATE_R_M',	'D',	8,	0 } ;  // дата регистрации в миграционной службе
+				}
+	cAlias := 'TForeignCitizenDB'
+	aIndex := { ;
+				{ dir_server + 'mo_kinos', 'str( kod, 7 )' } ;
+				}
+	hb_hSet( ::hbFiles, cClassName, TDBFile():New( cName, aIndex, cAlias, aEtalonDB, 'сведения об иностранных гражданах' ) )
+//---------
+
+// справочник представителей
+	cClassName := Upper( 'TRepresentativeDB' )
+	cName := dir_server + 'mo_kpred' + sdbf
+	aEtalonDB := { ;
+				{ 'KOD',		'N',	7,	0 }, ;	// ID пациента
+				{ 'NN',			'N',	1,	0 }, ;	// номер представителя
+				{ 'FIO',		'C',	50,	0 }, ;	// Ф.И.О.
+				{ 'STATUS',		'N',	2,	0 }, ;	// Cтатус сопр.лица: 0-прочий,1-родитель,2-опекун
+				{ 'IS_UHOD',	'N',	1,	0 }, ; // 0-нет, 1-по уходу за больным
+				{ 'IS_FOOD',	'N',	1,	0 }, ; // 0-нет, 1-с питанием
+				{ 'DATE_R',		'D',	8,	0 }, ; // дата рождения
+				{ 'ADRES',		'C',	50,	0 }, ; // адрес
+				{ 'MR_DOL',		'C',	50,	0 }, ; // место работы
+				{ 'PHONE',		'C',	11,	0 }, ; // контактный телефон
+				{ 'PASPORT',	'C',	15,	0 }, ; // паспортные данные
+				{ 'POLIS',		'C',	25,	0 } ;  // данные о страховом полисе
+				}
+	cAlias := 'TRepresentative'
+	aIndex := { ;
+				{ dir_server + 'mo_kpred', 'str( kod, 7 ) + str( nn, 1 )' } ;
+				}
+	hb_hSet( ::hbFiles, cClassName, TDBFile():New( cName, aIndex, cAlias, aEtalonDB, 'справочник представителей' ) )
 //---------
 
 	::oSelf := Self
