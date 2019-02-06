@@ -10,9 +10,53 @@ CREATE CLASS TPatientDB	INHERIT	TBaseObjectDB
 		METHOD Save( oPatient )
 		METHOD getByID ( nID )
 		METHOD getAllDistrict()
+		METHOD getByPolicyOMS( FIO, DOB )
+		METHOD getByFIOAndDOB( param )
 	HIDDEN:
 		METHOD FillFromHash( hbArray )
 ENDCLASS
+
+METHOD getByFIOAndDOB( FIO, DOB )		CLASS TPatientDB
+	local hArray := nil
+	local cOldArea, cAlias, cFind := ''
+	local ret := nil
+
+	cFind := '1' + PadRight( upper( FIO ), 50 ) + dtos( DOB )
+	cOldArea := Select()
+	if ::super:RUse()
+		cAlias := Select()
+		(cAlias)->(dbSetOrder( 2 ))
+		if (cAlias)->(dbSeek(cFind, .t.))
+			if !empty( hArray := ::super:currentRecord() )
+				ret := ::FillFromHash( hArray )
+			endif
+		endif
+		(cAlias)->( dbCloseArea() )
+		dbSelectArea( cOldArea )
+	endif
+	return ret
+
+METHOD getByPolicyOMS( param )		CLASS TPatientDB
+	local hArray := nil
+	local cOldArea, cAlias, cFind := ''
+	local ret := nil
+
+	if len( param ) == 16		// длина единого полиса ОМС
+		cFind := '1' + param
+		cOldArea := Select()
+		if ::super:RUse()
+			cAlias := Select()
+			(cAlias)->(dbSetOrder( 3 ))
+			if (cAlias)->(dbSeek(cFind, .t.))
+				if !empty( hArray := ::super:currentRecord() )
+					ret := ::FillFromHash( hArray )
+				endif
+			endif
+			(cAlias)->( dbCloseArea() )
+			dbSelectArea( cOldArea )
+		endif
+	endif
+	return ret
 
 METHOD New()		CLASS TPatientDB
 	return self

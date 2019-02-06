@@ -18,9 +18,6 @@ function polikl1_kart()
 	static sF11 := '^<F11>^ читать электронный полис'
 	static s_regim := 1, s_shablon := '', s_polis := '', s_snils := ''
 	
-	&& local testScan := "0200000000363D804E9DB3A17503BF84E869B9C3BF39C3A175AA5341C3800000000000000000000000000000000000000000000000000000000000000283EB0000015CEA680D9CDDEF0209E9F91FFEA628328CD157144B634204BAC30F573FF2E1021BDC2A28B2DD50A2761E4CF75FFCDBFBA71EAFC548AD07D38DC82A7D674BD09A"
-	&& local oCLR, oAssembly, oClass
-	
 	local tmp1, tmp_help := chm_help_code, mkod := -1, i, fl_number := .t., ;
 		k1 := 0, k2 := 1, str_sem, mbukva := '', tmp_color, buf, buf24, ar, s
 	
@@ -28,24 +25,10 @@ function polikl1_kart()
 	local oScanner := TComDescription():New( oSetEquipment:ScannerPort )
 	local oWinPort
 	local pThID
-
-	// Creating new CLR runtime (look %WINDIR%\Microsoft.NET\Framework for installed versions)
-	&& oCLR := CLR_RUNTIME():New('v4.0.30319')
-
-	&& // Loading assembly (DLL)
-	&& oAssembly := oCLR:LoadAssembly('Chip.Harbour')
+	local oPatient
 	
-	&& // Calling constructor for type 'Chip.Harbour.getXMLPolicyOMS' with different arguments
-	&& oClass := oAssembly:CreateInstance( 'Chip.Harbour.getXMLPolicyOMS' )
-	&& sResult := oClass:Call( 'decodePolicyOMS', testScan )
-	&& alertx(sResult[1])
-	&& alertx(sResult[2])
-	&& alertx(hb_Translate( sResult[3], 'UTF8', 'cp866' ))
-	&& alertx(hb_Translate( sResult[4], 'UTF8', 'cp866' ))
-	&& alertx(hb_Translate( sResult[5], 'UTF8', 'cp866' ))
-	&& alertx(substr( sResult[6], 1, 10 ))
-	&& alertx(substr( sResult[7], 1, 10 ))
-	&& alertx(hb_Translate( sResult[8], 'UTF8', 'cp866' ))
+	public oBarcodeOMS := TBARCODE_OMS():New()	// для объекта считанного штрих-кода ОМС
+	&& local oBarcodeOMS := TBARCODE_OMS():New()	// для объекта считанного штрих-кода ОМС
 
 	chm_help_code := 1//HK_shablon_fio
 	// обмен информацией с программой Smart Delta Systems
@@ -70,7 +53,8 @@ function polikl1_kart()
 		oWinPort := win_com():Init( oScanner:PortName, WIN_CBR_9600, WIN_ODDPARITY, 7, WIN_ONESTOPBIT )
 		if oWinPort:Open()
 			// запустим новый поток для управления сканером штрих-кода
-			pThID := hb_threadStart( HB_THREAD_MEMVARS_COPY, @readBarcode(), oWinPort )
+			&& pThID := hb_threadStart( hb_bitor(HB_THREAD_INHERIT_PUBLIC,HB_THREAD_MEMVARS_COPY), @readBarcode(), oWinPort, oBarcodeOMS )
+			pThID := hb_threadStart( hb_bitor(HB_THREAD_INHERIT_PUBLIC,HB_THREAD_MEMVARS_COPY), @readBarcode(), oWinPort )
 		endif
 	endif
 	
@@ -121,110 +105,135 @@ function polikl1_kart()
 		rest_box( buf24 )
 		rest_box( buf )
 		
-		if ! isnil( pThID )
-			// выключим поток для управления сканером штрих-кода
-			hb_threadQuitRequest( pThID )
-			oWinPort:Close()
-		endif
-		
-		if lastkey() == K_F10
-			s_regim := iif( ++s_regim == 4, 1, s_regim )
-		elseif lastkey() == K_F11 .and. ! empty( name_reader )
-			if mo_read_el_polis()
-				mkod := glob_kartotek
+		if oBarcodeOMS:IsEmpty
+			if lastkey() == K_F10
+				s_regim := iif( ++s_regim == 4, 1, s_regim )
+			elseif lastkey() == K_F11 .and. ! empty( name_reader )
+				if mo_read_el_polis()
+					mkod := glob_kartotek
+					exit
+				endif
+			else
+				if lastkey() == K_ESC
+					tmp := nil
+				else
+					if s_regim == 1
+						s_shablon := alltrim( tmp )
+					elseif s_regim == 2
+						s_polis := tmp
+					else
+						s_snils := tmp
+					endif
+				endif
 				exit
 			endif
 		else
-			if lastkey() == K_ESC
-				tmp := nil
-			else
-				if s_regim == 1
-					s_shablon := alltrim( tmp )
-				elseif s_regim == 2
-					s_polis := tmp
-				else
-					s_snils := tmp
-				endif
-			endif
+			// что-то для работы с штрих-кодом
 			exit
 		endif
 	enddo
-
 	chm_help_code := tmp_help
-	if tmp == nil .or. mkod > 0
-		if tmp == nil // нажали ESC
-			mkod := 0
-		endif
-	elseif s_regim == 1
-		s_shablon := alltrim( tmp )
-		if empty( tmp := alltrim( tmp ) )
-			mkod := 0
-		elseif tmp == '*'
-			if view_kart( 0, T_ROW )
-				mkod := glob_kartotek
-			else
+	
+	if oBarcodeOMS:IsEmpty
+		if tmp == nil .or. mkod > 0
+			if tmp == nil // нажали ESC
 				mkod := 0
 			endif
-		else
-			if is_uchastok == 1
-				tmp1 := tmp
-				if ! ( left( tmp, 1 ) $ '0123456789' )
-					mbukva := left( tmp1, 1 )
-					tmp1 := substr( tmp1, 2 )  // отбросить первую букву
-				endif
-				for i := 1 to len( tmp1 )
-					if ! ( substr( tmp1, i, 1 ) $ '0123456789/' )
-						fl_number := .f.
-						exit
-					endif
-				next
-				if fl_number
-					if ( i := at( '/', tmp1 ) ) == 0
-						fl_number := .f.
-					else
-						tmp := padl( alltrim( substr( tmp1, 1, i - 1 ) ), 2, '0' ) + ;
-								padl( alltrim( substr( tmp1, i + 1 ) ), 5, '0' )
-					endif
+		elseif s_regim == 1
+			s_shablon := alltrim( tmp )
+			if empty( tmp := alltrim( tmp ) )
+				mkod := 0
+			elseif tmp == '*'
+				if view_kart( 0, T_ROW )
+					mkod := glob_kartotek
+				else
+					mkod := 0
 				endif
 			else
-				for i := 1 to len( tmp )
-					if ! ( substr( tmp, i, 1 ) $ '0123456789' )
-						fl_number := .f.
-						exit
+				if is_uchastok == 1
+					tmp1 := tmp
+					if ! ( left( tmp, 1 ) $ '0123456789' )
+						mbukva := left( tmp1, 1 )
+						tmp1 := substr( tmp1, 2 )  // отбросить первую букву
 					endif
-				next
-			endif
-			if ! fl_number
-				if ! ( '*' $ tmp )
-					tmp += '*'
+					for i := 1 to len( tmp1 )
+						if ! ( substr( tmp1, i, 1 ) $ '0123456789/' )
+							fl_number := .f.
+							exit
+						endif
+					next
+					if fl_number
+						if ( i := at( '/', tmp1 ) ) == 0
+							fl_number := .f.
+						else
+							tmp := padl( alltrim( substr( tmp1, 1, i - 1 ) ), 2, '0' ) + ;
+									padl( alltrim( substr( tmp1, i + 1 ) ), 5, '0' )
+						endif
+					endif
+				else
+					for i := 1 to len( tmp )
+						if ! ( substr( tmp, i, 1 ) $ '0123456789' )
+							fl_number := .f.
+							exit
+						endif
+					next
+				endif
+				if ! fl_number
+					if ! ( '*' $ tmp )
+						tmp += '*'
+					endif
+				endif
+				if fvalid_fio( 1, tmp, fl_number, mbukva )
+					mkod := glob_kartotek
+				else
+					fl_bad_shablon := .t.
 				endif
 			endif
-			if fvalid_fio( 1, tmp, fl_number, mbukva )
-				mkod := glob_kartotek
+		elseif eq_any( s_regim, 2, 3 )  // поиск по полису/по СНИЛС
+			if empty( tmp )
+				mkod := 0
 			else
-				fl_bad_shablon := .t.
+				if fvalid_fio( s_regim, tmp, fl_number, mbukva )
+					mkod := glob_kartotek
+				else
+					fl_bad_shablon := .t.
+				endif
 			endif
 		endif
-	elseif eq_any( s_regim, 2, 3 )  // поиск по полису/по СНИЛС
-		if empty( tmp )
-			mkod := 0
-		else
-			if fvalid_fio( s_regim, tmp, fl_number, mbukva )
-				mkod := glob_kartotek
-			else
+	else
+		oPatient := TPatientDB():getByPolicyOMS( alltrim( oBarcodeOMS:PolicyNumber ) )
+		if isnil( oPatient )
+			oPatient := TPatientDB():getByFIOAndDOB( alltrim( oBarcodeOMS:FIO ), oBarcodeOMS:DOB )
+			if isnil( oPatient )
 				fl_bad_shablon := .t.
+			else
+				mkod := oPatient:ID
+				m1kod_k := glob_kartotek := oPatient:ID()
+				glob_k_fio := alltrim( oPatient:FIO )
 			endif
+		else
+			mkod := oPatient:ID
+			m1kod_k := glob_kartotek := oPatient:ID()
+			glob_k_fio := alltrim( oPatient:FIO )
 		endif
 	endif
+	
+	if ! isnil( pThID )
+		// выключим поток для управления сканером штрих-кода
+		hb_threadQuitRequest( pThID )
+		oWinPort:Close()
+	endif
+	oBarcodeOMS := nil
+
 	SetIniSect( tmp_ini, 'polikl1', { { 's_regim'  ,lstr( s_regim ) }, ;
 									{ 's_shablon', s_shablon    }, ;
 									{ 's_polis'  , s_polis      }, ;
 									{ 's_snils'  , s_snils      } } )
 	return mkod
 
-* 05.02.19
+* 06.02.19
 * функция чтения штрих-кода со сканера подключенного к COM-порту
-function readBarcode( oWinPort )
+function readBarcode( oWinPort )//, oBarcodeOMS )
 	local cString := space( 132 )
 	local lCTSHold, lDSRHold, lDCDHold, lXoffHold, lXoffSent, nInQueue, nOutQueue
 	local sResult
@@ -235,7 +244,8 @@ function readBarcode( oWinPort )
 				oWinPort:Read( @cString, 132 )
 				cString	:= substr( cString, 1, 130 )
 				sResult := decodeBarcodeOMS( cString )
-				win_alertx( sResult[ 3 ] + ' ' + sResult[ 4 ] + ' ' + sResult[ 5 ] )
+				keyboard chr( K_ENTER )
+				oBarcodeOMS:Fill( sResult )
 			endif
 		else
 		endif
