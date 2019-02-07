@@ -59,10 +59,12 @@ CREATE CLASS TPatient	INHERIT	TBaseObjectBLL
 		PROPERTY ShortFIO AS STRING READ getShortFIO()												// получить сокращенное Ф.И.О.
 		PROPERTY PlaceBorn AS STRING READ getPlaceBorn WRITE setPlaceBorn							// место рождения
 		PROPERTY IsAdult AS LOGICAL READ getIsAdult( ... )											// получить совершеннолетний или нет
-		PROPERTY Passport AS OBJECT READ getPassport													// документ удостоверяющий личность
+		PROPERTY Passport AS OBJECT READ getPassport	 WRITE setPassport								// документ удостоверяющий личность
 		PROPERTY AddressRegistration AS OBJECT READ getAddressReg WRITE setAddressReg				// адрес регистрации
 		PROPERTY AddressStay AS OBJECT READ getAddressStay WRITE setAddressStay						// адрес пребывания
-		&& METHOD New( nID, cFIO, cGender, dBOB, cAddress, nDistrict, cBukva, nKod_vu, lNew, lDeleted )
+		PROPERTY PolicyOMS AS OBJECT READ getPolicyOMS WRITE setPolicyOMS							// объект описывающий полис ОМС
+		PROPERTY Disability AS OBJECT READ getDisability	 WRITE setDisability								// документ об ивалидности
+		
 		PROPERTY AddInfo AS OBJECT READ getAddINFO WRITE setAddInfo									// объект TPatientAdd ( kartote2.dbf )
 		PROPERTY ExtendInfo AS OBJECT READ getExtendInfo WRITE setExtendInfo							// объекта TPatientExt ( kartote_.dbf )
 
@@ -71,13 +73,12 @@ CREATE CLASS TPatient	INHERIT	TBaseObjectBLL
 		
 		METHOD New( nID, lNew, lDeleted )
 	
-		&& METHOD AddInfo( param )		INLINE iif( param == nil, ::FAddInfo, ::FAddInfo := param )
 		METHOD forJSON()
 	HIDDEN:
 
 		DATA FAddInfo	AS OBJECT INIT nil	// для хранения объекта TPatientAdd ( kartote2.dbf )
 		DATA FExtendInfo	AS OBJECT INIT nil	// для хранения объекта TPatientExt ( kartote_.dbf )
-		VAR _oAddExt			AS OBJECT	INIT nil				// для хранения объекта TPatientExt ( kartote_.dbf )
+		DATA FDisability AS OBJECT INIT nil	// для хранения объекта инвалидности
 		
 		DATA FCode INIT 0
 		DATA FAddress INIT space( 50 )
@@ -122,6 +123,9 @@ CREATE CLASS TPatient	INHERIT	TBaseObjectBLL
 
 		METHOD getAddInfo
 		METHOD setAddInfo( param )
+		METHOD getExtendInfo
+		METHOD setExtendInfo( param )
+		
 		METHOD getMO_added
 		METHOD setMO_added( param )
 		METHOD getDate_added
@@ -156,6 +160,7 @@ CREATE CLASS TPatient	INHERIT	TBaseObjectBLL
 		METHOD setPlaceBorn( param )
 		METHOD getIsAdult( dDate )
 		METHOD getPassport
+		METHOD setPassport( param )
 		METHOD getAddressReg
 		METHOD getAddress
 		METHOD setAddressReg( param )
@@ -203,6 +208,11 @@ CREATE CLASS TPatient	INHERIT	TBaseObjectBLL
 		METHOD setMi_Git( nNum )
 		METHOD getErrorKartotek
 		METHOD setErrorKartotek( nNum )
+		METHOD getPolicyOMS
+		METHOD setPolicyOMS( param )
+		METHOD getDisability
+		METHOD setDisability( param )
+		
 ENDCLASS
 
 METHOD procedure setID( param )	CLASS TPatient
@@ -552,6 +562,40 @@ METHOD procedure setPassport( param )		CLASS TPatient
 	endif
 	return
 
+METHOD getDisability()		CLASS TPatient
+	local obj
+
+	if isnil( ::FDisability )
+		if ::FExtendInfo == nil
+			::FExtendInfo := TPatientExtDB():getByID( ::ID )
+		endif
+		obj := TDisabilityDB():getByPatient( ::ID )
+		if isnil( obj )
+			obj := TDisability():New()
+			obj:IDPatient := ::ID
+		endif
+		::FDisability := obj
+	endif
+	::FDisability:setPatient( self )
+	::FDisability:Invalid := ::ExtendInfo:Invalid
+	::FDisability:DegreeOfDisability := ::ExtendInfo:DegreeOfDisability
+	return ::FDisability
+
+METHOD procedure setDisability( param )		CLASS TPatient
+
+	if isobject( param ) .and. param:classname == upper( 'TDisability' )
+		if ::FExtendInfo == nil
+			::FExtendInfo := TPatientExtDB():getByID( ::ID )
+		endif
+		::FExtendInfo:Invalid := param:Invalid
+		::FExtendInfo:DegreeOfDisability := param:DegreeOfDisability
+		if isnil( ::FDisability )
+			::FDisability := TDisability():New()
+		endif
+		::FDisability:Invalid := param:Invalid
+		::FDisability:DegreeOfDisability := param:DegreeOfDisability
+	endif
+	return
 
 METHOD getAddressReg()		CLASS TPatient
 
@@ -574,6 +618,36 @@ METHOD procedure setAddressReg( param )		CLASS TPatient
 		::FExtendInfo:OKATOG := param:OKATO
 	elseif ischaracter( param )
 		::FAddress := param
+	endif
+	return
+
+METHOD function getPolicyOMS()						CLASS TPatient
+	local oPolicy
+
+	if ::FExtendInfo == nil
+		::FExtendInfo := TPatientExtDB():getByID( ::ID )
+	endif
+	oPolicy := TPolicyOMS():New( ::FExtendInfo:PolicyType, ::FExtendInfo:PolicySeries, ::FExtendInfo:PolicyNumber, ;
+				::FExtendInfo:SMO, ::FExtendInfo:BeginPolicy, ::FPolicyPeriod )
+	oPolicy:OKATOInogSMO := ::FExtendInfo:KvartalHouse
+	oPolicy:Owner := self
+	return oPolicy
+
+METHOD procedure setPolicyOMS( param )				CLASS TPatient
+
+	if isobject( param) .and. param:classname == upper( 'TPolicyOMS' )
+		if ::FExtendInfo == nil
+			::FExtendInfo := TPatientExtDB():getByID( ::ID )
+		endif
+		::FPolicy := alltrim( param:PolicySeries ) + ;
+				if( ! empty( param:PolicyNumber ), ' ' + alltrim( param:PolicyNumber ), '' )
+		::FExtendInfo:PolicyType := param:PolicyType
+		::FExtendInfo:PolicySeries := param:PolicySeries
+		::FExtendInfo:PolicyNumber := param:PolicyNumber
+		::FExtendInfo:SMO := param:SMO
+		::FExtendInfo:BeginPolicy := param:BeginPolicy
+		::FPolicyPeriod := param:PolicyPeriod
+		::FExtendInfo:KvartalHouse := param:OKATOInogSMO
 	endif
 	return
 
@@ -805,18 +879,9 @@ METHOD PROCEDURE setErrorKartotek( nNum )		CLASS TPatient
 	endif
 	return
 
-&& METHOD New( nID, cFIO, cGender, dDOB, cAddress, nDistrict, cBukva, nKod_vu, lNew, lDeleted )		CLASS TPatient
 METHOD New( nID, lNew, lDeleted )		CLASS TPatient
 
 	::super:new( nID, lNew, lDeleted )
-	
-	&& ::FFIO			    := hb_defaultValue( cFIO, space( 50 ) )	// фамилия имя отчество
-	&& ::FGender	 		:= hb_defaultValue( cGender, 'М' )		// пол
-	&& ::FDOB		 		:= hb_defaultValue( dDOB, ctod( '' ) )	// дата рождения
-	&& ::FAddress	 		:= hb_defaultValue( cAddress, space( 50 ) )	// адрес больного
-	&& ::FDistrict 		:= hb_defaultValue( nDistrict, 0 )		// участок
-	&& ::FBukva			:= hb_defaultValue( cBukva, ' ' )		// буква
-	&& ::FKod_VU			:= hb_defaultValue( nKod_vu, 0 )		// код в участке
 	return self
 	
 METHOD getShortFIO()   CLASS TPatient

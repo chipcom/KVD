@@ -29,12 +29,12 @@ METHOD New()		CLASS TPatientDB
 METHOD procedure updateFIO( oPatient )		CLASS TPatientDB
 	local oDubleName
 	
-	&& oDubleName := TDubleFIODB():getByPatient( oPatient )
-	&& if ! isnil( oDubleName )
-		&& oPatient:LastName := oDubleName:LastName
-		&& oPatient:FirstName := oDubleName:FirstName
-		&& oPatient:MiddleName := oDubleName:MiddleName
-	&& endif
+	oDubleName := TDubleFIODB():getByPatient( oPatient )
+	if ! isnil( oDubleName )
+		oPatient:LastName := oDubleName:LastName
+		oPatient:FirstName := oDubleName:FirstName
+		oPatient:MiddleName := oDubleName:MiddleName
+	endif
 	oDubleName := nil
 	return nil
 	
@@ -190,6 +190,49 @@ METHOD getDublicateSinglePolicyNumber()		CLASS TPatientDB
 	endif
 	return ret
 
+
+METHOD getByFIOAndDOB( FIO, DOB )		CLASS TPatientDB
+	local hArray := nil
+	local cOldArea, cAlias, cFind := ''
+	local ret := nil
+
+	cFind := '1' + PadRight( upper( FIO ), 50 ) + dtos( DOB )
+	cOldArea := Select()
+	if ::super:RUse()
+		cAlias := Select()
+		(cAlias)->(dbSetOrder( 2 ))
+		if (cAlias)->(dbSeek(cFind, .t.))
+			if !empty( hArray := ::super:currentRecord() )
+				ret := ::FillFromHash( hArray )
+			endif
+		endif
+		(cAlias)->( dbCloseArea() )
+		dbSelectArea( cOldArea )
+	endif
+	return ret
+
+METHOD getByPolicyOMS( param )		CLASS TPatientDB
+	local hArray := nil
+	local cOldArea, cAlias, cFind := ''
+	local ret := nil
+
+	if len( param ) == 16		// длина единого полиса ОМС
+		cFind := '1' + param
+		cOldArea := Select()
+		if ::super:RUse()
+			cAlias := Select()
+			(cAlias)->(dbSetOrder( 3 ))
+			if (cAlias)->(dbSeek(cFind, .t.))
+				if !empty( hArray := ::super:currentRecord() )
+					ret := ::FillFromHash( hArray )
+				endif
+			endif
+			(cAlias)->( dbCloseArea() )
+			dbSelectArea( cOldArea )
+		endif
+	endif
+	return ret
+
 METHOD Save( oPatient ) CLASS TPatientDB
 	local ret := .f.
 	local aHash := nil
@@ -258,13 +301,6 @@ METHOD FillFromHash( hbArray )     CLASS TPatientDB
 			hbArray[ 'REC_NEW' ], ;
 			hbArray[ 'DELETED' ] ;
 			)
-			&& hbArray[ 'FIO' ], ;
-			&& hbArray[ 'POL' ], ;
-			&& hbArray[ 'DATE_R' ], ;
-			&& hbArray[ 'ADRES' ], ;
-			&& hbArray[ 'UCHAST' ], ;
-			&& hbArray[ 'BUKVA' ], ;
-			&& hbArray[ 'KOD_VU' ], ;
 	obj:Code := hbArray[ 'KOD' ]
 	obj:FIO := hbArray[ 'FIO' ]
 	obj:Gender := hbArray[ 'POL' ]
@@ -304,45 +340,3 @@ METHOD FillFromHash( hbArray )     CLASS TPatientDB
 		::updateFIO( obj )
 	endif
 	return obj
-
-METHOD getByFIOAndDOB( FIO, DOB )		CLASS TPatientDB
-	local hArray := nil
-	local cOldArea, cAlias, cFind := ''
-	local ret := nil
-
-	cFind := '1' + PadRight( upper( FIO ), 50 ) + dtos( DOB )
-	cOldArea := Select()
-	if ::super:RUse()
-		cAlias := Select()
-		(cAlias)->(dbSetOrder( 2 ))
-		if (cAlias)->(dbSeek(cFind, .t.))
-			if !empty( hArray := ::super:currentRecord() )
-				ret := ::FillFromHash( hArray )
-			endif
-		endif
-		(cAlias)->( dbCloseArea() )
-		dbSelectArea( cOldArea )
-	endif
-	return ret
-
-METHOD getByPolicyOMS( param )		CLASS TPatientDB
-	local hArray := nil
-	local cOldArea, cAlias, cFind := ''
-	local ret := nil
-
-	if len( param ) == 16		// длина единого полиса ОМС
-		cFind := '1' + param
-		cOldArea := Select()
-		if ::super:RUse()
-			cAlias := Select()
-			(cAlias)->(dbSetOrder( 3 ))
-			if (cAlias)->(dbSeek(cFind, .t.))
-				if !empty( hArray := ::super:currentRecord() )
-					ret := ::FillFromHash( hArray )
-				endif
-			endif
-			(cAlias)->( dbCloseArea() )
-			dbSelectArea( cOldArea )
-		endif
-	endif
-	return ret
