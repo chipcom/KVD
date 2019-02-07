@@ -2,20 +2,23 @@
 #include 'hbhash.ch'
 #include 'common.ch'
 #include 'property.ch'
+#include 'function.ch'
 
 CREATE CLASS TPatient	INHERIT	TBaseObjectBLL
 
 	VISIBLE:
+		CLASSDATA	aMenuCategory	AS ARRAY	INIT { { 'взрослый', 0 }, ;
+													{ 'ребёнок', 1 }, ;
+													{ 'подросток', 2 } }
+		CLASSDATA	aMenuWorking	AS ARRAY	INIT { { 'работающий', 0 }, ;
+													{ 'неработающий', 1 }, ;
+													{ 'обучающ.ОЧНО', 2 } }
+
+		PROPERTY Code AS NUMERIC READ getCode WRITE setCode
 		PROPERTY FIO AS STRING READ getFIO WRITE setFIO												// Ф.И.О. больного
-		PROPERTY FIO1251 READ getFIO1251
-		PROPERTY IsAnonymous AS LOGICAL READ getAnonymous											// анонимный пациент
 		PROPERTY Gender AS CHARACTER READ getGender WRITE setGender									// пол
-		PROPERTY ShortFIO AS STRING READ getShortFIO()												// получить сокращенное Ф.И.О.
 		PROPERTY DOB AS DATE READ getDOB WRITE setDOB													// дата рождения
-		PROPERTY IsAdult AS LOGICAL READ getIsAdult( ... )											// получить совершеннолетний или нет
-		PROPERTY Passport AS OBJECT READ getPassport													// документ удостоверяющий личность
-		PROPERTY AddressRegistration AS OBJECT READ getAddressReg									// адрес регистрации
-		PROPERTY AddressStay AS OBJECT READ getAddressStay											// адрес пребывания
+		PROPERTY AddressReg AS STRING READ getAddress WRITE setAddressReg				// адрес регистрации
 		PROPERTY District AS NUMERIC READ getDistrict WRITE setDistrict								// номер участка
 		PROPERTY Bukva AS CHARACTER READ getBukva WRITE setBukva										// одна буква
 		PROPERTY Kod_VU AS NUMERIC READ getKod_VU WRITE setKod_VU									// код в участке
@@ -25,9 +28,8 @@ CREATE CLASS TPatient	INHERIT	TBaseObjectBLL
 		PROPERTY Komu AS NUMERIC READ getKomu WRITE setKomu											// от 1 до 5
 		PROPERTY Policy AS STRING READ getPolicy WRITE setPolicy										// серия и номер страхового полиса
 		PROPERTY PolicyPeriod AS DATE READ getPolicyPeriod WRITE setPolicyPeriod						// срок действия полиса
-		PROPERTY InsurenceID AS NUMERIC READ getInsuranceID WRITE setInsuranceID						// код стр.компании, комитета и т.п.
+		PROPERTY InsuranceID AS NUMERIC READ getInsuranceID WRITE setInsuranceID						// код стр.компании, комитета и т.п.
 		PROPERTY AttachmentStatus AS NUMERIC READ getAttachmentStatus WRITE setAttachmentStatus		// тип/статус прикрепления 1-из WQ,2-из реестра СП и ТК,3-из файла прикрепления,4-открепление,5-сверка
-		PROPERTY TFOMSEncoding AS NUMERIC READ getTFOMSEncoding WRITE setTFOMSEncoding				// код по кодировке ТФОМС
 		PROPERTY SinglePolicyNumber AS STRING READ getSinglePolicyNumber WRITE setSinglePolicyNumber	// ЕНП - единый номер полиса ОМС
 		PROPERTY IsDied AS LOGICAL READ getIsDied WRITE setIsDied									// 0-нет,1-умер по результатам сверки
 		PROPERTY SNILS AS STRING READ getSNILS WRITE setSNILS										// СНИЛС
@@ -36,8 +38,8 @@ CREATE CLASS TPatient	INHERIT	TBaseObjectBLL
 		PROPERTY FinanceAreaCode AS NUMERIC READ getFinanceAreaCode WRITE setFinanceAreaCode			// код района финансирования
 		PROPERTY Mest_Inog AS NUMERIC READ getMest_Inog WRITE setMest_Inog							// 0-нет, 8 - аноним,9-отдельные ФИО
 		PROPERTY Mi_Git AS NUMERIC READ getMi_Git WRITE setMi_Git									// 0-нет, 9-рабочее поле KOMU
-		PROPERTY Za_Smo AS NUMERIC READ getZa_Smo WRITE setZa_Smo									// 0-нет, '-8'-полис недействителен, '-9'-ошибки в реквизитах
-		
+		PROPERTY ErrorKartotek AS NUMERIC READ getErrorKartotek WRITE setErrorKartotek				// 0-нет, '-8'-полис недействителен, '-9'-ошибки в реквизитах
+		PROPERTY TFOMSEncoding AS NUMERIC READ getTFOMSEncoding WRITE setTFOMSEncoding				// код по кодировке ТФОМС
 		PROPERTY MO_added AS STRING READ getMO_added WRITE setMO_added								// код МО прикрепления
 		PROPERTY Date_added AS STRING READ getDate_added WRITE setDate_added							// дата прикрепления
 		PROPERTY SNILSuchastDoctor AS STRING READ getSNILSuchastDoctor WRITE setSNILSuchastDoctor	// СНИЛС участкового врача
@@ -45,21 +47,44 @@ CREATE CLASS TPatient	INHERIT	TBaseObjectBLL
 		PROPERTY PC2 AS STRING INDEX 2 READ getPC WRITE setPC
 		PROPERTY PC3 AS STRING INDEX 3 READ getPC WRITE setPC
 		PROPERTY PN1 AS NUMERIC INDEX 1 READ getPN WRITE setPN
-		PROPERTY PN1 AS NUMERIC INDEX 2 READ getPN WRITE setPN
-		PROPERTY PN1 AS NUMERIC INDEX 3 READ getPN WRITE setPN
+		PROPERTY PN2 AS NUMERIC INDEX 2 READ getPN WRITE setPN
+		PROPERTY PN3 AS NUMERIC INDEX 3 READ getPN WRITE setPN
 
-		METHOD New( nID, cFIO, cGender, dBOB, cAddress, nDistrict, cBukva, nKod_vu, lNew, lDeleted )
+		PROPERTY FIO1251 READ getFIO1251
+		PROPERTY LastName AS STRING READ getLastName WRITE setLastName
+		PROPERTY FirstName AS STRING READ getFirstName WRITE setFirstName
+		PROPERTY MiddleName AS STRING READ getMiddleName WRITE setMiddleName
+		PROPERTY IsAnonymous AS LOGICAL READ getAnonymous											// анонимный пациент
+		PROPERTY IsDubleName AS LOGICAL READ getIsDubleName											// ФИО состоит из двойных слов
+		PROPERTY ShortFIO AS STRING READ getShortFIO()												// получить сокращенное Ф.И.О.
+		PROPERTY PlaceBorn AS STRING READ getPlaceBorn WRITE setPlaceBorn							// место рождения
+		PROPERTY IsAdult AS LOGICAL READ getIsAdult( ... )											// получить совершеннолетний или нет
+		PROPERTY Passport AS OBJECT READ getPassport													// документ удостоверяющий личность
+		PROPERTY AddressRegistration AS OBJECT READ getAddressReg WRITE setAddressReg				// адрес регистрации
+		PROPERTY AddressStay AS OBJECT READ getAddressStay WRITE setAddressStay						// адрес пребывания
+		&& METHOD New( nID, cFIO, cGender, dBOB, cAddress, nDistrict, cBukva, nKod_vu, lNew, lDeleted )
+		PROPERTY AddInfo AS OBJECT READ getAddINFO WRITE setAddInfo									// объект TPatientAdd ( kartote2.dbf )
+		PROPERTY ExtendInfo AS OBJECT READ getExtendInfo WRITE setExtendInfo							// объекта TPatientExt ( kartote_.dbf )
+
+		ACCESS setID
+		ASSIGN setID( param )	INLINE ::setID( param )
+		
+		METHOD New( nID, lNew, lDeleted )
 	
-		METHOD AddInfo( param )		INLINE iif( param == nil, ::_oAddInfo, ::_oAddInfo := param )
+		&& METHOD AddInfo( param )		INLINE iif( param == nil, ::FAddInfo, ::FAddInfo := param )
 		METHOD forJSON()
 	HIDDEN:
 
-		VAR _oAddInfo			AS OBJECT	INIT nil				// для хранения объекта TPatientAdd ( kartote2.dbf )
+		DATA FAddInfo	AS OBJECT INIT nil	// для хранения объекта TPatientAdd ( kartote2.dbf )
+		DATA FExtendInfo	AS OBJECT INIT nil	// для хранения объекта TPatientExt ( kartote_.dbf )
 		VAR _oAddExt			AS OBJECT	INIT nil				// для хранения объекта TPatientExt ( kartote_.dbf )
 		
-		DATA FKod INIT 0
+		DATA FCode INIT 0
 		DATA FAddress INIT space( 50 )
 		DATA FFIO INIT space( 50 )
+		DATA FLastName INIT space( 40 )
+		DATA FFirstName INIT space( 40 )
+		DATA FMiddleName INIT space( 40 )
 		DATA FDOB INIT ctod( '' )
 		DATA FGender INIT 'М'
 		DATA FDistrict INIT 0
@@ -82,7 +107,7 @@ CREATE CLASS TPatient	INHERIT	TBaseObjectBLL
 		DATA FFinanceAreaCode INIT 0
 		DATA FMest_Inog INIT 0
 		DATA FMi_Git INIT 0
-		DATA FZa_Smo INIT 0
+		DATA FErrorKartotek INIT 0
 
 		DATA FMOadded INIT space( 6 )
 		DATA FDateAdded INIT ctod( '' )
@@ -95,6 +120,8 @@ CREATE CLASS TPatient	INHERIT	TBaseObjectBLL
 		DATA FPN2	INIT 0
 		DATA FPN3	INIT 0
 
+		METHOD getAddInfo
+		METHOD setAddInfo( param )
 		METHOD getMO_added
 		METHOD setMO_added( param )
 		METHOD getDate_added
@@ -107,63 +134,142 @@ CREATE CLASS TPatient	INHERIT	TBaseObjectBLL
 		METHOD getPN( index )
 		METHOD setPN( index, param )
 		
-		METHOD getFIO()
+		METHOD getCode
+		METHOD setCode( param )
+		METHOD getFIO
 		METHOD setFIO( cFIO )
+		METHOD getLastName
+		METHOD setLastName( cFIO )
+		METHOD getFirstName
+		METHOD setFirstName( cFIO )
+		METHOD getMiddleName
+		METHOD setMiddleName( cFIO )
 		METHOD getFIO1251
-		METHOD getAnonymous()
-		METHOD getShortFIO()
-		METHOD getGender()
+		METHOD getAnonymous
+		METHOD getIsDubleName
+		METHOD getShortFIO
+		METHOD getGender
 		METHOD setGender( cGender )
-		METHOD getDOB()
+		METHOD getDOB
 		METHOD setDOB( dDate )
+		METHOD getPlaceBorn
+		METHOD setPlaceBorn( param )
 		METHOD getIsAdult( dDate )
-		METHOD getPassport()
-		METHOD getAddressReg()
-		METHOD getAddressStay()
-		METHOD getDistrict()
+		METHOD getPassport
+		METHOD getAddressReg
+		METHOD getAddress
+		METHOD setAddressReg( param )
+		METHOD getAddressStay
+		METHOD setAddressStay( param )
+		METHOD getDistrict
 		METHOD setDistrict( nNum )
-		METHOD getBukva()
+		METHOD getBukva
 		METHOD setBukva( ch )
-		METHOD getKod_VU()
+		METHOD getKod_VU
 		METHOD setKod_VU( nNum )
-		METHOD getVzros_Reb()
+		METHOD getVzros_Reb
 		METHOD setVzros_Reb( nNum )
-		METHOD getPlaceWork()
+		METHOD getPlaceWork
 		METHOD setPlaceWork( cText )
-		METHOD getWorking()
+		METHOD getWorking
 		METHOD setWorking( nNum )
-		METHOD getKomu()
+		METHOD getKomu
 		METHOD setKomu( nNum )
-		METHOD getPolicy()
+		METHOD getPolicy
 		METHOD setPolicy( cText )
-		METHOD getPolicyPeriod()
+		METHOD getPolicyPeriod
 		METHOD setPolicyPeriod( dDate )
-		METHOD getInsuranceID()
+		METHOD getInsuranceID
 		METHOD setInsuranceID( nNum )
-		METHOD getAttachmentStatus()
+		METHOD getAttachmentStatus
 		METHOD setAttachmentStatus( nNum )
-		METHOD getTFOMSEncoding()
+		METHOD getTFOMSEncoding
 		METHOD setTFOMSEncoding( nNum )
-		METHOD getSinglePolicyNumber()
+		METHOD getSinglePolicyNumber
 		METHOD setSinglePolicyNumber( cText )
-		METHOD getIsDied()
+		METHOD getIsDied
 		METHOD setIsDied( logic )
-		METHOD getSNILS()
+		METHOD getSNILS
 		METHOD setSNILS( cText )
-		METHOD getOutpatientCardNumber()
+		METHOD getOutpatientCardNumber
 		METHOD setOutpatientCardNumber( cText )
-		METHOD getAreaCodeResidence()
+		METHOD getAreaCodeResidence
 		METHOD setAreaCodeResidence( nNum )
-		METHOD getFinanceAreaCode()
+		METHOD getFinanceAreaCode
 		METHOD setFinanceAreaCode( nNum )
-		METHOD getMest_Inog()
+		METHOD getMest_Inog
 		METHOD setMest_Inog( nNum )
-		METHOD getMi_Git()
+		METHOD getMi_Git
 		METHOD setMi_Git( nNum )
-		METHOD getZa_Smo()
-		METHOD setZa_Smo( nNum )
+		METHOD getErrorKartotek
+		METHOD setErrorKartotek( nNum )
 ENDCLASS
 
+METHOD procedure setID( param )	CLASS TPatient
+
+	if isnumber( param ) .and. param != 0
+		::FID := param
+		if ! isnil( ::FExtendInfo )
+			// оповестим класс TExtendInfo
+			if __objHasMsgAssigned( ::FExtendInfo, 'setID' )
+				__objSendMsg( ::FExtendInfo, 'setID', param )
+			endif
+		endif
+		if ! isnil( ::FAddInfo )
+			// оповестим класс TAddInfo
+			if __objHasMsgAssigned( ::FAddInfo, 'setID' )
+				__objSendMsg( ::FAddInfo, 'setID', param )
+			endif
+		endif
+	endif
+	return
+
+METHOD function getAddInfo()	CLASS TPatient
+	
+	if isnil( ::FAddInfo )
+		if ::IsNew
+			::FAddInfo := TPatientAdd():New()
+		else
+			::FAddInfo := TPatientAddDB():GetByID( ::ID )			// получим объект дополнительной информации о пациенте
+		endif
+	endif
+	return ::FAddInfo
+
+METHOD procedure setAddInfo( param )	CLASS TPatient
+
+	if isobject( param ) .and. param:classname == upper( 'TPatientAdd' )
+		::FAddInfo := param
+	endif
+	return
+
+METHOD function getExtendInfo()	CLASS TPatient
+	
+	if isnil( ::FExtendInfo )
+		if ::IsNew
+			::FExtendInfo := TPatientExt():New()
+		else
+			::FExtendInfo := TPatientExtDB():GetByID( ::ID )			// получим объект дополнительной информации о пациенте
+		endif
+	endif
+	return ::FExtendInfo
+
+METHOD procedure setExtendInfo( param )	CLASS TPatient
+
+	if isobject( param ) .and. param:classname == upper( 'TPatientExt' )
+		::FExtendInfo := param
+	endif
+	return
+
+METHOD function getCode()	CLASS TPatient
+	return ::FCode
+	
+METHOD procedure setCode( param )	CLASS TPatient
+
+	if isnumber( param )
+		::FCode := param
+	endif
+	return
+	
 METHOD function getMO_added()	CLASS TPatient
 	return ::FMOadded
 	
@@ -273,39 +379,100 @@ METHOD FUNCTION getFIO1251()		CLASS TPatient
 	return win_OEMToANSI( ::getFIO )
 
 METHOD FUNCTION getFIO()		CLASS TPatient
-	local ret := '', k := 0
-	local cFIO := ::FFIO, i, s := '', s1 := '', ret_arr := { '', '', '' }
+	&& local ret := '', k := 0
+	&& local cFIO := ::FFIO, i, s := '', s1 := '', ret_arr := { '', '', '' }
+
+	&& cFIO := alltrim( cFIO )
+	&& if ::getAnonymous
+		&& ret := upper( cFIO )
+	&& else
+		&& for i := 1 to numtoken(	cFIO,	' '	)
+			&& s1 := alltrim( token( cFIO, ' ', i ) )
+			&& if !empty( s1 )
+				&& ++k
+				&& if k < 3
+					&& ret_arr[ k ] := s1
+				&& else
+					&& s += s1 + ' '
+				&& endif
+			&& endif
+		&& next
+		&& ret_arr[ 3 ] := upper( left( s, 1 ) )  + lower( alltrim( substr( s, 2 ) ) )
+		&& ret := upper( left( ret_arr[ 1 ], 1 ) )  + lower( alltrim( substr( ret_arr[ 1 ], 2 ) ) ) + ;
+			&& ' ' + upper( left( ret_arr[ 2 ], 1 ) )  + lower( alltrim( substr( ret_arr[ 2 ], 2 ) ) ) + ' ' + ;
+			&& if( empty( ret_arr[ 3 ] ), '', upper( left( ret_arr[ 3 ], 1 ) )  + lower( alltrim( substr( ret_arr[ 3 ], 2 ) ) ) )
+	&& endif
+	&& ret := padr( ret, 50 )
+	&& return ret
+	return padr( upper( ::FFIO ), 50 )
+
+METHOD FUNCTION getLastName()		CLASS TPatient
+	return padr( ::FLastName, 40 )
+
+METHOD FUNCTION getFirstName()		CLASS TPatient
+	return padr( ::FFirstName, 40 )
+
+METHOD FUNCTION getMiddleName()	CLASS TPatient
+	return padr( ::FMiddleName, 40 )
+
+METHOD PROCEDURE setLastName( cFIO )		CLASS TPatient
+	
 
 	cFIO := alltrim( cFIO )
-	if ::getAnonymous
-		ret := upper( cFIO )
-	else
-		for i := 1 to numtoken(	cFIO,	' '	)
-			s1 := alltrim( token( cFIO, ' ', i ) )
-			if !empty( s1 )
-				++k
-				if k < 3
-					ret_arr[ k ] := s1
-				else
-					s += s1 + ' '
-				endif
-			endif
-		next
-		ret_arr[ 3 ] := upper( left( s, 1 ) )  + lower( alltrim( substr( s, 2 ) ) )
-		ret := upper( left( ret_arr[ 1 ], 1 ) )  + lower( alltrim( substr( ret_arr[ 1 ], 2 ) ) ) + ;
-			' ' + upper( left( ret_arr[ 2 ], 1 ) )  + lower( alltrim( substr( ret_arr[ 2 ], 2 ) ) ) + ' ' + ;
-			if( empty( ret_arr[ 3 ] ), '', upper( left( ret_arr[ 3 ], 1 ) )  + lower( alltrim( substr( ret_arr[ 3 ], 2 ) ) ) )
+	if cFIO != alltrim( ::FLastName )
+		::FLastName := upper( cFIO )
+		::FFIO := ::FLastName + ' ' + ::FFirstName + ' ' + ::FMiddleName
 	endif
-	return ret
+	return
+
+METHOD PROCEDURE setFirstName( cFIO )		CLASS TPatient
+
+	cFIO := alltrim( cFIO )
+	if cFIO != alltrim( ::FFirstName )
+		::FFirstName := upper( cFIO )
+		::FFIO := ::FLastName + ' ' + ::FFirstName + ' ' + ::FMiddleName
+	endif
+	return
+
+METHOD PROCEDURE setMiddleName( cFIO )		CLASS TPatient
+
+	cFIO := cFIO
+	if alltrim( cFIO ) != alltrim( ::FMiddleName )
+		::FMiddleName := upper( cFIO )
+		::FFIO := ::FLastName + ' ' + ::FFirstName + ' ' + ::FMiddleName
+	endif
+	return
 
 METHOD FUNCTION getAnonymous()		CLASS TPatient
 
 	return if( ::FMest_Inog == 8, .t., .f.)
 	
-METHOD PROCEDURE setFIO( cFIO )		CLASS TPatient
+METHOD FUNCTION getIsDubleName()		CLASS TPatient
 
-	if alltrim( cFIO ) != alltrim( ::FFIO )
-		::FFIO := upper( cFIO )
+	return if( ::FMest_Inog == 9, .t., .f.)
+	
+METHOD PROCEDURE setFIO( cFIO )		CLASS TPatient
+	local i, s := '', s1 := ''
+	local k := 0
+
+	cFIO := upper( alltrim( cFIO ) )
+	if cFIO != alltrim( ::FFIO )
+		::FFIO := cFIO	//upper( cFIO )
+		for i := 1 to numtoken(	cFIO,	' '	)
+			s1 := alltrim( token( cFIO, ' ', i ) )
+			if ! empty( s1 )
+				++k
+				if k < 4
+					if k == 1
+						::FLastName := s1
+					elseif k == 2
+						::FFirstName := s1
+					elseif k == 3
+						::FMiddleName := s1
+					endif
+				endif
+			endif
+		next
 	endif
 	return
 
@@ -324,9 +491,36 @@ METHOD FUNCTION getDOB()		CLASS TPatient
 	return ::FDOB
 
 METHOD PROCEDURE setDOB( dDate )		CLASS TPatient
+	local cy
 
 	if dDate != ::FDOB
 		::FDOB := dDate
+		cy := count_years( dDate, sys_date )
+		if cy < 14
+			::FVzros_Reb := 1	// ребенок
+			::FWorking := 1		// неработающий
+		elseif cy < 18
+			::FVzros_Reb := 2	// подросток
+		else
+			::FVzros_Reb := 0	// взрослый
+		endif
+	endif
+	return
+
+METHOD function getPlaceBorn()		CLASS TPatient
+
+	if ::FExtendInfo == nil
+		::FExtendInfo := TPatientExtDB():getByID( ::ID )
+	endif
+	return ::FExtendInfo:PlaceBorn
+
+METHOD procedure setPlaceBorn( param )		CLASS TPatient
+
+	if ischaracter( param )
+		if ::FExtendInfo == nil
+			::FExtendInfo := TPatientExtDB():getByID( ::ID )
+		endif
+		::FExtendInfo:PlaceBorn := param
 	endif
 	return
 
@@ -335,24 +529,71 @@ METHOD FUNCTION getIsAdult( dDate )		CLASS TPatient
 
 METHOD getPassport()		CLASS TPatient
 
-	if ::_oAddExt == nil
-		::_oAddExt := TPatientExtDB():getByID( ::ID )
+	if ::FExtendInfo == nil
+		::FExtendInfo := TPatientExtDB():getByID( ::ID )
+		if isnil( ::FExtendInfo )
+			::FExtendInfo := TPatientExt():New()
+		endif
+	else
 	endif
-	return ::_oAddExt:Passport
+	return ::FExtendInfo:Passport
+
+METHOD procedure setPassport( param )		CLASS TPatient
+
+	if isobject( param ) .and. param:classname == upper( 'TPassport' )
+		if ::FExtendInfo == nil
+			::FExtendInfo := TPatientExtDB():getByID( ::ID )
+		endif
+		::FExtendInfo:DocumentType := param:DocumentType
+		::FExtendInfo:DocumentSeries := param:DocumentSeries
+		::FExtendInfo:DocumentNumber := param:DocumentNumber
+		::FExtendInfo:IDIssue := param:IDIssue
+		::FExtendInfo:DateIssue := param:DateIssue
+	endif
+	return
+
 
 METHOD getAddressReg()		CLASS TPatient
 
-	if ::_oAddExt == nil
-		::_oAddExt := TPatientExtDB():getByID( ::ID )
+	if ::FExtendInfo == nil
+		::FExtendInfo := TPatientExtDB():getByID( ::ID )
 	endif
-	return TAddressOKATO():New( ::_oAddExt:OKATOG, ::FAddress )
+	return TAddressOKATO():New( ::FExtendInfo:OKATOG, ::FAddress )
+
+METHOD getAddress()		CLASS TPatient
+
+	return ::FAddress
+
+METHOD procedure setAddressReg( param )		CLASS TPatient
+
+	if isobject( param ) .and. ( param:classname == upper( 'TAddressOKATO' ) )
+		::FAddress := param:Address
+		if ::FExtendInfo == nil
+			::FExtendInfo := TPatientExtDB():getByID( ::ID )
+		endif
+		::FExtendInfo:OKATOG := param:OKATO
+	elseif ischaracter( param )
+		::FAddress := param
+	endif
+	return
 
 METHOD getAddressStay()		CLASS TPatient
 
-	if ::_oAddExt == nil
-		::_oAddExt := TPatientExtDB():getByID( ::ID )
+	if ::FExtendInfo == nil
+		::FExtendInfo := TPatientExtDB():getByID( ::ID )
 	endif
-	return TAddressOKATO():New( ::_oAddExt:OKATOP, ::_oAddExt:AddressStay )
+	return TAddressOKATO():New( ::FExtendInfo:OKATOP, ::FExtendInfo:AddressStay )
+
+METHOD procedure setAddressStay( param )		CLASS TPatient
+
+	if isobject( param ) .and. ( param:classname == upper( 'TAddressOKATO' ) )
+		if ::FExtendInfo == nil
+			::FExtendInfo := TPatientExtDB():getByID( ::ID )
+		endif
+		::FExtendInfo:OKATOP := param:OKATO
+		::FExtendInfo:AddressStay := param:Address
+	endif
+	return
 
 METHOD FUNCTION getDistrict()		CLASS TPatient
 	return ::FDistrict
@@ -437,10 +678,10 @@ METHOD PROCEDURE setPolicy( cText )		CLASS TPatient
 METHOD FUNCTION getPolicyPeriod()		CLASS TPatient
 	return ::FPolicyPeriod
 
-METHOD PROCEDURE setPolicyPeriod( dDate )		CLASS TPatient
+METHOD PROCEDURE setPolicyPeriod( param )		CLASS TPatient
 	
-	if dDate != ::FPolicyPeriod
-		::FPolicyPeriod := dDate
+	if isdate( param )
+		::FPolicyPeriod := param
 	endif
 	return
 
@@ -554,48 +795,50 @@ METHOD PROCEDURE setMi_Git( nNum )		CLASS TPatient
 	endif
 	return
 
-METHOD FUNCTION getZa_Smo()		CLASS TPatient
-	return ::FZa_Smo
+METHOD FUNCTION getErrorKartotek()		CLASS TPatient
+	return ::FErrorKartotek
 	
-METHOD PROCEDURE setZa_Smo( nNum )		CLASS TPatient
+METHOD PROCEDURE setErrorKartotek( nNum )		CLASS TPatient
 
-	if nNum != ::FZa_Smo
-		::FZa_Smo := nNum
+	if isnumber( nNum )
+		::FErrorKartotek := nNum
 	endif
 	return
 
-METHOD New( nID, cFIO, cGender, dDOB, cAddress, nDistrict, cBukva, nKod_vu, lNew, lDeleted )		CLASS TPatient
+&& METHOD New( nID, cFIO, cGender, dDOB, cAddress, nDistrict, cBukva, nKod_vu, lNew, lDeleted )		CLASS TPatient
+METHOD New( nID, lNew, lDeleted )		CLASS TPatient
 
 	::super:new( nID, lNew, lDeleted )
 	
-	::FKod	 			:= hb_defaultValue( nID, 0 )			// nKod
-	::FFIO			    := hb_defaultValue( cFIO, space( 50 ) )	// фамилия имя отчество
-	::FGender	 		:= hb_defaultValue( cGender, 'М' )		// пол
-	::FDOB		 		:= hb_defaultValue( dDOB, ctod( '' ) )	// дата рождения
-	::FAddress	 		:= hb_defaultValue( cAddress, space( 50 ) )	// адрес больного
-	::FDistrict 		:= hb_defaultValue( nDistrict, 0 )		// участок
-	::FBukva			:= hb_defaultValue( cBukva, ' ' )		// буква
-	::FKod_VU			:= hb_defaultValue( nKod_vu, 0 )		// код в участке
-	::_oAddInfo			:= TPatientAddDB():GetByID( nID )			// получим объект дополнительной информации о пациенте
+	&& ::FFIO			    := hb_defaultValue( cFIO, space( 50 ) )	// фамилия имя отчество
+	&& ::FGender	 		:= hb_defaultValue( cGender, 'М' )		// пол
+	&& ::FDOB		 		:= hb_defaultValue( dDOB, ctod( '' ) )	// дата рождения
+	&& ::FAddress	 		:= hb_defaultValue( cAddress, space( 50 ) )	// адрес больного
+	&& ::FDistrict 		:= hb_defaultValue( nDistrict, 0 )		// участок
+	&& ::FBukva			:= hb_defaultValue( cBukva, ' ' )		// буква
+	&& ::FKod_VU			:= hb_defaultValue( nKod_vu, 0 )		// код в участке
 	return self
 	
-METHOD getShortFIO( )   CLASS TPatient
-	local cStr, ret := '', k := 0
-	local cFIO := ::FFIO, i, s := '', s1 := '', ret_arr := { '', '', '' }
+METHOD getShortFIO()   CLASS TPatient
+	local ret := ''
+	&& local cStr, ret := '', k := 0
+	&& local cFIO := ::FFIO, i, s := '', s1 := '', ret_arr := { '', '', '' }
 
-	cFIO := alltrim( cFIO )
-	for i := 1 to numtoken(	cFIO,	' '	)
-		s1 := alltrim( token( cFIO, ' ', i ) )
-		if !empty( s1 )
-			++k
-			if k < 3
-				ret_arr[ k ] := s1
-			else
-				s += s1 + ' '
-			endif
-		endif
-	next
-	ret_arr[ 3 ] := alltrim( s )
-	ret := ret_arr[ 1 ] + ' ' + left( ret_arr[ 2 ], 1 ) + '.' + ;
-				if( empty( ret_arr[ 3 ] ), '', left( ret_arr[ 3 ], 1 ) + '.' )
+	&& cFIO := alltrim( cFIO )
+	&& for i := 1 to numtoken(	cFIO,	' '	)
+		&& s1 := alltrim( token( cFIO, ' ', i ) )
+		&& if !empty( s1 )
+			&& ++k
+			&& if k < 3
+				&& ret_arr[ k ] := s1
+			&& else
+				&& s += s1 + ' '
+			&& endif
+		&& endif
+	&& next
+	&& ret_arr[ 3 ] := alltrim( s )
+	&& ret := ret_arr[ 1 ] + ' ' + left( ret_arr[ 2 ], 1 ) + '.' + ;
+				&& if( empty( ret_arr[ 3 ] ), '', left( ret_arr[ 3 ], 1 ) + '.' )
+	ret := ::FLastName + ' ' + left( ::FFirstName, 1 ) + '.' + ;
+				if( empty( ::FMiddleName ), '', left( ::FMiddleName, 1 ) + '.' )
 	return ret

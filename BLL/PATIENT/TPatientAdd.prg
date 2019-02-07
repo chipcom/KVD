@@ -2,6 +2,8 @@
 #include 'common.ch'
 #include 'hbhash.ch'
 #include 'property.ch'
+#include 'chip_mo.ch'
+#include 'edit_spr.ch'
 
 CREATE CLASS TPatientAdd	INHERIT	TBaseObjectBLL
 	VISIBLE:
@@ -21,7 +23,11 @@ CREATE CLASS TPatientAdd	INHERIT	TBaseObjectBLL
 		PROPERTY PN2 AS NUMERIC INDEX 2 READ getPN WRITE setPN //
 		PROPERTY PN3 AS NUMERIC INDEX 3 READ getPN WRITE setPN  //
 	
+		ACCESS setID
+		ASSIGN setID( param )	INLINE ::setID( param )
+
 		METHOD New( nID, lNew, lDeleted )
+		METHOD AttachmentInformation( param )
 	HIDDEN:
 		DATA FCodeTF INIT 0
 		DATA FSinglePolicyNumber INIT space( 20 )
@@ -58,6 +64,14 @@ CREATE CLASS TPatientAdd	INHERIT	TBaseObjectBLL
 		METHOD getPN( nIndex )
 		METHOD setPN( nIndex, param )
 ENDCLASS
+
+// для оповещения классом TPatient
+METHOD procedure setID( param )
+
+	if isnumber( param )
+		::FID := param
+	endif
+	return
 
 METHOD function getCodeTF()		CLASS TPatientAdd
 	return ::FCodeTF
@@ -153,7 +167,7 @@ METHOD function getPC( nIndex )		CLASS TPatientAdd
 
 METHOD procedure setPC( nIndex, param )			CLASS TPatientAdd
 
-	if isnumber( param )
+	if ischaracter( param )
 		switch nIndex
 			case 1
 				::FPC1 := param
@@ -206,6 +220,37 @@ METHOD procedure setPN( nIndex, param )			CLASS TPatientAdd
 		endswitch
 	endif
 	return
+
+METHOD AttachmentInformation( param )			CLASS TPatientAdd
+	local ret := '', s
+
+	if param[ _MO_IS_UCH ]
+		if left( ::FPC2, 1 ) == '1'
+				ret := 'По информации из ТФОМС пациент У_М_Е_Р'
+		elseif ::FMOCodeAttachment == param[ _MO_KOD_TFOMS ]
+			ret := 'Прикреплён '
+			if ! empty( ::FPC4 )
+				ret += 'с ' + alltrim( ::FPC4 ) + ' '
+			elseif ! empty( ::FDateAttachment )
+				ret += 'с ' + date_8( ::FDateAttachment ) + ' '
+			endif
+			ret += 'к нашей МО'
+		else
+			s := alltrim( inieditspr( A__MENUVERT, glob_arr_mo, ::FMOCodeAttachment ) )
+			if empty( s )
+				ret := 'Прикрепление --- неизвестно ---'
+			else
+				ret := ''
+				if ! empty( ::FPC4 )
+					ret += 'с ' + alltrim( ::FPC4) + ' '
+				elseif ! empty( ::FDateAttachment )
+					ret += 'с ' + date_8( ::FDateAttachment ) + ' '
+				endif
+				ret += 'прикреплён к ' + s
+			endif
+		endif
+	endif
+	return ret
 
 METHOD New( nID, lNew, lDeleted )		CLASS TPatientAdd
 

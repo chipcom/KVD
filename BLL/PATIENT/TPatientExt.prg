@@ -12,9 +12,9 @@ CREATE CLASS TPatientExt	INHERIT	TBaseObjectBLL
 		PROPERTY OKATOP WRITE setOKATOP INIT space( 11 )				// ОКАТО места пребывания
 		PROPERTY AddressStay WRITE setAddressStay INIT space( 50 )	// адрес места пребывания
 		PROPERTY IDIssue AS STRING READ getIDIssue WRITE setIDIssue	// кем выдан документ;"справочник ""s_kemvyd"""
-		PROPERTY VidPolicy AS NUMERIC READ getVidPolicy WRITE setVidPolicy	// вид полиса (от 1 до 3);1-старый,2-врем.,3-новый;по умолчанию 1 - старый
-		PROPERTY SeriyaPolicy AS STRING READ getSeriyaPolicy WRITE setSeriyaPolicy	// серия полиса;;для наших - разделить по пробелу
-		PROPERTY NumberPolicy AS STRING READ getNumberPolicy WRITE setNumberPolicy	// номер полиса;;"для иногородних - вынуть из ""k_inog"" и разделить"
+		PROPERTY PolicyType AS NUMERIC READ getPolicyType WRITE setPolicyType	// вид полиса (от 1 до 3);1-старый,2-врем.,3-новый;по умолчанию 1 - старый
+		PROPERTY PolicySeries AS STRING READ getPolicySeries WRITE setPolicySeries	// серия полиса;;для наших - разделить по пробелу
+		PROPERTY PolicyNumber AS STRING READ getPolicyNumber WRITE setPolicyNumber	// номер полиса;;"для иногородних - вынуть из ""k_inog"" и разделить"
 		PROPERTY SMO AS STRING READ getSMO WRITE setSMO		// реестровый номер СМО;;преобразовать из старых кодов в новые, иногродние = 34
 		PROPERTY BeginPolicy AS DATE READ getBeginPolicy WRITE setBeginPolicy	// дата начала действия полиса
 		PROPERTY Strana AS STRING READ getStrana WRITE setStrana	// гражданство пациента (страна);выбор из справочника стран;"поле ""strana"" из файла ""k_inog"" для иногородних, для остальных пусто = РФ"
@@ -48,12 +48,17 @@ CREATE CLASS TPatientExt	INHERIT	TBaseObjectBLL
 		PROPERTY DateLastMunRecipe AS DATE INDEX 2 READ getDate WRITE setDate		// дата последнего муниципального рецепта
 		PROPERTY DateLastFedRecipe AS DATE INDEX 3 READ getDate WRITE setDate		// дата последнего федерального рецепта
 		
+		ACCESS setID
+		ASSIGN setID( param )	INLINE ::setID( param )
+
 		METHOD New( nID, lNew, lDeleted )
-		
+	EXPORTED:		// временно
+		METHOD getInvalid
+		METHOD setInvalid( param )
 	HIDDEN:
-		DATA FVidPolicy INIT 1
-		DATA FSeriyaPolicy INIT space( 10 )
-		DATA FNumberPolicy INIT space( 20 )
+		DATA FPolicyType INIT 1
+		DATA FPolicySeries INIT space( 10 )
+		DATA FPolicyNumber INIT space( 20 )
 		DATA FSMO INIT space( 5 )
 		DATA FBeginPolicy INIT ctod( '' )
 		DATA FStrana INIT space( 3 )
@@ -95,12 +100,12 @@ CREATE CLASS TPatientExt	INHERIT	TBaseObjectBLL
 		METHOD setAddressStay( cText )
 		METHOD getIDIssue
 		METHOD setIDIssue( param )
-		METHOD getVidPolicy
-		METHOD setVidPolicy( param )
-		METHOD getSeriyaPolicy
-		METHOD setSeriyaPolicy( param )
-		METHOD getNumberPolicy
-		METHOD setNumberPolicy( param )
+		METHOD getPolicyType
+		METHOD setPolicyType( param )
+		METHOD getPolicySeries
+		METHOD setPolicySeries( param )
+		METHOD getPolicyNumber
+		METHOD setPolicyNumber( param )
 		METHOD getSMO
 		METHOD setSMO( param )
 		METHOD getBeginPolicy
@@ -135,8 +140,8 @@ CREATE CLASS TPatientExt	INHERIT	TBaseObjectBLL
 		METHOD setIsRegister( param )
 		METHOD getIsPensioner
 		METHOD setIsPensioner( param )
-		METHOD getInvalid
-		METHOD setInvalid( param )
+		&& METHOD getInvalid
+		&& METHOD setInvalid( param )
 		METHOD getDegreeOfDisability
 		METHOD setDegreeOfDisability( param )
 		METHOD getBloodType
@@ -154,6 +159,14 @@ CREATE CLASS TPatientExt	INHERIT	TBaseObjectBLL
 		METHOD getDate( nIndex )
 		METHOD setDate( nIndex, param )
 ENDCLASS
+
+// для оповещения классом TPatient
+METHOD procedure setID( param )					CLASS TPatientExt
+
+	if isnumber( param )
+		::FID := param
+	endif
+	return
 
 METHOD function getDate( nIndex )						CLASS TPatientExt
 	local ret
@@ -458,7 +471,7 @@ METHOD procedure setGorodSelo( param ) CLASS TPatientExt
 	return
 
 METHOD function getBeginPolicy() CLASS TPatientExt
-	return ::FBeginPolicyPolicy
+	return ::FBeginPolicy
 	
 METHOD procedure setBeginPolicy( param ) CLASS TPatientExt
 
@@ -487,33 +500,33 @@ METHOD procedure setSMO( param ) CLASS TPatientExt
 	endif
 	return
 
-METHOD function getNumberPolicy() CLASS TPatientExt
-	return ::FNumberPolicy
+METHOD function getPolicyNumber() CLASS TPatientExt
+	return ::FPolicyNumber
 	
-METHOD procedure setNumberPolicy( param ) CLASS TPatientExt
+METHOD procedure setPolicyNumber( param ) CLASS TPatientExt
 
 	if ischaracter( param )
-		::FNumberPolicy := param
+		::FPolicyNumber := param
 	endif
 	return
 
-METHOD function getSeriyaPolicy() CLASS TPatientExt
-	return ::FSeriyaPolicy
+METHOD function getPolicySeries() CLASS TPatientExt
+	return ::FPolicySeries
 	
-METHOD procedure setSeriyaPolicy( param ) CLASS TPatientExt
+METHOD procedure setPolicySeries( param ) CLASS TPatientExt
 
 	if ischaracter( param )
-		::FSeriyaPolicy := param
+		::FPolicySeries := param
 	endif
 	return
 
-METHOD function getVidPolicy() CLASS TPatientExt
-	return ::FVidPolicy
+METHOD function getPolicyType() CLASS TPatientExt
+	return ::FPolicyType
 	
-METHOD procedure setVidPolicy( param ) CLASS TPatientExt
+METHOD procedure setPolicyType( param ) CLASS TPatientExt
 
 	if isnumber( param ) .and. param > 0 .and. param < 4
-		::FVidPolicy := param
+		::FPolicyType := param
 	endif
 	return
 
@@ -530,6 +543,9 @@ METHOD procedure setIDIssue( param ) CLASS TPatientExt
 	return
 
 METHOD function getPassport ()	CLASS TPatientExt
+	if ::FDocumentType == 0
+		return TPassport():New()
+	endif
 	return TPassport():New( ::FDocumentType, ::FDocumentSeries, ::FDocumentNumber, ;
 								::FIDIssue, ::FDateIssue )
 

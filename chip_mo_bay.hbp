@@ -389,8 +389,8 @@ hbmzip.hbc
 .\EMPLOYEES\Employee.prg
 .\EMPLOYEES\ReportEmployeeOutput.prg
 #
-.\TEST\polikl1_kart.prg
-.\TEST\TBARCODE_OMS.prg
+.\REGISTEROFFICE\polikl1_kart.prg
+.\REGISTEROFFICE\TBARCODE_OMS.prg
 #
 # ä ©«ë ¤«ï ŽŒ‘
 #

@@ -9,7 +9,7 @@ CREATE CLASS TPatientExtDB	INHERIT	TBaseObjectDB
 		METHOD FillFromHash( hbArray )
 	VISIBLE:
 		METHOD New()
-		METHOD Save( oExt )
+		METHOD Save( param )
 		METHOD getByID ( nID )
 		METHOD ReplaceKemVydan( param1, param2 )
 ENDCLASS
@@ -39,6 +39,7 @@ METHOD function ReplaceKemVydan( param1, param2 )		 CLASS TPatientExtDB
 		return
 	endif
 	
+	cOldArea := Select()
 	if ::super:RUse()
 		cAlias := Select()
 		(cAlias)->( dbClearIndex() )			// отключим индексные файлы
@@ -69,56 +70,61 @@ METHOD getByID ( nID )		 CLASS TPatientExtDB
 	endif
 	return ret
 	
-METHOD Save( oExt ) CLASS TPatientExtDB
+METHOD Save( param ) CLASS TPatientExtDB
 	local ret := .f.
 	local aHash := nil
 
-	&& if upper( oExt:classname() ) == upper( 'TPatientExt' )
-		&& aHash := hb_Hash()
-		&& hb_HAutoAdd( aHash, HB_HAUTOADD_ALWAYS )
-		&& hb_hSet( aHash, 'VPOLIS', oExt:VidPolicy )
-		&& hb_hSet( aHash, 'SPOLIS', oExt:SeriyaPolicy )
-		&& hb_hSet( aHash, 'NPOLIS', oExt:NumberPolicy )
-		&& hb_hSet( aHash, 'SMO', oExt:SMO )
-		&& hb_hSet( aHash, 'BEG_POLIS', dtoc4( oExt:BeginPolicy ) )
-		&& hb_hSet( aHash, 'STRANA', oExt:Strana )
-		&& hb_hSet( aHash, 'GOROD_SELO', oExt:GorodSelo )
-		&& hb_hSet( aHash, 'VID_UD', oExt:DocumentType )
-		&& hb_hSet( aHash, 'SER_UD', oExt:DocumentSeries )
-		&& hb_hSet( aHash, 'NOM_UD', oExt:DocumentNumber )
-		&& hb_hSet( aHash, 'KEMVYD', oExt:IDIssue )
-		&& hb_hSet( aHash, 'KOGDAVYD', oExt:DateIssue )
-		&& hb_hSet( aHash, 'KATEGOR', oExt:Category )
-		&& hb_hSet( aHash, 'KATEGOR2', oExt:Category2 )
-		&& hb_hSet( aHash, 'MESTO_R', oExt:PlaceBorn )
-		&& hb_hSet( aHash, 'OKATOG', oExt:OKATOG )
-		&& hb_hSet( aHash, 'OKATOP', oExt:OKATOP )
-		&& hb_hSet( aHash, 'ADRESP', oExt:AddressStay )
-		&& hb_hSet( aHash, 'DMS_SMO', oExt:DMS_SMO )
-		&& hb_hSet( aHash, 'DMS_POLIS', oExt:DMSPolicy )
-		&& hb_hSet( aHash, 'KVARTAL', oExt:Kvartal )
-		&& hb_hSet( aHash, 'KVARTAL_D', oExt:KvartalHouse )
-		&& hb_hSet( aHash, 'PHONE_H', oExt:HomePhone )
-		&& hb_hSet( aHash, 'PHONE_M', oExt:MobilePhone )
-		&& hb_hSet( aHash, 'PHONE_W', oExt:WorkPhone )
-		&& hb_hSet( aHash, 'IS_REGISTR', if( oExt:IsRegistr, 1, 0 )
-		&& hb_hSet( aHash, 'PENSIONER', if( oExt:IsPensioner, 1, 0 )
-		&& hb_hSet( aHash, 'INVALID', oExt:Invalid )
-		&& hb_hSet( aHash, 'INVALID_ST', oExt:DegreeOfDisability )
-		&& hb_hSet( aHash, 'BLOOD_G', oExt:BloodType )
-		&& hb_hSet( aHash, 'BLOOD_R', oExt:RhesusFactor )
-		&& hb_hSet( aHash, 'WEIGHT', oExt:Weight )
-		&& hb_hSet( aHash, 'HEIGHT', oExt:Height )
-		&& hb_hSet( aHash, 'WHERE_KART', oExt:WhereCard )
-		&& hb_hSet( aHash, 'GR_RISK', oExt:GroupRisk )
-		&& hb_hSet( aHash, 'DATE_FL', oExt:DateLastXRay )
-		&& hb_hSet( aHash, 'DATE_MR', oExt:DateLastMunRecipe )
-		&& hb_hSet( aHash, 'DATE_FR', oExt:DateLastFedRecipe )
-		&& if ( ret := ::super:Save( aHash ) ) != -1
-			&& oExt:ID := ret
-			&& oExt:IsNew := .f.
-		&& endif
-	&& endif
+	if upper( param:classname() ) == upper( 'TPatientExt' )
+		aHash := hb_Hash()
+		hb_HAutoAdd( aHash, HB_HAUTOADD_ALWAYS )
+		hb_hSet( aHash, 'VPOLIS',		param:PolicyType )
+		hb_hSet( aHash, 'SPOLIS',		param:PolicySeries )
+		hb_hSet( aHash, 'NPOLIS',		param:PolicyNumber )
+		hb_hSet( aHash, 'SMO',			param:SMO )
+		hb_hSet( aHash, 'BEG_POLIS',	dtoc4( param:BeginPolicy ) )
+		hb_hSet( aHash, 'STRANA',		param:Strana )
+		hb_hSet( aHash, 'GOROD_SELO',	param:GorodSelo )
+		hb_hSet( aHash, 'VID_UD',		param:DocumentType )
+		hb_hSet( aHash, 'SER_UD',		param:DocumentSeries )
+		hb_hSet( aHash, 'NOM_UD',		param:DocumentNumber )
+		hb_hSet( aHash, 'KEMVYD',		param:IDIssue )
+		hb_hSet( aHash, 'KOGDAVYD',		param:DateIssue )
+		hb_hSet( aHash, 'KATEGOR',		param:Category )
+		hb_hSet( aHash, 'KATEGOR2',		param:Category2 )
+		hb_hSet( aHash, 'MESTO_R',		param:PlaceBorn )
+		hb_hSet( aHash, 'OKATOG',		param:OKATOG )
+		hb_hSet( aHash, 'OKATOP',		param:OKATOP )
+		hb_hSet( aHash, 'ADRESP',		param:AddressStay )
+		hb_hSet( aHash, 'DMS_SMO',		param:DMS_SMO )
+		hb_hSet( aHash, 'DMS_POLIS',	param:DMSPolicy )
+		hb_hSet( aHash, 'KVARTAL',		param:Kvartal )
+		hb_hSet( aHash, 'KVARTAL_D',	param:KvartalHouse )
+		hb_hSet( aHash, 'PHONE_H',		param:HomePhone )
+		hb_hSet( aHash, 'PHONE_M',		param:MobilePhone )
+		hb_hSet( aHash, 'PHONE_W',		param:WorkPhone )
+		hb_hSet( aHash, 'KOD_LGOT',		param:CodeLgot )
+		hb_hSet( aHash, 'IS_REGISTR',	if( param:IsRegistr, 1, 0 ) )
+		hb_hSet( aHash, 'PENSIONER',	if( param:IsPensioner, 1, 0 ) )
+		hb_hSet( aHash, 'INVALID',		param:Invalid )
+		hb_hSet( aHash, 'INVALID_ST',	param:DegreeOfDisability )
+		hb_hSet( aHash, 'BLOOD_G',		param:BloodType )
+		hb_hSet( aHash, 'BLOOD_R',		param:RhesusFactor )
+		hb_hSet( aHash, 'WEIGHT',		param:Weight )
+		hb_hSet( aHash, 'HEIGHT',		param:Height )
+		hb_hSet( aHash, 'WHERE_KART',	param:WhereCard )
+		hb_hSet( aHash, 'GR_RISK',		param:GroupRisk )
+		hb_hSet( aHash, 'DATE_FL',		dtoc4( param:DateLastXRay ) )
+		hb_hSet( aHash, 'DATE_MR',		dtoc4( param:DateLastMunRecipe ) )
+		hb_hSet( aHash, 'DATE_FR',		dtoc4( param:DateLastFedRecipe ) )
+
+		hb_hSet(aHash, 'ID',			param:ID )
+		hb_hSet(aHash, 'REC_NEW',		param:IsNew )
+		hb_hSet(aHash, 'DELETED',		param:IsDeleted )
+		if ( ret := ::super:Save( aHash ) ) != -1
+			param:ID := ret
+			param:IsNew := .f.
+		endif
+	endif
 	return ret
 
 METHOD FillFromHash( hbArray )     CLASS TPatientExtDB
@@ -128,9 +134,9 @@ METHOD FillFromHash( hbArray )     CLASS TPatientExtDB
 			hbArray[ 'REC_NEW' ], ;
 			hbArray[ 'DELETED' ] ;
 			)
-	obj:VidPolicy := hbArray[ 'VPOLIS' ]	// вид полиса (от 1 до 3);1-старый,2-врем.,3-новый;по умолчанию 1 - старый
-	obj:SeriyaPolicy := hbArray[ 'SPOLIS' ]			// серия полиса;;для наших - разделить по пробелу
-	obj:NumberPolicy := hbArray[ 'NPOLIS' ]			// номер полиса;;"для иногородних - вынуть из ""k_inog"" и разделить"
+	obj:PolicyType := hbArray[ 'VPOLIS' ]	// вид полиса (от 1 до 3);1-старый,2-врем.,3-новый;по умолчанию 1 - старый
+	obj:PolicySeries := hbArray[ 'SPOLIS' ]			// серия полиса;;для наших - разделить по пробелу
+	obj:PolicyNumber := hbArray[ 'NPOLIS' ]			// номер полиса;;"для иногородних - вынуть из ""k_inog"" и разделить"
 	obj:SMO := hbArray[ 'SMO' ]			// реестровый номер СМО;;преобразовать из старых кодов в новые, иногродние = 34
 	obj:BeginPolicy := c4tod( hbArray[ 'BEG_POLIS' ] )		// дата начала действия полиса ;в формате dtoc4();"поле ""beg_polis"" из файла ""k_inog"" для иногородних"
 	obj:Strana := hbArray[ 'STRANA' ]			// гражданство пациента (страна);выбор из справочника стран;"поле ""strana"" из файла ""k_inog"" для иногородних, для остальных пусто = РФ"
@@ -164,7 +170,7 @@ METHOD FillFromHash( hbArray )     CLASS TPatientExtDB
 	obj:Height := hbArray[ 'HEIGHT' ]			// рост в см
 	obj:WhereCard := hbArray[ 'WHERE_KART' ]		// где амбулаторная карта;0-в регистратуре, 1-у врача, 2-на руках
 	obj:GroupRisk := hbArray[ 'GR_RISK' ]		// группа риска по стандарту горздрава;;если есть REGI_FL.DBF, то взять из него
-	obj:DateLastXRay := hbArray[ 'DATE_FL' ]		// дата последней флюорогрфии;;если есть REGI_FL.DBF, то взять из него
-	obj:DateLastMunRecipe := hbArray[ 'DATE_MR' ]		// дата последнего муниципального рецепта
-	obj:DateLastFedRecipe := hbArray[ 'DATE_FR' ]		// дата последнего федерального рецепта
+	obj:DateLastXRay := c4tod( hbArray[ 'DATE_FL' ] )		// дата последней флюорогрфии;;если есть REGI_FL.DBF, то взять из него
+	obj:DateLastMunRecipe := c4tod( hbArray[ 'DATE_MR' ] )		// дата последнего муниципального рецепта
+	obj:DateLastFedRecipe := c4tod( hbArray[ 'DATE_FR' ] )		// дата последнего федерального рецепта
 	return obj
