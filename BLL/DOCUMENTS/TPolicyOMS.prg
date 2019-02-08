@@ -21,14 +21,14 @@ CREATE CLASS TPolicyOMS
 		PROPERTY AsString READ GetAsString( ... )						// ?a?дaa ?л?н?? до?aм?нa  ?о aaa но?л?нной aоaм aной aaaо??
 		PROPERTY Format READ FFormat WRITE SetFormat						// aоaм aн i aaaо?  ?e?од  ?a?дaa ?л?н?i до?aм?нa 
 		
-		CLASSDATA	aMenuType	AS ARRAY	INIT { { 'aa aeй', 1 }, ;
-												{ '?a?м. ', 2 }, ;
-												{ 'но?eй ', 3 } }
+		CLASSDATA	aMenuType	AS ARRAY	INIT { { 'старый', 1 }, ;
+												{ 'врем. ', 2 }, ;
+												{ 'новый ', 3 } }
 
 		METHOD New( nType, cSeries, cNumber, cSMO, dBeginPolicy, dPolicyPeriod )
 	HIDDEN:
-		// aоaм aн i aaaо? : TYPE - a?? ?ол?a , SSS - a?a?i, NNN - ном?a, ISSUE - ?aо ?eд л, DATE - д a  ?eд c?
-		DATA FFormat INIT 'TYPE SSS u NNN'
+		// формат по умолчанию : TYPE - тип полиса, SSS - серия, NNN - номер, ISSUE - издатель, DATE - дата выдачи
+		DATA FFormat INIT 'TYPE SSS № NNN'
 		DATA FPolicyType	INIT 1
 		DATA FPolicySeries	INIT space( 10 )
 		DATA FPolicyNumber	INIT space( 20 )

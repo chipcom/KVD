@@ -194,44 +194,52 @@ METHOD getDublicateSinglePolicyNumber()		CLASS TPatientDB
 METHOD getByFIOAndDOB( FIO, DOB )		CLASS TPatientDB
 	local hArray := nil
 	local cOldArea, cAlias, cFind := ''
-	local ret := nil
+	local aPatient := {}
 
-	cFind := '1' + PadRight( upper( FIO ), 50 ) + dtos( DOB )
+	FIO := upper( alltrim( FIO ) )
+	cFind := '1' + PadRight( FIO, 50 ) + dtos( DOB )
 	cOldArea := Select()
 	if ::super:RUse()
 		cAlias := Select()
 		(cAlias)->(dbSetOrder( 2 ))
 		if (cAlias)->(dbSeek(cFind, .t.))
-			if !empty( hArray := ::super:currentRecord() )
-				ret := ::FillFromHash( hArray )
-			endif
+			do while alltrim( upper( (cAlias)->FIO ) ) == alltrim( FIO ) .and. (cAlias)->DATE_R == DOB .and.  !(cAlias)->(eof())
+				if ! empty( hArray := ::super:currentRecord() )
+					aadd( aPatient, ::FillFromHash( hArray ) )
+				endif
+				(cAlias)->(dbSkip())
+			enddo
 		endif
 		(cAlias)->( dbCloseArea() )
 		dbSelectArea( cOldArea )
 	endif
-	return ret
+	return aPatient
 
 METHOD getByPolicyOMS( param )		CLASS TPatientDB
 	local hArray := nil
 	local cOldArea, cAlias, cFind := ''
-	local ret := nil
+	local aPatient := {}
 
+	param := alltrim( param )
 	if len( param ) == 16		// длина единого полиса ОМС
-		cFind := '1' + param
+		cFind := '1' + padright( param, 16 )
 		cOldArea := Select()
 		if ::super:RUse()
 			cAlias := Select()
 			(cAlias)->(dbSetOrder( 3 ))
 			if (cAlias)->(dbSeek(cFind, .t.))
-				if !empty( hArray := ::super:currentRecord() )
-					ret := ::FillFromHash( hArray )
-				endif
+				do while alltrim( (cAlias)->POLIS ) == alltrim( param ) .and. !(cAlias)->(eof())
+					if ! empty( hArray := ::super:currentRecord() )
+						aadd( aPatient, ::FillFromHash( hArray ) )
+					endif
+					(cAlias)->(dbSkip())
+				enddo
 			endif
 			(cAlias)->( dbCloseArea() )
 			dbSelectArea( cOldArea )
 		endif
 	endif
-	return ret
+	return aPatient
 
 METHOD Save( oPatient ) CLASS TPatientDB
 	local ret := .f.
