@@ -39,12 +39,14 @@ METHOD FUNCTION GetAsString( format, codepage ) CLASS TAddressOKATO
 		format := ::FFormat
 	endif
 	// изменить для использования форматной строки
-	asString := alltrim( ret_okato_ulica( ::FAddress, ::FOKATO, 1, 0 ) )
-	if ! isnil( codepage )
-		if alltrim( lower( codepage ) ) == 'win-1251'
-			asString := win_OEMToANSI( asString )
+	if ! empty( ::FAddress )
+		asString := alltrim( ret_okato_ulica( ::FAddress, ::FOKATO, 1, 0 ) )
+		if ! isnil( codepage )
+			if alltrim( lower( codepage ) ) == 'win-1251'
+				asString := win_OEMToANSI( asString )
+			endif
 		endif
+		&& // изменить для использования форматной строки
+		&& asString := ret_okato_ulica( alltrim( ::FAddress ), ::FOKATO, 1, 0 )
 	endif
-	&& // изменить для использования форматной строки
-	&& asString := ret_okato_ulica( alltrim( ::FAddress ), ::FOKATO, 1, 0 )
 	return asString

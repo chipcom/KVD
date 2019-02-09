@@ -104,6 +104,7 @@ METHOD FUNCTION GetAsString( format ) CLASS TPassport
 	local len
 	local oPublisher := nil
 	local ch
+	local lExist := .f.
 	
 	if empty( format )
 		format := ::FFormat
@@ -125,25 +126,33 @@ METHOD FUNCTION GetAsString( format ) CLASS TPassport
 		case alltrim( itm ) == 'SSS'
 			if ! empty( ::FDocumentSeries )
 				s := alltrim( ::FDocumentSeries )
+				lExist := .t.
 			endif
 		case alltrim( itm ) == '#SSS'
 			if ! empty( ::FDocumentSeries )
 				s := 'серия ' + alltrim( ::FDocumentSeries )
+				lExist := .t.
 			endif
 		case alltrim( itm ) == 'NNN'
 			if ! empty( ::FDocumentNumber )
 				s := alltrim( ::FDocumentNumber )
+				lExist := .t.
 			endif
 		case alltrim( itm ) == '#NNN'
 			if ! empty( ::FDocumentNumber )
 				s := '№ ' + alltrim( ::FDocumentNumber )
+				lExist := .t.
 			endif
 		case alltrim( itm ) == 'ISSUE'
 			if ( oPublisher := TPublisherDB():getByID( ::FIDIssue ) ) != nil
 				s := alltrim( oPublisher:Name() )
+				lExist := .t.
 			endif
 		case alltrim( itm ) == 'DATE'
-			s := dtoc( ::FDateIssue )
+			if ! empty( ::FDateIssue )
+				s := dtoc( ::FDateIssue )
+				lExist := .t.
+			endif
 		otherwise
 			s := alltrim( tk )	// просто переносим текст
 		endcase
@@ -152,4 +161,7 @@ METHOD FUNCTION GetAsString( format ) CLASS TPassport
 			asString += iif( i = 1, '', tkSep ) + s
         endif
 	next
+	if ! lExist
+		asString := ''
+	endif
 	return asString

@@ -299,7 +299,7 @@ function selectPatientFromList( aPatient )
 										, , 'viewShortCardPatient', , , .t. )
 	return oPatient
 
-* 08.02.19
+* 09.02.19
 function viewShortCardPatient( oPatient )
 	local i, s, s1, mmo_pr, arr := {}
 	local r1 := 14, r2 := 23
@@ -344,39 +344,53 @@ function viewShortCardPatient( oPatient )
 			endif
 			s += mmo_pr
 		endif
-		aadd( arr, s )
+		aadd( arr, { s, color1 } )
 	endif
 	s := 'Ф.И.О.: ' + oPatient:FIO + space( 7 ) + iif( oPatient:Gender == 'М', 'мужчина', 'женщина' )
-	aadd( arr, s )
+	aadd( arr, { s, color1 } )
 	s := 'Дата рождения: ' + full_date( oPatient:DOB ) + space( 5 ) + ;
 		'(' + alltrim( inieditspr( A__MENUVERT, menu_vzros, oPatient:Vzros_Reb ) ) + ')'
 	if ! empty( oPatient:SNILS )
 		s += space( 5 ) + 'СНИЛС: ' + transform( oPatient:SNILS, picture_pf )
 	endif
-	aadd( arr, s )
+	aadd( arr, { s, color1 } )
 	
 	s := oPatient:Passport:AsString()
-	aadd( arr, s )
+	if empty( s )
+		s := 'Документ удостоверяющий личность отсутствует'
+		aadd( arr, { s, 'GR+/B, W+/R', 'W/B, W+/R' } )
+	else
+		aadd( arr, { s, color1 } )
+	endif
 	
-	s := 'Место рождения: ' + alltrim( oPatient:PlaceBorn )
-	aadd( arr, s )
-	s := 'Адрес: '
+	s1 := alltrim( oPatient:PlaceBorn )
+	s := 'Место рождения: ' + if( empty( s1 ), 'отсутствует', s1 )
+	if empty( s1 )
+		aadd( arr, { s, 'GR+/B, W+/R', 'W/B, W+/R' } )
+	else
+		aadd( arr, { s, color1 } )
+	endif
+	
+	s := 'Адрес регистрации: '
 	s1 := oPatient:AddressRegistration:AsString()
 	if ! emptyall( s1 )
 		s += s1
+		aadd( arr, { s, color1 } )
+	else
+		s += 'отсутствует'
+		aadd( arr, { s, 'GR+/B, W+/R', 'W/B, W+/R' } )
 	endif
-	aadd( arr, s )
 	s1 := oPatient:AddressStay:AsString()
 	if !emptyall( s1 )
 		s := 'Адрес пребывания: ' + s1
-		aadd( arr, s )
+		aadd( arr, { s, color1 } )
 	endif
 	s := 'Полис ОМС: '
 	if ! empty( oPatient:AddInfo:SinglePolicyNumber )
 		s += '(ЕНП ' + alltrim( oPatient:AddInfo:SinglePolicyNumber ) + ') '
 	endif
 	s +=  oPatient:PolicyOMS:AsString
-	aadd( arr, s )
+	aadd( arr, { s, color1 } )
 	
 	if eq_any( glob_task, X_REGIST, X_OMS, X_PLATN, X_ORTO, X_KASSA, X_PPOKOJ, X_MO )
 		s := upper( rtrim( inieditspr( A__MENUVERT, menu_rab, oPatient:Working ) ) )
@@ -386,7 +400,7 @@ function viewShortCardPatient( oPatient )
 		if ! empty( oPatient:PlaceWork )
 			s += ',  место работы: ' + oPatient:PlaceWork
 		endif
-		aadd( arr, s )
+		aadd( arr, { s, color1 } )
 	endif
 	if eq_any( glob_task, X_MO )
 		if ! emptyall( oPatient:ExtendInfo:HomePhone, oPatient:ExtendInfo:MobilePhone, oPatient:ExtendInfo:WorkPhone )
@@ -400,10 +414,10 @@ function viewShortCardPatient( oPatient )
 			if ! empty( oPatient:ExtendInfo:WorkPhone )
 				s += ' рабочий ' + oPatient:ExtendInfo:WorkPhone
 			endif
-			aadd( arr, s )
+			aadd( arr, { s, color1 } )
 		endif
 		if ! empty( oPatient:ExtendInfo:CodeLgot )
-			aadd( arr, inieditspr( A__MENUVERT, glob_katl, oPatient:ExtendInfo:CodeLgot ) )
+			aadd( arr, { inieditspr( A__MENUVERT, glob_katl, oPatient:ExtendInfo:CodeLgot ), color1 } )
 		endif
 	endif
 	if eq_any( glob_task, X_REGIST, X_OMS, X_PPOKOJ, X_MO )
@@ -414,7 +428,7 @@ function viewShortCardPatient( oPatient )
 		if ! empty( stm_kategor2 ) .and. oPatient:ExtendInfo:Category2 > 0
 			s += 'Категория МО: ' + rtrim( inieditspr( A__MENUVERT, stm_kategor2, oPatient:ExtendInfo:Category2 ) )
 		endif
-		aadd( arr, s )
+		aadd( arr, { s, color1 } )
 	endif
 	//
 	//
@@ -424,7 +438,7 @@ function viewShortCardPatient( oPatient )
 		if r1 + i - 1 > r2
 			exit
 		endif
-		@ r1 + i - 1, 1 say arr[ i ] color color1
+		@ r1 + i - 1, 1 say arr[ i, 1 ] color arr[ i, 2 ]		//color1
 	next
 	return nil
 
