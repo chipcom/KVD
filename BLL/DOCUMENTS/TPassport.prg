@@ -54,7 +54,7 @@ CREATE CLASS TPassport
 		METHOD New( nType, cSeries, cNumber, nIDIssue, dIssue )
 	HIDDEN:
 		// форматная строка: TYPE - тип документа, SSS - серия, NNN - номер, ISSUE - кто выдал, DATE - дата выдачи
-		DATA FFormat INIT 'TYPE SSS № NNN'
+		DATA FFormat INIT 'TYPE #SSS #NNN'
 		METHOD setDocumentType( nType )
 		METHOD setDocumentSeries( cText )
 		METHOD setDocumentNumber( cText )
@@ -108,11 +108,11 @@ METHOD FUNCTION GetAsString( format ) CLASS TPassport
 	if empty( format )
 		format := ::FFormat
 	endif
-	&& numToken := NumToken( format, ' ' )
-	numToken := NumToken( format )
+	numToken := NumToken( format, ' ' )	// разделитель подстрок только 'пробел'
+	&& numToken := NumToken( format )
 	for i := 1 to numToken
-		&& tk := Token( format, ' ', i )
-		tk := Token( format, , i )
+		tk := Token( format, ' ', i )	// разделитель подстрок только 'пробел'
+		&& tk := Token( format, , i )
 		ch := alltrim( TokenSep( .t. ) )
 		tkSep := ' '
 		itm := upper( tk )
@@ -123,9 +123,21 @@ METHOD FUNCTION GetAsString( format ) CLASS TPassport
 				s := alltrim( ::aMenuType[ j, 4 ] )
 			endif
 		case alltrim( itm ) == 'SSS'
-			s := alltrim( ::FDocumentSeries )
+			if ! empty( ::FDocumentSeries )
+				s := alltrim( ::FDocumentSeries )
+			endif
+		case alltrim( itm ) == '#SSS'
+			if ! empty( ::FDocumentSeries )
+				s := 'серия ' + alltrim( ::FDocumentSeries )
+			endif
 		case alltrim( itm ) == 'NNN'
-			s := alltrim( ::FDocumentNumber )
+			if ! empty( ::FDocumentNumber )
+				s := alltrim( ::FDocumentNumber )
+			endif
+		case alltrim( itm ) == '#NNN'
+			if ! empty( ::FDocumentNumber )
+				s := '№ ' + alltrim( ::FDocumentNumber )
+			endif
 		case alltrim( itm ) == 'ISSUE'
 			if ( oPublisher := TPublisherDB():getByID( ::FIDIssue ) ) != nil
 				s := alltrim( oPublisher:Name() )

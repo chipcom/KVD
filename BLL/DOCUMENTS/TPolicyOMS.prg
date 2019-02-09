@@ -28,7 +28,7 @@ CREATE CLASS TPolicyOMS
 		METHOD New( nType, cSeries, cNumber, cSMO, dBeginPolicy, dPolicyPeriod )
 	HIDDEN:
 		// формат по умолчанию : TYPE - тип полиса, SSS - серия, NNN - номер, ISSUE - издатель, DATE - дата выдачи
-		DATA FFormat INIT 'TYPE SSS № NNN'
+		DATA FFormat INIT 'TYPE SSS #NNN'
 		DATA FPolicyType	INIT 1
 		DATA FPolicySeries	INIT space( 10 )
 		DATA FPolicyNumber	INIT space( 20 )
@@ -182,11 +182,11 @@ METHOD FUNCTION GetAsString( format ) CLASS TPolicyOMS
 	if empty( format )
 		format := ::FFormat
 	endif
-	&& numToken := NumToken( format, ' ' )
-	numToken := NumToken( format )
+	numToken := NumToken( format, ' ' )	// разделитель подстрок только 'пробел'
+	&& numToken := NumToken( format )
 	for i := 1 to numToken
-		&& tk := Token( format, ' ', i )
-		tk := Token( format, , i )
+		tk := Token( format, ' ', i )	// разделитель подстрок только 'пробел'
+		&& tk := Token( format, , i )
 		ch := alltrim( TokenSep( .t. ) )
 		tkSep := ' '
 		itm := upper( tk )
@@ -199,13 +199,23 @@ METHOD FUNCTION GetAsString( format ) CLASS TPolicyOMS
 		case alltrim( itm ) == 'SSS'
 			s := alltrim( ::FPolicySeries )
 		case alltrim( itm ) == 'NNN'
-			if ::FPolicyType == 3
-				s := transform( ::FPolicyNumber, picture_number )
-			else
-				s := ::FPolicyNumber
+			if ! empty( ::FPolicyNumber )
+				if ::FPolicyType == 3
+					s := transform( ::FPolicyNumber, picture_number )
+				else
+					s := ::FPolicyNumber
+				endif
+				s := alltrim( s )
 			endif
-			&& s := alltrim( ::FPolicyNumber )
-			s := alltrim( s )
+		case alltrim( itm ) == '#NNN'
+			if ! empty( ::FPolicyNumber )
+				if ::FPolicyType == 3
+					s := transform( ::FPolicyNumber, picture_number )
+				else
+					s := ::FPolicyNumber
+				endif
+				s := '№ ' + alltrim( s )
+			endif
 		case alltrim( itm ) == 'ISSUE'
 			if alltrim( ::FSMO ) == '34' .and. len( alltrim( ::FSMO ) ) == 2
 				mnameismo := ret_inogSMO_name_bay(  ::FOwner, self )
@@ -235,7 +245,7 @@ METHOD FUNCTION GetAsString( format ) CLASS TPolicyOMS
 		case alltrim( itm ) == 'DATE'
 			s := dtoc( ::FBeginPolicy )
 		otherwise
-			s := alltrim( tk )	// ?aоaaо ??a?ноa?м a??aa
+			s := alltrim( tk )	// просто переносим текст
 		endcase
 		s += ch
 		if s != nil
