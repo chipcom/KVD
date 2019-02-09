@@ -211,7 +211,10 @@ function polikl1_kart()
 			aPatient := {}
 			aPatient := TPatientDB():getByFIOAndDOB( oBarcodeOMS:FIO, oBarcodeOMS:DOB )
 			if len( aPatient ) == 0
+			
 				fl_bad_shablon := .t.
+				viewBarcodePolicyOMS( oBarcodeOMS )
+				
 			elseif len( aPatient ) == 1
 				mkod := aPatient[ 1 ]:ID
 				m1kod_k := glob_kartotek := aPatient[ 1 ]:ID
@@ -257,6 +260,36 @@ function polikl1_kart()
 									{ 's_polis'  , s_polis      }, ;
 									{ 's_snils'  , s_snils      } } )
 	return mkod
+
+* 09.02.19
+function viewBarcodePolicyOMS( oBarcodeOMS )
+	local oBox, oPatient
+	local k, arr := {}
+
+	oBox := TBox():New( 10, 0, 19, 79, .t. )
+	oBox:Color := color1
+	oBox:Caption := 'Информация с бумажного полиса ОМС'
+	oBox:View()
+	
+	@ 11,2 say 'Ф.И.О.: ' + padr( oBarcodeOMS:FIO, 50 ) + space( 7 ) + iif( oBarcodeOMS:Gender == 'М', 'мужчина', 'женщина' ) color color8
+	@ 12,2 say 'Дата рождения: ' + full_date( oBarcodeOMS:DOB ) color color8
+	@ 13,2 say 'Полис ОМС: ' + alltrim( oBarcodeOMS:PolicyNumber ) color color8
+	
+	&& FillScrArea(20,0,24,79,"░",color1)
+	k := 2
+	arr := { ' Отказ от записи ', ' Добавить в картотеку ' }
+	k := f_alert( { padc( 'Выберите действие', 60, '.' ) }, arr, ;
+			k, 'W+/N', 'N+/N', 20, , 'W+/N,N/BG' )
+	
+	if k == 2
+		oPatient := TPatient():New()
+		oPatient:FIO := oBarcodeOMS:FIO
+		oPatient:Gender := oBarcodeOMS:Gender
+		oPatient:DOB := oBarcodeOMS:DOB
+		oPatient:Policy := oBarcodeOMS:PolicyNumber		// пока так, переделать на TPolicyOMS
+	endif
+alertx(oPatient:FIO)
+	return nil
 
 * 08.02.19
 function selectPatientFromList( aPatient )
