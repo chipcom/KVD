@@ -215,6 +215,7 @@ function polikl1_kart()
 //				fl_bad_shablon := .t.
 				oPatient := viewBarcodePolicyOMS( oBarcodeOMS )
 				if ! isnil( oPatient )
+					edit_kartotek( oPatient:ID )	// откроем экран редактирования пациента
 					mkod := oPatient:ID
 					m1kod_k := glob_kartotek := oPatient:ID
 					glob_k_fio := alltrim( oPatient:FIO )
@@ -223,6 +224,9 @@ function polikl1_kart()
 				endif
 				
 			elseif len( aPatient ) == 1
+				if alltrim( aPatient[ 1 ]:PolicyOMS:PolicyNumber ) != alltrim( oBarcodeOMS:PolicyNumber )
+					hb_alert( { 'ВНИМАНИЕ!', 'Номер полиса ОМС записанный в картотеке отличается от предъявленного!' }, , , 10 )
+				endif
 				mkod := aPatient[ 1 ]:ID
 				m1kod_k := glob_kartotek := aPatient[ 1 ]:ID
 				glob_k_fio := alltrim( aPatient[ 1 ]:FIO )
