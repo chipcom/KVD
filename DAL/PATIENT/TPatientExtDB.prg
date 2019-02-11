@@ -65,7 +65,7 @@ METHOD getByID ( nID )		 CLASS TPatientExtDB
 	local hArray := nil
 	local ret := nil
 	
-	if ( nID != 0 ) .and. !empty( hArray := ::super:GetById( nId ) )
+	if ( nID != 0 ) .and. !empty( hArray := ::super:GetById( nID ) )
 		ret := ::FillFromHash( hArray )
 	endif
 	return ret

@@ -231,6 +231,7 @@ hbmzip.hbc
 .\BLL\DOCUMENTS\TPublisher.prg
 .\BLL\DOCUMENTS\TPassport.prg
 .\BLL\DOCUMENTS\TPolicyOMS.prg
+.\BLL\DOCUMENTS\TBARCODE_OMS.prg
 #
 .\BLL\ICD10\TICD10.prg
 .\BLL\ICD10\TICD10Class.prg
@@ -409,6 +410,7 @@ hbmzip.hbc
 .\EQUIPMENT\TSettingEquipment.prg
 .\EQUIPMENT\TSettingKKT.prg
 .\EQUIPMENT\ComPort\TComDescription.prg
+.\EQUIPMENT\Scanner\BarcodeScanner.prg
 #
 ## контрольно-кассовая техника
 ##
@@ -430,7 +432,6 @@ hbmzip.hbc
 # Регистратура
 .\RegisterOffice\funcRegisterOffice.prg
 .\RegisterOffice\polikl1_kart.prg
-.\RegisterOffice\TBARCODE_OMS.prg
 #
 # файлы для ОМС
 #

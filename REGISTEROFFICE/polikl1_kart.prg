@@ -8,7 +8,7 @@
 
 #include 'hbthread.ch'
 
-***** 08.02.19 возврат кода по картотеке
+***** 10.02.19 возврат кода по картотеке
 function polikl1_kart()
 	static sesc := '^<Esc>^ выход  '
 	static senter := '^<Enter>^ ввод  '
@@ -212,8 +212,15 @@ function polikl1_kart()
 			aPatient := TPatientDB():getByFIOAndDOB( oBarcodeOMS:FIO, oBarcodeOMS:DOB )
 			if len( aPatient ) == 0
 			
-				fl_bad_shablon := .t.
-				viewBarcodePolicyOMS( oBarcodeOMS )
+//				fl_bad_shablon := .t.
+				oPatient := viewBarcodePolicyOMS( oBarcodeOMS )
+				if ! isnil( oPatient )
+					mkod := oPatient:ID
+					m1kod_k := glob_kartotek := oPatient:ID
+					glob_k_fio := alltrim( oPatient:FIO )
+					aPatient := {}
+					oPatient := nil
+				endif
 				
 			elseif len( aPatient ) == 1
 				mkod := aPatient[ 1 ]:ID
@@ -261,21 +268,22 @@ function polikl1_kart()
 									{ 's_snils'  , s_snils      } } )
 	return mkod
 
-* 09.02.19
+* 10.02.19
 function viewBarcodePolicyOMS( oBarcodeOMS )
-	local oBox, oPatient
+	local oBox, oPatient, oPolicyOMS
 	local k, arr := {}
+	local oDoubleFIO
 
-	oBox := TBox():New( 10, 0, 19, 79, .t. )
+	oBox := TBox():New( 10, 9, 15, 70, .t. )
 	oBox:Color := color1
 	oBox:Caption := 'Информация с бумажного полиса ОМС'
 	oBox:View()
 	
-	@ 11,2 say 'Ф.И.О.: ' + padr( oBarcodeOMS:FIO, 50 ) + space( 7 ) + iif( oBarcodeOMS:Gender == 'М', 'мужчина', 'женщина' ) color color8
-	@ 12,2 say 'Дата рождения: ' + full_date( oBarcodeOMS:DOB ) color color8
-	@ 13,2 say 'Полис ОМС: ' + alltrim( oBarcodeOMS:PolicyNumber ) color color8
+	@ 11, 11 say 'Ф.И.О.: ' + padr( oBarcodeOMS:FIO, 50 ) color color8
+	@ 12, 11 say 'Дата рождения: ' + full_date( oBarcodeOMS:DOB ) color color8
+	@ 13, 11 say 'Пол: ' + iif( oBarcodeOMS:Gender == 'М', 'мужской', 'женский' ) color color8
+	@ 14, 11 say 'Полис ОМС: ' + alltrim( oBarcodeOMS:PolicyNumber ) color color8
 	
-	&& FillScrArea(20,0,24,79,"░",color1)
 	k := 2
 	arr := { ' Отказ от записи ', ' Добавить в картотеку ' }
 	k := f_alert( { padc( 'Выберите действие', 60, '.' ) }, arr, ;
@@ -286,10 +294,32 @@ function viewBarcodePolicyOMS( oBarcodeOMS )
 		oPatient:FIO := oBarcodeOMS:FIO
 		oPatient:Gender := oBarcodeOMS:Gender
 		oPatient:DOB := oBarcodeOMS:DOB
-		oPatient:Policy := oBarcodeOMS:PolicyNumber		// пока так, переделать на TPolicyOMS
+		if TwoWordFamImOt( oBarcodeOMS:LastName ) ;
+					.or. TwoWordFamImOt( oBarcodeOMS:FirstName ) ;
+					.or. TwoWordFamImOt( oBarcodeOMS:MiddleName )
+			oPatient:Mest_Inog := 9
+		endif
+		TPatientDB():Save( oPatient )
+		
+		oPolicyOMS := TPolicyOMS():New()
+		oPolicyOMS:PolicyNumber := oBarcodeOMS:PolicyNumber
+		oPolicyOMS:PolicyType := 3
+		oPatient:PolicyOMS := oPolicyOMS
+		TPatientDB():Save( oPatient )
+		
+		if oPatient:Mest_Inog == 9
+			oDoubleFIO := TDubleFIODB():getByPatient( oPatient )
+			if isnil( oDoubleFIO )
+				oDoubleFIO := TDubleFIO():New()
+				oDoubleFIO:IDPatient := oPatient:ID
+			endif
+			oDoubleFIO:LastName := oBarcodeOMS:LastName
+			oDoubleFIO:FirstName := oBarcodeOMS:FirstName
+			oDoubleFIO:MiddleName := oBarcodeOMS:MiddleName
+			TDubleFIODB():Save( oDoubleFIO )
+		endif
 	endif
-alertx(oPatient:FIO)
-	return nil
+	return oPatient
 
 * 08.02.19
 function selectPatientFromList( aPatient )
@@ -474,69 +504,3 @@ function viewShortCardPatient( oPatient )
 		@ r1 + i - 1, 1 say arr[ i, 1 ] color arr[ i, 2 ]		//color1
 	next
 	return nil
-
-* 06.02.19
-* функция чтения штрих-кода со сканера подключенного к COM-порту
-function readBarcode( oWinPort )//, oBarcodeOMS )
-	local cString := space( 132 )
-	local lCTSHold, lDSRHold, lDCDHold, lXoffHold, lXoffSent, nInQueue, nOutQueue
-	local sResult
-	
-	do while .t.
-		if oWinPort:QueueStatus( @lCTSHold, @lDSRHold, @lDCDHold, @lXoffHold, @lXoffSent, @nInQueue, @nOutQueue )
-			if nInQueue == 132
-				oWinPort:Read( @cString, 132 )
-				cString	:= substr( cString, 1, 130 )
-				sResult := decodeBarcodeOMS( cString )
-				keyboard chr( K_ENTER )
-				oBarcodeOMS:Fill( sResult )
-			endif
-		else
-		endif
-		hb_idleSleep( 0.5 )
-	enddo
-	return nil
-
-* 05.02.19
-#pragma BEGINDUMP
-	#include "hbapi.h"
-	#include "hbapiitm.h"
-	#include <windows.h>
-	#include "pcbcode.h"
-
-	HB_FUNC( DECODEBARCODEOMS )
-	{
-		BYTE * szText    = hb_parcx( 1 );
-		
-		PHB_ITEM pArray = hb_itemArrayNew( 8 );
-		DWORD dwLength	= 130;
-		BARCODE_T1 T1   = {0};
-		
-		char strPolicy[ 16 ];
-		char strDateDOB[ 10 ];
-		char strDateExpire[ 10 ];
-		
-		DWORD dwError		= DecomposeBarcode( &szText[ 0 ], dwLength, &T1 );
-		
-		if( dwError != 0 ) {
-//			ErrorExit("DecomposeBarcode");
-		}
-		
-		hb_arraySetNI( pArray, 1, T1.Header.BarcodeType );
-		sprintf( strPolicy, "%016I64d", T1.Body.PolicyNumber );
-		hb_arraySetC( pArray, 2, strPolicy );
-		
-		hb_arraySetC( pArray, 3, T1.Body.LastName );
-		hb_arraySetC( pArray, 4, T1.Body.FirstName );
-		hb_arraySetC( pArray, 5, T1.Body.Patronymic );
-		hb_arraySetC( pArray, 6, T1.Body.Sex == 1 ? "М":"Ж" );
-		
-		sprintf( strDateDOB, "%02d.%02d.%04d", T1.Body.BirthDate.wDay,T1.Body.BirthDate.wMonth,T1.Body.BirthDate.wYear );
-		hb_arraySetC( pArray, 7, strDateDOB );
-		
-		sprintf( strDateExpire, "%02d.%02d.%04d", T1.Body.ExpireDate.wDay,T1.Body.ExpireDate.wMonth,T1.Body.ExpireDate.wYear );
-		hb_arraySetC( pArray, 8, strDateExpire );
-	  
-		hb_itemReturnRelease( pArray );
-	}
-#pragma ENDDUMP

@@ -244,6 +244,7 @@ METHOD getByPolicyOMS( param )		CLASS TPatientDB
 METHOD Save( oPatient ) CLASS TPatientDB
 	local ret := .f.
 	local aHash := nil
+	local oPatientExt, oPatientAdd
 
 // доработать	
 	if upper( oPatient:classname ) == upper( 'TPatient' )
@@ -290,14 +291,23 @@ METHOD Save( oPatient ) CLASS TPatientDB
 		hb_hSet(aHash, 'DELETED',		oPatient:IsDeleted )
 		if ( ret := ::super:Save( aHash ) ) != -1
 			oPatient:ID := ret
-			oPatient:IsNew := .f.
 			// сохраним зависимые объекты
+			if oPatient:IsNew
+				oPatientExt := TPatientExt():New()
+				oPatientExt:ID := oPatient:ID
+				oPatient:ExtendInfo := oPatientExt
+				
+				oPatientAdd := TPatientAdd():New()
+				oPatientAdd:ID := oPatient:ID
+				oPatient:AddInfo := oPatientAdd
+			endif
 			if ! isnil( oPatient:ExtendInfo )
 				TPatientExtDB():Save( oPatient:ExtendInfo )
 			endif
 			if ! isnil( oPatient:AddInfo )
 				TPatientAddDB():Save( oPatient:AddInfo )
 			endif
+			oPatient:IsNew := .f.
 		endif
 	endif
 	return ret
