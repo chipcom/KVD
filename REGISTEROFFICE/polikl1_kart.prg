@@ -235,6 +235,9 @@ function polikl1_kart()
 				buf := savescreen()
 				oPatient := selectPatientFromList( aPatient )
 				if ! isnil( oPatient )
+					if alltrim( aPatient[ 1 ]:PolicyOMS:PolicyNumber ) != alltrim( oBarcodeOMS:PolicyNumber )
+						hb_alert( { 'ВНИМАНИЕ!', 'Номер полиса ОМС записанный в картотеке отличается от предъявленного!' }, , , 10 )
+					endif
 					mkod := oPatient:ID
 					m1kod_k := glob_kartotek := oPatient:ID
 					glob_k_fio := alltrim( oPatient:FIO )
