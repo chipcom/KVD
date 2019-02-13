@@ -52,5 +52,7 @@ METHOD New( cPortName )						CLASS TComDescription
 
 	if ischaracter( cPortName ) .and. upper( Left( cPortName, 3 ) ) == 'COM'
 		::FPort := alltrim( cPortName )
+	else
+		::FPort := 'нет'
 	endif
 	return self

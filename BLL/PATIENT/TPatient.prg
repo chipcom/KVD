@@ -883,7 +883,7 @@ METHOD New( nID, lNew, lDeleted )		CLASS TPatient
 
 	::super:new( nID, lNew, lDeleted )
 	return self
-
+	
 METHOD getShortFIO()   CLASS TPatient
 	local ret := ''
 	&& local cStr, ret := '', k := 0

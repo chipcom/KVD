@@ -140,6 +140,8 @@ CREATE CLASS TPatientExt	INHERIT	TBaseObjectBLL
 		METHOD setIsRegister( param )
 		METHOD getIsPensioner
 		METHOD setIsPensioner( param )
+		&& METHOD getInvalid
+		&& METHOD setInvalid( param )
 		METHOD getDegreeOfDisability
 		METHOD setDegreeOfDisability( param )
 		METHOD getBloodType

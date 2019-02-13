@@ -28,6 +28,9 @@ hbmzip.hbc
 -lhbnf
 -lhbtip
 
+# библиотека для декодирования штрих-кодов ОМС
+-lpcbcode.lib
+
 
 #-shared
 -mt
@@ -41,7 +44,7 @@ hbmzip.hbc
 #..\2.x\mo_main.prg
 #..\2.x\mo_kart.prg
 ..\2.x\mo_func.prg
-..\2.x\mo_func1.prg
+#..\2.x\mo_func1.prg
 ..\2.x\mo_func2.prg
 #..\2.x\mo_adres.prg
 ..\2.x\mo_init.prg
@@ -105,6 +108,7 @@ hbmzip.hbc
 #
 #
 ### главный модуль программы
+.\mo_func1.prg
 .\mo_main_bay.prg
 .\mo_spr_bay.prg
 .\mo_spri_bay.prg
@@ -127,6 +131,7 @@ hbmzip.hbc
 .\DAL\ORGANIZATION\TCompanyDMSDB.prg
 .\DAL\ORGANIZATION\TCompanyVzaimDB.prg
 .\DAL\ORGANIZATION\T_Mo_podrDB.prg
+#.\DAL\ORGANIZATION\CommonDB.prg
 .\DAL\ORGANIZATION\TPlaceOfWorkDB.prg
 .\DAL\ORGANIZATION\T_mo_smoDB.prg
 #
@@ -229,6 +234,7 @@ hbmzip.hbc
 .\BLL\DOCUMENTS\TPublisher.prg
 .\BLL\DOCUMENTS\TPassport.prg
 .\BLL\DOCUMENTS\TPolicyOMS.prg
+.\BLL\DOCUMENTS\TBARCODE_OMS.prg
 #
 .\BLL\ICD10\TICD10.prg
 .\BLL\ICD10\TICD10Class.prg
@@ -411,6 +417,7 @@ hbmzip.hbc
 .\EQUIPMENT\TSettingEquipment.prg
 .\EQUIPMENT\TSettingKKT.prg
 .\EQUIPMENT\ComPort\TComDescription.prg
+.\EQUIPMENT\Scanner\BarcodeScanner.prg
 #
 ## контрольно-кассовая техника
 ##
@@ -433,6 +440,8 @@ hbmzip.hbc
 .\RegisterOffice\editKartotek.prg
 .\RegisterOffice\viewDuplicateRecords.prg
 .\RegisterOffice\funcRegisterOffice.prg
+.\RegisterOffice\funcRegisterOffice.prg
+.\RegisterOffice\polikl1_kart.prg
 #
 # Адресная информация
 .\AddressInfo\mo_adres_bay.PRG

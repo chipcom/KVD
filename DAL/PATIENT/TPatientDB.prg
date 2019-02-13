@@ -13,8 +13,10 @@ CREATE CLASS TPatientDB	INHERIT	TBaseObjectDB
 		METHOD NextKod_VU( nDistrict )
 		METHOD getDublicateSinglePolicyNumber()
 		METHOD getByFIOAndDOB ( cFIO, DOB )
-		METHOD getByPolicy( sPolicy, nPolicy )
+		&& METHOD getByPolicy( sPolicy, nPolicy )
 		METHOD getBySNILS ( cSNILS )
+		METHOD getByPolicyOMS( FIO, DOB )
+		METHOD getByFIOAndDOB( param )
 	HIDDEN:
 		METHOD FillFromHash( hbArray )
 		METHOD updateFIO( oPatient )
@@ -56,50 +58,6 @@ METHOD getBySNILS( cSNILS )		 CLASS TPatientDB
 	if ::super:RUse()
 		cAlias := Select()
 		(cAlias)->(dbSetOrder( 5 ))
-		if (cAlias)->( dbSeek( cFind ) )
-			if ! empty( hArray := ::super:currentRecord() )
-				ret := ::FillFromHash( hArray )
-			endif
-		endif
-		(cAlias)->( dbCloseArea() )
-		dbSelectArea( cOldArea )
-	endif
-	return ret
-
-METHOD getByPolicy( sPolicy, nPolicy )		 CLASS TPatientDB
-	local ret
-	local hArray := nil
-	local cFind
-	local cOldArea, cAlias
-	local cPolicy
-
-	cPolicy := make_polis( sPolicy, nPolicy ) // серия и номер страхового полиса
-	cFind := '1' + padr( cPolicy, 17 )
-	cOldArea := Select()
-	if ::super:RUse()
-		cAlias := Select()
-		(cAlias)->(dbSetOrder( 3 ))
-		if (cAlias)->( dbSeek( cFind ) )
-			if ! empty( hArray := ::super:currentRecord() )
-				ret := ::FillFromHash( hArray )
-			endif
-		endif
-		(cAlias)->( dbCloseArea() )
-		dbSelectArea( cOldArea )
-	endif
-	return ret
-
-METHOD getByFIOAndDOB( cFIO, DOB )		 CLASS TPatientDB
-	local ret
-	local hArray := nil
-	local cFind
-	local cOldArea, cAlias
-
-	cFind := '1' + padr( cFIO, 50 ) + dtos( DOB )
-	cOldArea := Select()
-	if ::super:RUse()
-		cAlias := Select()
-		(cAlias)->(dbSetOrder( 2 ))
 		if (cAlias)->( dbSeek( cFind ) )
 			if ! empty( hArray := ::super:currentRecord() )
 				ret := ::FillFromHash( hArray )
@@ -232,9 +190,61 @@ METHOD getDublicateSinglePolicyNumber()		CLASS TPatientDB
 	endif
 	return ret
 
+
+METHOD getByFIOAndDOB( FIO, DOB )		CLASS TPatientDB
+	local hArray := nil
+	local cOldArea, cAlias, cFind := ''
+	local aPatient := {}
+
+	FIO := upper( alltrim( FIO ) )
+	cFind := '1' + PadRight( FIO, 50 ) + dtos( DOB )
+	cOldArea := Select()
+	if ::super:RUse()
+		cAlias := Select()
+		(cAlias)->(dbSetOrder( 2 ))
+		if (cAlias)->(dbSeek(cFind, .t.))
+			do while alltrim( upper( (cAlias)->FIO ) ) == alltrim( FIO ) .and. (cAlias)->DATE_R == DOB .and.  !(cAlias)->(eof())
+				if ! empty( hArray := ::super:currentRecord() )
+					aadd( aPatient, ::FillFromHash( hArray ) )
+				endif
+				(cAlias)->(dbSkip())
+			enddo
+		endif
+		(cAlias)->( dbCloseArea() )
+		dbSelectArea( cOldArea )
+	endif
+	return aPatient
+
+METHOD getByPolicyOMS( param )		CLASS TPatientDB
+	local hArray := nil
+	local cOldArea, cAlias, cFind := ''
+	local aPatient := {}
+
+	param := alltrim( param )
+	if len( param ) == 16		// длина единого полиса ОМС
+		cFind := '1' + padright( param, 16 )
+		cOldArea := Select()
+		if ::super:RUse()
+			cAlias := Select()
+			(cAlias)->(dbSetOrder( 3 ))
+			if (cAlias)->(dbSeek(cFind, .t.))
+				do while alltrim( (cAlias)->POLIS ) == alltrim( param ) .and. !(cAlias)->(eof())
+					if ! empty( hArray := ::super:currentRecord() )
+						aadd( aPatient, ::FillFromHash( hArray ) )
+					endif
+					(cAlias)->(dbSkip())
+				enddo
+			endif
+			(cAlias)->( dbCloseArea() )
+			dbSelectArea( cOldArea )
+		endif
+	endif
+	return aPatient
+
 METHOD Save( oPatient ) CLASS TPatientDB
 	local ret := .f.
 	local aHash := nil
+	local oPatientExt, oPatientAdd
 
 // доработать	
 	if upper( oPatient:classname ) == upper( 'TPatient' )
@@ -281,14 +291,23 @@ METHOD Save( oPatient ) CLASS TPatientDB
 		hb_hSet(aHash, 'DELETED',		oPatient:IsDeleted )
 		if ( ret := ::super:Save( aHash ) ) != -1
 			oPatient:ID := ret
-			oPatient:IsNew := .f.
 			// сохраним зависимые объекты
+			if oPatient:IsNew
+				oPatientExt := TPatientExt():New()
+				oPatientExt:ID := oPatient:ID
+				oPatient:ExtendInfo := oPatientExt
+				
+				oPatientAdd := TPatientAdd():New()
+				oPatientAdd:ID := oPatient:ID
+				oPatient:AddInfo := oPatientAdd
+			endif
 			if ! isnil( oPatient:ExtendInfo )
 				TPatientExtDB():Save( oPatient:ExtendInfo )
 			endif
 			if ! isnil( oPatient:AddInfo )
 				TPatientAddDB():Save( oPatient:AddInfo )
 			endif
+			oPatient:IsNew := .f.
 		endif
 	endif
 	return ret

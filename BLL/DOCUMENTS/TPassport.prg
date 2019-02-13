@@ -55,7 +55,7 @@ CREATE CLASS TPassport
 		METHOD New( nType, cSeries, cNumber, nIDIssue, dIssue )
 	HIDDEN:
 		// форматная строка: TYPE - тип документа, SSS - серия, NNN - номер, ISSUE - кто выдал, DATE - дата выдачи
-		DATA FFormat INIT 'TYPE SSS № NNN'
+		DATA FFormat INIT 'TYPE #SSS #NNN'
 		METHOD setDocumentType( nType )
 		METHOD setDocumentSeries( cText )
 		METHOD setDocumentNumber( cText )
@@ -106,15 +106,16 @@ METHOD FUNCTION GetAsString( format ) CLASS TPassport
 	local len
 	local oPublisher := nil
 	local ch
+	local lExist := .f.
 	
 	if empty( format )
 		format := ::FFormat
 	endif
-	&& numToken := NumToken( format, ' ' )
-	numToken := NumToken( format )
+	numToken := NumToken( format, ' ' )	// разделитель подстрок только 'пробел'
+	&& numToken := NumToken( format )
 	for i := 1 to numToken
-		&& tk := Token( format, ' ', i )
-		tk := Token( format, , i )
+		tk := Token( format, ' ', i )	// разделитель подстрок только 'пробел'
+		&& tk := Token( format, , i )
 		ch := alltrim( TokenSep( .t. ) )
 		tkSep := ' '
 		itm := upper( tk )
@@ -125,16 +126,36 @@ METHOD FUNCTION GetAsString( format ) CLASS TPassport
 				s := alltrim( ::aMenuType[ j, 4 ] )
 			endif
 		case alltrim( itm ) == 'SSS'
-			s := alltrim( ::FDocumentSeries )
+			if ! empty( ::FDocumentSeries )
+				s := alltrim( ::FDocumentSeries )
+				lExist := .t.
+			endif
+		case alltrim( itm ) == '#SSS'
+			if ! empty( ::FDocumentSeries )
+				s := 'серия ' + alltrim( ::FDocumentSeries )
+				lExist := .t.
+			endif
 		case alltrim( itm ) == 'NNN'
-			s := alltrim( ::FDocumentNumber )
+			if ! empty( ::FDocumentNumber )
+				s := alltrim( ::FDocumentNumber )
+				lExist := .t.
+			endif
+		case alltrim( itm ) == '#NNN'
+			if ! empty( ::FDocumentNumber )
+				s := '№ ' + alltrim( ::FDocumentNumber )
+				lExist := .t.
+			endif
 		case alltrim( itm ) == 'ISSUE'
 			oPublisher := TPublisherDB():getByID( ::FIDIssue )
 			if ! isnil( oPublisher )
 				s := alltrim( oPublisher:Name() )
+				lExist := .t.
 			endif
 		case alltrim( itm ) == 'DATE'
-			s := dtoc( ::FDateIssue )
+			if ! empty( ::FDateIssue )
+				s := dtoc( ::FDateIssue )
+				lExist := .t.
+			endif
 		otherwise
 			s := alltrim( tk )	// просто переносим текст
 		endcase
@@ -143,4 +164,7 @@ METHOD FUNCTION GetAsString( format ) CLASS TPassport
 			asString += iif( i = 1, '', tkSep ) + s
         endif
 	next
+	if ! lExist
+		asString := ''
+	endif
 	return asString
