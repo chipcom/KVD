@@ -440,7 +440,6 @@ hbmzip.hbc
 .\RegisterOffice\editKartotek.prg
 .\RegisterOffice\viewDuplicateRecords.prg
 .\RegisterOffice\funcRegisterOffice.prg
-.\RegisterOffice\funcRegisterOffice.prg
 .\RegisterOffice\polikl1_kart.prg
 #
 # Адресная информация
