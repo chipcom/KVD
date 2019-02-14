@@ -25,6 +25,13 @@ function Services( obj )
 	local aProperties := {}
 	
 	private oContract := obj
+	private pr_kod_vr := 0, pr_kod_as := 0, ;
+		pr_med1 := 0, pr_med2 := 0, pr_med3 := 0, ;
+		pr_san1 := 0, pr_san2 := 0, pr_san3 := 0
+	// объекты для обработки
+	private oDoctor := nil, oAssistant := nil
+	private oNurse1 := nil, oNurse2 := nil, oNurse3 := nil
+	private oAidman1 := nil, oAidman2 := nil, oAidman3 := nil
 
 	blkEditObject := { | oBrowse, aObjects, object, nKey | editListServices( oBrowse, aObjects, object, nKey, oContract ) }
 	aEdit := if( ! oContract:HasCheque .or. hb_user_curUser:IsAdmin(), { .t., .t., .t., .f. }, { .f., .f., .f., .f. } )
@@ -134,9 +141,9 @@ function editService( oPayService, aObjects, nKey, lPayment, oContract )
 	local oldDateService
 	
 	// объекты для обработки
-	private oDoctor := nil, oAssistant := nil
-	private oNurse1 := nil, oNurse2 := nil, oNurse3 := nil
-	private oAidman1 := nil, oAidman2 := nil, oAidman3 := nil
+	&& private oDoctor := nil, oAssistant := nil
+	&& private oNurse1 := nil, oNurse2 := nil, oNurse3 := nil
+	&& private oAidman1 := nil, oAidman2 := nil, oAidman3 := nil
 	// поля ввода
 	private mtabn_vr := 0, mvrach := space( 35 )
 	private mtabn_as := 0, massist := space( 35 )
@@ -150,15 +157,24 @@ function editService( oPayService, aObjects, nKey, lPayment, oContract )
 		oTmp 		:= TService():New()
 	else
 		oTmp 		:= oPayService:Service
+		
+		oDoctor		:= oPayService:Doctor
+		oAssistant	:= oPayService:Assistant
+		oNurse1		:= oPayService:Nurse1
+		oNurse2		:= oPayService:Nurse2
+		oNurse3		:= oPayService:Nurse3
+		oAidman1	:= oPayService:Aidman1
+		oAidman2	:= oPayService:Aidman2
+		oAidman3	:= oPayService:Aidman3
 	endif
-	oDoctor		:= oPayService:Doctor
-	oAssistant	:= oPayService:Assistant
-	oNurse1		:= oPayService:Nurse1
-	oNurse2		:= oPayService:Nurse2
-	oNurse3		:= oPayService:Nurse3
-	oAidman1	:= oPayService:Aidman1
-	oAidman2	:= oPayService:Aidman2
-	oAidman3	:= oPayService:Aidman3
+	&& oDoctor		:= oPayService:Doctor
+	&& oAssistant	:= oPayService:Assistant
+	&& oNurse1		:= oPayService:Nurse1
+	&& oNurse2		:= oPayService:Nurse2
+	&& oNurse3		:= oPayService:Nurse3
+	&& oAidman1	:= oPayService:Aidman1
+	&& oAidman2	:= oPayService:Aidman2
+	&& oAidman3	:= oPayService:Aidman3
 	// заполним необходимые поля ввода
 	oldDateService := oPayService:Date
 	if empty( oPayService:Date )

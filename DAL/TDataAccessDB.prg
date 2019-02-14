@@ -82,6 +82,7 @@ METHOD Save( hbArray )	 CLASS TDataAccessDB
 	local cOldArea, cAlias
 	local lExist := .f., xValue := nil, nId := 0, lNew := .f.
 	local retCode := -1
+	local fl := .t.
 	
 	lExist := hb_hHaskey( hbArray, 'ID' )
 	if lExist
@@ -100,10 +101,29 @@ METHOD Save( hbArray )	 CLASS TDataAccessDB
 						if !::G_RLock( FOREVER )
 							return retCode
 						endif
-					else
+					 else
 						do while (cAlias)->(lastrec()) < nId
 							(cAlias)->( dbAppend() )
 						enddo
+					endif
+				elseif upper( ::oDescr:AliasFile() ) == upper( 'TPatientDB' ) ;
+						.or. upper( ::oDescr:AliasFile() ) == upper( 'THumanDB' ) ;
+						.or. upper( ::oDescr:AliasFile() ) == upper( 'TContractPayerDB' ) ;
+						.or. upper( ::oDescr:AliasFile() ) == upper( 'TContractServiceDB' )
+					(cAlias)->(dbSetOrder( 1 ))
+					if (cAlias)->(dbSeek( str( 0, 7 ), .t.))
+						do while (cAlias)->KOD == 0 .and. !(cAlias)->(eof())
+							if ::G_RLock( FOREVER )
+								fl := .f.
+								exit
+							endif
+							(cAlias)->(dbSkip())
+						enddo
+					endif
+					if fl  // добавление записи
+						if !::AddRecN()
+							return retCode
+						endif
 					endif
 				else
 					if !::AddRecN()

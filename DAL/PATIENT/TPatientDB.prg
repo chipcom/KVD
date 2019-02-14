@@ -244,7 +244,6 @@ METHOD getByPolicyOMS( param )		CLASS TPatientDB
 METHOD Save( oPatient ) CLASS TPatientDB
 	local ret := .f.
 	local aHash := nil
-	local oPatientExt, oPatientAdd
 
 // доработать	
 	if upper( oPatient:classname ) == upper( 'TPatient' )
@@ -293,13 +292,9 @@ METHOD Save( oPatient ) CLASS TPatientDB
 			oPatient:ID := ret
 			// сохраним зависимые объекты
 			if oPatient:IsNew
-				oPatientExt := TPatientExt():New()
-				oPatientExt:ID := oPatient:ID
-				oPatient:ExtendInfo := oPatientExt
+				oPatient:ExtendInfo:ID := oPatient:ID
 				
-				oPatientAdd := TPatientAdd():New()
-				oPatientAdd:ID := oPatient:ID
-				oPatient:AddInfo := oPatientAdd
+				oPatient:AddInfo:ID := oPatient:ID
 			endif
 			if ! isnil( oPatient:ExtendInfo )
 				TPatientExtDB():Save( oPatient:ExtendInfo )
