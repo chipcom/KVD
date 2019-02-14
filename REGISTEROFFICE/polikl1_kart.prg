@@ -26,6 +26,7 @@ function polikl1_kart()
 	local oWinPort
 	local pThID
 	local oPatient, aPatient
+	local aMessagePolicy := { 'ВНИМАНИЕ!', 'Номер полиса ОМС записанный в картотеке отличается от предъявленного!' }
 	
 	public oBarcodeOMS := TBARCODE_OMS():New()	// для объекта считанного штрих-кода ОМС
 	&& local oBarcodeOMS := TBARCODE_OMS():New()	// для объекта считанного штрих-кода ОМС
@@ -206,6 +207,7 @@ function polikl1_kart()
 			mkod := aPatient[ 1 ]:ID
 			m1kod_k := glob_kartotek := aPatient[ 1 ]:ID
 			glob_k_fio := alltrim( aPatient[ 1 ]:FIO )
+			s_shablon := alltrim( aPatient[ 1 ]:FIO )
 			aPatient := {}
 		elseif len( aPatient ) == 0
 			aPatient := {}
@@ -219,28 +221,33 @@ function polikl1_kart()
 					mkod := oPatient:ID
 					m1kod_k := glob_kartotek := oPatient:ID
 					glob_k_fio := alltrim( oPatient:FIO )
+					s_shablon := alltrim( oPatient:FIO )
 					aPatient := {}
 					oPatient := nil
 				endif
 				
 			elseif len( aPatient ) == 1
 				if alltrim( aPatient[ 1 ]:PolicyOMS:PolicyNumber ) != alltrim( oBarcodeOMS:PolicyNumber )
-					hb_alert( { 'ВНИМАНИЕ!', 'Номер полиса ОМС записанный в картотеке отличается от предъявленного!' }, , , 10 )
+					&& hb_alert( { 'ВНИМАНИЕ!', 'Номер полиса ОМС записанный в картотеке отличается от предъявленного!' }, , , 10 )
+					hb_alert( aMessagePolicy, , , 10 )
 				endif
 				mkod := aPatient[ 1 ]:ID
 				m1kod_k := glob_kartotek := aPatient[ 1 ]:ID
 				glob_k_fio := alltrim( aPatient[ 1 ]:FIO )
+				s_shablon := alltrim( aPatient[ 1 ]:FIO )
 				aPatient := {}
 			elseif len( aPatient ) > 1
 				buf := savescreen()
 				oPatient := selectPatientFromList( aPatient )
 				if ! isnil( oPatient )
 					if alltrim( aPatient[ 1 ]:PolicyOMS:PolicyNumber ) != alltrim( oBarcodeOMS:PolicyNumber )
-						hb_alert( { 'ВНИМАНИЕ!', 'Номер полиса ОМС записанный в картотеке отличается от предъявленного!' }, , , 10 )
+						&& hb_alert( { 'ВНИМАНИЕ!', 'Номер полиса ОМС записанный в картотеке отличается от предъявленного!' }, , , 10 )
+						hb_alert( aMessagePolicy, , , 10 )
 					endif
 					mkod := oPatient:ID
 					m1kod_k := glob_kartotek := oPatient:ID
 					glob_k_fio := alltrim( oPatient:FIO )
+					s_shablon := alltrim( oPatient:FIO )
 					aPatient := {}
 					oPatient := nil
 				else
@@ -254,6 +261,7 @@ function polikl1_kart()
 				mkod := oPatient:ID
 				m1kod_k := glob_kartotek := oPatient:ID
 				glob_k_fio := alltrim( oPatient:FIO )
+				s_shablon := alltrim( oPatient:FIO )
 				aPatient := {}
 				oPatient := nil
 			else
@@ -306,7 +314,7 @@ function viewBarcodePolicyOMS( oBarcodeOMS )
 					.or. TwoWordFamImOt( oBarcodeOMS:MiddleName )
 			oPatient:Mest_Inog := 9
 		endif
-		TPatientDB():Save( oPatient )
+		&& TPatientDB():Save( oPatient )
 		
 		oPolicyOMS := TPolicyOMS():New()
 		oPolicyOMS:PolicyNumber := oBarcodeOMS:PolicyNumber
