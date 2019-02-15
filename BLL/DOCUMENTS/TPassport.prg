@@ -1,5 +1,6 @@
 #include 'hbclass.ch'
 #include 'property.ch'
+#include 'common.ch'
 
 // класс описывающий удостоверение личности физического лица, не привязан к конкретному файлу БД
 CREATE CLASS TPassport
@@ -95,18 +96,19 @@ METHOD PROCEDURE setDateIssue( dIssue )	CLASS TPassport
 METHOD FUNCTION GetAsString( format ) CLASS TPassport
 	local asString := ''
 	local numToken
-	local i
+	local i := 0
 	local j := 0
-	local s
-	local tk
+	local s := ''
+	local tk := ''
 	local tkSep
-	local itm
-	local len
+	local itm := ''
+	local len := 0
 	local oPublisher := nil
-	local ch
+	local ch := ''
 	local lExist := .f.
 	
-	if empty( format )
+	&& if empty( format )
+	if isnil( format )
 		format := ::FFormat
 	endif
 	numToken := NumToken( format, ' ' )	// разделитель подстрок только 'пробел'

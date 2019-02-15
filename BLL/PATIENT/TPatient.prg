@@ -882,11 +882,13 @@ METHOD PROCEDURE setErrorKartotek( nNum )		CLASS TPatient
 METHOD New( nID, lNew, lDeleted )		CLASS TPatient
 
 	::super:new( nID, lNew, lDeleted )
-	
-	::FAddInfo := TPatientAdd():New()
-	::FExtendInfo := TPatientExt():New()
+
+	if ::IsNew
+		::FAddInfo := TPatientAdd():New()
+		::FExtendInfo := TPatientExt():New()
+	endif
 	return self
-	
+
 METHOD getShortFIO()   CLASS TPatient
 	local ret := ''
 	&& local cStr, ret := '', k := 0
