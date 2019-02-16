@@ -101,13 +101,11 @@ function edit_kartotek_( mkod, _top_r, _bot_r, fl_oms, _Human_kod )
 	mpol := oPatient:Gender
 	
 	oPassport := oPatient:Passport
-	oPassport:Format := 'TYPE SSS № NNN выдан: DATE'
-	if oPassport:DocumentType == 0
-		mPassport := padr( 'Ввести данные об удостоверении личности', 60 )
-		&& sPassport := padr( 'Ввести данные об удостоверении личности', 60 )
-	else
+	oPassport:Format := 'TYPE #SSS #NNN #DATE'
+	if oPassport:Exists
 		mPassport := padr( oPassport:AsString, 60 )
-		&& sPassport := padr( oPassport:AsString, 60 )
+	else
+		mPassport := padr( 'Ввести данные об удостоверении личности', 60 )
 	endif
 	
 	oAddressRegistration := oPatient:AddressRegistration
@@ -145,12 +143,10 @@ function edit_kartotek_( mkod, _top_r, _bot_r, fl_oms, _Human_kod )
 	
 	oPolicyOMS	:= oPatient:PolicyOMS
 	
-	oPolicyOMS:Format := 'ISSUE TYPE SSS № NNN'
+	oPolicyOMS:Format := 'ISSUE TYPE #SSS #NNN'
 	if empty( oPolicyOMS:PolicyNumber )
-		&& sPolicyOMS := padr( 'Ввести данные о полисе ОМС', 65 )
 		mPolicyOMS := padr( 'Ввести данные о полисе ОМС', 65 )
 	else
-		&& sPolicyOMS := padr( oPolicyOMS:AsString, 65 )
 		mPolicyOMS := padr( oPolicyOMS:AsString, 65 )
 	endif
 	
@@ -366,9 +362,8 @@ function edit_kartotek_( mkod, _top_r, _bot_r, fl_oms, _Human_kod )
 		@ row(), 30 say '==>' get mvzros_reb := inieditspr_bay( A__MENUVERT, TPatient():aMenuCategory, oPatient:Vzros_Reb ) when .f. color cDataCSay
 		@ row(), 50 say 'СНИЛС' get oPatient:SNILS pict picture_pf valid { | oGet | roCheckSNILS( oGet, oPatient ) } when m1anonim == 0
 		
-		&& @ ++ix, 1 say 'Уд-ие личности:' get sPassport ;
 		@ ++ix, 1 say 'Уд-ие личности:' get mPassport ;
-					color if( oPassport:DocumentType == 0, 'GR+/B, W+/R', 'W/B, W+/R' ) ;
+					color if( ! oPassport:Exists, 'GR+/B, W+/R', 'W/B, W+/R' ) ;
 					reader { | x | menu_reader( x, { { | k, r, c | inputPassport( oPatient, oPassport, oForeignCitizen ) } }, A__FUNCTION, , , .f. ) } ;
 					when m1anonim == 0
 					&& valid { | | ( inputPassport( oPatient, oPassport, oForeignCitizen, @sPassport ), update_gets() ) } ;
