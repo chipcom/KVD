@@ -22,52 +22,37 @@ CREATE CLASS TDistrictDoctor	INHERIT	TBaseObjectBLL
 		DATA FIDDoctorAdult	INIT 0
 		DATA FIDDoctorChild	INIT 0
 
-		METHOD getDistrict
+		METHOD getDistrict				INLINE ::FDistrict
 		METHOD setDistrict( nVal )
-		METHOD getIS
+		METHOD getIS						INLINE ::FIS
 		METHOD setIS( nVal )
-		METHOD getIDDoctor
+		METHOD getIDDoctor				INLINE ::FIDDoctor
 		METHOD setIDDoctor( nVal )
-		METHOD getIDDoctorAdult
+		METHOD getIDDoctorAdult			INLINE ::FIDDoctorAdult
 		METHOD setIDDoctorAdult( nVal )
-		METHOD getIDDoctorChild
+		METHOD getIDDoctorChild			INLINE ::FIDDoctorChild
 		METHOD setIDDoctorChild( nVal )
 ENDCLASS
-
-METHOD FUNCTION getDistrict()	CLASS TDistrictDoctor
-	return ::FDistrict
 
 METHOD PROCEDURE setDistrict( nVal )	CLASS TDistrictDoctor
 
 	::FDistrict := nVal
 	return
 
-METHOD FUNCTION getIS()	CLASS TDistrictDoctor
-	return ::FIS
-
 METHOD PROCEDURE setIS( nVal )	CLASS TDistrictDoctor
 
 	::FIS := nVal
 	return
-
-METHOD FUNCTION getIDDoctor()	CLASS TDistrictDoctor
-	return ::FIDDoctor
 
 METHOD PROCEDURE setIDDoctor( nVal )	CLASS TDistrictDoctor
 
 	::FIDDoctor := nVal
 	return
 
-METHOD FUNCTION getIDDoctorAdult()	CLASS TDistrictDoctor
-	return ::FIDDoctorAdult
-
 METHOD PROCEDURE setIDDoctorAdult( nVal )	CLASS TDistrictDoctor
 
 	::FIDDoctorAdult := nVal
 	return
-
-METHOD FUNCTION getIDDoctorChild()	CLASS TDistrictDoctor
-	return ::FIDDoctorChild
 
 METHOD PROCEDURE setIDDoctorChild( nVal )	CLASS TDistrictDoctor
 
@@ -76,11 +61,6 @@ METHOD PROCEDURE setIDDoctorChild( nVal )	CLASS TDistrictDoctor
 
 METHOD New( nID, nDistrict, nIs, nIdDoctor, nIdDoctorAdult, nIdDoctorChild, lNew, lDeleted )  CLASS TDistrictDoctor
 
-	&& HB_Default( @nDistrict, 0 ) 
-	&& HB_Default( @nIs, 0 )
-	&& HB_Default( @nIdDoctor, 0 ) 
-	&& HB_Default( @nIdDoctorAdult, 0 )
-	&& HB_Default( @nIdDoctorChild, 0 ) 
 
 	::super:new( nID, lNew, lDeleted )
 	
