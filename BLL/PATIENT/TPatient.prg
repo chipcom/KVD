@@ -138,23 +138,23 @@ CREATE CLASS TPatient	INHERIT	TBaseObjectBLL
 		METHOD getPN( index )
 		METHOD setPN( index, param )
 		
-		METHOD getCode
+		METHOD getCode					INLINE ::FCode
 		METHOD setCode( param )
-		METHOD getFIO
+		METHOD getFIO					INLINE padr( upper( ::FFIO ), 50 )
 		METHOD setFIO( cFIO )
-		METHOD getLastName
+		METHOD getLastName				INLINE padr( ::FLastName, 40 )
 		METHOD setLastName( cFIO )
-		METHOD getFirstName
+		METHOD getFirstName				INLINE padr( ::FFirstName, 40 )
 		METHOD setFirstName( cFIO )
-		METHOD getMiddleName
+		METHOD getMiddleName				INLINE padr( ::FMiddleName, 40 )
 		METHOD setMiddleName( cFIO )
-		METHOD getFIO1251
-		METHOD getAnonymous
-		METHOD getIsDubleName
+		METHOD getFIO1251				INLINE win_OEMToANSI( ::getFIO )
+		METHOD getAnonymous				INLINE if( ::FMest_Inog == 8, .t., .f.)
+		METHOD getIsDubleName			INLINE if( ::FMest_Inog == 9, .t., .f.)
 		METHOD getShortFIO
-		METHOD getGender
+		METHOD getGender					INLINE ::FGender
 		METHOD setGender( cGender )
-		METHOD getDOB
+		METHOD getDOB						INLINE ::FDOB
 		METHOD setDOB( dDate )
 		METHOD getPlaceBorn
 		METHOD setPlaceBorn( param )
@@ -166,47 +166,47 @@ CREATE CLASS TPatient	INHERIT	TBaseObjectBLL
 		METHOD setAddressReg( param )
 		METHOD getAddressStay
 		METHOD setAddressStay( param )
-		METHOD getDistrict
+		METHOD getDistrict				INLINE ::FDistrict
 		METHOD setDistrict( nNum )
-		METHOD getBukva
+		METHOD getBukva					INLINE ::FBukva
 		METHOD setBukva( ch )
-		METHOD getKod_VU
+		METHOD getKod_VU					INLINE ::FKod_VU
 		METHOD setKod_VU( nNum )
-		METHOD getVzros_Reb
+		METHOD getVzros_Reb				INLINE ::FVzros_Reb
 		METHOD setVzros_Reb( nNum )
-		METHOD getPlaceWork
+		METHOD getPlaceWork				INLINE ::FPlaceWork
 		METHOD setPlaceWork( cText )
-		METHOD getWorking
+		METHOD getWorking				INLINE ::FWorking
 		METHOD setWorking( nNum )
-		METHOD getKomu
+		METHOD getKomu					INLINE ::FKomu
 		METHOD setKomu( nNum )
-		METHOD getPolicy
+		METHOD getPolicy					INLINE ::FPolicy
 		METHOD setPolicy( cText )
-		METHOD getPolicyPeriod
+		METHOD getPolicyPeriod			INLINE ::FPolicyPeriod
 		METHOD setPolicyPeriod( dDate )
-		METHOD getInsuranceID
+		METHOD getInsuranceID			INLINE ::FInsuranceID
 		METHOD setInsuranceID( nNum )
-		METHOD getAttachmentStatus
+		METHOD getAttachmentStatus		INLINE ::FAttachmentStatus
 		METHOD setAttachmentStatus( nNum )
-		METHOD getTFOMSEncoding
+		METHOD getTFOMSEncoding			INLINE ::FTFOMSEncoding
 		METHOD setTFOMSEncoding( nNum )
-		METHOD getSinglePolicyNumber
+		METHOD getSinglePolicyNumber		INLINE ::FSinglePolicyNumber
 		METHOD setSinglePolicyNumber( cText )
-		METHOD getIsDied
+		METHOD getIsDied					INLINE ::FIsDied
 		METHOD setIsDied( logic )
-		METHOD getSNILS
+		METHOD getSNILS					INLINE ::FSNILS
 		METHOD setSNILS( cText )
-		METHOD getOutpatientCardNumber
+		METHOD getOutpatientCardNumber	INLINE ::FOutpatientCardNumber
 		METHOD setOutpatientCardNumber( cText )
-		METHOD getAreaCodeResidence
+		METHOD getAreaCodeResidence		INLINE ::FAreaCodeResidence
 		METHOD setAreaCodeResidence( nNum )
-		METHOD getFinanceAreaCode
+		METHOD getFinanceAreaCode		INLINE ::FFinanceAreaCode
 		METHOD setFinanceAreaCode( nNum )
-		METHOD getMest_Inog
+		METHOD getMest_Inog				INLINE ::FMest_Inog
 		METHOD setMest_Inog( nNum )
-		METHOD getMi_Git
+		METHOD getMi_Git					INLINE ::FMi_Git
 		METHOD setMi_Git( nNum )
-		METHOD getErrorKartotek
+		METHOD getErrorKartotek			INLINE ::FErrorKartotek
 		METHOD setErrorKartotek( nNum )
 		METHOD getPolicyOMS
 		METHOD setPolicyOMS( param )
@@ -270,8 +270,8 @@ METHOD procedure setExtendInfo( param )	CLASS TPatient
 	endif
 	return
 
-METHOD function getCode()	CLASS TPatient
-	return ::FCode
+//METHOD function getCode()	CLASS TPatient
+//	return ::FCode
 	
 METHOD procedure setCode( param )	CLASS TPatient
 
@@ -385,10 +385,10 @@ METHOD function forJSON()    CLASS TPatient
 	&& endif
 	return hItem
 
-METHOD FUNCTION getFIO1251()		CLASS TPatient
-	return win_OEMToANSI( ::getFIO )
+//METHOD FUNCTION getFIO1251()		CLASS TPatient
+//	return win_OEMToANSI( ::getFIO )
 
-METHOD FUNCTION getFIO()		CLASS TPatient
+//METHOD FUNCTION getFIO()		CLASS TPatient
 	&& local ret := '', k := 0
 	&& local cFIO := ::FFIO, i, s := '', s1 := '', ret_arr := { '', '', '' }
 
@@ -414,16 +414,16 @@ METHOD FUNCTION getFIO()		CLASS TPatient
 	&& endif
 	&& ret := padr( ret, 50 )
 	&& return ret
-	return padr( upper( ::FFIO ), 50 )
+//	return padr( upper( ::FFIO ), 50 )
 
-METHOD FUNCTION getLastName()		CLASS TPatient
-	return padr( ::FLastName, 40 )
+//METHOD FUNCTION getLastName()		CLASS TPatient
+//	return padr( ::FLastName, 40 )
 
-METHOD FUNCTION getFirstName()		CLASS TPatient
-	return padr( ::FFirstName, 40 )
+//METHOD FUNCTION getFirstName()		CLASS TPatient
+//	return padr( ::FFirstName, 40 )
 
-METHOD FUNCTION getMiddleName()	CLASS TPatient
-	return padr( ::FMiddleName, 40 )
+//METHOD FUNCTION getMiddleName()	CLASS TPatient
+//	return padr( ::FMiddleName, 40 )
 
 METHOD PROCEDURE setLastName( cFIO )		CLASS TPatient
 	
@@ -453,13 +453,11 @@ METHOD PROCEDURE setMiddleName( cFIO )		CLASS TPatient
 	endif
 	return
 
-METHOD FUNCTION getAnonymous()		CLASS TPatient
-
-	return if( ::FMest_Inog == 8, .t., .f.)
+//METHOD FUNCTION getAnonymous()		CLASS TPatient
+//	return if( ::FMest_Inog == 8, .t., .f.)
 	
-METHOD FUNCTION getIsDubleName()		CLASS TPatient
-
-	return if( ::FMest_Inog == 9, .t., .f.)
+//METHOD FUNCTION getIsDubleName()		CLASS TPatient
+//	return if( ::FMest_Inog == 9, .t., .f.)
 	
 METHOD PROCEDURE setFIO( cFIO )		CLASS TPatient
 	local i, s := '', s1 := ''
@@ -486,8 +484,8 @@ METHOD PROCEDURE setFIO( cFIO )		CLASS TPatient
 	endif
 	return
 
-METHOD FUNCTION getGender()		CLASS TPatient
-	return ::FGender
+//METHOD FUNCTION getGender()		CLASS TPatient
+//	return ::FGender
 
 METHOD PROCEDURE setGender( cGender )		CLASS TPatient
 	local ch := upper( left( cGender, 1 ) )
@@ -497,8 +495,8 @@ METHOD PROCEDURE setGender( cGender )		CLASS TPatient
 	endif
 	return
 
-METHOD FUNCTION getDOB()		CLASS TPatient
-	return ::FDOB
+//METHOD FUNCTION getDOB()		CLASS TPatient
+//	return ::FDOB
 
 METHOD PROCEDURE setDOB( dDate )		CLASS TPatient
 	local cy
@@ -669,8 +667,8 @@ METHOD procedure setAddressStay( param )		CLASS TPatient
 	endif
 	return
 
-METHOD FUNCTION getDistrict()		CLASS TPatient
-	return ::FDistrict
+//METHOD FUNCTION getDistrict()		CLASS TPatient
+//	return ::FDistrict
 	
 METHOD PROCEDURE setDistrict( nNum )		CLASS TPatient
 
@@ -679,8 +677,8 @@ METHOD PROCEDURE setDistrict( nNum )		CLASS TPatient
 	endif
 	return
 
-METHOD FUNCTION getBukva()		CLASS TPatient
-	return ::FBukva
+//METHOD FUNCTION getBukva()		CLASS TPatient
+//	return ::FBukva
 	
 METHOD PROCEDURE setBukva( ch )		CLASS TPatient
 
@@ -689,8 +687,8 @@ METHOD PROCEDURE setBukva( ch )		CLASS TPatient
 	endif
 	return
 
-METHOD FUNCTION getKod_VU()		CLASS TPatient
-	return ::FKod_VU
+//METHOD FUNCTION getKod_VU()		CLASS TPatient
+//	return ::FKod_VU
 	
 METHOD PROCEDURE setKod_VU( nNum )		CLASS TPatient
 
@@ -699,8 +697,8 @@ METHOD PROCEDURE setKod_VU( nNum )		CLASS TPatient
 	endif
 	return
 
-METHOD FUNCTION getVzros_Reb()		CLASS TPatient
-	return ::FVzros_Reb
+//METHOD FUNCTION getVzros_Reb()		CLASS TPatient
+//	return ::FVzros_Reb
 	
 METHOD PROCEDURE setVzros_Reb( nNum )		CLASS TPatient
 
@@ -709,8 +707,8 @@ METHOD PROCEDURE setVzros_Reb( nNum )		CLASS TPatient
 	endif
 	return
 
-METHOD FUNCTION getPlaceWork()		CLASS TPatient
-	return ::FPlaceWork
+//METHOD FUNCTION getPlaceWork()		CLASS TPatient
+//	return ::FPlaceWork
 
 METHOD PROCEDURE setPlaceWork( cText )		CLASS TPatient
 
@@ -719,8 +717,8 @@ METHOD PROCEDURE setPlaceWork( cText )		CLASS TPatient
 	endif
 	return
 
-METHOD FUNCTION getWorking()		CLASS TPatient
-	return ::FWorking
+//METHOD FUNCTION getWorking()		CLASS TPatient
+//	return ::FWorking
 	
 METHOD PROCEDURE setWorking( nNum )		CLASS TPatient
 
@@ -729,8 +727,8 @@ METHOD PROCEDURE setWorking( nNum )		CLASS TPatient
 	endif
 	return
 
-METHOD FUNCTION getKomu()		CLASS TPatient
-	return ::FKomu
+//METHOD FUNCTION getKomu()		CLASS TPatient
+//	return ::FKomu
 	
 METHOD PROCEDURE setKomu( nNum )		CLASS TPatient
 
@@ -739,8 +737,8 @@ METHOD PROCEDURE setKomu( nNum )		CLASS TPatient
 	endif
 	return
 
-METHOD FUNCTION getPolicy()		CLASS TPatient
-	return ::FPolicy
+//METHOD FUNCTION getPolicy()		CLASS TPatient
+//	return ::FPolicy
 
 METHOD PROCEDURE setPolicy( cText )		CLASS TPatient
 
@@ -749,8 +747,8 @@ METHOD PROCEDURE setPolicy( cText )		CLASS TPatient
 	endif
 	return
 
-METHOD FUNCTION getPolicyPeriod()		CLASS TPatient
-	return ::FPolicyPeriod
+//METHOD FUNCTION getPolicyPeriod()		CLASS TPatient
+//	return ::FPolicyPeriod
 
 METHOD PROCEDURE setPolicyPeriod( param )		CLASS TPatient
 	
@@ -759,8 +757,8 @@ METHOD PROCEDURE setPolicyPeriod( param )		CLASS TPatient
 	endif
 	return
 
-METHOD FUNCTION getInsuranceID()		CLASS TPatient
-	return ::FInsuranceID
+//METHOD FUNCTION getInsuranceID()		CLASS TPatient
+//	return ::FInsuranceID
 	
 METHOD PROCEDURE setInsuranceID( nNum )		CLASS TPatient
 
@@ -769,8 +767,8 @@ METHOD PROCEDURE setInsuranceID( nNum )		CLASS TPatient
 	endif
 	return
 
-METHOD PROCEDURE getAttachmentStatus()		CLASS TPatient
-	return ::FAttachmentStatus
+//METHOD PROCEDURE getAttachmentStatus()		CLASS TPatient
+//	return ::FAttachmentStatus
 	
 METHOD FUNCTION setAttachmentStatus( nNum )		CLASS TPatient
 
@@ -779,8 +777,8 @@ METHOD FUNCTION setAttachmentStatus( nNum )		CLASS TPatient
 	endif
 	return
 
-METHOD PROCEDURE getTFOMSEncoding()		CLASS TPatient
-	return ::FTFOMSEncoding
+//METHOD PROCEDURE getTFOMSEncoding()		CLASS TPatient
+//	return ::FTFOMSEncoding
 	
 METHOD FUNCTION setTFOMSEncoding( nNum )		CLASS TPatient
 
@@ -789,8 +787,8 @@ METHOD FUNCTION setTFOMSEncoding( nNum )		CLASS TPatient
 	endif
 	return
 
-METHOD FUNCTION getSinglePolicyNumber()		CLASS TPatient
-	return ::FSinglePolicyNumber
+//METHOD FUNCTION getSinglePolicyNumber()		CLASS TPatient
+//	return ::FSinglePolicyNumber
 
 METHOD PROCEDURE setSinglePolicyNumber( cText )		CLASS TPatient
 
@@ -799,8 +797,8 @@ METHOD PROCEDURE setSinglePolicyNumber( cText )		CLASS TPatient
 	endif
 	return
 
-METHOD FUNCTION getIsDied()		CLASS TPatient
-	return ::FIsDied
+//METHOD FUNCTION getIsDied()		CLASS TPatient
+//	return ::FIsDied
 	
 METHOD PROCEDURE setIsDied( logic )		CLASS TPatient
 
@@ -809,8 +807,8 @@ METHOD PROCEDURE setIsDied( logic )		CLASS TPatient
 	endif
 	return
 
-METHOD FUNCTION getSNILS()		CLASS TPatient
-	return ::FSNILS
+//METHOD FUNCTION getSNILS()		CLASS TPatient
+//	return ::FSNILS
 
 METHOD PROCEDURE setSNILS( cText )		CLASS TPatient
 
@@ -819,8 +817,8 @@ METHOD PROCEDURE setSNILS( cText )		CLASS TPatient
 	endif
 	return
 
-METHOD FUNCTION getOutpatientCardNumber()		CLASS TPatient
-	return ::FOutpatientCardNumber
+//METHOD FUNCTION getOutpatientCardNumber()		CLASS TPatient
+//	return ::FOutpatientCardNumber
 	
 METHOD PROCEDURE setOutpatientCardNumber( cText )		CLASS TPatient
 
@@ -829,8 +827,8 @@ METHOD PROCEDURE setOutpatientCardNumber( cText )		CLASS TPatient
 	endif
 	return
 
-METHOD FUNCTION getAreaCodeResidence()		CLASS TPatient
-	return ::FAreaCodeResidence
+//METHOD FUNCTION getAreaCodeResidence()		CLASS TPatient
+//	return ::FAreaCodeResidence
 	
 METHOD PROCEDURE setAreaCodeResidence( nNum )		CLASS TPatient
 
@@ -839,8 +837,8 @@ METHOD PROCEDURE setAreaCodeResidence( nNum )		CLASS TPatient
 	endif
 	return
 
-METHOD FUNCTION getFinanceAreaCode()		CLASS TPatient
-	return ::FFinanceAreaCode
+//METHOD FUNCTION getFinanceAreaCode()		CLASS TPatient
+//	return ::FFinanceAreaCode
 	
 METHOD PROCEDURE setFinanceAreaCode( nNum )		CLASS TPatient
 
@@ -849,8 +847,8 @@ METHOD PROCEDURE setFinanceAreaCode( nNum )		CLASS TPatient
 	endif
 	return
 
-METHOD FUNCTION getMest_Inog()		CLASS TPatient
-	return ::FMest_Inog
+//METHOD FUNCTION getMest_Inog()		CLASS TPatient
+//	return ::FMest_Inog
 	
 METHOD PROCEDURE setMest_Inog( nNum )		CLASS TPatient
 
@@ -859,8 +857,8 @@ METHOD PROCEDURE setMest_Inog( nNum )		CLASS TPatient
 	endif
 	return
 
-METHOD FUNCTION getMi_Git()		CLASS TPatient
-	return ::FMi_Git
+//METHOD FUNCTION getMi_Git()		CLASS TPatient
+//	return ::FMi_Git
 	
 METHOD PROCEDURE setMi_Git( nNum )		CLASS TPatient
 
@@ -869,8 +867,8 @@ METHOD PROCEDURE setMi_Git( nNum )		CLASS TPatient
 	endif
 	return
 
-METHOD FUNCTION getErrorKartotek()		CLASS TPatient
-	return ::FErrorKartotek
+//METHOD FUNCTION getErrorKartotek()		CLASS TPatient
+//	return ::FErrorKartotek
 	
 METHOD PROCEDURE setErrorKartotek( nNum )		CLASS TPatient
 
