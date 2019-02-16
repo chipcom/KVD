@@ -45,19 +45,19 @@ CREATE CLASS TPatientAdd	INHERIT	TBaseObjectBLL
 		DATA FPN2 INIT 0
 		DATA FPN3 INIT 0
 
-		METHOD getCodeTF
+		METHOD getCodeTF							INLINE ::FCodeTF
 		METHOD setCodeTF( param )
-		METHOD getSinglePolicyNumber
+		METHOD getSinglePolicyNumber				INLINE ::FSinglePolicyNumber
 		METHOD setSinglePolicyNumber( param )
-		METHOD getAmbulatoryCard
+		METHOD getAmbulatoryCard					INLINE ::FAmbulatoryCard
 		METHOD setAmbulatoryCard( param )
-		METHOD getAttachmentStatus
+		METHOD getAttachmentStatus				INLINE ::FAttachmentStatus
 		METHOD setAttachmentStatus( param )
-		METHOD getMOCodeAttachment
+		METHOD getMOCodeAttachment				INLINE ::FMOCodeAttachment
 		METHOD setMOCodeAttachment( param )
-		METHOD getDateAttachment
+		METHOD getDateAttachment					INLINE ::FDateAttachment
 		METHOD setDateAttachment( param )
-		METHOD getDoctorSNILS
+		METHOD getDoctorSNILS						INLINE ::FDoctorSNILS
 		METHOD setDoctorSNILS( param )
 		METHOD getPC( nIndex )
 		METHOD setPC( nIndex, param )
@@ -73,8 +73,8 @@ METHOD procedure setID( param )
 	endif
 	return
 
-METHOD function getCodeTF()		CLASS TPatientAdd
-	return ::FCodeTF
+//METHOD function getCodeTF()		CLASS TPatientAdd
+//	return ::FCodeTF
 
 METHOD procedure setCodeTF( param )		CLASS TPatientAdd
 	
@@ -83,8 +83,8 @@ METHOD procedure setCodeTF( param )		CLASS TPatientAdd
 	endif
 	return
 
-METHOD function getSinglePolicyNumber()		CLASS TPatientAdd
-	return ::FSinglePolicyNumber
+//METHOD function getSinglePolicyNumber()		CLASS TPatientAdd
+//	return ::FSinglePolicyNumber
 
 METHOD procedure setSinglePolicyNumber( param )		CLASS TPatientAdd
 	
@@ -93,8 +93,8 @@ METHOD procedure setSinglePolicyNumber( param )		CLASS TPatientAdd
 	endif
 	return
 
-METHOD function getAmbulatoryCard()		CLASS TPatientAdd
-	return ::FAmbulatoryCard
+//METHOD function getAmbulatoryCard()		CLASS TPatientAdd
+//	return ::FAmbulatoryCard
 
 METHOD procedure setAmbulatoryCard( param )		CLASS TPatientAdd
 	
@@ -103,8 +103,8 @@ METHOD procedure setAmbulatoryCard( param )		CLASS TPatientAdd
 	endif
 	return
 
-METHOD function getAttachmentStatus()		CLASS TPatientAdd
-	return ::FAttachmentStatus
+//METHOD function getAttachmentStatus()		CLASS TPatientAdd
+//	return ::FAttachmentStatus
 
 METHOD procedure setAttachmentStatus( param )		CLASS TPatientAdd
 	
@@ -113,8 +113,8 @@ METHOD procedure setAttachmentStatus( param )		CLASS TPatientAdd
 	endif
 	return
 
-METHOD function getMOCodeAttachment()		CLASS TPatientAdd
-	return ::FMOCodeAttachment
+//METHOD function getMOCodeAttachment()		CLASS TPatientAdd
+//	return ::FMOCodeAttachment
 
 METHOD procedure setMOCodeAttachment( param )		CLASS TPatientAdd
 	
@@ -123,8 +123,8 @@ METHOD procedure setMOCodeAttachment( param )		CLASS TPatientAdd
 	endif
 	return
 
-METHOD function getDateAttachment()		CLASS TPatientAdd
-	return ::FDateAttachment
+//METHOD function getDateAttachment()		CLASS TPatientAdd
+//	return ::FDateAttachment
 
 METHOD procedure setDateAttachment( param )		CLASS TPatientAdd
 	
@@ -133,8 +133,8 @@ METHOD procedure setDateAttachment( param )		CLASS TPatientAdd
 	endif
 	return
 
-METHOD function getDoctorSNILS()		CLASS TPatientAdd
-	return ::FDoctorSNILS
+//METHOD function getDoctorSNILS()		CLASS TPatientAdd
+//	return ::FDoctorSNILS
 
 METHOD procedure setDoctorSNILS( param )		CLASS TPatientAdd
 	
