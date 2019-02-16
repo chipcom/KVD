@@ -433,12 +433,13 @@ function viewShortCardPatient( oPatient )
 	endif
 	aadd( arr, { s, color1 } )
 	
-	s := oPatient:Passport:AsString()
-	if empty( s )
+	if oPatient:Passport:Exists
+	&& if empty( s )
+		s := oPatient:Passport:AsString()
+		aadd( arr, { s, color1 } )
+	else
 		s := 'Документ удостоверяющий личность отсутствует'
 		aadd( arr, { s, 'GR+/B, W+/R', 'W/B, W+/R' } )
-	else
-		aadd( arr, { s, color1 } )
 	endif
 	
 	s1 := alltrim( oPatient:PlaceBorn )

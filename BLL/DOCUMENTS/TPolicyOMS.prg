@@ -28,7 +28,7 @@ CREATE CLASS TPolicyOMS
 		METHOD New( nType, cSeries, cNumber, cSMO, dBeginPolicy, dPolicyPeriod )
 	HIDDEN:
 		// формат по умолчанию : TYPE - тип полиса, SSS - серия, NNN - номер, ISSUE - издатель, DATE - дата выдачи
-		DATA FFormat INIT 'TYPE SSS #NNN'
+		DATA FFormat INIT 'TYPE #SSS #NNN'
 		DATA FPolicyType	INIT 1
 		DATA FPolicySeries	INIT space( 10 )
 		DATA FPolicyNumber	INIT space( 20 )
@@ -179,7 +179,13 @@ METHOD FUNCTION GetAsString( format ) CLASS TPolicyOMS
 				s := alltrim( ::aMenuType[ j, 1 ] )
 			endif
 		case alltrim( itm ) == 'SSS'
-			s := alltrim( ::FPolicySeries )
+			if ! empty( ::FPolicySeries )
+				s := alltrim( ::FPolicySeries )
+			endif
+		case alltrim( itm ) == '#SSS'
+			if ! empty( ::FPolicySeries )
+				s := 'серия:' + alltrim( ::FPolicySeries )
+			endif
 		case alltrim( itm ) == 'NNN'
 			if ! empty( ::FPolicyNumber )
 				if ::FPolicyType == 3
