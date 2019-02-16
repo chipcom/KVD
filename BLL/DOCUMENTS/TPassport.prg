@@ -12,6 +12,7 @@ CREATE CLASS TPassport
 		PROPERTY DateIssue WRITE setDateIssue INIT ctod( '' )			// дата выдачи
 		PROPERTY AsString READ GetAsString( ... )						// представление документа по установленной форматной строке
 		PROPERTY Format READ FFormat WRITE SetFormat						// форматная строка вывода представления документа
+		PROPERTY Exists READ getExists
 		
 		CLASSDATA	aMenuType	AS ARRAY	INIT { ;
 			{ 'Паспорт гражд.СССР        ', 1,  1,	'ПАСПОРТ',			'R-ББ',	'999999' }, ;
@@ -62,7 +63,8 @@ CREATE CLASS TPassport
 		METHOD setDocumentIDIssue( nId )
 		METHOD setDateIssue( dIssue )
 		METHOD GetAsString( format )
-		METHOD SetFormat( format ) INLINE ::FFormat := format
+		METHOD SetFormat( format )	INLINE ::FFormat := format
+		METHOD getExists				INLINE ! empty( ::FDocumentNumber )
 ENDCLASS
 
 METHOD New( nType, cSeries, cNumber, nIDIssue, dIssue ) CLASS TPassport
@@ -153,6 +155,11 @@ METHOD FUNCTION GetAsString( format ) CLASS TPassport
 		case alltrim( itm ) == 'DATE'
 			if ! empty( ::FDateIssue )
 				s := dtoc( ::FDateIssue )
+				lExist := .t.
+			endif
+		case alltrim( itm ) == '#DATE'
+			if ! empty( ::FDateIssue )
+				s := 'выдан: ' + dtoc( ::FDateIssue )
 				lExist := .t.
 			endif
 		otherwise
