@@ -11,12 +11,9 @@ CREATE CLASS TPublisher		INHERIT	TBaseObjectBLL
 		METHOD Clone()
 	HIDDEN:
 		DATA FName INIT space( 150 )
-		METHOD getName()
+		METHOD getName				INLINE ::FName
 		METHOD setName( param )
 ENDCLASS
-
-METHOD FUNCTION getName()					CLASS TPublisher
-	return ::FName
 
 METHOD PROCEDURE setName( param )		CLASS TPublisher
 

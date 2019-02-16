@@ -105,73 +105,73 @@ CREATE CLASS TEmployee	INHERIT	TBaseObjectBLL
 		DATA FUroven	INIT 0
 		DATA FOtdal		INIT .f.
 
-		METHOD getSNILS
-		METHOD getSNILSformat
+		METHOD getSNILS				INLINE ::FSNILS
+		METHOD getSNILSformat		INLINE transform( ::FSNILS, picture_pf )
 		METHOD setSNILS( cSNILS )
-		METHOD getDBegin
+		METHOD getDBegin				INLINE ::FDBegin
 		METHOD setDBegin( date )
-		METHOD getDEnd
+		METHOD getDEnd				INLINE ::FDEnd
 		METHOD setDEnd( date )
-		METHOD getProfil
+		METHOD getProfil				INLINE ::FProfil
 		METHOD setProfil( nVal )
 
-		METHOD getName1251
-		METHOD getPosition1251
-		METHOD getDoljCategory1251
-		METHOD getCode
+		METHOD getName1251			INLINE win_OEMToANSI( ::FName )
+		METHOD getPosition1251		INLINE win_OEMToANSI( ::FPosition )
+		METHOD getDoljCategory1251	INLINE win_OEMToANSI( ::FDoljCategory )
+		METHOD getCode				INLINE ::FCode
 		METHOD setCode( nVal )
-		METHOD getName
+		METHOD getName				INLINE ::FName
 		METHOD setName( cValue )
 		METHOD getShortFIO
-		METHOD getShortFIO1251
-		METHOD getDepartment
+		METHOD getShortFIO1251		INLINE win_OEMToANSI( ::getShortFIO() )
+		METHOD getDepartment			INLINE ::FDepartment
 		METHOD setDepartment( nVal )
-		METHOD getSubdivision
+		METHOD getSubdivision		INLINE ::FSubdivision
 		METHOD setSubdivision( nVal )
-		METHOD getPosition
+		METHOD getPosition			INLINE ::FPosition
 		METHOD setPosition( cVal )
-		METHOD getCategory
-		METHOD getCategoryFormat
+		METHOD getCategory			INLINE ::FCategory
+		METHOD getCategoryFormat		INLINE ::aShortCat[ ::FCategory + 1 ]
 		METHOD setCategory( nVal )
-		METHOD getStavka
+		METHOD getStavka				INLINE ::FStavka
 		METHOD setStavka( nVal )
-		METHOD getVid
+		METHOD getVid				INLINE ::FVid
 		METHOD setVid( nVal )
-		METHOD getDoctorCategory
-		METHOD getDoctorCategoryFormat
+		METHOD getDoctorCategory		INLINE ::FDoctorCategory
+		METHOD getDoctorCategoryFormat	INLINE padr( ::aShortCatDoctor[ ::FDoctorCategory + 1 ], 4 )
 		METHOD setDoctorCategory( nVal )
-		METHOD getDoljCategory
+		METHOD getDoljCategory		INLINE ::FDoljCategory
 		METHOD setDoljCategory( cVal )
 		
-		METHOD getDcategory
+		METHOD getDcategory			INLINE ::FDcategory
 		METHOD setDcategory( date )
-		METHOD getIsSertif
+		METHOD getIsSertif			INLINE ::FIsSertif
 		METHOD setIsSertif( lVal )
-		METHOD getDsertif
+		METHOD getDsertif			INLINE ::FDsertif
 		METHOD setDsertif( date )
-		METHOD getPRVS
-		METHOD getPRVSFormat
+		METHOD getPRVS				INLINE ::FPRVS
+		METHOD getPRVSFormat			INLINE ret_tmp_prvs( ::FPRVS, ::FPRVSNEW )
 		METHOD setPRVS( nVal )
-		METHOD getPRVSNew
+		METHOD getPRVSNew			INLINE ::FPRVSNEW
 		METHOD setPRVSNew( nVal )
 		
-		METHOD getTabNom
+		METHOD getTabNom				INLINE ::FTabNom
 		METHOD setTabNom( nVal )
-		METHOD getSvodNom
+		METHOD getSvodNom			INLINE ::FSvodNom
 		METHOD setSvodNom( nVal )
-		METHOD getKodDLO
+		METHOD getKodDLO				INLINE ::FKodDLO
 		METHOD setKodDLO( nVal )
-		METHOD getUroven
-		METHOD getUrovenFormat
+		METHOD getUroven				INLINE ::FUroven
+		METHOD getUrovenFormat		INLINE put_val( ::FUroven, 2 )
 		METHOD setUroven( nVal )
-		METHOD getOtdal
-		METHOD getOtdalFormat
+		METHOD getOtdal				INLINE ::FOtdal
+		METHOD getOtdalFormat		INLINE padc( iif( ::FOtdal, '√', '' ), 9 )
 		METHOD setOtdal( lVal )
 		
-		METHOD getIsDoctor()				INLINE ( ::FCategory == 1 )
-		METHOD getIsNurse()				INLINE ( ::FCategory == 2 )
-		METHOD getIsAidman()				INLINE ( ::FCategory == 3 )
-		METHOD getIsOther()				INLINE ( ::FCategory == 4 )
+		METHOD getIsDoctor()			INLINE ( ::FCategory == 1 )
+		METHOD getIsNurse()			INLINE ( ::FCategory == 2 )
+		METHOD getIsAidman()			INLINE ( ::FCategory == 3 )
+		METHOD getIsOther()			INLINE ( ::FCategory == 4 )
 ENDCLASS
 
 METHOD function forJSON()    CLASS TEmployee
@@ -209,223 +209,120 @@ METHOD function forJSON()    CLASS TEmployee
 	&& h[ 'СправочникСотрудников' ] := hItems
 	&& return h
 
-METHOD function getShortFIO1251()	CLASS TEmployee
-	return win_OEMToANSI( ::getShortFIO() )
-
-METHOD function getName1251()	CLASS TEmployee
-	return win_OEMToANSI( ::FName )
-	
-METHOD function getPosition1251()	CLASS TEmployee
-	return win_OEMToANSI( ::FPosition )
-
-METHOD function getDoljCategory1251()	CLASS TEmployee
-	return win_OEMToANSI( ::FDoljCategory )
-
-METHOD function getCode()	CLASS TEmployee
-	return ::FCode
-
 METHOD PROCEDURE setCode( nVal )	CLASS TEmployee
 
 	::FCode := nVal
 	return
-
-METHOD function getName()	CLASS TEmployee
-	return ::FName
 
 METHOD PROCEDURE setName( cValue )	CLASS TEmployee
 
 	::FName := cValue
 	return
 
-METHOD function getDepartment()	CLASS TEmployee
-	return ::FDepartment
-
 METHOD PROCEDURE setDepartment( nVal )	CLASS TEmployee
 
 	::FDepartment := nVal
 	return
-
-METHOD function getSubdivision()	CLASS TEmployee
-	return ::FSubdivision
 
 METHOD PROCEDURE setSubdivision( nVal )	CLASS TEmployee
 
 	::FSubdivision := nVal
 	return
 
-METHOD function getPosition()	CLASS TEmployee
-	return ::FPosition
-
 METHOD PROCEDURE setPosition( cVal )	CLASS TEmployee
 
 	::FPosition := cVal
 	return
-
-METHOD function getCategory()	CLASS TEmployee
-	return ::FCategory
-
-METHOD function getCategoryFormat()	CLASS TEmployee
-	return ::aShortCat[ ::FCategory + 1 ]
 
 METHOD PROCEDURE setCategory( nVal )	CLASS TEmployee
 
 	::FCategory := nVal
 	return
 
-METHOD function getStavka()	CLASS TEmployee
-	return ::FStavka
-
 METHOD PROCEDURE setStavka( nVal )	CLASS TEmployee
 
 	::FStavka := nVal
 	return
-
-METHOD function getVid()	CLASS TEmployee
-	return ::FVid
 
 METHOD PROCEDURE setVid( nVal )	CLASS TEmployee
 
 	::FVid := nVal
 	return
 
-METHOD function getDoctorCategory()	CLASS TEmployee
-	return ::FDoctorCategory
-
-METHOD function getDoctorCategoryFormat()	CLASS TEmployee
-	return padr( ::aShortCatDoctor[ ::FDoctorCategory + 1 ], 4 )
-
-
 METHOD PROCEDURE setDoctorCategory( nVal )	CLASS TEmployee
 
 	::FDoctorCategory := nVal
 	return
-
-METHOD function getDoljCategory()	CLASS TEmployee
-	return ::FDoljCategory
 
 METHOD PROCEDURE setDoljCategory( cVal )	CLASS TEmployee
 
 	::FDoljCategory := cVal
 	return
 
-METHOD function getDcategory()	CLASS TEmployee
-	return ::FDcategory
-
 METHOD PROCEDURE setDcategory( date )	CLASS TEmployee
 
 	::FDcategory := date
 	return
-
-METHOD function getIsSertif()	CLASS TEmployee
-	return ::FIsSertif
 
 METHOD PROCEDURE setIsSertif( lVal )	CLASS TEmployee
 
 	::FIsSertif := lVal
 	return
 
-METHOD function getDsertif()	CLASS TEmployee
-	return ::FDsertif
-
 METHOD PROCEDURE setDsertif( date )	CLASS TEmployee
 
 	::FDsertif := date
 	return
-
-METHOD function getPRVS()	CLASS TEmployee
-	return ::FPRVS
-
-METHOD function getPRVSFormat()	CLASS TEmployee
-	return ret_tmp_prvs( ::FPRVS, ::FPRVSNEW )
 
 METHOD PROCEDURE setPRVS( nVal )
 
 	::FPRVSNEW := nVal
 	return
 
-METHOD function getPRVSNew()	CLASS TEmployee
-	return ::FPRVSNEW
-
 METHOD PROCEDURE setPRVSNew( nVal )	CLASS TEmployee
 
 	::FPRVSNEW := nVal
 	return
 
-METHOD function getTabNom()	CLASS TEmployee
-	return ::FTabNom
-	
 METHOD PROCEDURE setTabNom( nVal )	CLASS TEmployee
 
 	::FTabNom := nVal
 	return
 
-METHOD function getSvodNom()	CLASS TEmployee
-	return ::FSvodNom
-	
 METHOD PROCEDURE setSvodNom( nVal )	CLASS TEmployee
 
 	::FSvodNom := nVal
 	return
 
-METHOD function getKodDLO()	CLASS TEmployee
-	return ::FKodDLO
-	
 METHOD PROCEDURE setKodDLO( nVal )	CLASS TEmployee
 
 	::FKodDLO := nVal
 	return
-
-METHOD function getUroven()	CLASS TEmployee
-	return ::FUroven
-
-METHOD function getUrovenFormat()	CLASS TEmployee
-	return put_val( ::FUroven, 2 )
 
 METHOD PROCEDURE setUroven( nVal )	CLASS TEmployee
 
 	::FUroven := nVal
 	return
 
-METHOD function getOtdal()	CLASS TEmployee
-	return ::FOtdal
-
-METHOD function getOtdalFormat()	CLASS TEmployee
-	return padc( iif( ::FOtdal, '√', '' ), 9 )
-
 METHOD PROCEDURE setOtdal( lVal )	CLASS TEmployee
 
 	::FOtdal := lVal
 	return
-
-METHOD function getDBegin()	CLASS TEmployee
-	return ::FDBegin
 
 METHOD PROCEDURE setDBegin( date )	CLASS TEmployee
 	
 	::FDBegin := date
 	return
 
-METHOD function getDEnd()	CLASS TEmployee
-	return ::FDEnd
-
 METHOD PROCEDURE setDEnd( date )	CLASS TEmployee
 	
 	::FDEnd := date
 	return
 
-METHOD function getSNILS()	CLASS TEmployee
-	return ::FSNILS
-
-METHOD function getSNILSformat()	CLASS TEmployee
-	return transform( ::FSNILS, picture_pf )
-
 METHOD PROCEDURE setSNILS( cSNILS )	CLASS TEmployee
 	
 	::FSNILS := cSNILS
 	return
-
-METHOD function getProfil()	CLASS TEmployee
-	return ::FProfil
 
 METHOD PROCEDURE setProfil( nVal )	CLASS TEmployee
 	
@@ -459,8 +356,6 @@ METHOD getShortFIO( )   CLASS TEmployee
 	ret_arr[3] := alltrim( s )
 	ret := ret_arr[1] + ' ' + Left( ret_arr[2], 1 ) + '.' + if( Empty( ret_arr[3] ), '', Left( ret_arr[3], 1 ) + '.' )
 	return ret
-
-
 
 METHOD New( nId, lNew, lDeleted  ) CLASS TEmployee
 

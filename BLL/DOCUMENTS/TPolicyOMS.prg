@@ -50,17 +50,17 @@ CREATE CLASS TPolicyOMS
 		METHOD getOKATOInogSMO	INLINE ::FOKATOInogSMO
 		METHOD SetFormat( format ) INLINE ::FFormat := format
 		METHOD GetAsString( format )
-		METHOD getPolicyType
+		METHOD getPolicyType		INLINE ::FPolicyType
 		METHOD setPolicyType( param )
-		METHOD getPolicySeries
+		METHOD getPolicySeries	INLINE ::FPolicySeries
 		METHOD setPolicySeries( param )
-		METHOD getPolicyNumber
+		METHOD getPolicyNumber	INLINE ::FPolicyNumber
 		METHOD setPolicyNumber( param )
-		METHOD getSMO
+		METHOD getSMO	INLINE ::FSMO
 		METHOD setSMO( param )
-		METHOD getBeginPolicy
+		METHOD getBeginPolicy	INLINE ::FBeginPolicy
 		METHOD setBeginPolicy( param )
-		METHOD getPolicyPeriod
+		METHOD getPolicyPeriod	INLINE ::FPolicyPeriod
 		METHOD setPolicyPeriod( param )
 ENDCLASS
 
@@ -102,18 +102,12 @@ METHOD procedure setOKATOInogSMO( param )		CLASS TPolicyOMS
 	endif
 	return
 
-METHOD function getPolicyType ()	CLASS TPolicyOMS
-	return ::FPolicyType
-
 METHOD PROCEDURE setPolicyType ( param )	CLASS TPolicyOMS
 
 	if isnumber( param )
 		::FPolicyType := param
 	endif
 	return
-
-METHOD function getPolicySeries ()	CLASS TPolicyOMS
-	return ::FPolicySeries
 
 METHOD PROCEDURE setPolicySeries( param )	CLASS TPolicyOMS
 
@@ -122,18 +116,12 @@ METHOD PROCEDURE setPolicySeries( param )	CLASS TPolicyOMS
 	endif
 	return
 
-METHOD function getPolicyNumber ()	CLASS TPolicyOMS
-	return ::FPolicyNumber
-
 METHOD PROCEDURE setPolicyNumber( param )	CLASS TPolicyOMS
 
 	if ischaracter( param )
 		::FPolicyNumber := padr( param, 20 )
 	endif
 	return
-
-METHOD function getSMO()	CLASS TPolicyOMS
-	return ::FSMO
 
 METHOD PROCEDURE setSMO( param )	CLASS TPolicyOMS
 
@@ -142,18 +130,12 @@ METHOD PROCEDURE setSMO( param )	CLASS TPolicyOMS
 	endif
 	return
 
-METHOD function getBeginPolicy() CLASS TPolicyOMS
-	return ::FBeginPolicy
-	
 METHOD procedure setBeginPolicy( param ) CLASS TPolicyOMS
 
 	if isdate( param )
 		::FBeginPolicy := param
 	endif
 	return
-
-METHOD FUNCTION getPolicyPeriod()		CLASS TPolicyOMS
-	return ::FPolicyPeriod
 
 METHOD PROCEDURE setPolicyPeriod( param )		CLASS TPolicyOMS
 	

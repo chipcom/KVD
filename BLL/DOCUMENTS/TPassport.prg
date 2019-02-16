@@ -97,18 +97,19 @@ METHOD PROCEDURE setDateIssue( dIssue )	CLASS TPassport
 METHOD FUNCTION GetAsString( format ) CLASS TPassport
 	local asString := ''
 	local numToken
-	local i
+	local i := 0
 	local j := 0
-	local s
-	local tk
+	local s := ''
+	local tk := ''
 	local tkSep
-	local itm
-	local len
+	local itm := ''
+	local len := 0
 	local oPublisher := nil
-	local ch
+	local ch := ''
 	local lExist := .f.
 	
-	if empty( format )
+	&& if empty( format )
+	if isnil( format )
 		format := ::FFormat
 	endif
 	numToken := NumToken( format, ' ' )	// разделитель подстрок только 'пробел'

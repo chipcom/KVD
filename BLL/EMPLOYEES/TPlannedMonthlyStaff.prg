@@ -22,71 +22,50 @@ CREATE CLASS TPlannedMonthlyStaff	INHERIT	TBaseObjectBLL
 		DATA FFIO				INIT ''
 		DATA FTabNom			INIT 0
 
-		METHOD getIDPerson
+		METHOD getIDPerson				INLINE ::FIDPerson
 		METHOD setIDPerson( nVal )
-		METHOD getYear
+		METHOD getYear					INLINE ::FYear
 		METHOD setYear( nVal )
-		METHOD getMonth
+		METHOD getMonth					INLINE ::FMonth
 		METHOD setMonth( nVal )
-		METHOD getPlannedMonthly
+		METHOD getPlannedMonthly			INLINE ::FPlannedMonthly
 		METHOD setPlannedMonthly( nVal )
-		METHOD getFIO
+		METHOD getFIO					INLINE ::FFIO
 		METHOD setFIO( cVal )
-		METHOD getFIO1251
-		METHOD getTabNom
+		METHOD getFIO1251				INLINE win_OEMToANSI( ::FFIO )
+		METHOD getTabNom					INLINE ::FTabNom
 		METHOD setTabNom( nVal )
 ENDCLASS
-
-METHOD FUNCTION getIDPerson()	CLASS TPlannedMonthlyStaff
-	return ::FIDPerson
 
 METHOD PROCEDURE setIDPerson( nVal )	CLASS TPlannedMonthlyStaff
 
 	::FIDPerson := nVal
 	return
 
-METHOD FUNCTION getYear()	CLASS TPlannedMonthlyStaff
-	return ::FYear
-
 METHOD PROCEDURE setYear( nVal )	CLASS TPlannedMonthlyStaff
 
 	::FYear := nVal
 	return
-
-METHOD FUNCTION getMonth()	CLASS TPlannedMonthlyStaff
-	return ::FMonth
 
 METHOD PROCEDURE setMonth( nVal )	CLASS TPlannedMonthlyStaff
 
 	::FMonth := nVal
 	return
 
-METHOD FUNCTION getPlannedMonthly()	CLASS TPlannedMonthlyStaff
-	return ::FPlannedMonthly
-
 METHOD PROCEDURE setPlannedMonthly( nVal )	CLASS TPlannedMonthlyStaff
 
 	::FPlannedMonthly := nVal
 	return
-
-METHOD FUNCTION getTabNom()	CLASS TPlannedMonthlyStaff
-	return ::FTabNom
 
 METHOD PROCEDURE setTabNom( nVal )	CLASS TPlannedMonthlyStaff
 
 	::FTabNom := nVal
 	return
 
-METHOD FUNCTION getFIO()	CLASS TPlannedMonthlyStaff
-	return ::FFIO
-
 METHOD PROCEDURE setFIO( cVal )	CLASS TPlannedMonthlyStaff
 
 	::FFIO := cVal
 	return
-
-METHOD FUNCTION getFIO1251()	CLASS TPlannedMonthlyStaff
-	return win_OEMToANSI( ::FFIO )
 
 METHOD New( nId, nIdPerson, nYear, nMonth, nPlannedMonthly, cEmployee, nTabNom, lNew, lDeleted )  CLASS TPlannedMonthlyStaff
 
