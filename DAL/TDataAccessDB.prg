@@ -121,7 +121,8 @@ METHOD Save( hbArray )	 CLASS TDataAccessDB
 						enddo
 					endif
 					if fl  // добавление записи
-						if !::AddRecN()
+						&& if !::AddRecN()
+						if ! ( if( .t., ::G_RLock( .t., sforever ), ::G_RLock( .t. ) ) )
 							return retCode
 						endif
 					endif
