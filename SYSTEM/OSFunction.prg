@@ -4,20 +4,24 @@
 * https://docs.microsoft.com/en-us/windows-hardware/drivers/install/system-defined-device-setup-classes-available-to-vendors
 * https://docs.microsoft.com/ru-ru/windows/desktop/CIMWin32Prov/win32-serialport
 
-* 29.01.19
+* 18.02.19
 * получим список доступных COM-портов
 function getListCOMPorts()
 	local aRet := {}
 	local oLocator := win_oleCreateObject( 'WbemScripting.SWbemLocator' )
 	local oWMI := oLocator:ConnectServer( '.', 'root\cimv2' )
-	local item
+	local item, i
 	
 	aadd( aRet, 'нет')
-	for each item in oWMI:ExecQuery( 'SELECT * FROM Win32_SerialPort' )
-		if ischaracter( item:Name )
-			aadd( aRet, item:DeviceID )
-		endif
+	for i := 1 to 64
+		aadd( aRet, 'COM' + alltrim( str( i ) ) )
 	next
+	// на терминальной сессии не всегда работает
+	// for each item in oWMI:ExecQuery( 'SELECT * FROM Win32_SerialPort' )
+		// if ischaracter( item:Name )
+			// aadd( aRet, item:DeviceID )
+		// endif
+	// next
 	return aRet
 
 * 30.01.19
