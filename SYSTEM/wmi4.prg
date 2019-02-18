@@ -4,11 +4,13 @@
 /* Complete docs: https://msdn.microsoft.com/library/aa394554 */
 
 #include "simpleio.ch"
+#include "hbwin.ch"
 
 PROCEDURE Main()
 
    LOCAL oLocator := win_oleCreateObject( "WbemScripting.SWbemLocator" )
    LOCAL oWMI := oLocator:ConnectServer( ".", "root\cimv2" )
+   LOCAL oWMI1 := oLocator:ConnectServer( ".", "root\WMI" )
    LOCAL i, nIndex, item
    LOCAL tmp
 
@@ -17,55 +19,95 @@ HB_CDPSELECT("RU866")
 REQUEST HB_LANG_RU866
 HB_LANGSELECT("RU866")
 
-   ? "Win_OperatingSystem"
-   FOR EACH i IN oWMI:ExecQuery( "SELECT * FROM Win32_OperatingSystem" )
-      ? i:SerialNumber
-   NEXT
-   ?
+   && ? "Win_OperatingSystem"
+   && FOR EACH i IN oWMI:ExecQuery( "SELECT * FROM Win32_OperatingSystem" )
+      && ? i:SerialNumber
+   && NEXT
+   && ?
 
-   ? "Win_LogicalDisk"
-   FOR EACH i IN oWMI:ExecQuery( "SELECT * FROM Win32_LogicalDisk" )
-      IF HB_ISSTRING( i:VolumeSerialNumber )
-         ? i:VolumeSerialNumber, i:Description
-      ENDIF
-   NEXT
-   ?
+   && ? "Win_LogicalDisk"
+   && FOR EACH i IN oWMI:ExecQuery( "SELECT * FROM Win32_LogicalDisk" )
+      && IF HB_ISSTRING( i:VolumeSerialNumber )
+         && ? i:VolumeSerialNumber, i:Description
+      && ENDIF
+   && NEXT
+   && ?
 
-   ? "Win_NetworkAdapter"
-   FOR EACH i IN oWMI:ExecQuery( "SELECT * FROM Win32_NetworkAdapter" )
-      IF HB_ISSTRING( i:MACAddress )
-         ? i:MACAddress, i:Description
-      ENDIF
-   NEXT
-   ?
+   && ? "Win_NetworkAdapter"
+   && FOR EACH i IN oWMI:ExecQuery( "SELECT * FROM Win32_NetworkAdapter" )
+      && IF HB_ISSTRING( i:MACAddress )
+         && ? i:MACAddress, i:Description
+      && ENDIF
+   && NEXT
+   && ?
 
-   ? "Win_SerialPort"
+   ? "====== 0. Win_SerialPort ========"
    FOR EACH i IN oWMI:ExecQuery( "SELECT * FROM Win32_SerialPort" )
-      IF HB_ISSTRING( i:Name )
+      && IF HB_ISSTRING( i:Name )
+         ? i:Name
+		 ? i:Description
+         ? i:Caption
+		 ? i:DeviceID
+		 ? i:PNPDeviceID
+		 ? i:ProviderType
+		 && ? i:Status
+		 && ? i:SystemName
+      && ENDIF
+   NEXT
+   ?
+
+   && ? "====== 1. MSSerial_PortName ========"
+   && FOR EACH i IN oWMI1:ExecQuery( "SELECT * FROM MSSerial_PortName" )
+      && IF HB_ISSTRING( i:Name )
          && ? i:Name
 		 && ? i:Description
          && ? i:Caption
+		 && ? i:DeviceID
+		 && ? i:PNPDeviceID
+		 && ? i:InstanceName
+		 && ? i:PortName
+		 && ? i:SystemName
+      && ENDIF
+   && NEXT
+   ?
+
+   ? "====== 2. Win32_pnpentity ========"
+   FOR EACH i IN oWMI:ExecQuery( "SELECT * FROM Win32_pnpentity" )
+      IF HB_ISSTRING( i:Name ) .and. ( "COM" $ i:Name )
+         ? i:Name
+		 ? i:Description
+         ? i:Caption
 		 ? i:DeviceID
-		 && ? i:Status
+		 ? i:PNPDeviceID
+		 ? i:Manufacturer
+		 && ? i:PortName
 		 && ? i:SystemName
       ENDIF
    NEXT
    ?
 
-   ? "Win_SerialPort"
-   FOR EACH i IN oWMI:ExecQuery( "SELECT * FROM Win32_PnPEntity WHERE ClassGuid = '{50DD5230-BA8A-11D1-BF5D-0000F805F530}'" )
-      IF HB_ISSTRING( i:Name )
-		?
+   ? win_regGet( "HKEY_LOCAL_MACHINE","HARDWARE\DEVICEMAP","SERIALCOMM", , ):classname
+   ? win_regGet( "HKEY_LOCAL_MACHINE","HARDWARE\DEVICEMAP\SERIALCOMM","COM1", , ):classname
+   ? win_regGet( "HKEY_LOCAL_MACHINE","HARDWARE\DEVICEMAP\SERIALCOMM","COM2", , ):classname
+   ? win_regGet( "HKEY_LOCAL_MACHINE","HARDWARE\DEVICEMAP\SERIALCOMM","COM3", , ):classname
+   ? win_regGet( "HKEY_LOCAL_MACHINE","HARDWARE\DEVICEMAP\SERIALCOMM","COM4", , ):classname
+   ? win_regGet( "HKEY_LOCAL_MACHINE","HARDWARE\DEVICEMAP\SERIALCOMM","COM5", , ):classname
+   ? win_regGet( "HKEY_LOCAL_MACHINE","HARDWARE\DEVICEMAP\SERIALCOMM","COM6", , ):classname
+
+   && ? "====== 3. Win_SmartCard Reader ========"
+   && FOR EACH i IN oWMI:ExecQuery( "SELECT * FROM Win32_PnPEntity WHERE ClassGuid = '{50DD5230-BA8A-11D1-BF5D-0000F805F530}'" )
+      && IF HB_ISSTRING( i:Name )
+		&& ?
          && ? i:Name
 		 && ? i:Description
-         ? i:Caption
-		 ? i:DeviceID
-		 ? i:ClassGUID
+         && ? i:Caption
+		 && ? i:DeviceID
+		 && ? i:ClassGUID
 		 && ? i:Status
 		 && ? i:SystemName
-      ENDIF
-   NEXT
-   ?
+      && ENDIF
+   && NEXT
+   && ?
 
    && nIndex := 1
    && FOR EACH i IN oWMI:ExecQuery( "SELECT * FROM Win32_Bios" )
