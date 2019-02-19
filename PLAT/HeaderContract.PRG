@@ -1,8 +1,8 @@
-* 13.11.18 editListContracts( oBrowse, aObjects, object, nKey ) - функция-обработчик нажатия клавиш в списке договоров
+* 19.02.19 kart_plat()
+* 19.02.19 editListContracts( oBrowse, aObjects, object, nKey ) - функция-обработчик нажатия клавиш в списке договоров
 * 13.11.18 editContract( nKey, oContract ) - редактирование платного договора
 * 10.11.18 valTypePaid( oGet, oldValue, oContract, oContractPayer, lPayment ) -
 * 10.11.18 getOtherFieldsPaid( oContract, oContractPayer, lPayment ) - ввод оставшихся полей ввода договора
-* 10.11.18 kart_plat()
 * 15.10.18 validDateThreatment( get, k ) проверка правильности ввода сроков лечения
 * 09.06.17 validICD10( oGet ) - проверка ввода диагноза ( наличие в справочнике МКБ-10 )
 * 08.06.17 layoutContracts( oBrowse, aList ) - формирование колонок для отображения списка договоров
@@ -20,7 +20,7 @@
 #define BEGIN_THREATMENT	1
 #define END_THREATMENT		2
 
-* 10.11.18
+* 19.02.19
 function kart_plat()
 	local str_sem
 	local aContracts := {}
@@ -65,10 +65,11 @@ function kart_plat()
 		oBox:CaptionColor := col_tit_popup
 		oBox:Color := color0
 		if ! getDrvFR():IsFiscalReg
-			oBox:MessageLine := { '^<Ctrl+Enter>^-список услуг ^<F9>^-договор', ;
+			oBox:MessageLine := { '^<Ctrl+Enter>^-список услуг ^<F9>^-договор ^<F5>^-справка в ФНС', ;
 						'^<Esc>^-выход ^<Ins>^-вставка ^<Del>^-удаление ^<Enter>^-редакт.' }
 		else
-			oBox:MessageLine := { '^<Ctrl+Enter>^-услуги ^<F8>^-возврат ^<F9>^-договор ^<F10>^-чек ^<F7>^-копия чека', ;
+			&& oBox:MessageLine := { '^<Ctrl+Enter>^-услуги ^<F8>^-возврат ^<F9>^-договор ^<F10>^-чек ^<F7>^-копия чека', ;
+			oBox:MessageLine := { '^<Ctrl+Enter>^-услуги ^<F8>^-возврат ^<F9>^-договор ^<F10>^-чек ^<F5>^-справка в ФНС', ;
 								'^<Esc>^-выход ^<Ins>^-вставка ^<Del>^-удаление ^<Enter>^-редакт.' }
 		endif
 		
@@ -78,7 +79,7 @@ function kart_plat()
 	endif
 	return nil
 
-* 13.11.18 функция-обработчик нажатия клавиш в списке договоров
+* 19.02.19 функция-обработчик нажатия клавиш в списке договоров
 function editListContracts( oBrowse, aObjects, oContract, nKey, oPatient )
 	local fl := .f.
 	local err_close := 'Данный лист учета ЗАКРЫТ. Доступ разрешен только администратору системы!'
@@ -106,8 +107,10 @@ function editListContracts( oBrowse, aObjects, oContract, nKey, oPatient )
 				return .f.
 			endif
 			fl := Services( oContract )
-		case nKey == K_F7 	// печать копии чека продажи
-			fl := printCopyReceipt( oContract )
+		case nKey == K_F5 	// печать справки для ФНС
+			fl := printReferenceToFTS( oPatient, aObjects )
+		&& case nKey == K_F7 	// печать копии чека продажи
+			&& fl := printCopyReceipt( oContract )
 		case nKey == K_F10 .or. nKey == K_F8 .or. nKey == K_CTRL_F10 .or. nKey == K_CTRL_F8	// печать чека продажи или возврата
 			fl := printReceipt( oContract, nKey )
 		case nKey == K_F9				// печать договора

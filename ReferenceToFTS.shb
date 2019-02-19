@@ -1,0 +1,163 @@
+#name Справка для налоговой
+#width  118
+#height 64
+#regim  6
+//#r_margin
+//
+//
+//#i_var  $1 upper(pac_1fio)
+#i_var  $1 upper( alltrim( mPatient:FIO ) )
+////#var    $2 "- "+alltrim(tmp->shifr)+" "+alltrim(tmp->name)+" - цена "+alltrim(str(tmp->cena,10))+" руб.   кол-во "+alltrim(str(tmp->kol,10))
+//#i_var  $3 upper(srub_kop(p_summa,.t.))
+#i_var  $4 full_date(date())
+//#i_var  $5 full_date(addmonth(dog_data,2))
+//#var    $6 pac_fio
+//#var    $7 pac_data
+//#var    $8 pac_adres
+//#var    $9 "  "+padr(upper(pac_1fio),34)+"     "+full_date(dog_data)+"           "+ltrim(str(pac_kvit,10))+"     "+pac_kod
+////#var    $10 alltrim(tmp->shifr)+" "+alltrim(tmp->name)+"  - цена "+alltrim(str(tmp->cena,10))+" руб."
+//#i_var  $11 alltrim(str(tmp->kol,10))
+//#i_var  $12 alltrim(str(pac_kvit,10))
+//#i_var  $13 alltrim(org->name_d)
+//#i_var  $14 alltrim(org->name_d)
+//#i_var  $15 alltrim(iif(empty(org->ruk_r), org->ruk, org->ruk_r))
+//#var    $16 left(alltrim(org->ruk),17)
+//#var    $17 t_arr[1]
+//#var    $18 t_arr[2]
+//#var    $19 alltrim(org->name_d)
+//#var    $20 pac_kod
+//#i_var  $21 mvid_ud
+//#i_var  $22 mser
+//#i_var  $23 mnom
+//#i_var  $24 upper(mst_summa))
+//#i_var  $25 alltrim(str(mnar_z))
+//// ФИО плательщика - например для детей
+//#i_var  $26 iif(len(alltrim(mplat_fio)) > 2,alltrim(upper(mplat_fio)),upper(pac_1fio))
+//// Адрес плательщика - например для детей
+//#i_var  $27 alltrim(iif(len(alltrim(mplat_adres)) > 2,mplat_adres,pac_adres))
+//// Номер документа плательщика - например для детей
+//#i_var  $28 iif(len(alltrim(mplat_pasport)) > 2 ,mplat_pasport,mser+" "+mnom)
+//#i_var  $30 iif(kr->pol == "Ж","она оплатила","он оплатил")
+#i_var  $30 iif( mPatient:Gender == 'Ж', 'она оплатила', 'он оплатил' )
+//#i_var  $31 upper(srub_kop(tt_summa,.t.))
+#i_var  $31 upper('тру-ля-ля')
+//#var    $32 alltrim(usl->shifr)+" "+padr(t_arr2[1],65)+" - сумма "+str(hu->stoim,6)+" руб.  "+full_date(c4tod(hu->date_u))+"   "+full_date(c4tod(human->pdate))
+//#var    $40 " "+padr(t_arr2[2],65)
+//#var    $41 " "+padr(t_arr2[3],65)
+////
+//// также доступны переменные :
+////  MVID_UD - наименование уд.личности
+////  MSER    - серия уд.личности
+////  MNOM    - номер уд.личности
+////
+//#private t_arr, t_summa, kart_kod, tstr_found, vrem_recno, tt_k_data
+//#private tt_summa, t_arr2
+#private item
+//#proc tt_summa := 0
+//#proc G_Use(dir_server+"organiz",,"ORG"), t_arr := array(2)
+//#proc G_Use(dir_server+"hum_p_u",dir_server+"hum_p_u","HU")
+//#proc G_Use(dir_server+"uslugi",,"USL")
+//#proc G_Use(dir_server+"kartotek",,"KR")
+//#proc perenos(t_arr,org->adres,32)
+////
+//#proc vrem_recno := human->(recno())
+//#proc tt_k_data  := year(human->k_data)
+////
+//#proc kart_kod := human->kod_k
+//#proc dbSelectArea("human")
+//#do while human->kod_k == kart_kod .and. !eof()
+// #if year(human->k_data)== tt_k_data
+//  #proc tt_summa := tt_summa + human->cena
+// #endif
+// #proc dbskip()
+//#enddo
+#for each item in mContracts
+#next
+//// tt_summa - общая сумма
+                                                  СПРАВКА
+
+                              ОБ ОПЛАТЕ МЕДИЦИНСКИХ УСЛУГ ДЛЯ ПРЕДСТАВЛЕНИЯ
+                             В НАЛОГОВЫЕ ОРГАНЫ РОССИЙСКОЙ ФЕДЕРАЦИИ N _____
+
+
+$4                                                                                         г.Волгоград
+
+#para_begin
+    Выдана налогоплательщику $1, ИНН __________________. В том, что $30
+медицинские услуги стоимостью $31. Коды услуг, оказанные ему(ей), супруге(у),
+матери(отцу) (нужное подчеркнуть).
+#para_end
+//
+//#proc dbskip(-1)
+////
+//#do while human->kod_k == kart_kod .and. !eof()
+// #proc dbskip(-1)
+//#enddo
+////
+//#proc dbskip()
+//
+───────────────────────────────────────────────────────────────────────────────┬───────────┬─────────────┬───────────
+                                Наименование услуги                            │  Сумма    │Дата оказания│Дата оплаты
+                                                                               │           │  услуги     │  услуги
+───────────────────────────────────────────────────────────────────────────────┴───────────┴─────────────┴───────────
+//
+//#do while human->kod_k == kart_kod .and. !eof()
+// #if year(human->k_data)== tt_k_data
+//  #proc dbSelectArea("hu")
+//  #proc tstr_found := str(human->(recno()),7)
+//  #proc dbseek(tstr_found)
+//  #do while hu->kod == human->(recno()) .and. !eof()
+//   #proc dbSelectArea("USL")
+//   #proc dbgoto(hu->u_kod)
+//   #proc t_arr2 := {"","","","",""}
+//#proc perenos(t_arr2,alltrim(usl->full_name),65)
+//$32
+//#if len(t_arr2[2]) > 1
+//$40
+//#endif
+//#if len(t_arr2[3]) > 1
+//$41
+//#endif
+//   #proc dbSelectArea("hu")
+//   #proc dbskip()
+//  #enddo
+//  #proc tt_summa := tt_summa + human->cena
+// #endif
+// #proc dbSelectArea("human")
+// #proc dbskip()
+//#enddo
+////
+#para_begin
+____________________________________________________________________________________________________
+#para_end
+
+Дата оплаты __________________
+
+
+Фамилия, Имя, Отчество и должность лица, выдавшего справку
+
+___________________________________________________________________________________________________
+
+//#proc dbclosearea("kr")
+//#proc dbclosearea("hu")
+//#proc dbclosearea("usl")
+////#proc dbSelectArea("human")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      М. П.                                                  Подпись ________________________
