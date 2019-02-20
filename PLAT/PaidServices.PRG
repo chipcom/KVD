@@ -1,5 +1,6 @@
 * PaidServices.prg - подсистема работа с платными услугами
 *******************************************************************************
+* 19.02.19 printReferenceToFTS( oPatient, aObjects ) - печать справки для налоговой службы
 * 13.11.18 printReceipt( oContract, nKey ) - печать чека на ККТ
 * 13.11.18 printContract( oContract ) - печать договора
 * 13.11.18 printCopyReceipt( oContract ) - печать копии чека, если есть
@@ -88,6 +89,14 @@ function fillGetFieldDepAndSub( k, r, c, date1, date2, nTask )
 		endif
 	endif
 	return ret
+
+* 19.02.19 - печать справки для налоговой службы
+function printReferenceToFTS( oPatient, aContracts )
+	
+	private mPatient := oPatient
+	private mContracts := aContracts
+	print_shablon( alltrim( dir_exe + 'ReferenceToFTS.shb' ) )
+	return nil
 
 * 13.11.18 - печать договора
 function printContract( oContract )
