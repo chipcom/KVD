@@ -95,7 +95,6 @@ function printReferenceToFTS( oPatient, aContracts )
 	
 	private mPatient := oPatient
 	private mContracts := aContracts
-	
 	print_shablon( alltrim( dir_exe + 'ReferenceToFTS.shb' ) )
 	return nil
 
