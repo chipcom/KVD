@@ -73,18 +73,12 @@ METHOD procedure setID( param )
 	endif
 	return
 
-//METHOD function getCodeTF()		CLASS TPatientAdd
-//	return ::FCodeTF
-
 METHOD procedure setCodeTF( param )		CLASS TPatientAdd
 	
 	if isnumber( param )
 		::FCodeTF := param
 	endif
 	return
-
-//METHOD function getSinglePolicyNumber()		CLASS TPatientAdd
-//	return ::FSinglePolicyNumber
 
 METHOD procedure setSinglePolicyNumber( param )		CLASS TPatientAdd
 	
@@ -93,18 +87,12 @@ METHOD procedure setSinglePolicyNumber( param )		CLASS TPatientAdd
 	endif
 	return
 
-//METHOD function getAmbulatoryCard()		CLASS TPatientAdd
-//	return ::FAmbulatoryCard
-
 METHOD procedure setAmbulatoryCard( param )		CLASS TPatientAdd
 	
 	if ischaracter( param )
 		::FAmbulatoryCard := param
 	endif
 	return
-
-//METHOD function getAttachmentStatus()		CLASS TPatientAdd
-//	return ::FAttachmentStatus
 
 METHOD procedure setAttachmentStatus( param )		CLASS TPatientAdd
 	
@@ -113,9 +101,6 @@ METHOD procedure setAttachmentStatus( param )		CLASS TPatientAdd
 	endif
 	return
 
-//METHOD function getMOCodeAttachment()		CLASS TPatientAdd
-//	return ::FMOCodeAttachment
-
 METHOD procedure setMOCodeAttachment( param )		CLASS TPatientAdd
 	
 	if ischaracter( param )
@@ -123,18 +108,12 @@ METHOD procedure setMOCodeAttachment( param )		CLASS TPatientAdd
 	endif
 	return
 
-//METHOD function getDateAttachment()		CLASS TPatientAdd
-//	return ::FDateAttachment
-
 METHOD procedure setDateAttachment( param )		CLASS TPatientAdd
 	
 	if isdate( param )
 		::FDateAttachment := param
 	endif
 	return
-
-//METHOD function getDoctorSNILS()		CLASS TPatientAdd
-//	return ::FDoctorSNILS
 
 METHOD procedure setDoctorSNILS( param )		CLASS TPatientAdd
 	
