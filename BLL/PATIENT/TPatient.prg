@@ -270,9 +270,6 @@ METHOD procedure setExtendInfo( param )	CLASS TPatient
 	endif
 	return
 
-//METHOD function getCode()	CLASS TPatient
-//	return ::FCode
-	
 METHOD procedure setCode( param )	CLASS TPatient
 
 	if isnumber( param )
@@ -385,46 +382,6 @@ METHOD function forJSON()    CLASS TPatient
 	&& endif
 	return hItem
 
-//METHOD FUNCTION getFIO1251()		CLASS TPatient
-//	return win_OEMToANSI( ::getFIO )
-
-//METHOD FUNCTION getFIO()		CLASS TPatient
-	&& local ret := '', k := 0
-	&& local cFIO := ::FFIO, i, s := '', s1 := '', ret_arr := { '', '', '' }
-
-	&& cFIO := alltrim( cFIO )
-	&& if ::getAnonymous
-		&& ret := upper( cFIO )
-	&& else
-		&& for i := 1 to numtoken(	cFIO,	' '	)
-			&& s1 := alltrim( token( cFIO, ' ', i ) )
-			&& if !empty( s1 )
-				&& ++k
-				&& if k < 3
-					&& ret_arr[ k ] := s1
-				&& else
-					&& s += s1 + ' '
-				&& endif
-			&& endif
-		&& next
-		&& ret_arr[ 3 ] := upper( left( s, 1 ) )  + lower( alltrim( substr( s, 2 ) ) )
-		&& ret := upper( left( ret_arr[ 1 ], 1 ) )  + lower( alltrim( substr( ret_arr[ 1 ], 2 ) ) ) + ;
-			&& ' ' + upper( left( ret_arr[ 2 ], 1 ) )  + lower( alltrim( substr( ret_arr[ 2 ], 2 ) ) ) + ' ' + ;
-			&& if( empty( ret_arr[ 3 ] ), '', upper( left( ret_arr[ 3 ], 1 ) )  + lower( alltrim( substr( ret_arr[ 3 ], 2 ) ) ) )
-	&& endif
-	&& ret := padr( ret, 50 )
-	&& return ret
-//	return padr( upper( ::FFIO ), 50 )
-
-//METHOD FUNCTION getLastName()		CLASS TPatient
-//	return padr( ::FLastName, 40 )
-
-//METHOD FUNCTION getFirstName()		CLASS TPatient
-//	return padr( ::FFirstName, 40 )
-
-//METHOD FUNCTION getMiddleName()	CLASS TPatient
-//	return padr( ::FMiddleName, 40 )
-
 METHOD PROCEDURE setLastName( cFIO )		CLASS TPatient
 	
 
@@ -453,12 +410,6 @@ METHOD PROCEDURE setMiddleName( cFIO )		CLASS TPatient
 	endif
 	return
 
-//METHOD FUNCTION getAnonymous()		CLASS TPatient
-//	return if( ::FMest_Inog == 8, .t., .f.)
-	
-//METHOD FUNCTION getIsDubleName()		CLASS TPatient
-//	return if( ::FMest_Inog == 9, .t., .f.)
-	
 METHOD PROCEDURE setFIO( cFIO )		CLASS TPatient
 	local i, s := '', s1 := ''
 	local k := 0
@@ -484,9 +435,6 @@ METHOD PROCEDURE setFIO( cFIO )		CLASS TPatient
 	endif
 	return
 
-//METHOD FUNCTION getGender()		CLASS TPatient
-//	return ::FGender
-
 METHOD PROCEDURE setGender( cGender )		CLASS TPatient
 	local ch := upper( left( cGender, 1 ) )
 	
@@ -494,9 +442,6 @@ METHOD PROCEDURE setGender( cGender )		CLASS TPatient
 		::FGender := cGender
 	endif
 	return
-
-//METHOD FUNCTION getDOB()		CLASS TPatient
-//	return ::FDOB
 
 METHOD PROCEDURE setDOB( dDate )		CLASS TPatient
 	local cy
@@ -667,9 +612,6 @@ METHOD procedure setAddressStay( param )		CLASS TPatient
 	endif
 	return
 
-//METHOD FUNCTION getDistrict()		CLASS TPatient
-//	return ::FDistrict
-	
 METHOD PROCEDURE setDistrict( nNum )		CLASS TPatient
 
 	if nNum != ::FDistrict
@@ -677,9 +619,6 @@ METHOD PROCEDURE setDistrict( nNum )		CLASS TPatient
 	endif
 	return
 
-//METHOD FUNCTION getBukva()		CLASS TPatient
-//	return ::FBukva
-	
 METHOD PROCEDURE setBukva( ch )		CLASS TPatient
 
 	if ch != ::FBukva
@@ -687,9 +626,6 @@ METHOD PROCEDURE setBukva( ch )		CLASS TPatient
 	endif
 	return
 
-//METHOD FUNCTION getKod_VU()		CLASS TPatient
-//	return ::FKod_VU
-	
 METHOD PROCEDURE setKod_VU( nNum )		CLASS TPatient
 
 	if nNum != ::FKod_VU
@@ -697,18 +633,12 @@ METHOD PROCEDURE setKod_VU( nNum )		CLASS TPatient
 	endif
 	return
 
-//METHOD FUNCTION getVzros_Reb()		CLASS TPatient
-//	return ::FVzros_Reb
-	
 METHOD PROCEDURE setVzros_Reb( nNum )		CLASS TPatient
 
 	if nNum != ::FVzros_Reb
 		::FVzros_Reb := nNum
 	endif
 	return
-
-//METHOD FUNCTION getPlaceWork()		CLASS TPatient
-//	return ::FPlaceWork
 
 METHOD PROCEDURE setPlaceWork( cText )		CLASS TPatient
 
@@ -717,9 +647,6 @@ METHOD PROCEDURE setPlaceWork( cText )		CLASS TPatient
 	endif
 	return
 
-//METHOD FUNCTION getWorking()		CLASS TPatient
-//	return ::FWorking
-	
 METHOD PROCEDURE setWorking( nNum )		CLASS TPatient
 
 	if nNum != ::FWorking
@@ -727,18 +654,12 @@ METHOD PROCEDURE setWorking( nNum )		CLASS TPatient
 	endif
 	return
 
-//METHOD FUNCTION getKomu()		CLASS TPatient
-//	return ::FKomu
-	
 METHOD PROCEDURE setKomu( nNum )		CLASS TPatient
 
 	if nNum != ::FKomu
 		::FKomu := nNum
 	endif
 	return
-
-//METHOD FUNCTION getPolicy()		CLASS TPatient
-//	return ::FPolicy
 
 METHOD PROCEDURE setPolicy( cText )		CLASS TPatient
 
@@ -747,9 +668,6 @@ METHOD PROCEDURE setPolicy( cText )		CLASS TPatient
 	endif
 	return
 
-//METHOD FUNCTION getPolicyPeriod()		CLASS TPatient
-//	return ::FPolicyPeriod
-
 METHOD PROCEDURE setPolicyPeriod( param )		CLASS TPatient
 	
 	if isdate( param )
@@ -757,9 +675,6 @@ METHOD PROCEDURE setPolicyPeriod( param )		CLASS TPatient
 	endif
 	return
 
-//METHOD FUNCTION getInsuranceID()		CLASS TPatient
-//	return ::FInsuranceID
-	
 METHOD PROCEDURE setInsuranceID( nNum )		CLASS TPatient
 
 	if nNum != ::FInsuranceID
@@ -767,9 +682,6 @@ METHOD PROCEDURE setInsuranceID( nNum )		CLASS TPatient
 	endif
 	return
 
-//METHOD PROCEDURE getAttachmentStatus()		CLASS TPatient
-//	return ::FAttachmentStatus
-	
 METHOD FUNCTION setAttachmentStatus( nNum )		CLASS TPatient
 
 	if nNum != ::FAttachmentStatus
@@ -777,18 +689,12 @@ METHOD FUNCTION setAttachmentStatus( nNum )		CLASS TPatient
 	endif
 	return
 
-//METHOD PROCEDURE getTFOMSEncoding()		CLASS TPatient
-//	return ::FTFOMSEncoding
-	
 METHOD FUNCTION setTFOMSEncoding( nNum )		CLASS TPatient
 
 	if nNum != ::FTFOMSEncoding
 		::FTFOMSEncoding := nNum
 	endif
 	return
-
-//METHOD FUNCTION getSinglePolicyNumber()		CLASS TPatient
-//	return ::FSinglePolicyNumber
 
 METHOD PROCEDURE setSinglePolicyNumber( cText )		CLASS TPatient
 
@@ -797,18 +703,12 @@ METHOD PROCEDURE setSinglePolicyNumber( cText )		CLASS TPatient
 	endif
 	return
 
-//METHOD FUNCTION getIsDied()		CLASS TPatient
-//	return ::FIsDied
-	
 METHOD PROCEDURE setIsDied( logic )		CLASS TPatient
 
 	if logic != ::IsDied
 		::FIsDied := logic
 	endif
 	return
-
-//METHOD FUNCTION getSNILS()		CLASS TPatient
-//	return ::FSNILS
 
 METHOD PROCEDURE setSNILS( cText )		CLASS TPatient
 
@@ -817,9 +717,6 @@ METHOD PROCEDURE setSNILS( cText )		CLASS TPatient
 	endif
 	return
 
-//METHOD FUNCTION getOutpatientCardNumber()		CLASS TPatient
-//	return ::FOutpatientCardNumber
-	
 METHOD PROCEDURE setOutpatientCardNumber( cText )		CLASS TPatient
 
 	if alltrim( cText ) != alltrim( ::FOutpatientCardNumber )
@@ -827,9 +724,6 @@ METHOD PROCEDURE setOutpatientCardNumber( cText )		CLASS TPatient
 	endif
 	return
 
-//METHOD FUNCTION getAreaCodeResidence()		CLASS TPatient
-//	return ::FAreaCodeResidence
-	
 METHOD PROCEDURE setAreaCodeResidence( nNum )		CLASS TPatient
 
 	if nNum != ::FAreaCodeResidence
@@ -837,9 +731,6 @@ METHOD PROCEDURE setAreaCodeResidence( nNum )		CLASS TPatient
 	endif
 	return
 
-//METHOD FUNCTION getFinanceAreaCode()		CLASS TPatient
-//	return ::FFinanceAreaCode
-	
 METHOD PROCEDURE setFinanceAreaCode( nNum )		CLASS TPatient
 
 	if nNum != ::FFinanceAreaCode
@@ -847,9 +738,6 @@ METHOD PROCEDURE setFinanceAreaCode( nNum )		CLASS TPatient
 	endif
 	return
 
-//METHOD FUNCTION getMest_Inog()		CLASS TPatient
-//	return ::FMest_Inog
-	
 METHOD PROCEDURE setMest_Inog( nNum )		CLASS TPatient
 
 	if nNum != ::FMest_Inog
@@ -857,9 +745,6 @@ METHOD PROCEDURE setMest_Inog( nNum )		CLASS TPatient
 	endif
 	return
 
-//METHOD FUNCTION getMi_Git()		CLASS TPatient
-//	return ::FMi_Git
-	
 METHOD PROCEDURE setMi_Git( nNum )		CLASS TPatient
 
 	if nNum != ::FMi_Git
@@ -867,9 +752,6 @@ METHOD PROCEDURE setMi_Git( nNum )		CLASS TPatient
 	endif
 	return
 
-//METHOD FUNCTION getErrorKartotek()		CLASS TPatient
-//	return ::FErrorKartotek
-	
 METHOD PROCEDURE setErrorKartotek( nNum )		CLASS TPatient
 
 	if isnumber( nNum )
@@ -889,24 +771,7 @@ METHOD New( nID, lNew, lDeleted )		CLASS TPatient
 
 METHOD getShortFIO()   CLASS TPatient
 	local ret := ''
-	&& local cStr, ret := '', k := 0
-	&& local cFIO := ::FFIO, i, s := '', s1 := '', ret_arr := { '', '', '' }
-
-	&& cFIO := alltrim( cFIO )
-	&& for i := 1 to numtoken(	cFIO,	' '	)
-		&& s1 := alltrim( token( cFIO, ' ', i ) )
-		&& if !empty( s1 )
-			&& ++k
-			&& if k < 3
-				&& ret_arr[ k ] := s1
-			&& else
-				&& s += s1 + ' '
-			&& endif
-		&& endif
-	&& next
-	&& ret_arr[ 3 ] := alltrim( s )
-	&& ret := ret_arr[ 1 ] + ' ' + left( ret_arr[ 2 ], 1 ) + '.' + ;
-				&& if( empty( ret_arr[ 3 ] ), '', left( ret_arr[ 3 ], 1 ) + '.' )
+	
 	ret := ::FLastName + ' ' + left( ::FFirstName, 1 ) + '.' + ;
 				if( empty( ::FMiddleName ), '', left( ::FMiddleName, 1 ) + '.' )
 	return ret
