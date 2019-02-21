@@ -164,6 +164,7 @@ METHOD FUNCTION GetAsString( format ) CLASS TPolicyOMS
 	endif
 	numToken := NumToken( format, ' ' )	// разделитель подстрок только 'пробел'
 	for i := 1 to numToken
+		s := ''
 		tk := Token( format, ' ', i )	// разделитель подстрок только 'пробел'
 		ch := alltrim( TokenSep( .t. ) )
 		tkSep := ' '
