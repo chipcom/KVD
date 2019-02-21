@@ -23,7 +23,7 @@ function edit_kartotek( mkod, _top_r, _bot_r, fl_oms, _Human_kod )
 	endif
 	return mkod
 
-* 21.12.18 функция редактирования объекта пациента
+* 21.02.19 функция редактирования объекта пациента
 function edit_kartotek_( mkod, _top_r, _bot_r, fl_oms, _Human_kod )
 	static mm_kart_error := { { 'нет замечаний', 0 }, { 'полис недействителен', -8 }, { 'ошибки в реквизитах', -9 } }
 	static mm_invalid := { { 'нет', 0 }, { '1 группа', 1 }, { '2 группа', 2 }, ;
@@ -49,8 +49,6 @@ function edit_kartotek_( mkod, _top_r, _bot_r, fl_oms, _Human_kod )
     local m1mest_inog := 0, newmest_inog := 0
 	local rec_inogSMO := 0, i
 	local tmpArray
-	&& local sPassport := space( 60 )
-	&& local sPolicyOMS := space( 60 )
 	local sDisability := space( 60 )
 
 	private m1Passport := 1, mPassport := space( 60 )
@@ -105,7 +103,7 @@ function edit_kartotek_( mkod, _top_r, _bot_r, fl_oms, _Human_kod )
 	if oPassport:Exists
 		mPassport := padr( oPassport:AsString, 60 )
 	else
-		mPassport := padr( 'Ввести данные об удостоверении личности', 60 )
+		mPassport := padr( 'Ввести данные об удостоверении личности!', 60 )
 	endif
 	
 	oAddressRegistration := oPatient:AddressRegistration
@@ -366,8 +364,10 @@ function edit_kartotek_( mkod, _top_r, _bot_r, fl_oms, _Human_kod )
 					color if( ! oPassport:Exists, 'GR+/B, W+/R', 'W/B, W+/R' ) ;
 					reader { | x | menu_reader( x, { { | k, r, c | inputPassport( oPatient, oPassport, oForeignCitizen ) } }, A__FUNCTION, , , .f. ) } ;
 					when m1anonim == 0
-					&& valid { | | ( inputPassport( oPatient, oPassport, oForeignCitizen, @sPassport ), update_gets() ) } ;
-		
+		// предупреждение об отсутствии места рождения
+		if empty( oPatient:PlaceBorn ) .and. ! oPatient:IsAnonymous
+			@ ++ix, 1 say 'Отсутствует обязательная информация о месте рождения!' color if( empty( oPatient:PlaceBorn ), 'GR+/B, W+/R', 'W/B, W+/R' )
+		endif
 		@ ++ix, 1 say 'Адрес регистрации' get madres_reg ;
 					reader { | x | menu_reader( x, { { | k, r, c | getAddressPatient( 1, k, r, c ) } }, A__FUNCTION, , , .f. ) } ;
 					when m1anonim == 0
@@ -387,12 +387,10 @@ function edit_kartotek_( mkod, _top_r, _bot_r, fl_oms, _Human_kod )
 						reader { | x | menu_reader( x, mm_company, A__MENUVERT, , , .f. ) } ;
 						when eq_any( m1komu, 1, 3 )
 		endif
-		&& @ ++ix, 1 say 'Полис ОМС:' get sPolicyOMS ;
 		@ ++ix, 1 say 'Полис ОМС:' get mPolicyOMS ;
 					color if( empty( oPolicyOMS:PolicyNumber ), 'GR+/B, W+/R', 'W/B, W+/R' ) ;
 					reader { | x | menu_reader( x, { { | k, r, c | inputPolicyOMS( oPolicyOMS, oPatient ) } }, A__FUNCTION, , , .f. ) } ;
 					when m1anonim == 0
-					&& valid { | | ( inputPolicyOMS( oPolicyOMS, oPatient, @sPolicyOMS ), update_gets() ) } ;
 					
 		if eq_any( glob_task, X_REGIST, X_OMS, X_PPOKOJ, X_MO ) .or. flag_DVN
 			if is_talon .or. flag_DVN
