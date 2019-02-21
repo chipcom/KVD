@@ -153,62 +153,59 @@ METHOD FUNCTION GetAsString( format ) CLASS TPolicyOMS
 	local tk
 	local tkSep
 	local itm
-	local len
 	local oPublisher := nil
 	local ch
 	local mismo, m1ismo := '', mnameismo := space( 100 )
 	local mnamesmo, m1namesmo
-	local picture_number := "@R 9999 9999 9999 9999"
-	
+	local picture_number := '@R 9999 9999 9999 9999'
 	
 	if empty( format )
 		format := ::FFormat
 	endif
 	numToken := NumToken( format, ' ' )	// разделитель подстрок только 'пробел'
-	&& numToken := NumToken( format )
 	for i := 1 to numToken
 		tk := Token( format, ' ', i )	// разделитель подстрок только 'пробел'
-		&& tk := Token( format, , i )
 		ch := alltrim( TokenSep( .t. ) )
 		tkSep := ' '
-		itm := upper( tk )
-		len := len( itm )
+		itm := upper( alltrim( tk ) )
 		do case
-		case alltrim( itm ) == 'TYPE'
+		case itm == 'TYPE'
 			if ( j := ascan( ::aMenuType, { | x | x[ 2 ] == ::FPolicyType } ) ) > 0
 				s := alltrim( ::aMenuType[ j, 1 ] )
 			endif
-		case alltrim( itm ) == 'SSS'
+		case itm == 'SSS'
 			if ! empty( ::FPolicySeries )
 				s := alltrim( ::FPolicySeries )
 			endif
-		case alltrim( itm ) == '#SSS'
+		case itm == '#SSS'
 			if ! empty( ::FPolicySeries )
 				s := 'серия:' + alltrim( ::FPolicySeries )
 			endif
-		case alltrim( itm ) == 'NNN'
+		case itm == 'NNN'
 			if ! empty( ::FPolicyNumber )
-				if ::FPolicyType == 3
-					s := transform( ::FPolicyNumber, picture_number )
-				else
-					s := ::FPolicyNumber
-				endif
-				s := alltrim( s )
+				&& if ::FPolicyType == 3
+					&& s := transform( ::FPolicyNumber, picture_number )
+				&& else
+					&& s := ::FPolicyNumber
+				&& endif
+				&& s := alltrim( s )
+				s := alltrim( if( ::FPolicyType == 3, transform( ::FPolicyNumber, picture_number ), ::FPolicyNumber ) )
 			endif
-		case alltrim( itm ) == '#NNN'
+		case itm == '#NNN'
 			if ! empty( ::FPolicyNumber )
-				if ::FPolicyType == 3
-					s := transform( ::FPolicyNumber, picture_number )
-				else
-					s := ::FPolicyNumber
-				endif
-				s := '№ ' + alltrim( s )
+				&& if ::FPolicyType == 3
+					&& s := transform( ::FPolicyNumber, picture_number )
+				&& else
+					&& s := ::FPolicyNumber
+				&& endif
+				&& s := '№ ' + alltrim( s )
+				s := '№ ' + alltrim( if( ::FPolicyType == 3, transform( ::FPolicyNumber, picture_number ), ::FPolicyNumber ) )
 			endif
-		case alltrim( itm ) == 'ISSUE'
+		case itm == 'ISSUE'
 			if alltrim( ::FSMO ) == '34' .and. len( alltrim( ::FSMO ) ) == 2
 				mnameismo := ret_inogSMO_name_bay(  ::FOwner, self )
 			elseif left( ::FSMO, 2 ) == '34'
-				// Вол?о?a дa? i о?л aai
+				// Волгоград
 			elseif ! empty( ::FSMO )
 				m1ismo := ::FSMO
 				::FSMO := '34'
@@ -228,16 +225,14 @@ METHOD FUNCTION GetAsString( format ) CLASS TPolicyOMS
 				endif
 			endif
 			s := alltrim( mnamesmo )
-		
-			&& s := alltrim( getNameSMO( self ) )
-		case alltrim( itm ) == 'DATE'
+		case itm == 'DATE'
 			s := dtoc( ::FBeginPolicy )
 		otherwise
 			s := alltrim( tk )	// просто переносим текст
 		endcase
 		s += ch
 		if s != nil
-			asString += iif( i = 1, '', tkSep ) + s
+			asString += iif( i == 1, '', tkSep ) + s
         endif
 	next
 	return asString

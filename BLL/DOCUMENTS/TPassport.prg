@@ -104,60 +104,55 @@ METHOD FUNCTION GetAsString( format ) CLASS TPassport
 	local tk := ''
 	local tkSep
 	local itm := ''
-	local len := 0
 	local oPublisher := nil
 	local ch := ''
 	local lExist := .f.
 	
-	&& if empty( format )
-	if isnil( format )
+	if empty( format )
 		format := ::FFormat
 	endif
 	numToken := NumToken( format, ' ' )	// разделитель подстрок только 'пробел'
-	&& numToken := NumToken( format )
 	for i := 1 to numToken
 		tk := Token( format, ' ', i )	// разделитель подстрок только 'пробел'
-		&& tk := Token( format, , i )
 		ch := alltrim( TokenSep( .t. ) )
 		tkSep := ' '
-		itm := upper( tk )
-		len := len( itm )
+		itm := upper( alltrim( tk ) )
 		do case
-		case alltrim( itm ) == 'TYPE'
+		case itm == 'TYPE'
 			if ( j := ascan( ::aMenuType, { | x | x[ 2 ] == ::FDocumentType } ) ) > 0
 				s := alltrim( ::aMenuType[ j, 4 ] )
 			endif
-		case alltrim( itm ) == 'SSS'
+		case itm == 'SSS'
 			if ! empty( ::FDocumentSeries )
 				s := alltrim( ::FDocumentSeries )
 				lExist := .t.
 			endif
-		case alltrim( itm ) == '#SSS'
+		case itm == '#SSS'
 			if ! empty( ::FDocumentSeries )
 				s := 'серия ' + alltrim( ::FDocumentSeries )
 				lExist := .t.
 			endif
-		case alltrim( itm ) == 'NNN'
+		case itm == 'NNN'
 			if ! empty( ::FDocumentNumber )
 				s := alltrim( ::FDocumentNumber )
 				lExist := .t.
 			endif
-		case alltrim( itm ) == '#NNN'
+		case itm == '#NNN'
 			if ! empty( ::FDocumentNumber )
 				s := '№ ' + alltrim( ::FDocumentNumber )
 				lExist := .t.
 			endif
-		case alltrim( itm ) == 'ISSUE'
+		case itm == 'ISSUE'
 			if ( oPublisher := TPublisherDB():getByID( ::FIDIssue ) ) != nil
 				s := alltrim( oPublisher:Name() )
 				lExist := .t.
 			endif
-		case alltrim( itm ) == 'DATE'
+		case itm == 'DATE'
 			if ! empty( ::FDateIssue )
 				s := dtoc( ::FDateIssue )
 				lExist := .t.
 			endif
-		case alltrim( itm ) == '#DATE'
+		case itm == '#DATE'
 			if ! empty( ::FDateIssue )
 				s := 'выдан: ' + dtoc( ::FDateIssue )
 				lExist := .t.
@@ -167,7 +162,7 @@ METHOD FUNCTION GetAsString( format ) CLASS TPassport
 		endcase
 		s += ch
 		if s != nil
-			asString += iif( i = 1, '', tkSep ) + s
+			asString += iif( i == 1, '', tkSep ) + s
         endif
 	next
 	if ! lExist
