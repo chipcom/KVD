@@ -478,7 +478,7 @@ function edit_kartotek_( mkod, _top_r, _bot_r, fl_oms, _Human_kod )
 		endif
 		if lastkey() != K_ESC
 		
-			// сначала проведем проверку что заполнены нужные поля
+			// сначала проведем проверку обязательных полей
 			arrError := {}
 			aadd( arrError, 'Обнаружены следующие ошибки:' )
 			flagError := .f.
@@ -677,7 +677,7 @@ function edit_kartotek_( mkod, _top_r, _bot_r, fl_oms, _Human_kod )
 					
 					AuditWrite( glob_task, OPER_KART, iif( oPatient:IsNew, AUDIT_INS, AUDIT_EDIT ), 1, count_edit )
 					// если находимся в задаче 'ОМС' и редактируем карточку пациента
-					if glob_task == X_OMS .and. ! oPatient:IsNew
+					if glob_task == X_OMS .and. ! oPatient:IsNew .and. ! oPatient:IsAnonymous
 						tmpArray := {}
 						tmpArray := THumanDB():getListCaseNotReestrbyPatient( oPatient, _Human_kod )
 						if ( i := len( tmpArray ) ) > 0

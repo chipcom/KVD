@@ -293,7 +293,6 @@ METHOD Save( oPatient ) CLASS TPatientDB
 			// сохраним зависимые объекты
 			if oPatient:IsNew
 				oPatient:ExtendInfo:ID := oPatient:ID
-				
 				oPatient:AddInfo:ID := oPatient:ID
 			endif
 			if ! isnil( oPatient:ExtendInfo )
