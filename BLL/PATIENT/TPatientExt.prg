@@ -200,9 +200,6 @@ METHOD procedure setDate( nIndex, param )				CLASS TPatientExt
 	endif
 	return
 
-//METHOD function getGroupRisk() CLASS TPatientExt
-//	return ::FGroupRisk
-	
 METHOD procedure setGroupRisk( param ) CLASS TPatientExt
 
 	if isnumber( param )
@@ -210,9 +207,6 @@ METHOD procedure setGroupRisk( param ) CLASS TPatientExt
 	endif
 	return
 
-//METHOD function getWhereCard() CLASS TPatientExt
-//	return ::FWhereCard
-	
 METHOD procedure setWhereCard( param ) CLASS TPatientExt
 
 	if isnumber( param )
@@ -220,9 +214,6 @@ METHOD procedure setWhereCard( param ) CLASS TPatientExt
 	endif
 	return
 
-//METHOD function getHeight() CLASS TPatientExt
-//	return ::FHeight
-	
 METHOD procedure setHeight( param ) CLASS TPatientExt
 
 	if isnumber( param ) .and. param > 0
@@ -230,9 +221,6 @@ METHOD procedure setHeight( param ) CLASS TPatientExt
 	endif
 	return
 
-//METHOD function getWeight() CLASS TPatientExt
-//	return ::FWeight
-	
 METHOD procedure setWeight( param ) CLASS TPatientExt
 
 	if isnumber( param ) .and. param > 0
@@ -240,9 +228,6 @@ METHOD procedure setWeight( param ) CLASS TPatientExt
 	endif
 	return
 
-//METHOD function getRhesusFactor() CLASS TPatientExt
-//	return ::FRhesusFactor
-	
 METHOD procedure setRhesusFactor( param ) CLASS TPatientExt
 
 	if ischaracter( param ) .and. param $ '+-'
@@ -250,9 +235,6 @@ METHOD procedure setRhesusFactor( param ) CLASS TPatientExt
 	endif
 	return
 
-//METHOD function getBloodType() CLASS TPatientExt
-//	return ::FBloodType
-	
 METHOD procedure setBloodType( param ) CLASS TPatientExt
 
 	if isnumber( param ) .and. param > 0 .and. param < 5
@@ -260,9 +242,6 @@ METHOD procedure setBloodType( param ) CLASS TPatientExt
 	endif
 	return
 
-//METHOD function getDegreeOfDisability() CLASS TPatientExt
-//	return ::FDegreeOfDisability
-	
 METHOD procedure setDegreeOfDisability( param ) CLASS TPatientExt
 
 	if isnumber( param )
@@ -280,9 +259,6 @@ METHOD procedure setInvalid( param ) CLASS TPatientExt
 	endif
 	return
 
-//METHOD function getIsPensioner() CLASS TPatientExt
-//	return ::FIsPensioner
-	
 METHOD procedure setIsPensioner( param ) CLASS TPatientExt
 
 	if islogical( param )
@@ -290,9 +266,6 @@ METHOD procedure setIsPensioner( param ) CLASS TPatientExt
 	endif
 	return
 
-//METHOD function getIsRegistr() CLASS TPatientExt
-//	return ::FIsRegistr
-	
 METHOD procedure setIsRegister( param ) CLASS TPatientExt
 
 	if islogical( param )
@@ -300,9 +273,6 @@ METHOD procedure setIsRegister( param ) CLASS TPatientExt
 	endif
 	return
 
-//METHOD function getCodeLgot() CLASS TPatientExt
-//	return ::FCodeLgot
-	
 METHOD procedure setCodeLgot( param ) CLASS TPatientExt
 
 	if ischaracter( param )
@@ -367,9 +337,6 @@ METHOD procedure setKvartal( nIndex, param )				CLASS TPatientExt
 	endif
 	return
 
-//METHOD function getDMSPolicy() CLASS TPatientExt
-//	return ::FDMSPolicy
-	
 METHOD procedure setDMSPolicy( param ) CLASS TPatientExt
 
 	if ischaracter( param )
@@ -377,9 +344,6 @@ METHOD procedure setDMSPolicy( param ) CLASS TPatientExt
 	endif
 	return
 
-//METHOD function getDMS_SMO() CLASS TPatientExt
-//	return ::FDMS_SMO
-	
 METHOD procedure setDMS_SMO( param ) CLASS TPatientExt
 
 	if isnumber( param )
@@ -387,9 +351,6 @@ METHOD procedure setDMS_SMO( param ) CLASS TPatientExt
 	endif
 	return
 
-//METHOD function getPlaceBorn() CLASS TPatientExt
-//	return ::FPlaceBorn
-	
 METHOD procedure setPlaceBorn( param ) CLASS TPatientExt
 
 	if ischaracter( param )
@@ -420,9 +381,6 @@ METHOD procedure setCategory( nIndex, param )				CLASS TPatientExt
 	endswitch
 	return
 
-//METHOD function getDateIssue() CLASS TPatientExt
-//	return ::FDateIssue
-	
 METHOD procedure setDateIssue( param ) CLASS TPatientExt
 
 	if isdate( param )
@@ -430,9 +388,6 @@ METHOD procedure setDateIssue( param ) CLASS TPatientExt
 	endif
 	return
 
-//METHOD function getDocumentNumber() CLASS TPatientExt
-//	return ::FDocumentNumber
-	
 METHOD procedure setDocumentNumber( param ) CLASS TPatientExt
 
 	if ischaracter( param )
@@ -440,9 +395,6 @@ METHOD procedure setDocumentNumber( param ) CLASS TPatientExt
 	endif
 	return
 
-//METHOD function getDocumentSeries() CLASS TPatientExt
-//	return ::FDocumentSeries
-	
 METHOD procedure setDocumentSeries( param ) CLASS TPatientExt
 
 	if ischaracter( param )
@@ -450,9 +402,6 @@ METHOD procedure setDocumentSeries( param ) CLASS TPatientExt
 	endif
 	return
 
-//METHOD function getDocumentType() CLASS TPatientExt
-//	return ::FDocumentType
-	
 METHOD procedure setDocumentType( param ) CLASS TPatientExt
 
 	if isnumber( param )
@@ -460,9 +409,6 @@ METHOD procedure setDocumentType( param ) CLASS TPatientExt
 	endif
 	return
 
-//METHOD function getGorodSelo() CLASS TPatientExt
-//	return ::FGorodSelo
-	
 METHOD procedure setGorodSelo( param ) CLASS TPatientExt
 
 	if isnumber( param )
@@ -470,9 +416,6 @@ METHOD procedure setGorodSelo( param ) CLASS TPatientExt
 	endif
 	return
 
-//METHOD function getBeginPolicy() CLASS TPatientExt
-//	return ::FBeginPolicy
-	
 METHOD procedure setBeginPolicy( param ) CLASS TPatientExt
 
 	if isdate( param )
@@ -480,9 +423,6 @@ METHOD procedure setBeginPolicy( param ) CLASS TPatientExt
 	endif
 	return
 
-//METHOD function getStrana() CLASS TPatientExt
-//	return ::FStrana
-	
 METHOD procedure setStrana( param ) CLASS TPatientExt
 
 	if ischaracter( param )
@@ -490,9 +430,6 @@ METHOD procedure setStrana( param ) CLASS TPatientExt
 	endif
 	return
 
-//METHOD function getSMO() CLASS TPatientExt
-//	return ::FSMO
-	
 METHOD procedure setSMO( param ) CLASS TPatientExt
 
 	if ischaracter( param )
@@ -500,9 +437,6 @@ METHOD procedure setSMO( param ) CLASS TPatientExt
 	endif
 	return
 
-//METHOD function getPolicyNumber() CLASS TPatientExt
-//	return ::FPolicyNumber
-	
 METHOD procedure setPolicyNumber( param ) CLASS TPatientExt
 
 	if ischaracter( param )
@@ -510,9 +444,6 @@ METHOD procedure setPolicyNumber( param ) CLASS TPatientExt
 	endif
 	return
 
-//METHOD function getPolicySeries() CLASS TPatientExt
-//	return ::FPolicySeries
-	
 METHOD procedure setPolicySeries( param ) CLASS TPatientExt
 
 	if ischaracter( param )
@@ -520,9 +451,6 @@ METHOD procedure setPolicySeries( param ) CLASS TPatientExt
 	endif
 	return
 
-//METHOD function getPolicyType() CLASS TPatientExt
-//	return ::FPolicyType
-	
 METHOD procedure setPolicyType( param ) CLASS TPatientExt
 
 	if isnumber( param ) .and. param > 0 .and. param < 4
@@ -530,9 +458,6 @@ METHOD procedure setPolicyType( param ) CLASS TPatientExt
 	endif
 	return
 
-//METHOD function getIDIssue() CLASS TPatientExt
-//	return ::FIDIssue
-	
 METHOD procedure setIDIssue( param ) CLASS TPatientExt
 
 	if isnumber( param ) .and. param != 0
