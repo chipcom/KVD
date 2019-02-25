@@ -156,7 +156,12 @@ METHOD Save( oHuman ) CLASS THumanDB
 		hb_hSet(aHash, 'DELETED',		oHuman:IsDeleted )
 		if ( ret := ::super:Save( aHash ) ) != -1
 			oHuman:ID := ret
-			oHuman:IsNew := .f.
+			// сохраним зависимые объекты
+			if oPatient:IsNew
+				oHuman:ExtendInfo:ID := oHuman:ID
+				
+				oHuman:AddInfo:ID := oHuman:ID
+			endif
 			// сохраним зависимые объекты
 			if ! isnil( oHuman:ExtendInfo )
 				THumanExtDB():Save( oHuman:ExtendInfo )
