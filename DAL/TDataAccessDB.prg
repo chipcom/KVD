@@ -108,17 +108,31 @@ METHOD Save( hbArray )	 CLASS TDataAccessDB
 					endif
 				elseif upper( ::oDescr:AliasFile() ) == upper( 'TPatientDB' ) ;
 						.or. upper( ::oDescr:AliasFile() ) == upper( 'THumanDB' ) ;
+						.or. upper( ::oDescr:AliasFile() ) == upper( 'TContractDB' ) ;
 						.or. upper( ::oDescr:AliasFile() ) == upper( 'TContractPayerDB' ) ;
 						.or. upper( ::oDescr:AliasFile() ) == upper( 'TContractServiceDB' )
 					(cAlias)->(dbSetOrder( 1 ))
-					if (cAlias)->(dbSeek( str( 0, 7 ), .t.))
-						do while (cAlias)->KOD == 0 .and. !(cAlias)->(eof())
-							if ::G_RLock( FOREVER )
-								fl := .f.
-								exit
-							endif
-							(cAlias)->(dbSkip())
-						enddo
+					if upper( ::oDescr:AliasFile() ) == upper( 'TContractDB' )	// для шапки платных услуг
+//						if (cAlias)->(dbSeek( str( 0, 7 ) + dtos( ctod( '' ) ) + str( 0, 6 )))//, .t.))
+						if (cAlias)->(dbSeek( str( 0, 7 ) ) )
+							do while (cAlias)->kod_k == 0 .and. !(cAlias)->(eof())
+								if ::G_RLock( FOREVER )
+									fl := .f.
+									exit
+								endif
+								(cAlias)->(dbSkip())
+							enddo
+						endif
+					else
+						if (cAlias)->(dbSeek( str( 0, 7 ), .t.))
+							do while (cAlias)->KOD == 0 .and. !(cAlias)->(eof())
+								if ::G_RLock( FOREVER )
+									fl := .f.
+									exit
+								endif
+								(cAlias)->(dbSkip())
+							enddo
+						endif
 					endif
 					if fl  // добавление записи
 						&& if !::AddRecN()
