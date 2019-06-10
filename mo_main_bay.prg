@@ -14,9 +14,9 @@
 #include "..\_mylib_hbt\edit_spr.ch"
 #include "chip_mo.ch"
 
-Static _version := {2,8,7}
-Static char_version := "a"
-Static _date_version := "16.04.19г."
+Static _version := {2,8,8}
+Static char_version := ""
+Static _date_version := "09.06.19г."
 Static __s_full_name := "ЧИП + Учёт работы Медицинской Организации"
 Static __s_version
 
@@ -1258,8 +1258,8 @@ hb_AIns( func_menu[ len( func_menu ) ], 5, 'editRoles()', .t. )
     aadd(func_menu, {'run_my_hrb("mo_hrb1","i_new_boln()")',;
                      'run_my_hrb("mo_hrb1","i_kol_del_zub()")',;
                      "modern_statist()",;
-                     'run_my_hrb("mo_hrb1","forma_792_MIAC()")',;    
-                     'run_my_hrb("mo_hrb1","monitoring_vid_pom()")',;    
+                     'run_my_hrb("mo_hrb1","forma_792_MIAC()")',;
+                     'run_my_hrb("mo_hrb1","monitoring_vid_pom()")',;
                      'run_my_hrb("mo_hrb1","phonegram_15_kz()")',;
                      'run_my_hrb("mo_hrb1","b_25_perinat_2()")'} )
   case glob_task == X_COPY //
@@ -1430,7 +1430,7 @@ delete file ttt.ttt
 //
 Public cur_drv := DISKNAME()
 Public cur_dir := cur_drv+":"+DIRNAME(cur_drv)+cslash
-//Public cur_dir := hb_DirBase()  
+//Public cur_dir := hb_DirBase()
 Public dir_server := "", p_name_comp := ""
 Public dir_exe := upper(beforatnum(cslash,exename()))+cslash
 //Public dir_exe := upper(beforatnum(cslash,hb_ProgName()))+cslash
@@ -1448,7 +1448,7 @@ if hb_FileExists("server.mem")
       p_name_comp := ""
     endif
   endif
-  if len(p_name_comp) < 2 
+  if len(p_name_comp) < 2
     p_name_comp := alltrim(netname())+cslash+hb_username()
   endif
   ft_use()
@@ -1808,7 +1808,7 @@ if fl
   close databases
   restscreen(buf)
   return func_error(4,"Непонятная ошибка. Выполните переиндексирование в подзадаче ОМС")
-endif  
+endif
 select TMP_TL
 if lastrec() > 0
   afillall(arr,0)
