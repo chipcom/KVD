@@ -1045,7 +1045,7 @@ if (k := popup_2array(usl9TFOMS(mdate),T_ROW,T_COL-5,su,1,@t_arr,;
       for i := 3 to k
         add_string(space(10)+ta[i])
       next
-      if t_arr[2] > 500 
+      if t_arr[2] > 500
         select K006
         set order to 1
         find (padr(&lal.->shifr,len_ksg))
@@ -1136,9 +1136,9 @@ do case
     ret := "29-90 дней"
   case s == '3'
     ret := "от 91 дня до 1 года"
-  case s == '4'  
+  case s == '4'
     ret := "до 2 лет включительно"
-  case s == '5'  
+  case s == '5'
     ret := "ребёнок"
   case s == '6'
     ret := "взрослый"
@@ -1155,7 +1155,7 @@ do case
     ret := "29-90 дней"
   case s == '3'
     ret := "от 91 дня до 1 года"
-  case s == '4'  
+  case s == '4'
     ret := "ребёнок"
   case s == '5'
     ret := "взрослый"
@@ -1182,10 +1182,10 @@ Static Function f_ret_kz_ksg(lkz,lkslp,lkiro)
 Local s := 'коэф-т затратоёмкости '+lstr(lkz,5,2)
 if !empty(lkslp)
   s += '; КСЛП: '+alltrim(lkslp)
-endif  
+endif
 if !empty(lkiro)
   s += '; КИРО: '+alltrim(lkiro)
-endif  
+endif
 return s
 
 ***** 03.01.19
@@ -1197,7 +1197,7 @@ if (mdate := input_value(20,5,22,74,color1,;
         "Введите дату, на которую необходимо получить информацию",;
         sys_date)) == NIL
   return NIL
-endif          
+endif
 if (lyear := year(mdate)) < 2018
   return func_error(4,"Вы запрашиваете слишком старую информацию")
 endif
@@ -1323,7 +1323,7 @@ if empty(sdate) .or. sdate != mdate
   Ins_Array(arr,1,{"КСГ в СТАЦИОНАРЕ",501})
   use_base("luslc")
   for i := 1 to len(arr)
-    if arr[i,2] > 500 
+    if arr[i,2] > 500
       if year(mdate) == 2019 // 2019 год
         sShifr := iif(arr[i,2] == 501, "st", "ds")
       else
@@ -1566,7 +1566,7 @@ for j := 1 to len(arr_gr)
     next
     skip
   enddo
-next  
+next
 close databases
 rest_box(buf)
 fclose(fp)
@@ -1602,7 +1602,7 @@ return NIL
 ***** 22.01.19 Распечатка списка операций на парных органах
 Function usl_par_organ()
 ***** 03.01.19 Распечатка списка услуг с использованием телемедицинских технологий
-Local i, j, k, buf := save_maxrow(), name_file := "uslugiT"+stxt, sh := 80, HH := 60, t_arr[2], fl 
+Local i, j, k, buf := save_maxrow(), name_file := "uslugiT"+stxt, sh := 80, HH := 60, t_arr[2], fl
 mywait()
 R_Use_base("luslf")
 index on shifr to (cur_dir+"tmp_uslf") for !empty(par_org)
@@ -1612,7 +1612,7 @@ add_string("")
 add_string("=== Описание обозначения органа (части тела)")
 for i := 1 to len(garr_par_org)
   add_string(" "+garr_par_org[i,1])
-next  
+next
 add_string("===")
 add_string(center("Операции на парных органах (частях тела) Минздрава РФ (ФФОМС)",sh))
 add_string("")
@@ -1670,7 +1670,7 @@ for j := 1 to len(ar)
     next
     skip
   enddo
-next  
+next
 close databases
 rest_box(buf)
 fclose(fp)
@@ -1861,7 +1861,7 @@ Local k, buf := save_maxrow(), name_file := "usl_ksg"+stxt, nu, sh := 80, HH := 
 glob_otd_dep := 0
 if is_otd_dep .and. lksg == 1 .and. (ret_arr := ret_otd_dep()) == NIL
   return NIL
-endif 
+endif
 mywait()
 dbcreate(cur_dir+"tmp",{;
    {"SHIFR",      "C",     10,      0},;
@@ -2925,7 +2925,6 @@ if G_SLock1Task(sem_task,sem_vagno) // запрет доступа всем
   k := len(arr_schet)
   s := iif(k == 1, "счёта ", lstr(k)+" счетов ")
   if involved_password(3,arr_schet[1,4],"пересоздания "+s+arr_schet[1,4]) ;
-													   
      .and. f_Esc_Enter("пересоздания "+s) // .and. m_copy_DB_from_end(.t.) // резервное копирование
     Private fl_open := .t.
     index_base("schet") // для составления счетов
