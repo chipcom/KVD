@@ -26,7 +26,7 @@ CLASS TKKT_Shtrih FROM TAbstractKKT
 		METHOD PrintReportWithoutCleaning			// снять отчет без гашения
 		METHOD PrintReportWithCleaning				// снять отчет с гашением
 		METHOD CancelCheck							// отмена чека
-		METHOD GetInfoExchangeStatus				// получить статус информационного обмена
+		METHOD GetInfoExchangeStatus					// получить статус информационного обмена
 		METHOD SetOperatorKKT( nOp, cName )			// установить имя пользователя в устройстве
 		METHOD ContinuePrint							// продолжить печать
 		METHOD SetDate( date )						// устанавливает дату во внутренних часах устройства
@@ -56,6 +56,7 @@ CLASS TKKT_Shtrih FROM TAbstractKKT
 		METHOD ConfirmDate( date )					// команда подтверждения программирования даты во внутренних часах устройства
 		METHOD ExecuteCommand( command, lSilent )
 		METHOD ErrorHandling( descFunc, lSilent )
+		METHOD SendINNCashier()						// Отправить тег с ИНН кассира
 	PROTECTED:
 		METHOD GetRegim								// получить режим работы устройства
 ENDCLASS
@@ -173,14 +174,26 @@ METHOD function GetCashReg( nRegistr )					CLASS TKKT_Shtrih
 METHOD function CloseCheck( oCloseCheck )			CLASS TKKT_Shtrih
 	local ret := -1, result := .f., address
 	
+	// пошлем ИНН кассира перед закрытием чека
+//	if !empty( ::INNCashier )
+//		::FDriver:Password := ::Password
+//		::FDriver:TagNumber := 1203
+//		::FDriver:TagType := 7
+//		::FDriver:TagValueStr := ::INNCashier //'770405970581' //Здесь указываем реальный ИНН Кассира.
+////		::FDriver:FNSendTag()
+//		::ExecuteCommand( 'FNSendTag' )
+//	endif
+	::SendINNCashier()	
 	HB_CDPSELECT( 'RU1251' )
-	::FDriver:Password := ::Password
+//	::FDriver:Password := ::Password
 	
 	with object oCloseCheck
 		if !empty( alltrim( :CustomerEmail ) )
+			::FDriver:Password := ::Password
 			::FDriver:CustomerEmail = :CustomerEmail
 			::FDriver:FNSendCustomerEmail()
 		endif
+		::FDriver:Password := ::Password
 		::FDriver:Summ1 := :Summ1
 		::FDriver:Summ2 := :Summ2 
 		::FDriver:Summ3 := :Summ3 
@@ -239,6 +252,9 @@ METHOD function Operation( oOperation )			CLASS TKKT_Shtrih
 METHOD function FNOpenSession()						CLASS TKKT_Shtrih
 	local ret := .f.
 	
+	::FDriver:Password := ::Password
+	::ExecuteCommand( 'FNBeginOpenSession' )
+	::SendINNCashier()
 	::FDriver:Password := ::Password
 	if ( ret := ::ExecuteCommand( 'FNOpenSession' ) )
 		// ожидаем окончания печати
@@ -412,8 +428,11 @@ METHOD function PrintReportWithCleaning()				CLASS TKKT_Shtrih
 			hwg_MsgInfoBay( strCloseReport, strTitle )
 			ret := .f.
 		else
-			::FDriver:Password := ::PasswordAdmin
-			if ( ret := ::ExecuteCommand( 'PrintReportWithCleaning' ) )
+			::FDriver:Password := ::Password
+			::ExecuteCommand( 'FNBeginCloseSession' )
+			::SendINNCashier()
+			::FDriver:Password := ::Password
+			if ( ret := ::ExecuteCommand( 'FNCloseSession' ) )
 				::FOpenSession := .f.
 			endif
 		endif
@@ -622,8 +641,8 @@ METHOD function ExecuteCommand( command, lSilent )		CLASS TKKT_Shtrih
 				res := ::ErrorHandling( 'Ожидание печати', lSilent, ::FDriver:WaitForPrinting() )
 			case command == 'printcashierreport'
 				res := ::ErrorHandling( 'Отчет по кассирам', lSilent, ::FDriver:PrintCashierReport() )
-			case command == 'printreportwithcleaning'
-				res := ::ErrorHandling( 'Снять отчет с гашением', lSilent, ::FDriver:PrintReportWithCleaning() )
+			&& case command == 'printreportwithcleaning'
+				&& res := ::ErrorHandling( 'Снять отчет с гашением', lSilent, ::FDriver:PrintReportWithCleaning() )
 			case command == 'printdepartmentreport'
 				res := ::ErrorHandling( 'Отчет по секциям', lSilent, ::FDriver:PrintDepartmentReport() )
 			case command == 'printtaxreport'
@@ -647,6 +666,17 @@ METHOD function ExecuteCommand( command, lSilent )		CLASS TKKT_Shtrih
 				res := ::ErrorHandling( 'Сформировать чек коррекции. Команда версии 2.', lSilent, ::FDriver:fnbuildcorrectionreceipt2() )
 			case command == 'fnprintdocument'
 				res := ::ErrorHandling( 'Распечатать документ', lSilent, ::FDriver:FNPrintDocument() )
+			case command == 'fnbeginopensession'
+				res := ::ErrorHandling( 'Начать открытие смены', lSilent, ::FDriver:FNBeginOpenSession() )
+			case command == 'fnopensession'
+				res := ::ErrorHandling( 'Открыть смену', lSilent, ::FDriver:FNOpenSession() )
+			case command == 'fnbeginclosesession'
+				res := ::ErrorHandling( 'Начать закрытия смены', lSilent, ::FDriver:FNBeginCloseSession() )
+			case command == 'fnclosesession'
+				res := ::ErrorHandling( 'Закрыть смену', lSilent, ::FDriver:FNCloseSession() )
+			case command == 'fnsendtag'
+				res := ::ErrorHandling( 'Отправить тег', lSilent, ::FDriver:FNSendTag() )
+				
 			otherwise
 				return .f.
 		endcase
@@ -722,8 +752,10 @@ METHOD function Init()									CLASS TKKT_Shtrih
 	return ret
 
 // загрузить настройки ККТ
-METHOD function Open( oSetting, nPasswordUser )		CLASS TKKT_Shtrih
-	return ::Open( oSetting, nPasswordUser )
+//METHOD function Open( oSetting, nPasswordUser )		CLASS TKKT_Shtrih
+//	return ::Open( oSetting, nPasswordUser )
+METHOD function Open( oSetting, oUser )		CLASS TKKT_Shtrih
+	return ::Open( oSetting, oUser )
 
 METHOD New()		CLASS TKKT_Shtrih
 	return self
@@ -945,4 +977,17 @@ METHOD function PrintString( stringForPrinting, lWide, typeControlRibbon, lDelay
 		endif
 		HB_CDPSELECT( 'RU866' )
 //	endif
+	return ret
+	
+// Отправить тег с ИНН кассира
+METHOD SendINNCashier() CLASS TKKT_Shtrih
+	local ret := .t.
+	
+	if !empty( ::INNCashier )
+		::FDriver:Password := ::Password
+		::FDriver:TagNumber := 1203
+		::FDriver:TagType := 7
+		::FDriver:TagValueStr := ::INNCashier //Здесь указываем ИНН Кассира.
+		::ExecuteCommand( 'FNSendTag' )
+	endif
 	return ret

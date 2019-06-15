@@ -15,6 +15,7 @@ CLASS TAbstractKKT
 		PROPERTY ResultCodeDescription READ FResultCodeDescription
 		PROPERTY PasswordAdmin READ FPasswordAdmin
 		PROPERTY Password READ FPassword
+		PROPERTY INNCashier READ FINNCashier
 		PROPERTY OpenDocumentNumber READ FOpenDocumentNumber
 		PROPERTY ReceiptNumber READ FReceiptNumber
 		PROPERTY DocumentNumber READ FDocumentNumber
@@ -41,10 +42,11 @@ CLASS TAbstractKKT
 		PROPERTY NameTypePay4 READ GetNameTypePay4		// название вида оплаты 4
 		
 		METHOD Destroy()
-		METHOD Open( oSetting, nPasswordUser )
+//		METHOD Open( oSetting, nPasswordUser )
+		METHOD Open( oSetting, oUser )
 		METHOD Init							VIRTUAL		// загрузка драйвера устройства
 		METHOD ShowProperties				VIRTUAL		// показать свойства драйвера устройства
-		METHOD Version							VIRTUAL		// плучить версию драйвера
+		METHOD Version						VIRTUAL		// плучить версию драйвера
 		METHOD Beep							VIRTUAL		// гудок
 		METHOD PrintString( stringForPrinting, lWide, typeControlRibbon, lDelayedPrint )	VIRTUAL
 		METHOD OpenDrawer( nDrawerNumber )	VIRTUAL		// открыть денежный ящик
@@ -55,33 +57,33 @@ CLASS TAbstractKKT
 		METHOD PrintReportWithoutCleaning	VIRTUAL		// снять отчет без гашения
 		METHOD PrintReportWithCleaning		VIRTUAL		// снять отчет с гашением
 		METHOD CancelCheck					VIRTUAL		// отмена чека
-		METHOD GetInfoExchangeStatus			VIRTUAL		// получить статус информационного обмена
+		METHOD GetInfoExchangeStatus		VIRTUAL		// получить статус информационного обмена
 		METHOD GetDeviceMetrics				VIRTUAL		// получить параметры устройства
-		METHOD GetShortECRStatus				VIRTUAL		// получить краткое состояние устройства
+		METHOD GetShortECRStatus			VIRTUAL		// получить краткое состояние устройства
 		METHOD GetECRStatus( flag )			VIRTUAL		// получить полное состояние устройства
 		METHOD SetOperatorKKT( nOp, cName )	VIRTUAL		// установить имя пользователя в устройстве
-		METHOD ContinuePrint					VIRTUAL		// продолжить печать
+		METHOD ContinuePrint				VIRTUAL		// продолжить печать
 		METHOD SetDate( date )				VIRTUAL		// устанавливает дату во внутренних часах устройства
-		METHOD GetDate()						VIRTUAL		// получает дату из внутренних часов устройства
+		METHOD GetDate()					VIRTUAL		// получает дату из внутренних часов устройства
 		METHOD SetTime( time )				VIRTUAL		// устанавливает время во внутренних часах устройства
-		METHOD GetTime()						VIRTUAL		// получает время из внутренних часов устройства
+		METHOD GetTime()					VIRTUAL		// получает время из внутренних часов устройства
 		METHOD CutCheck( flag )				VIRTUAL		// отрезка чековой ленты
 		METHOD FNOpenSession()				VIRTUAL		// открыть смену на фискальном накопителе
 		METHOD Operation( oOperation )		VIRTUAL		// Операция в чеке
-		METHOD CloseCheck( oCloseCheck )		VIRTUAL		// закрытие чека расширенное
+		METHOD CloseCheck( oCloseCheck )	VIRTUAL		// закрытие чека расширенное
 		METHOD GetCashReg( nRegistr )		VIRTUAL		// запрос содержимого денежного регистра
 		METHOD GetOperationReg( nRegistr )	VIRTUAL		// запрос содержимого операционного регистра
-		METHOD PrintHourlyReport				VIRTUAL		// снять почасовой отчет
+		METHOD PrintHourlyReport			VIRTUAL		// снять почасовой отчет
 		METHOD PrintTaxReport				VIRTUAL		// метод печатает отчёт о продажах по налогам
-		METHOD PrintDepartmentReport			VIRTUAL		// метод печатает отчёт о продажах по отделам (секциям)
+		METHOD PrintDepartmentReport		VIRTUAL		// метод печатает отчёт о продажах по отделам (секциям)
 		METHOD PrintCashierReport			VIRTUAL		// снять отчет по кассирам
 		METHOD BuildCorrectionReceipt( obj )	VIRTUAL		// сформировать чек коррекции
 		METHOD GetSaleCash					VIRTUAL		// получить накопление по виду оплат наличными операции продажа за смену
 		METHOD GetSaleCard					VIRTUAL		// накопление по виду оплат банковской картой операции продажа за смену
-		METHOD GetReturnSaleCash				VIRTUAL		// накопление по виду оплат наличными операции возврат продажи за смену
-		METHOD GetReturnSaleCard				VIRTUAL		// накопление по виду оплат банковской картой операции возврат продажи за смену
+		METHOD GetReturnSaleCash			VIRTUAL		// накопление по виду оплат наличными операции возврат продажи за смену
+		METHOD GetReturnSaleCard			VIRTUAL		// накопление по виду оплат банковской картой операции возврат продажи за смену
 		METHOD GetCash						VIRTUAL		// накопление наличности в кассе
-		METHOD GetIncome						VIRTUAL		// внесенные суммы за смену
+		METHOD GetIncome					VIRTUAL		// внесенные суммы за смену
 		METHOD GetOutcome					VIRTUAL		// выплаченные суммы за смену
 		METHOD PrintCopyReceipt( number )	VIRTUAL		// печать копии чека
 	
@@ -107,6 +109,7 @@ CLASS TAbstractKKT
 		DATA FResultCodeDescription	INIT ''				// описание результата выполнения
 		DATA FPasswordAdmin	INIT 0						// пароль администратора устройства
 		DATA FPassword		INIT 0						// пароль кассира устройства
+		DATA FINNCashier	INIT ''						// ИНН кассира
 		DATA FOpenADrawer	INIT .f.					// открытие денежного ящика после печати чека
 		DATA FReceiptNumber	INIT 0						// Номер чека
 		DATA FDocumentNumber	INIT 0					// Номер фискального документа
@@ -255,12 +258,15 @@ METHOD New()											CLASS TAbstractKKT
 /*
     Open
 */
-METHOD function Open( oSetting, nPasswordUser )		CLASS TAbstractKKT
+//METHOD function Open( oSetting, nPasswordUser )		CLASS TAbstractKKT
+METHOD function Open( oSetting, oUser )		CLASS TAbstractKKT
 
 	&& ::FActive := .t.
 	
 	::FPasswordAdmin	:= iif( valtype( oSetting:AdminPass() ) == 'C', val( oSetting:AdminPass() ), oSetting:AdminPass() )
-	::FPassword := iif( valtype( nPasswordUser ) == 'C', val( nPasswordUser ), nPasswordUser )
+//	::FPassword := iif( valtype( nPasswordUser ) == 'C', val( nPasswordUser ), nPasswordUser )
+	::FPassword := iif( valtype( oUser:PasswordFR ) == 'C', val( oUser:PasswordFR ), oUser:PasswordFR )
+	::FINNCashier := iif(len(alltrim( oUser:INN )) == 12, alltrim( oUser:INN ), '' )
 	::FOpenADrawer		:= oSetting:OpenADrawer()
 	::FNumberPos		:= oSetting:NumPOS()
 	::FNamePOS			:= oSetting:NamePOS()
