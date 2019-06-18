@@ -39,7 +39,7 @@ function printUserList( aList )
 	oCell:attr	:= 'class="thleft"'
 	oParag			:= oCell + 'p'
 	oParag:attr		:= 'align="center" class="bodyp"'
-	oParag:text		:= 'Тип доступа'
+	oParag:text		:= 'ИНН'
 	oParag			:= oParag - 'p'
 	oCell		:= oCell - 'th'
 	HB_SYMBOL_UNUSED( oCell )
@@ -48,11 +48,29 @@ function printUserList( aList )
 	oCell:attr	:= 'class="thleft"'
 	oParag			:= oCell + 'p'
 	oParag:attr		:= 'align="center" class="bodyp"'
-	oParag:text		:= 'Подразделение'
+	oParag:text		:= 'Касса'
 	oParag			:= oParag - 'p'
 	oCell		:= oCell - 'th'
 	HB_SYMBOL_UNUSED( oCell )
 	// четвертая колонка
+	oCell		:= oTH + 'th'
+	oCell:attr	:= 'class="thleft"'
+	oParag			:= oCell + 'p'
+	oParag:attr		:= 'align="center" class="bodyp"'
+	oParag:text		:= 'Тип доступа'
+	oParag			:= oParag - 'p'
+	oCell		:= oCell - 'th'
+	HB_SYMBOL_UNUSED( oCell )
+	// пятая колонка
+	oCell		:= oTH + 'th'
+	oCell:attr	:= 'class="thleft"'
+	oParag			:= oCell + 'p'
+	oParag:attr		:= 'align="center" class="bodyp"'
+	oParag:text		:= 'Подразделение'
+	oParag			:= oParag - 'p'
+	oCell		:= oCell - 'th'
+	HB_SYMBOL_UNUSED( oCell )
+	// шестая колонка
 	oCell		:= oTH + 'th'
 	if is_task( X_KEK )
 		oCell:attr	:= 'class="thleft"'
@@ -67,7 +85,7 @@ function printUserList( aList )
 	HB_SYMBOL_UNUSED( oCell )
 	
 	if is_task( X_KEK )
-		// пятая колонка
+		// седьмая колонка
 		oCell		:= oTH + 'th'
 		oCell:attr	:= 'class="thleft thright"'
 		oParag			:= oCell + 'p'
@@ -91,12 +109,26 @@ function printUserList( aList )
 
 		// 2-я колонка
 		oCell		:= oRow + 'td'
+		oCell:attr	:= 'class="td1" valign="center" align="left"'
+		oCell:text	:= item:INN
+		oCell		:= oCell - 'td'
+		HB_SYMBOL_UNUSED( oCell )
+
+		// 3-я колонка
+		oCell		:= oRow + 'td'
+		oCell:attr	:= 'class="td1" valign="center" align="center"'
+		oCell:text	:= iif( empty( item:PasswordFR ), '', '+' )
+		oCell		:= oCell - 'td'
+		HB_SYMBOL_UNUSED( oCell )
+
+		// 4-я колонка
+		oCell		:= oRow + 'td'
 		oCell:attr	:= 'class="td1" valign="center" align="center"'
 		oCell:text	:= if( item:IsAdmin(), "Администратор", if( item:IsOperator(), "Оператор", "Контролер" ) )
 		oCell		:= oCell - 'td'
 		HB_SYMBOL_UNUSED( oCell )
 
-		// 3-я колонка
+		// 5-я колонка
 		oCell		:= oRow + 'td'
 		oCell:attr	:= 'class="td1" valign="center" align="left"'
 		oCell:text	:= if( TDepartmentDB():GetByID( item:IDDepartment() ) != nil, ;
@@ -104,7 +136,7 @@ function printUserList( aList )
 		oCell		:= oCell - 'td'
 		HB_SYMBOL_UNUSED( oCell )
 		
-		// 4-я колонка
+		// 6-я колонка
 		oCell		:= oRow + 'td'
 		if is_task( X_KEK )
 			oCell:attr	:= 'class="td1" valign="center" align="center"'
@@ -116,7 +148,7 @@ function printUserList( aList )
 		HB_SYMBOL_UNUSED( oCell )
 
 		if is_task( X_KEK )
-			// 5-я колонка
+			// 7-я колонка
 			oCell		:= oRow + 'td'
 			oCell:attr	:= 'class="td3" valign="center" align="center"'
 			oCell:text	:= item:KEK

@@ -270,7 +270,6 @@ METHOD function FNOpenSession()						CLASS TKKT_Shtrih
 METHOD CutCheck( flag )								CLASS TKKT_Shtrih
 	local ret := .f.
 	
-//	HB_Default( @flag, 0 ) 
 	::FDriver:Password := ::Password
 	::FDriver:CutType := iif( HB_DefaultValue( flag, 1 ) == 1, 1, 0 )
 	ret := ::ExecuteCommand( 'CutCheck' )
@@ -641,8 +640,6 @@ METHOD function ExecuteCommand( command, lSilent )		CLASS TKKT_Shtrih
 				res := ::ErrorHandling( 'Ожидание печати', lSilent, ::FDriver:WaitForPrinting() )
 			case command == 'printcashierreport'
 				res := ::ErrorHandling( 'Отчет по кассирам', lSilent, ::FDriver:PrintCashierReport() )
-			&& case command == 'printreportwithcleaning'
-				&& res := ::ErrorHandling( 'Снять отчет с гашением', lSilent, ::FDriver:PrintReportWithCleaning() )
 			case command == 'printdepartmentreport'
 				res := ::ErrorHandling( 'Отчет по секциям', lSilent, ::FDriver:PrintDepartmentReport() )
 			case command == 'printtaxreport'
@@ -802,41 +799,39 @@ METHOD function GetDeviceMetrics()						CLASS TKKT_Shtrih
 METHOD function GetShortECRStatus()					CLASS TKKT_Shtrih
 	local ret := .f.
 	
-	&& if  ::FShortECRStatus == nil
-		::FDriver:Password := ::Password
-		if ( ret := ::ExecuteCommand( 'GetShortECRStatus' ) )
-			::FShortECRStatus := { => }
-			::FShortECRStatus[ 'OPERATORNUMBER' ]				:= ::FDriver:OPERATORNUMBER
-			::FShortECRStatus[ 'ECRFLAGS' ]						:= ::FDriver:ECRFLAGS
-			::FShortECRStatus[ 'RECEIPTRIBBONISPRESENT' ]		:= ::FDriver:RECEIPTRIBBONISPRESENT
-			::FShortECRStatus[ 'JOURNALRIBBONISPRESENT' ]		:= ::FDriver:JOURNALRIBBONISPRESENT
-			::FShortECRStatus[ 'SLIPDOCUMENTISPRESENT' ]		:= ::FDriver:SLIPDOCUMENTISPRESENT
-			::FShortECRStatus[ 'SLIPDOCUMENTISMOVING' ]			:= ::FDriver:SLIPDOCUMENTISMOVING		
-			::FShortECRStatus[ 'POINTPOSITION' ]				:= ::FDriver:POINTPOSITION
-			::FShortECRStatus[ 'EKLZISPRESENT' ]				:= ::FDriver:EKLZISPRESENT	
-			::FShortECRStatus[ 'JOURNALRIBBONOPTICALSENSOR' ]	:= ::FDriver:JOURNALRIBBONOPTICALSENSOR
-			::FShortECRStatus[ 'RECEIPTRIBBONOPTICALSENSOR' ]	:= ::FDriver:RECEIPTRIBBONOPTICALSENSOR	
-			::FShortECRStatus[ 'JOURNALRIBBONLEVER' ]			:= ::FDriver:JOURNALRIBBONLEVER
-			::FShortECRStatus[ 'RECEIPTRIBBONLEVER' ]			:= ::FDriver:RECEIPTRIBBONLEVER
-			::FShortECRStatus[ 'LIDPOSITIONSENSOR' ]			:= ::FDriver:LIDPOSITIONSENSOR
-			::FShortECRStatus[ 'ISPRINTERLEFTSENSORFAILURE' ]	:= ::FDriver:ISPRINTERLEFTSENSORFAILURE	
-			::FShortECRStatus[ 'ISPRINTERRIGHTSENSORFAILURE' ]	:= ::FDriver:ISPRINTERRIGHTSENSORFAILURE
-			::FShortECRStatus[ 'ISDRAWEROPEN' ]					:= ::FDriver:ISDRAWEROPEN
-			::FShortECRStatus[ 'ISEKLZOVERFLOW' ]				:= ::FDriver:ISEKLZOVERFLOW		
-			::FShortECRStatus[ 'QUANTITYPOINTPOSITION' ]		:= ::FDriver:QUANTITYPOINTPOSITION	
-			::FShortECRStatus[ 'ECRMODE' ]						:= ::FDriver:ECRMODE
-			::FShortECRStatus[ 'ECRMODEDESCRIPTION' ]			:= ::FDriver:ECRMODEDESCRIPTION
-			::FShortECRStatus[ 'ECRMODE8STATUS' ]				:= ::FDriver:ECRMODE8STATUS
-			::FShortECRStatus[ 'ECRMODESTATUS' ]				:= ::FDriver:ECRMODESTATUS	
-			::FShortECRStatus[ 'ECRADVANCEDMODE' ]				:= ::FDriver:ECRADVANCEDMODE	
-			::FShortECRStatus[ 'ECRADVANCEDMODEDESCRIPTION' ]	:= ::FDriver:ECRADVANCEDMODEDESCRIPTION
-			::FShortECRStatus[ 'QUANTITYOFOPERATIONS' ]			:= ::FDriver:QUANTITYOFOPERATIONS
-			::FShortECRStatus[ 'BATTERYVOLTAGE' ]				:= ::FDriver:BATTERYVOLTAGE
-			::FShortECRStatus[ 'POWERSOURCEVOLTAGE' ]			:= ::FDriver:POWERSOURCEVOLTAGE	
-			::FShortECRStatus[ 'FMRESULTCODE' ]					:= ::FDriver:FMRESULTCODE
-			::FShortECRStatus[ 'EKLZRESULTCODE' ]				:= ::FDriver:EKLZRESULTCODE		
-		endif
-	&& endif
+	::FDriver:Password := ::Password
+	if ( ret := ::ExecuteCommand( 'GetShortECRStatus' ) )
+		::FShortECRStatus := { => }
+		::FShortECRStatus[ 'OPERATORNUMBER' ]				:= ::FDriver:OPERATORNUMBER
+		::FShortECRStatus[ 'ECRFLAGS' ]						:= ::FDriver:ECRFLAGS
+		::FShortECRStatus[ 'RECEIPTRIBBONISPRESENT' ]		:= ::FDriver:RECEIPTRIBBONISPRESENT
+		::FShortECRStatus[ 'JOURNALRIBBONISPRESENT' ]		:= ::FDriver:JOURNALRIBBONISPRESENT
+		::FShortECRStatus[ 'SLIPDOCUMENTISPRESENT' ]		:= ::FDriver:SLIPDOCUMENTISPRESENT
+		::FShortECRStatus[ 'SLIPDOCUMENTISMOVING' ]			:= ::FDriver:SLIPDOCUMENTISMOVING		
+		::FShortECRStatus[ 'POINTPOSITION' ]				:= ::FDriver:POINTPOSITION
+		::FShortECRStatus[ 'EKLZISPRESENT' ]				:= ::FDriver:EKLZISPRESENT	
+		::FShortECRStatus[ 'JOURNALRIBBONOPTICALSENSOR' ]	:= ::FDriver:JOURNALRIBBONOPTICALSENSOR
+		::FShortECRStatus[ 'RECEIPTRIBBONOPTICALSENSOR' ]	:= ::FDriver:RECEIPTRIBBONOPTICALSENSOR	
+		::FShortECRStatus[ 'JOURNALRIBBONLEVER' ]			:= ::FDriver:JOURNALRIBBONLEVER
+		::FShortECRStatus[ 'RECEIPTRIBBONLEVER' ]			:= ::FDriver:RECEIPTRIBBONLEVER
+		::FShortECRStatus[ 'LIDPOSITIONSENSOR' ]			:= ::FDriver:LIDPOSITIONSENSOR
+		::FShortECRStatus[ 'ISPRINTERLEFTSENSORFAILURE' ]	:= ::FDriver:ISPRINTERLEFTSENSORFAILURE	
+		::FShortECRStatus[ 'ISPRINTERRIGHTSENSORFAILURE' ]	:= ::FDriver:ISPRINTERRIGHTSENSORFAILURE
+		::FShortECRStatus[ 'ISDRAWEROPEN' ]					:= ::FDriver:ISDRAWEROPEN
+		::FShortECRStatus[ 'ISEKLZOVERFLOW' ]				:= ::FDriver:ISEKLZOVERFLOW		
+		::FShortECRStatus[ 'QUANTITYPOINTPOSITION' ]		:= ::FDriver:QUANTITYPOINTPOSITION	
+		::FShortECRStatus[ 'ECRMODE' ]						:= ::FDriver:ECRMODE
+		::FShortECRStatus[ 'ECRMODEDESCRIPTION' ]			:= ::FDriver:ECRMODEDESCRIPTION
+		::FShortECRStatus[ 'ECRMODE8STATUS' ]				:= ::FDriver:ECRMODE8STATUS
+		::FShortECRStatus[ 'ECRMODESTATUS' ]				:= ::FDriver:ECRMODESTATUS	
+		::FShortECRStatus[ 'ECRADVANCEDMODE' ]				:= ::FDriver:ECRADVANCEDMODE	
+		::FShortECRStatus[ 'ECRADVANCEDMODEDESCRIPTION' ]	:= ::FDriver:ECRADVANCEDMODEDESCRIPTION
+		::FShortECRStatus[ 'QUANTITYOFOPERATIONS' ]			:= ::FDriver:QUANTITYOFOPERATIONS
+		::FShortECRStatus[ 'BATTERYVOLTAGE' ]				:= ::FDriver:BATTERYVOLTAGE
+		::FShortECRStatus[ 'POWERSOURCEVOLTAGE' ]			:= ::FDriver:POWERSOURCEVOLTAGE	
+		::FShortECRStatus[ 'FMRESULTCODE' ]					:= ::FDriver:FMRESULTCODE
+		::FShortECRStatus[ 'EKLZRESULTCODE' ]				:= ::FDriver:EKLZRESULTCODE		
+	endif
 	return ret
 
 // получить полное состояние устройства
@@ -953,30 +948,28 @@ METHOD function PrintString( stringForPrinting, lWide, typeControlRibbon, lDelay
 	HB_Default( @lWide, .f. )
 	HB_Default( @lDelayedPrint, .f. )
 	
-//	if ::FDriver != nil
-		stringForPrinting := atrepl( ',', alltrim( stringForPrinting ), ';' )   // заменить ";" на "," строки
-		stringForPrinting := charone( ' ', stringForPrinting )                // удалить совмещенные пробелы
-		stringForPrinting := substr( stringForPrinting, 1, 249 )                // обрежем до 249 символов
-		HB_CDPSELECT( 'RU1251' )
-		::FDriver:Password := ::Password
-		::FDriver:UseReceiptRibbon := 1
-		if typeControlRibbon == 2
-			::FDriver:UseReceiptRibbon := 0
-		endif
-		if typeControlRibbon == 1
-			::FDriver:UseJournalRibbon := 0
-		else
-			::FDriver:UseJournalRibbon := 1
-		endif
-		::FDriver:StringForPrinting  := dos2win( stringForPrinting )
-		::FDriver:DelayedPrint := lDelayedPrint
-		if lWide
-			ret := ::ExecuteCommand( 'PrintWideString' )
-		else
-			ret := ::ExecuteCommand( 'PrintString' )
-		endif
-		HB_CDPSELECT( 'RU866' )
-//	endif
+	stringForPrinting := atrepl( ',', alltrim( stringForPrinting ), ';' )   // заменить ";" на "," строки
+	stringForPrinting := charone( ' ', stringForPrinting )                // удалить совмещенные пробелы
+	stringForPrinting := substr( stringForPrinting, 1, 249 )                // обрежем до 249 символов
+	HB_CDPSELECT( 'RU1251' )
+	::FDriver:Password := ::Password
+	::FDriver:UseReceiptRibbon := 1
+	if typeControlRibbon == 2
+		::FDriver:UseReceiptRibbon := 0
+	endif
+	if typeControlRibbon == 1
+		::FDriver:UseJournalRibbon := 0
+	else
+		::FDriver:UseJournalRibbon := 1
+	endif
+	::FDriver:StringForPrinting  := dos2win( stringForPrinting )
+	::FDriver:DelayedPrint := lDelayedPrint
+	if lWide
+		ret := ::ExecuteCommand( 'PrintWideString' )
+	else
+		ret := ::ExecuteCommand( 'PrintString' )
+	endif
+	HB_CDPSELECT( 'RU866' )
 	return ret
 	
 // Отправить тег с ИНН кассира
