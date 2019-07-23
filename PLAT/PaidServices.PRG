@@ -451,6 +451,7 @@ function printReceipt( oContract, nKey )
 	
 	private ldate_op := date(), ltime_op := space( 5 ), lnchek := 0
 	private lsum_voz := 0
+	private lsum_voz_bank := 0
 	do case
 		case nKey == K_CTRL_F10
 			if hb_user_curUser:IsAdmin()
@@ -535,22 +536,37 @@ function printReceipt( oContract, nKey )
 				hb_Alert( 'Возврат денег уже произведен!', , , 4 )
 			elseif getDrvFR():IsFiscalReg .and. oContract:HasCheque .and. oContract:BackMoney == 0
 				lsum_voz := oContract:Total - oContract:TotalBank
-				s := ' \' + ;
-					'      Общая стоимость услуг = ' + lput_kop( oContract:Total, .t. ) + ' руб.\' + ;
-					'      Введите дату  возврата  @           \' + ;
-					'      Введите сумму возврата  @           \' + ;
-					' \'
-				DisplBox( s, , ;								// цвет окна (умолч. - cDataCGet)
-					{ 'ldate_op', 'lsum_voz' }, ;	// массив private-переменных для редактирования
-					{ , pict_cena }, ;				// массив Picture для редактирования
-					17 )
+				lsum_voz_bank := oContract:TotalBank
+				if oContract:TotalBank > 0
+					s := ' \' + ;
+						'      Общая стоимость услуг = ' + lput_kop( oContract:Total, .t. ) + ' руб.\' + ;
+						'      Введите дату  возврата  @           \' + ;
+						'Введите сумму возврата по карте @   \' + ;
+						' \'
+					DisplBox( s, , ;								// цвет окна (умолч. - cDataCGet)
+						{ 'ldate_op', 'lsum_voz_bank' }, ;	// массив private-переменных для редактирования
+						{ , pict_cena }, ;				// массив Picture для редактирования
+						17 )
+				else
+					s := ' \' + ;
+						'      Общая стоимость услуг = ' + lput_kop( oContract:Total, .t. ) + ' руб.\' + ;
+						'      Введите дату  возврата  @           \' + ;
+						'      Введите сумму возврата  @           \' + ;
+						' \'
+					DisplBox( s, , ;								// цвет окна (умолч. - cDataCGet)
+						{ 'ldate_op', 'lsum_voz' }, ;	// массив private-переменных для редактирования
+						{ , pict_cena }, ;				// массив Picture для редактирования
+						17 )
+				endif
 				if lastkey() == K_ESC
 					//
-				elseif round( lsum_voz, 2 ) <= 0
+				elseif round( lsum_voz, 2 ) <= 0 .and. round( lsum_voz_bank, 2 ) <= 0
 					mybell()
 				elseif lsum_voz > oContract:Total - oContract:TotalBank
 					hb_Alert( 'Сумма возврата больше стоимости услуг!', , , 4 )
-				elseif f_Esc_Enter( 'возврата ' + lput_kop( lsum_voz, .t. ) + ' руб.' )
+				elseif lsum_voz_bank > oContract:TotalBank
+					hb_Alert( 'Сумма возврата по карте больше оплаты по карте', , , 4 )
+				elseif f_Esc_Enter( iif( lsum_voz_bank > 0,'возврата по карте ' + lput_kop( lsum_voz_bank, .t. ) + ' руб.', 'возврата ' + lput_kop( lsum_voz, .t. ) + ' руб.' ) )
 					oCheck := TCheck():New( getDrvFR() )		// объект для чека
 					oCheck:Refund()							// установим флаг возврата
 					oCheck:Patient := oContract:Patient
@@ -559,9 +575,13 @@ function printReceipt( oContract, nKey )
 					oService:Name := 'ВОЗВРАТ'
 					oService:Section := 1				// секция
 					oService:Quantity := 1
-					oService:Price := lsum_voz
+					oService:Price := iif( lsum_voz_bank > 0, lsum_voz_bank, lsum_voz )
 					oCheck:AddService( oService )			// добавим услугу к чеку
-					oCheck:Cash := lsum_voz
+					if lsum_voz_bank > 0
+						oCheck:PayType2 := lsum_voz_bank
+					else
+						oCheck:Cash := lsum_voz
+					endif
 					if oCheck:Print()
 						oContract:TypeCashboxMoneyBack := 1
 						oContract:DateBackMoney := oCheck:DateFR
