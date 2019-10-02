@@ -207,12 +207,18 @@ if tip_polzovat != TIP_ADM
   Private verify_fio_polzovat := .f.
 endif
 if !G_SOpen(sem_task,sem_vagno,fio_polzovat,p_name_comp)
-  if type("verify_fio_polzovat") == "L" .and. verify_fio_polzovat
-    func_error('В данный момент работает другой оператор под фамилией "'+fio_polzovat+'"')
-  else
-    func_error('Доступ запрещен! В данный момент другой задачей выполняется ответственный режим.')
+    if type("verify_fio_polzovat") == "L" .and. verify_fio_polzovat
+      func_error('В данный момент работает другой оператор под фамилией "'+fio_polzovat+'"')
+    else
+      if !hb_user_curUser:IsAdmin()
+        hb_Alert("В данный момент другой задачей выполняется ответственный режим. Проверьте системный монитор")
+      else
+        func_error('Доступ запрещен! В данный момент другой задачей выполняется ответственный режим.')
+      endif
+    endif
+  if !hb_user_curUser:IsAdmin()
+      f_end()
   endif
-  f_end()
 endif
 //
 Public chm_help_code := 0
