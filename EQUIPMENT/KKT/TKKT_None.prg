@@ -230,7 +230,8 @@ METHOD function PrintString( stringForPrinting, lWide, typeControlRibbon, lDelay
 	return .t.
 
 // загрузить настройки ККТ
-METHOD function Open( oSetting, nPasswordUser )		CLASS TKKT_None
+//METHOD function Open( oSetting, nPasswordUser )		CLASS TKKT_None
+METHOD function Open( oSetting, oUser )		CLASS TKKT_None
 	::FIsFiscalReg := .f.
 	return .t.
 	

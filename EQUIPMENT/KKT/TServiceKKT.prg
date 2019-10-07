@@ -27,7 +27,8 @@ CLASS TServiceKKT
 		METHOD Driver 		INLINE ::FKKT:FDriver
 		METHOD IsLoaded 		INLINE ::FKKT:IsLoaded		// драйвер загружен
 		METHOD PasswordAdmin	INLINE ::FKKT:PasswordAdmin	// пароль администратора
-		METHOD Password		INLINE ::FKKT:Password		// пароль
+		METHOD Password		INLINE ::FKKT:Password		// пароль кассира
+		METHOD INNCASHIER	INLINE ::FKKT:INNCashier	// ИНН кассира
 		METHOD RegimKKT		INLINE ::FKKT:RegimKKT		// получить режим работы устройства
 		METHOD InfoExchangeStatus	INLINE ::FKKT:InfoExchangeStatus	// статус информационного обмена
 		METHOD MessageStatus	INLINE ::FKKT:MessageStatus// состояние чтения сообщения
@@ -288,8 +289,10 @@ METHOD function GetCashReg( nRegistr )			CLASS TServiceKKT
 
 
 // загрузить настройки ККТ
-METHOD function Open( oSettings, nPasswordUser )	CLASS TServiceKKT
-	return ::FKKT:Open( oSettings, nPasswordUser )
+//METHOD function Open( oSettings, nPasswordUser )	CLASS TServiceKKT
+//	return ::FKKT:Open( oSettings, nPasswordUser )
+METHOD function Open( oSettings, oUser )	CLASS TServiceKKT
+	return ::FKKT:Open( oSettings, oUser )
 
 // закрытие чека расширенное
 METHOD function CloseCheck( oCloseCheck )		CLASS TServiceKKT

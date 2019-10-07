@@ -54,8 +54,8 @@ function polikl1_kart()
 		oWinPort := win_com():Init( oScanner:PortName, WIN_CBR_9600, WIN_ODDPARITY, 7, WIN_ONESTOPBIT )
 		if oWinPort:Open()
 			// запустим новый поток для управления сканером штрих-кода
-			&& pThID := hb_threadStart( hb_bitor(HB_THREAD_INHERIT_PUBLIC,HB_THREAD_MEMVARS_COPY), @readBarcode(), oWinPort, oBarcodeOMS )
-			pThID := hb_threadStart( hb_bitor(HB_THREAD_INHERIT_PUBLIC,HB_THREAD_MEMVARS_COPY), @readBarcode(), oWinPort )
+			//&& pThID := hb_threadStart( hb_bitor(HB_THREAD_INHERIT_PUBLIC,HB_THREAD_MEMVARS_COPY), @readBarcode(), oWinPort, oBarcodeOMS )
+			//pThID := hb_threadStart( hb_bitor(HB_THREAD_INHERIT_PUBLIC,HB_THREAD_MEMVARS_COPY), @readBarcode(), oWinPort )
 		endif
 	endif
 	

@@ -14,9 +14,9 @@
 #include "..\_mylib_hbt\edit_spr.ch"
 #include "chip_mo.ch"
 
-Static _version := {2,8,6}
-Static char_version := ""
-Static _date_version := "13.03.19г."
+Static _version := {2,9,4}
+Static char_version := "b"
+Static _date_version := "06.10.19г."
 Static __s_full_name := "ЧИП + Учёт работы Медицинской Организации"
 Static __s_version
 
@@ -78,6 +78,7 @@ Public d_01_08_2016 := 0d20160801
 Public d_01_08_2017 := 0d20170801
 Public d_01_09_2017 := 0d20170901
 Public d_01_05_2018 := 0d20180501
+Public d_01_05_2019 := 0d20190501
 //
 Public p_arr_prazdnik := {{2013,{;
                                  { 1,{1,2,3,4,5,6,7,8,12,13,19,20,26,27}},;
@@ -206,12 +207,18 @@ if tip_polzovat != TIP_ADM
   Private verify_fio_polzovat := .f.
 endif
 if !G_SOpen(sem_task,sem_vagno,fio_polzovat,p_name_comp)
-  if type("verify_fio_polzovat") == "L" .and. verify_fio_polzovat
-    func_error('В данный момент работает другой оператор под фамилией "'+fio_polzovat+'"')
-  else
-    func_error('Доступ запрещен! В данный момент другой задачей выполняется ответственный режим.')
+    if type("verify_fio_polzovat") == "L" .and. verify_fio_polzovat
+      func_error('В данный момент работает другой оператор под фамилией "'+fio_polzovat+'"')
+    else
+      if !hb_user_curUser:IsAdmin()
+        hb_Alert("В данный момент другой задачей выполняется ответственный режим. Проверьте системный монитор")
+      else
+        func_error('Доступ запрещен! В данный момент другой задачей выполняется ответственный режим.')
+      endif
+    endif
+  if !hb_user_curUser:IsAdmin()
+      f_end()
   endif
-  f_end()
 endif
 //
 Public chm_help_code := 0
@@ -1258,8 +1265,8 @@ hb_AIns( func_menu[ len( func_menu ) ], 5, 'editRoles()', .t. )
     aadd(func_menu, {'run_my_hrb("mo_hrb1","i_new_boln()")',;
                      'run_my_hrb("mo_hrb1","i_kol_del_zub()")',;
                      "modern_statist()",;
-                     'run_my_hrb("mo_hrb1","forma_792_MIAC()")',;    
-                     'run_my_hrb("mo_hrb1","monitoring_vid_pom()")',;    
+                     'run_my_hrb("mo_hrb1","forma_792_MIAC()")',;
+                     'run_my_hrb("mo_hrb1","monitoring_vid_pom()")',;
                      'run_my_hrb("mo_hrb1","phonegram_15_kz()")',;
                      'run_my_hrb("mo_hrb1","b_25_perinat_2()")'} )
   case glob_task == X_COPY //
@@ -1430,7 +1437,7 @@ delete file ttt.ttt
 //
 Public cur_drv := DISKNAME()
 Public cur_dir := cur_drv+":"+DIRNAME(cur_drv)+cslash
-//Public cur_dir := hb_DirBase()  
+//Public cur_dir := hb_DirBase()
 Public dir_server := "", p_name_comp := ""
 Public dir_exe := upper(beforatnum(cslash,exename()))+cslash
 //Public dir_exe := upper(beforatnum(cslash,hb_ProgName()))+cslash
@@ -1448,7 +1455,7 @@ if hb_FileExists("server.mem")
       p_name_comp := ""
     endif
   endif
-  if len(p_name_comp) < 2 
+  if len(p_name_comp) < 2
     p_name_comp := alltrim(netname())+cslash+hb_username()
   endif
   ft_use()
@@ -1808,7 +1815,7 @@ if fl
   close databases
   restscreen(buf)
   return func_error(4,"Непонятная ошибка. Выполните переиндексирование в подзадаче ОМС")
-endif  
+endif
 select TMP_TL
 if lastrec() > 0
   afillall(arr,0)

@@ -141,7 +141,7 @@ function edit_Users_bay()
 * 20.10.18 редактирование объекта пользователя
 static function editUser( oBrowse, aObjects, oUser, nKey )
 	local fl := .f.
-	local r1 := maxrow() - 10, r2 := maxrow() - 3, i
+	local r1 := maxrow() - 11, r2 := maxrow() - 3, i
 	local c_1 := T_COL + 5, c_2 := c_1 + 62
 	local oBox
 	
@@ -196,15 +196,16 @@ static function editUser( oBrowse, aObjects, oUser, nKey )
 		oBox:View()
 		
 		@ r1 + 1, c_1 + 3 say 'Ф.И.О. пользователя' get oUser:FIO valid func_empty( oUser:FIO )
-		@ r1 + 2, c_1 + 3 say 'Учреждение' get mDepartment ;
+		@ r1 + 2, c_1 + 3 say 'ИНН пользователя' get oUser:INN picture '999999999999'
+		@ r1 + 3, c_1 + 3 say 'Учреждение' get mDepartment ;
 								READER { | x | menu_reader( x, TDepartmentDB():MenuDepartments(), A__MENUVERT, , , .f. ) }
-		@ r1 + 3, c_1 + 3 say 'Должность' get oUser:Position
-		@ r1 + 4, c_1 + 3 say 'Группа пользователей' get mrole ;
+		@ r1 + 4, c_1 + 3 say 'Должность' get oUser:Position
+		@ r1 + 5, c_1 + 3 say 'Группа пользователей' get mrole ;
 								READER { | x | menu_reader( x, TRoleUserDB():MenuRoles(), A__MENUVERT, , , .f. ) }
-		@ r1 + 5, c_1 + 3 say 'Тип доступа' get mtip ;
+		@ r1 + 6, c_1 + 3 say 'Тип доступа' get mtip ;
 								READER { | x | menu_reader( x, TUser():aMenuType, A__MENUVERT, , , .f. ) }
-		@ r1 + 6, c_1 + 3 say 'Пароль' get oUser:Password picture '@!' valid func_empty( oUser:Password ) .and. !PassExist( oUser, aObjects, oUser:Password )
-		i := 6
+		@ r1 + 7, c_1 + 3 say 'Пароль' get oUser:Password picture '@!' valid func_empty( oUser:Password ) .and. !PassExist( oUser, aObjects, oUser:Password )
+		i := 7
 		if is_task( X_KEK )
 			++i
 			@ r1 + i, c_1 + 3 say 'Группа КЭК' get mgruppa READER { | x | menu_reader( x, mm_gruppa, A__MENUVERT, , , .f. ) }

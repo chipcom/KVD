@@ -150,15 +150,16 @@ METHOD Print()							CLASS TCheck
 		::FDriver:FNOpenSession()
 	endif
 	if !::FTypeCheck
-		// запрашиваем наличие наличности в кассе
-		res := ::AmountOfCashOnCashbox()
-		if ( ::FTotal > res )
-			hb_Alert( 'Недостаточная сумма в кассе', , , 4 )
-			return .f.
-		else
-			::FDriver:PrintString( '**** ВОЗВРАТ ****', .t. )
-			::FDriver:PrintString( ' ' )
+		if ::Cash > 0
+			// запрашиваем наличие наличности в кассе
+			res := ::AmountOfCashOnCashbox()
+			if ( ::FTotal > res )
+				hb_Alert( 'Недостаточная сумма в кассе', , , 4 )
+				return .f.
+			endif
 		endif
+		::FDriver:PrintString( '**** ВОЗВРАТ ****', .t. )
+		::FDriver:PrintString( ' ' )
 	endif
 	::PrintBayer()
 	if ( ret := ::PrintUslugi() )
