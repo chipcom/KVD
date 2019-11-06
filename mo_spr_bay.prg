@@ -160,7 +160,7 @@ return NIL
 ***** 15.01.19
 Function f0_es_uslugi()
 Local k := 3, v1, v2, fl1del, fl2del, s := iif(empty(usl->shifr1), usl->shifr, usl->shifr1)
-s := padr(transform_shifr(s),10)      
+s := padr(transform_shifr(s),10)
 select LUSL
 find (s)
 if found()
@@ -2691,7 +2691,7 @@ do case
   case regim == "edit"
     if nKey == K_INS .or. (nKey == K_ENTER .and. !empty(sa->name))
       rec := recno()
-      Private mname := if(nKey == K_INS, space(150), sa->name), gl_area := {1,0,maxrow()-1,79,0}
+      Private mname := iif(nKey == K_INS, space(150), sa->name), gl_area := {1,0,maxrow()-1,79,0}
       buf1 := box_shadow(pr2-3,pc1+1,pr2-1,pc2-1,color8,;
                          iif(nKey==K_INS,"Добавление","Редактирование"),cDataPgDn)
       setcolor(cDataCGet)
@@ -2754,7 +2754,7 @@ do while .t.
   mywait()
   tmp := alltrim(tmp1)
   i := 0
-  Private tmp_mas := {}, tmp_kod := {}, t_len, k1 := mr1+3, ;
+  Private tmp_mas := {}, tmp_kod := {}, t_len, k1 := mr1+3, k2 := 21, tmp2 := upper(tmp)
           k2 := 21, tmp2 := upper(tmp)
   go top
   do while !eof()
@@ -4929,7 +4929,7 @@ return fl
 
 *
 
-***** 03.09.17 ввод пароля
+***** 23.10.19 ввод пароля
 Function inp_password(is_cur_dir,is_create)
 Local pss := space(10), tmp_pss := my_parol(), i_p := 0, ta := {}, s, fl_g := .f.
 Public TIP_ADM := 0, TIP_OPER := 1, TIP_KONT := 3
@@ -5009,7 +5009,7 @@ return ta
 
 *
 
-***** 03.09.17
+***** 22.10.19
 Function edit_password()
 Local buf := save_maxrow()
 Local mas11 := {}, mpic := {,,,{1,0}},;
@@ -5060,7 +5060,7 @@ rest_box(buf)
 G_SUnlock("edit_pass")
 RETURN NIL
 
-***** 03.09.17
+***** 22.10.19
 Static Function f1editpass(b, ar, nDim, nElem, nKey)
 Local nRow := ROW(), nCol := COL(), tmp_color, buf := save_maxrow(), buf1, fl := .f., r1, r2, i,;
       mm_gruppa := {;
@@ -5071,7 +5071,7 @@ Local nRow := ROW(), nCol := COL(), tmp_color, buf := save_maxrow(), buf1, fl :=
 keyboard ""
 if nKey == K_ENTER
   Private mfio, mdolj, mgruppa, m1gruppa := 0, mtip, m1tip, mpass, moper,;
-  mfroper, gl_area := {1,0,maxrow()-1,79,0}
+  mfroper,minn, gl_area := {1,0,maxrow()-1,79,0}
 
   if ar[nElem,7] == 0 .and. len(ar) > 1
     ar[nElem,6] := 1 // по умолчанию добавляется оператор
@@ -5087,12 +5087,19 @@ if nKey == K_ENTER
     --r1
   endif
   if is_task(X_PLATN) .or. is_task(X_ORTO) .or. is_task(X_KASSA)
+    minn  := ar[nElem,10]
     moper := ar[nElem,8]
     --r1
     mfroper := ar[nElem,9]
     --r1
   endif
   buf1 := box_shadow(r1,c_1+1,r2,c_2-1,,iif(ar[nElem,7]==0,"Добавление","Редактирование"),cDataPgDn)
+  if is_task(X_PLATN) .or. is_task(X_ORTO) .or. is_task(X_KASSA)
+    @ r1+2,c_1+3 say "Ф.И.О. пользователя" get mfio valid func_empty(mfio)
+    @ r1+2,c_1+46 say "ИНН" get minn
+  else
+    @ r1+2,c_1+3 say "Ф.И.О. пользователя" get mfio valid func_empty(mfio)
+  endif
   @ r1+2,c_1+3 say "Ф.И.О. пользователя" get mfio valid func_empty(mfio)
   @ r1+3,c_1+3 say "Должность" get mdolj
   @ r1+4,c_1+3 say "Тип доступа" get mtip READER {|x|menu_reader(x,menu_tip,A__MENUVERT,,,.f.)}
@@ -5113,27 +5120,29 @@ if nKey == K_ENTER
   rest_box(buf)
   setcolor(tmp_color)
   if lastkey() != K_ESC .and. f_Esc_Enter(1)
-    ar[nElem,1] := mfio
-    ar[nElem,6] := m1tip
-    ar[nElem,3] := mdolj
-    ar[nElem,4] := m1gruppa
-    ar[nElem,2] := inieditspr(A__MENUVERT,menu_tip,m1tip)
-    ar[nElem,5] := mpass
-    ar[nElem,8] := moper
-    ar[nElem,9] := mfroper
+    ar[nElem,1]  := mfio
+    ar[nElem,6]  := m1tip
+    ar[nElem,3]  := mdolj
+    ar[nElem,4]  := m1gruppa
+    ar[nElem,2]  := inieditspr(A__MENUVERT,menu_tip,m1tip)
+    ar[nElem,5]  := mpass
+    ar[nElem,8]  := moper
+    ar[nElem,9]  := mfroper
+    ar[nElem,10] := minn
     if G_Use(dir_server+"base1",,,.t.)
       if ar[nElem,7] == 0
         G_RLock(.t.,FOREVER) ; ar[nElem,7] := recno()
       else
         goto (ar[nElem,7]) ; G_RLock(FOREVER)
       endif
-      replace p1 with crypt(mfio,gpasskod),;
-              p2 with m1tip,;
-              p3 with crypt(mpass,gpasskod),;
-              p5 with crypt(mdolj,gpasskod),;
-              p6 with m1gruppa,;
-              p7 with crypt(moper,gpasskod),;
-              p8 with crypt(mfroper,gpasskod)
+      replace p1  with crypt(mfio,gpasskod),;
+              p2  with m1tip,;
+              p3  with crypt(mpass,gpasskod),;
+              p5  with crypt(mdolj,gpasskod),;
+              p6  with m1gruppa,;
+              p7  with crypt(moper,gpasskod),;
+              p8  with crypt(mfroper,gpasskod),;
+              inn with crypt(minn,gpasskod)
       b:refreshAll() ; fl := .t.
     endif
   endif
