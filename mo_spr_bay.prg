@@ -2755,7 +2755,6 @@ do while .t.
   tmp := alltrim(tmp1)
   i := 0
   Private tmp_mas := {}, tmp_kod := {}, t_len, k1 := mr1+3, k2 := 21, tmp2 := upper(tmp)
-          k2 := 21, tmp2 := upper(tmp)
   go top
   do while !eof()
     if tmp2 $ upper(sa->name)
@@ -4503,18 +4502,6 @@ index on sindex to (cur_dir+"tmpsV015")
 tmp_V015->(dbCloseArea())
 select (tmp_select)
 return NIL
-
-***** 07.08.16 вернуть код новой медицинской специальности
-FUNCTION ret_new_spec(old_spec,new_spec)
-Local i, lkod := 0
-if empty(new_spec)
-  if !empty(old_spec) .and. (i := ascan(glob_arr_V004_V015, {|x| x[1] == old_spec })) > 0 
-    lkod := glob_arr_V004_V015[i,2] 
-  endif
-else
-  lkod := new_spec 
-endif
-return lkod
 
 ***** 09.08.16 вернуть медицинскую специальность из tmp-файла
 FUNCTION ret_tmp_prvs(kod_old,kod_new)
