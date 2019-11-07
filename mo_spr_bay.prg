@@ -314,6 +314,7 @@ endcase
 rest_box(buf)
 return k
 
+** см. файл SERVICES\f3_es_uslugi.prg
 ***** 03.09.17
 Function f3_es_uslugi_1(nKey)
 Static menu_nul := {{"нет",.f.},{"да",.t.}}
@@ -325,9 +326,9 @@ Private mkod, mname, mpcena, mpcena_d, mshifr, mshifr1, mcena, mcena_d,;
         mname1:="", mslugba, m1slugba, gl_area,;
         m1is_nulp, mis_nulp, yes_tfoms := .f., pifin := 0, pifinr, pifinc
 if (is_full := (is_task(X_ORTO) .or. is_task(X_KASSA) .or. is_task(X_PLATN)))
-  r1 -= 4 
+  r1 -= 4
 endif
-gl_area := {r1+1, 0, 23, 79, 0}        
+gl_area := {r1+1, 0, 23, 79, 0}
 //
 select TMP_USL1
 zap
@@ -770,7 +771,7 @@ if !empty(mshifr1 := transform_shifr(mshifr1))
 endif
 return fl
 
-***** 
+*****
 Function spr_uslugi_FFOMS()
 Static menu_nul := {{"нет",.f.},{"да",.t.}}
 Local arr_block, buf := savescreen(),  str_sem
@@ -874,7 +875,7 @@ do case
     hu->(dbCloseArea())
     if !fl
       R_Use(dir_server+"mo_onkna",,"NAPR") // онконаправления
-      Locate for U_KOD == mosu->kod 
+      Locate for U_KOD == mosu->kod
       fl := found()
       napr->(dbCloseArea())
     endif
@@ -4110,7 +4111,7 @@ do case
       m1prvs     := ret_new_spec(p2->prvs,p2->prvs_new)
       if fieldpos("profil") > 0
         fl_profil := .t.
-        m1profil := p2->profil 
+        m1profil := p2->profil
       endif
       muroven    := p2->uroven
       motdal     := p2->otdal
@@ -4403,7 +4404,7 @@ restscreen(buf)
 return fl
 
 ***** 23.01.17 инициализировать tmp-файл БД медицинский специальностей
-FUNCTION init_tmp_prvs(_date,is_all)
+Function init_tmp_prvs(_date,is_all)
 Local i, s, len1, fl_is, rec, tmp_select := select()
 DEFAULT is_all TO .f.
 len1 := 0
@@ -4446,7 +4447,7 @@ dbcreate(cur_dir+"tmp_V015",{{"name","C",len1,0},;
                              {"sindex","C",56,0},;
                              {"isn","N",1,0},;
                              {"is","L",1,0}})
-use (cur_dir+"tmp_V015") new 
+use (cur_dir+"tmp_V015") new
 for i := 1 to len(_glob_array)
   fl_is := between_date(_glob_array[i,5],_glob_array[i,6],_date)
   if iif(is_all, .t., fl_is)
@@ -4477,7 +4478,7 @@ do while !eof()
       s := upper(padr(afteratnum(".",tmp_V015->name,1),10))+tmp_V015->kod+s
       if !empty(tmp_V015->kod_up)
         aadd(anu,tmp_V015->name)
-      endif 
+      endif
       ++i
     else
       exit
@@ -4497,14 +4498,14 @@ do while !eof()
   next
   tmp_V015->name_up := s
   skip
-enddo  
+enddo
 index on sindex to (cur_dir+"tmpsV015")
 tmp_V015->(dbCloseArea())
 select (tmp_select)
 return NIL
 
 ***** 09.08.16 вернуть медицинскую специальность из tmp-файла
-FUNCTION ret_tmp_prvs(kod_old,kod_new)
+Function ret_tmp_prvs(kod_old,kod_new)
 Local i, k, tmp_select := select(), ret := space(10)
 if empty(kod_new)
   if valtype(kod_old) == "C"
@@ -4648,10 +4649,10 @@ if is_otd_dep
                                 {|x|menu_reader(x,mm_otd_dep,A__MENUVERT_SPACE,,,.f.)},;
                                 0,{|x|inieditspr(A__MENUVERT,mm_otd_dep,x)},;
                                 "По справочнику ТФОМС"})
-endif                       
+endif
 /*if is_adres_podr
   if (i := ascan(glob_adres_podr, {|x| x[1] == glob_mo[_MO_KOD_TFOMS] })) > 0
-    for j := 1 to len(glob_adres_podr[i,2]) 
+    for j := 1 to len(glob_adres_podr[i,2])
       aadd(mm_adres_podr, {glob_adres_podr[i,2,j,3],glob_adres_podr[i,2,j,2]})
     next
   endif
@@ -4659,7 +4660,7 @@ endif
                                 {|x|menu_reader(x,mm_adres_podr,A__MENUVERT,,,.f.)},;
                                 0,{|x|inieditspr(A__MENUVERT,mm_adres_podr,x)},;
                                 "Адрес удалённого подразделения для стационара"})
-endif                       
+endif
 if is_adres_podr .and. (i := ascan(glob_adres_podr, {|x| x[1] == glob_mo[_MO_KOD_TFOMS] })) > 0
   G_Use(dir_server+"mo_otd",,"OTD")
   go top
@@ -4672,8 +4673,8 @@ if is_adres_podr .and. (i := ascan(glob_adres_podr, {|x| x[1] == glob_mo[_MO_KOD
     endif
     skip
   enddo
-  close databases                      
-endif*/                       
+  close databases
+endif*/
 if is_task(X_PLATN)
   aadd(arr[US_EDIT_SPR],{"dbeginp","D",8,0,,,boy(sys_date),,;
                          'Дата начала работы в задаче "Платные услуги"'})
@@ -4963,9 +4964,12 @@ do while i_p < 3  // до 3х попыток
             s := iif(empty(base1->p8), "", crypt(base1->p8,gpasskod))
             if !empty(s) .and. int(val(s)) > 0
               oper_frparol := int(val(s))
-            else 
+            else
               oper_frparol := oper_parol
             endif
+          endif
+          if fieldnum("inn") > 0 // ИНН кассира
+            oper_fr_inn := alltrim(crypt(base1->inn,gpasskod))
           endif
         endif
         base1->(dbCloseArea())
@@ -5031,14 +5035,15 @@ do while !eof()
                p2,;                        //  6
                recno(),;                   //  7
                iif(empty(p7), p7, crypt(p7,gpasskod)),;   //  8
-               iif(empty(p8), p8, crypt(p8,gpasskod));    //  9
+               iif(empty(p8), p8, crypt(p8,gpasskod)),;    //  9
+               iif(empty(inn), inn, crypt(inn,gpasskod)); //  10
               };
       )
   skip
 enddo
 close databases
 if len(mas11) == 0
-  aadd(mas11, {space(20),space(25),space(20),0,space(10),1,0,space(10),space(10)})
+  aadd(mas11, {space(20),space(25),space(20),0,space(10),1,0,space(10),space(10),space(12)})
 endif
 Arrn_Browse(T_ROW,c_1,maxrow()-2,c_2,mas11,mas12,1,,color5,,,,,mpic,blk,{.f.,.f.,.t.})
 close databases
