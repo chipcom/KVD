@@ -14,9 +14,9 @@
 #include "..\_mylib_hbt\edit_spr.ch"
 #include "chip_mo.ch"
 
-Static _version := {2,11,0}
-Static char_version := "b"
-Static _date_version := "16.01.20г."
+Static _version := {2,11,1}
+Static char_version := ""
+Static _date_version := "19.01.20г."
 Static __s_full_name := "ЧИП + Учёт работы Медицинской Организации"
 Static __s_version
 
@@ -79,6 +79,7 @@ Public d_01_08_2017 := 0d20170801
 Public d_01_09_2017 := 0d20170901
 Public d_01_05_2018 := 0d20180501
 Public d_01_05_2019 := 0d20190501
+Public d_01_11_2019 := 0d20191101
 //
 Public p_arr_prazdnik := {{2013,{;
                                  { 1,{1,2,3,4,5,6,7,8,12,13,19,20,26,27}},;
@@ -177,10 +178,24 @@ Public p_arr_prazdnik := {{2013,{;
                                  {10,{5,6,12,13,19,20,26,27}},;
                                  {11,{2,3,4,9,10,16,17,23,24,30}},;
                                  {12,{1,7,8,14,15,21,22,28,29}}};
+                          },;
+                          {2020,{;
+                                 { 1,{1,2,3,4,5,6,7,8,11,12,18,19,25,26}},;
+                                 { 2,{1,2,8,9,15,16,22,23,24,29}},;
+                                 { 3,{1,7,8,9,14,15,21,22,28,29}},;
+                                 { 4,{4,5,11,12,18,19,25,26}},;
+                                 { 5,{1,2,3,4,5,9,10,11,16,17,23,24,30,31}},;
+                                 { 6,{6,7,12,13,14,20,21,27,28}},;
+                                 { 7,{4,5,11,12,18,19,25,26}},;
+                                 { 8,{1,2,8,9,15,16,22,23,29,30}},;
+                                 { 9,{5,6,12,13,19,20,26,27}},;
+                                 {10,{3,4,10,11,17,18,24,25,31}},;
+                                 {11,{1,4,7,8,14,15,21,22,28,29}},;
+                                 {12,{5,6,12,13,19,20,26,27}}};
                           };
                          }
 //
-__s_version := "  в. "+fs_version(_version)+char_version+" от "+_date_version+" тел.23-69-56"
+__s_version := "  в. "+fs_version(_version)+char_version+" от "+_date_version+" тел.(8442)23-69-56"
 SET(_SET_DELETED, .T.)
 SETCLEARB(" ")
 is_cur_dir := f_first(is_create)
@@ -1536,13 +1551,12 @@ return NIL
 
 *
 
-***** 11.03.15
+***** 06.10.19
 FUNCTION f_end(yes_copy)
 Static group_ini := "RAB_MESTO"
-Local i, spath := "", bSaveHandler
-write_rest_pp() // записать незаписанные истории болезней из приёмного покоя
-bSaveHandler := ERRORBLOCK( {|x| BREAK(x)} )
+Local i, spath := "", bSaveHandler := ERRORBLOCK( {|x| BREAK(x)} )
 BEGIN SEQUENCE
+  write_rest_pp() // записать незаписанные истории болезней из приёмного покоя
   CLOSE ALL
   DEFAULT yes_copy TO .t.
   if yes_copy
@@ -1950,7 +1964,7 @@ if glob_mo[_MO_KOD_TFOMS] == kod_VOUNC
 endif
 return arr
 
-***** 28.07.16 обновить системную дату (для травмпунктов, работающих ночами)
+***** 28.07.16 обновить системную дату (для работающих по ночам травмпунктов)
 Function change_sys_date()
 sys_date := DATE()
 sys1_date := sys_date
