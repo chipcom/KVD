@@ -120,6 +120,7 @@ METHOD Save( oSubdivision ) CLASS TSubdivisionDB
 		hb_hSet(aHash, 'IDSP',			oSubdivision:IDSP )
 		hb_hSet(aHash, 'IDUMP',			oSubdivision:IDUMP )
 		hb_hSet(aHash, 'IDVMP',			oSubdivision:IDVMP )
+		hb_hSet(aHash, 'TIP_OTD',		oSubdivision:TypePodr )
 		hb_hSet(aHash, 'KOD_PODR',		oSubdivision:KodPodr )
 		hb_hSet(aHash, 'TIPLU',			oSubdivision:TypeLU )
 		hb_hSet(aHash, 'CODE_DEP',		oSubdivision:CodeSubTFOMS )
@@ -164,6 +165,7 @@ METHOD FillFromHash( hbArray )     CLASS TSubdivisionDB
 	obj:IDSP := hbArray[ 'IDSP' ]
 	obj:IDUMP := hbArray[ 'IDUMP' ]
 	obj:IDVMP := hbArray[ 'IDVMP' ]
+	obj:TypePodr := hbArray[ 'TIP_OTD' ]
 	obj:KodPodr := hbArray[ 'KOD_PODR' ]
 	obj:TypeLU := hbArray[ 'TIPLU' ]
 	obj:KodSogl := hbArray[ 'KOD_SOGL' ]

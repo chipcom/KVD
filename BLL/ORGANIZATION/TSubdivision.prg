@@ -38,6 +38,7 @@ CREATE CLASS TSubdivision	INHERIT	TBaseObjectBLL
 		PROPERTY DBeginO READ getDBeginO WRITE setDBeginO					// дата начала действия в задаче "Ортопедия" - поставить 01.01.1993
 		PROPERTY DEndO READ getDEndO WRITE setDEndO							// дата окончания действия в задаче "Ортопедия"
 		PROPERTY KodPodr READ getKodPodr WRITE setKodPodr					// код подразделения по паспорту ЛПУ
+		PROPERTY TypePodr READ getTypePodr WRITE setTypePodr					// тип отд-ия: 1-приёмный покой
 		PROPERTY Plan_VP READ getPlan_VP WRITE setPlan_VP					// план врачебных приемов
 		PROPERTY Plan_PF READ getPlan_PF WRITE setPlan_PF					// план профилактик
 		PROPERTY Plan_PD READ getPlan_PD WRITE setPlan_PD					// план приемов на дому
@@ -87,6 +88,7 @@ CREATE CLASS TSubdivision	INHERIT	TBaseObjectBLL
 		DATA FDBeginO		INIT ctod( '01/01/1993' )
 		DATA FDEndO			INIT ctod( '' )
 		DATA FKodPodr		INIT space( 25 )
+		DATA FTypePodr		INIT 0
 		DATA FPlanVP		INIT 0
 		DATA FPlanPF		INIT 0
 		DATA FPlanPD		INIT 0
@@ -131,6 +133,8 @@ CREATE CLASS TSubdivision	INHERIT	TBaseObjectBLL
 		METHOD setDEndO( dVal )
 		METHOD getKodPodr
 		METHOD setKodPodr( cVar )
+		METHOD getTypePodr
+		METHOD setTypePodr( nVar )
 		METHOD getPlan_VP
 		METHOD setPlan_VP( nVal )
 		METHOD getPlan_PD
@@ -327,6 +331,14 @@ METHOD FUNCTION getKodPodr() 		 CLASS TSubdivision
 METHOD PROCEDURE setKodPodr( cVar ) 		 CLASS TSubdivision
 
 	::FKodPodr := cVar
+	return
+
+METHOD FUNCTION getTypePodr() 		 CLASS TSubdivision
+	return ::FTypePodr
+
+METHOD PROCEDURE setTypePodr( nVar ) 		 CLASS TSubdivision
+
+	::FTypePodr := nVar
 	return
 
 METHOD FUNCTION getPlan_VP() 		 CLASS TSubdivision
