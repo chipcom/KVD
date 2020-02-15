@@ -78,13 +78,14 @@ function editSubdivisions()
 
 	return nil
 
-* 21.10.18 редактирование объекта отделение
+* 15.02.20 редактирование объекта отделение
 function editSubdivision( oBrowse, aObjects, oSubdivision, nKey )
 	local fl := .f., _fl := .f.
 	local k, i, ii := 1
 	local oBox
 
 	private mmtiplu, m1mtiplu
+	private mtyppodr, m1typpodr
 	private mmprofil, m1mprofil
 	private mmprofilK, m1mprofilK
 	private mmIDUMP, m1mIDUMP
@@ -104,6 +105,11 @@ function editSubdivision( oBrowse, aObjects, oSubdivision, nKey )
 		// вид листа учета
 		m1mtiplu 	:= oSubdivision:TypeLU
 		mmtiplu		:= inieditspr( A__MENUVERT, mm_tiplu, m1mtiplu )
+		
+		// тип подразделения
+		m1typpodr	:= oSubdivision:TypePodr
+		mtyppodr	:= inieditspr_bay( A__MENUVERT, mm_danet, m1typpodr )
+		
 		// профиль
 		m1mprofil 	:= oSubdivision:Profil
 		mmprofil	:= inieditspr( A__MENUVERT, glob_V002, m1mprofil )
@@ -134,7 +140,9 @@ function editSubdivision( oBrowse, aObjects, oSubdivision, nKey )
 
 		k := maxrow() - 15 - iif( is_task( X_PLATN ), 2, 0 ) - iif( is_task( X_ORTO ), 2, 0 )
 		
-		oBox := TBox():New( k - 1, 2, maxrow() - 1, 77, .t. )
+/*		oBox := TBox():New( k - 1, 2, maxrow() - 1, 77, .t. )
+*/
+		oBox := TBox():New( k, 2, maxrow() - 1, 77, .t. )
 		oBox:Caption := if( nKey == K_INS .or. nKey == K_F4, 'Добавление', 'Редактирование' ) + ' информации об отделении'
 		oBox:CaptionColor := color8
 		oBox:MessageLine := '^<Esc>^ - выход без записи;  ^<Enter>^ - подтверждение ввода'
@@ -144,6 +152,10 @@ function editSubdivision( oBrowse, aObjects, oSubdivision, nKey )
 		@ k + ii++, 4 say 'Сокращенное наименование отделения' get oSubdivision:ShortName	//mshortname
 		@ k + ii++, 4 say 'Вид листа учета при вводе данных' get mmtiplu ;
 						reader { | x | menu_reader( x, mm_tiplu, A__MENUVERT, , , .f. ) }
+						
+		@ k + ii++, 4 say 'Является данное отделение приёмным покоем стационара' get mtyppodr ;
+						reader { | x | menu_reader( x, mm_danet, A__MENUVERT, , , .f. ) }
+						
 		@ k + ii++, 4 say 'Профиль мед.помощи' get mmprofil ;
 						reader { | x | menu_reader( x, tmp_V002, A__MENUVERT_SPACE, , , .f. ) }
 		@ k + ii++, 4 say 'Профиль койки' get mmprofilK ;
@@ -183,6 +195,7 @@ function editSubdivision( oBrowse, aObjects, oSubdivision, nKey )
 		if lastkey() != K_ESC .and. ! empty( oSubdivision:Name ) .and. f_Esc_Enter( 1 )
 			// вид листа учета
 			oSubdivision:TypeLU := m1mtiplu
+			oSubdivision:TypePodr := m1typpodr
 			// профиль
 			oSubdivision:Profil := m1mprofil
 			oSubdivision:ProfilK := m1mprofilK

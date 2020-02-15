@@ -3678,8 +3678,8 @@ do case
 //    edit_pers()
     editEmployees( 1 )
   case k == 2
-    edit_otd()
-//	editSubdivisions()
+//    edit_otd()
+	editSubdivisions()
   case k == 3
 //    edit_uch()
 	editDepartments()
