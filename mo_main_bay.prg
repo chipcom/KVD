@@ -1560,6 +1560,9 @@ BEGIN SEQUENCE
   write_rest_pp() // записать незаписанные истории болезней из приёмного покоя
   CLOSE ALL
   DEFAULT yes_copy TO .t.
+  if !hb_user_curUser:IsAdmin
+    yes_copy := .f.
+  endif
   if yes_copy
     i := GetIniVar(tmp_ini, {{group_ini,"base_copy","1"},;
                              {group_ini,"path_copy",""}} )
