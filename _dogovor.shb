@@ -45,12 +45,15 @@
 #i_var  $37 mpassport
 #i_var  $38 executor
 #i_var  $39 specialist
+#i_var  $40 adrotd_arr[ moContract:IDSubdivision() ]
+#i_var  $41 adr2otd_arr[ moContract:IDSubdivision() ]
 
 #private oPatient
 #private executor
 #private mpassport
 #private i, lenArr
 #private t_arr, isPayer, ruk_arr, osn_arr, adr1_arr, adr2_arr, t_vr_kat, t_add_name
+#private adrotd_arr, adr2otd_arr
 #private t_doktor, t_kateg
 #private addressReg
 #private specialist
@@ -63,6 +66,7 @@
 #proc addressReg := if( oPatient != nil, oPatient:AddressRegistration:AsString, '' )
 //
 #proc ruk_arr := array( 7 ), osn_arr := array( 7 ), adr1_arr := array( 7 ), adr2_arr := array( 7 ), t_vr_kat := array( 4 ), t_add_name := array( 7 )
+#proc adrotd_arr := array( 21 ), adr2otd_arr := array( 21 )
 #proc ruk_arr[ 1 ] := 'главного врача Безмельницыной Марины Викторовны', osn_arr[ 1 ] := 'действующей на основании Устава'
 #proc ruk_arr[ 2 ] := 'заведующего филиалом Жуковой Виктории Борисовны', osn_arr[ 2 ] := 'действующей на основании доверенности от 13.05.2017 года'
 #proc ruk_arr[ 3 ] := 'заведующего филиалом Дуб Анны Михайловны', osn_arr[ 3 ] := 'действующей на основании доверенности от 13.08.2013 года'
@@ -77,6 +81,29 @@
 #proc adr1_arr[ 5 ] := '403886, Волгоградская область, г. Камышин', adr2_arr[ 5 ] := '6 мкр., д. 13'
 #proc adr1_arr[ 6 ] := '403348, Волгоградская область, г. Михайловка', adr2_arr[ 6 ] := 'ул. Пироговая, д. 80'
 #proc adr1_arr[ 7 ] := '400002, г. Волгоград', adr2_arr[ 7 ] := 'ул. Новосибирская, дом 71'
+//
+#proc adrotd_arr[ 1 ] := '400064, г.Волгоград', adr2otd_arr[ 1 ] := 'ул. имени маршала Еременко, 70'
+#proc adrotd_arr[ 2 ] := '400064, г.Волгоград', adr2otd_arr[ 2 ] := 'ул. имени маршала Еременко, 70'
+#proc adrotd_arr[ 3 ] := '400064, г.Волгоград', adr2otd_arr[ 3 ] := 'ул. имени маршала Еременко, 70'
+#proc adrotd_arr[ 4 ] := '400002, г. Волгоград', adr2otd_arr[ 4 ] := 'ул. Новосибирская, дом 71'
+#proc adrotd_arr[ 5 ] := '403886, Волгоградская область, г. Камышин', adr2otd_arr[ 5 ] := '6 мкр., д. 13'
+#proc adrotd_arr[ 6 ] := '403886, Волгоградская область, г. Камышин', adr2otd_arr[ 6 ] := '6 мкр., д. 13'
+#proc adrotd_arr[ 7 ] := '403886, Волгоградская область, г. Камышин', adr2otd_arr[ 7 ] := '6 мкр., д. 13'
+#proc adrotd_arr[ 8 ] := '403348, Волгоградская область, г. Михайловка', adr2otd_arr[ 8 ] := 'ул. Пироговая, д. 80'
+#proc adrotd_arr[ 9 ] := '400005, г. Волгоград', adr2otd_arr[ 9 ] := 'пр. Ленина, дом 45'
+#proc adrotd_arr[ 10 ] := '400002, г. Волгоград', adr2otd_arr[ 10 ] := 'ул. Новосибирская, дом 71'
+#proc adrotd_arr[ 11 ] := '403348, Волгоградская область, г. Михайловка', adr2otd_arr[ 11 ] := 'ул. Пироговая, д. 80'
+#proc adrotd_arr[ 12 ] := '404130, Волгоградская область, г. Волжский', adr2otd_arr[ 12 ] := 'ул. Московская, дом 8'
+#proc adrotd_arr[ 13 ] := '404130, Волгоградская область, г. Волжский', adr2otd_arr[ 13 ] := 'ул. Московская, дом 8'
+#proc adrotd_arr[ 14 ] := '400112, г. Волгоград', adr2otd_arr[ 14 ] := 'ул. Арсеньева, дом 10'
+#proc adrotd_arr[ 15 ] := '400112, г. Волгоград', adr2otd_arr[ 15 ] := 'ул. Арсеньева, дом 10'
+#proc adrotd_arr[ 16 ] := '400065, г. Волгоград', adr2otd_arr[ 16 ] := 'ул. Обливская, 5'
+#proc adrotd_arr[ 17 ] := '400064, г.Волгоград', adr2otd_arr[ 17 ] := 'ул. имени маршала Еременко, 70'
+#proc adrotd_arr[ 18 ] := '400065, г. Волгоград', adr2otd_arr[ 18 ] := 'ул. Обливская, 5'
+#proc adrotd_arr[ 19 ] := '400065, г. Волгоград', adr2otd_arr[ 19 ] := 'ул. Обливская, 5'
+#proc adrotd_arr[ 20 ] := '400065, г. Волгоград', adr2otd_arr[ 20 ] := 'ул. Обливская, 5'
+#proc adrotd_arr[ 21 ] := '', adr2otd_arr[ 21 ] := ''
+//
 #proc t_add_name[ 1 ] := ''
 #proc t_add_name[ 2 ] := ' (Волжский филиал)'
 #proc t_add_name[ 3 ] := ' (Тракторозаводский филиал)'
@@ -240,7 +267,7 @@ $10
 оказание ему медицинских услуг на платной основе.
 #para_end
 #para_begin
-  3.7. Место оказания услуг: $35, $36.
+  3.7. Место оказания услуг: $40, $41.
 #para_end
 
 
