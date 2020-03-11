@@ -34,6 +34,7 @@
 #i_var  $31 ruk_arr[ 1 ]
 #i_var  $32 osn_arr[ 1 ]
 #var    $17 adr1_arr[ moContract:Department():ID() ]
+//#i_var    $17 moContract:Department():Address()
 #var    $18 adr2_arr[ moContract:Department():ID() ]
 #var    $19 moContract:Department():Name()
 

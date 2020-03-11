@@ -138,10 +138,10 @@ function editSubdivision( oBrowse, aObjects, oSubdivision, nKey )
 			oSubdivision:IDDepartment := oDepartment:ID()
 		endif
 
-		k := maxrow() - 15 - iif( is_task( X_PLATN ), 2, 0 ) - iif( is_task( X_ORTO ), 2, 0 )
+		k := maxrow() - 15 - iif( is_task( X_PLATN ), 2, 0 ) - iif( is_task( X_ORTO ), 2, 0 ) - 1
 		
-/*		oBox := TBox():New( k - 1, 2, maxrow() - 1, 77, .t. )
-*/
+//		oBox := TBox():New( k - 1, 2, maxrow() - 1, 77, .t. )
+
 		oBox := TBox():New( k, 2, maxrow() - 1, 77, .t. )
 		oBox:Caption := if( nKey == K_INS .or. nKey == K_F4, 'Добавление', 'Редактирование' ) + ' информации об отделении'
 		oBox:CaptionColor := color8
@@ -150,6 +150,8 @@ function editSubdivision( oBrowse, aObjects, oSubdivision, nKey )
 
 		@ k + ii++, 4 say 'Наименование отделения' get oSubdivision:Name	//mname
 		@ k + ii++, 4 say 'Сокращенное наименование отделения' get oSubdivision:ShortName	//mshortname
+		@ k + ii++, 4 say 'Адрес отделения' get oSubdivision:Address picture '@S57'
+		
 		@ k + ii++, 4 say 'Вид листа учета при вводе данных' get mmtiplu ;
 						reader { | x | menu_reader( x, mm_tiplu, A__MENUVERT, , , .f. ) }
 						
