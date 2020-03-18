@@ -30,7 +30,8 @@
 // Номер документа плательщика - например для детей
 #i_var  $28 mplat_pasport
 #var    $29 '  '+padr( upper( moContract:PayerFIO() ), 34 ) + '     ' + full_date( moContract:BeginTreatment() ) + '           ' + ltrim( str( moContract:ReceiptNumber(), 10 ) )
-#i_var  $30 t_add_name[ moContract:Department():ID() ]
+//#i_var  $30 t_add_name[ moContract:Department():ID() ]
+#i_var  $30 moContract:Department():Name()
 #i_var  $31 ruk_arr[ 1 ]
 #i_var  $32 osn_arr[ 1 ]
 //#var    $17 adr1_arr[ moContract:Department():ID() ]
@@ -56,7 +57,8 @@
 #private i, lenArr
 #private t_arr, isPayer, ruk_arr, osn_arr
 //#private adr1_arr, adr2_arr, 
-#private t_vr_kat, t_add_name
+#private t_vr_kat
+//#private t_add_name
 #private adrotd_arr, adr2otd_arr
 #private t_doktor, t_kateg
 #private addressReg
@@ -83,7 +85,8 @@
 //
 #proc ruk_arr := array( 7 ), osn_arr := array( 7 )
 //#proc, adr1_arr := array( 7 ), adr2_arr := array( 7 ),
-#proc t_vr_kat := array( 4 ), t_add_name := array( 7 )
+#proc t_vr_kat := array( 4 )
+//#proc t_add_name := array( 7 )
 #proc adrotd_arr := array( 21 ), adr2otd_arr := array( 21 )
 #proc ruk_arr[ 1 ] := 'главного врача Безмельницыной Марины Викторовны', osn_arr[ 1 ] := 'действующей на основании Устава'
 #proc ruk_arr[ 2 ] := 'заведующего филиалом Жуковой Виктории Борисовны', osn_arr[ 2 ] := 'действующей на основании доверенности от 13.05.2017 года'
@@ -122,13 +125,13 @@
 #proc adrotd_arr[ 20 ] := '400065, г. Волгоград', adr2otd_arr[ 20 ] := 'ул. Обливская, 5'
 #proc adrotd_arr[ 21 ] := '', adr2otd_arr[ 21 ] := ''
 //
-#proc t_add_name[ 1 ] := ''
-#proc t_add_name[ 2 ] := ' (Волжский филиал)'
-#proc t_add_name[ 3 ] := ' (Тракторозаводский филиал)'
-#proc t_add_name[ 4 ] := ' (Красноармейский филиал)'
-#proc t_add_name[ 5 ] := ' (Камышинский филиал)'
-#proc t_add_name[ 6 ] := ' (Михайловский филиал)'
-#proc t_add_name[ 7 ] := ' (Советский филиал)'
+//#proc t_add_name[ 1 ] := ''
+//#proc t_add_name[ 2 ] := ' (Волжский филиал)'
+//#proc t_add_name[ 3 ] := ' (Тракторозаводский филиал)'
+//#proc t_add_name[ 4 ] := ' (Красноармейский филиал)'
+//#proc t_add_name[ 5 ] := ' (Камышинский филиал)'
+//#proc t_add_name[ 6 ] := ' (Михайловский филиал)'
+//#proc t_add_name[ 7 ] := ' (Советский филиал)'
 //
 #proc t_vr_kat[ 1 ] := 'без категории'
 #proc t_vr_kat[ 2 ] := 'второй категории'
