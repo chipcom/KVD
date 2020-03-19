@@ -22,7 +22,6 @@
 #i_var  $20 alltrim( str( moContract:Patient():ID() ) )
 #i_var  $21 lower( mpassport )
 //
-//
 // ФИО плательщика - например для детей
 #i_var  $25 alltrim( moContract:PayerFIO() )
 // Адрес плательщика - например для детей
@@ -30,63 +29,52 @@
 // Номер документа плательщика - например для детей
 #i_var  $28 mplat_pasport
 #var    $29 '  '+padr( upper( moContract:PayerFIO() ), 34 ) + '     ' + full_date( moContract:BeginTreatment() ) + '           ' + ltrim( str( moContract:ReceiptNumber(), 10 ) )
-//#i_var  $30 t_add_name[ moContract:Department():ID() ]
 #i_var  $30 moContract:Department():Name()
 #i_var  $31 ruk_arr[ 1 ]
 #i_var  $32 osn_arr[ 1 ]
-//#var    $17 adr1_arr[ moContract:Department():ID() ]
-//#i_var    $17 moContract:Department():Address()
-//#var    $18 adr2_arr[ moContract:Department():ID() ]
 #var    $19 moContract:Department():Name()
-
+//
 #i_var  $33 alltrim( t_doktor )
 #i_var  $34 t_vr_kat[ t_kateg ]
-
-//#i_var  $35 adr1_arr[ moContract:Department():ID() ]
-//#i_var  $36 adr2_arr[ moContract:Department():ID() ]
+//
 #i_var  $37 mpassport
 #i_var  $38 executor
 #i_var  $39 specialist
 #i_var  $40 adrotd_arr[ moContract:IDSubdivision() ]
 #i_var  $41 adr2otd_arr[ moContract:IDSubdivision() ]
-
-
+//
 #private oPatient
 #private executor
 #private mpassport
 #private i, lenArr
 #private t_arr, isPayer, ruk_arr, osn_arr
-//#private adr1_arr, adr2_arr, 
 #private t_vr_kat
-//#private t_add_name
 #private adrotd_arr, adr2otd_arr
 #private t_doktor, t_kateg
 #private addressReg
 #private specialist
 #private doctor
 #private assistant
-
+//
 // Адреса
 #private nAt
 #private firstPartAddress
 #private secondPartAddress
-
+//
 #proc nAt := hb_At(",", moContract:Department():Address())
-
+//
 #proc firstPartAddress := substr(moContract:Department():Address(), 1, hb_At(",", moContract:Department():Address(), nAt + 1))
 #proc secondPartAddress := substr(moContract:Department():Address(), hb_At(",", moContract:Department():Address(), nAt + 1) + 2)
 #var    $17 firstPartAddress
 #var    $18 secondPartAddress
-
+//
 #proc oPatient := moContract:Patient
 #proc executor := alltrim( hb_user_curUser:FIO )
 #proc mpassport := if( oPatient != nil, oPatient:Passport:AsString, '' )
 #proc addressReg := if( oPatient != nil, oPatient:AddressRegistration:AsString, '' )
 //
 #proc ruk_arr := array( 7 ), osn_arr := array( 7 )
-//#proc, adr1_arr := array( 7 ), adr2_arr := array( 7 ),
 #proc t_vr_kat := array( 4 )
-//#proc t_add_name := array( 7 )
 #proc adrotd_arr := array( 21 ), adr2otd_arr := array( 21 )
 #proc ruk_arr[ 1 ] := 'главного врача Безмельницыной Марины Викторовны', osn_arr[ 1 ] := 'действующей на основании Устава'
 #proc ruk_arr[ 2 ] := 'заведующего филиалом Жуковой Виктории Борисовны', osn_arr[ 2 ] := 'действующей на основании доверенности от 13.05.2017 года'
@@ -95,13 +83,6 @@
 #proc ruk_arr[ 5 ] := 'заведующего филиалом Качуриной Натальи Петровны', osn_arr[ 5 ] := 'действующей на основании доверенности от 09.01.2014 года'
 #proc ruk_arr[ 6 ] := 'заведующего филиалом Ли Альберта Феликсовича', osn_arr[ 6 ] := 'действующей на основании доверенности от 13.08.2013 года'
 #proc ruk_arr[ 7 ] := 'заведующего филиалом Стрельниковой Юлии Николаевны', osn_arr[ 7 ] := 'действующего на основании доверенности от 02.02.2015 года'
-//#proc adr1_arr[ 1 ] := '400064, г.Волгоград', adr2_arr[ 1 ] := 'ул. имени маршала Еременко, 70'
-//#proc adr1_arr[ 2 ] := '404130, Волгоградская область, г. Волжский', adr2_arr[ 2 ] := 'ул. Московская, дом 8'
-//#proc adr1_arr[ 3 ] := '400065, г. Волгоград', adr2_arr[ 3 ] := 'ул. Обливская, 5'
-//#proc adr1_arr[ 4 ] := '400112, г. Волгоград', adr2_arr[ 4 ] := 'ул. Арсеньева, дом 10'
-//#proc adr1_arr[ 5 ] := '403886, Волгоградская область, г. Камышин', adr2_arr[ 5 ] := '6 мкр., д. 13'
-//#proc adr1_arr[ 6 ] := '403348, Волгоградская область, г. Михайловка', adr2_arr[ 6 ] := 'ул. Пироговая, д. 80'
-//#proc adr1_arr[ 7 ] := '400002, г. Волгоград', adr2_arr[ 7 ] := 'ул. Новосибирская, дом 71'
 //
 #proc adrotd_arr[ 1 ] := '400064, г.Волгоград', adr2otd_arr[ 1 ] := 'ул. имени маршала Еременко, 70'
 #proc adrotd_arr[ 2 ] := '400064, г.Волгоград', adr2otd_arr[ 2 ] := 'ул. имени маршала Еременко, 70'
@@ -124,14 +105,6 @@
 #proc adrotd_arr[ 19 ] := '400065, г. Волгоград', adr2otd_arr[ 19 ] := 'ул. Обливская, 5'
 #proc adrotd_arr[ 20 ] := '400065, г. Волгоград', adr2otd_arr[ 20 ] := 'ул. Обливская, 5'
 #proc adrotd_arr[ 21 ] := '', adr2otd_arr[ 21 ] := ''
-//
-//#proc t_add_name[ 1 ] := ''
-//#proc t_add_name[ 2 ] := ' (Волжский филиал)'
-//#proc t_add_name[ 3 ] := ' (Тракторозаводский филиал)'
-//#proc t_add_name[ 4 ] := ' (Красноармейский филиал)'
-//#proc t_add_name[ 5 ] := ' (Камышинский филиал)'
-//#proc t_add_name[ 6 ] := ' (Михайловский филиал)'
-//#proc t_add_name[ 7 ] := ' (Советский филиал)'
 //
 #proc t_vr_kat[ 1 ] := 'без категории'
 #proc t_vr_kat[ 2 ] := 'второй категории'
