@@ -15,8 +15,8 @@
 #include "chip_mo.ch"
 
 Static _version := {2,11,12}
-Static char_version := "h"
-Static _date_version := "19.12.20г."
+Static char_version := "i"
+Static _date_version := "22.12.20г."
 Static __s_full_name := "ЧИП + Учёт работы Медицинской Организации"
 Static __s_version
 
@@ -196,6 +196,7 @@ Public p_arr_prazdnik := {{2013,{;
                          }
 //
 __s_version := "  в. "+fs_version(_version)+char_version+" от "+_date_version+" тел.(8442)23-69-56"
+// __s_version := "  в. "+TVersion():New():AsString()+" от "+_date_version+" тел.(8442)23-69-56"
 SET(_SET_DELETED, .T.)
 SETCLEARB(" ")
 is_cur_dir := f_first(is_create)

@@ -2,6 +2,8 @@
 #include 'property.ch'
 #include 'common.ch'
 
+#include 'function.ch'
+
 // Ç êÄáêÄÅéíäÖ
 
 ********************************
@@ -21,11 +23,11 @@ CREATE CLASS TVersion
 				( ( ::userFIO == cArg:FIO ) .and. ( ::cIDTask == cArg:IDTask ) .and. (::cUserName == cArg:NameUser ) ;
 					.and. ( ::cEnterDate == cArg:EnterDate ) .and. ( ::cEnterTime == cArg:EnterTime ) )
 	HIDDEN:                    
-		DATA FMajor			INIT 0
-		DATA FMinor			INIT 0
-		DATA FSubMinor		INIT 0
-		DATA FCharacter		INIT ''
-		DATA FDate			INIT ctod( '' )
+		DATA FMajor			INIT 2
+		DATA FMinor			INIT 11
+		DATA FSubMinor		INIT 12
+		DATA FCharacter		INIT 'i'
+		DATA FDate			INIT ctod( '22.12.2020' )
 		
 		METHOD getMajor
 		METHOD getMinor
@@ -38,11 +40,11 @@ ENDCLASS
 METHOD New()  CLASS TVersion
 
 	if __mvExist( '_version' ) .and. isarray( _version )
-		&& ::FMajor		:= _version[ 1 ]
-		&& ::FMinor		:= _version[ 2 ]
-		&& ::FSubMinor		:= _version[ 3 ]
-		&& ::FCharacter	:= char_version
-		&& ::FDate			:= ctod( _date_version )
+		::FMajor		:= _version[ 1 ]
+		::FMinor		:= _version[ 2 ]
+		::FSubMinor		:= _version[ 3 ]
+		::FCharacter	:= char_version
+		::FDate			:= ctod( _date_version )
 	endif
 	return self
 
@@ -62,4 +64,4 @@ METHOD FUNCTION getDate()	CLASS TVersion
 	return ::FDate
 
 METHOD FUNCTION getAsString()	CLASS TVersion
-	return alltrim( str( ::FMajor ) ) + '.' + alltrim( str( ::FMinor ) ) + '.' + alltrim( str( ::FSubMinor ) ) + alltrim( ::FCharacter )
+	return lstr(::FMajor) + '.' + lstr(::FMinor) + '.' + lstr(::FSubMinor) + alltrim(::FCharacter)
