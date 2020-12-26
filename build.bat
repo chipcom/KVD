@@ -6,5 +6,4 @@ copy chip_mo.js d:\_mo\chip\exe
 copy _dogovor.shb d:\_mo\chip\exe
 copy list_uch.shb d:\_mo\chip\exe
 copy ReferenceToFTS.shb d:\_mo\chip\exe
-rem copy jquery-3.2.1.min.js d:\_mo\chip\exe
 rar a ..\source\chip_mo.rar @my_chip_mo.lst
