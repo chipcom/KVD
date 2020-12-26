@@ -3673,10 +3673,6 @@ do case
       aadd(mas_msg, "à¨¢ï§ª  ãç áâª®¢ëå ¢à ç¥© ª ãç áâª ¬")
       aadd(mas_fun, "spr_struct_org(5)")
     endif
-    // à®¢¥àª  á¯à ¢®ç­¨ª 
-    aadd(mas_pmt, "~„àã£¨¥ Œ")
-    aadd(mas_msg, "„àã£¨¥ ¬¥¤¨æ¨­áª¨¥ ãçà¥¦¤¥­¨ï ¢å®¤ïé¨¥ ¢ á¨áâ¥¬ã Œ‘")
-    aadd(mas_fun, "spr_struct_org(6)")
     popup_prompt(T_ROW, T_COL+5, sk, mas_pmt, mas_msg, mas_fun)
   case k == 1
 //    edit_pers()
@@ -3706,8 +3702,6 @@ do case
     else
       func_error(4,err_slock)
     endif
-  case k == 6
-    viewF003()
 endcase
 if k > 0
   sk := k
