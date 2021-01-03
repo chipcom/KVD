@@ -437,7 +437,7 @@ hbmzip.hbc
 .\RegisterOffice\polikl1_kart.prg
 #
 # файлы для ОМС
-.\OMS\getF003.prg
+#
 #
 #
 #для отладки
