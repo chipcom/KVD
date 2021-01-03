@@ -123,7 +123,7 @@ if !(type("arr_date_usl") == "A")
   select LUSLC
   index on dtos(datebeg) to (cur_dir+"tmp1") unique
   dbeval({|| aadd(arr_date_usl,luslc->datebeg) })
-  set index to (cur_dir+"_mo0uslc"),(cur_dir+"_mo0uslu")
+  set index to (cur_dir+"_mo1uslc"),(cur_dir+"_mo1uslu")
 endif
 Private tmp_V002 := create_classif_FFOMS(0,"V002") // PROFIL
 dbcreate(cur_dir+"tmp_usl1",{{"shifr1",  "C",10,0},;
