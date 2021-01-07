@@ -15,8 +15,8 @@
 #include "chip_mo.ch"
 
 Static _version := {2,11,13}
-Static char_version := "b+"
-Static _date_version := "02.01.21г."
+Static char_version := "c"
+Static _date_version := "05.01.21г."
 Static __s_full_name := "ЧИП + Учёт работы Медицинской Организации"
 Static __s_version
 
@@ -196,7 +196,6 @@ Public p_arr_prazdnik := {{2013,{;
                          }
 //
 __s_version := "  в. "+fs_version(_version)+char_version+" от "+_date_version+" тел.(8442)23-69-56"
-// __s_version := "  в. "+TVersion():New():AsString()+" от "+_date_version+" тел.(8442)23-69-56"
 SET(_SET_DELETED, .T.)
 SETCLEARB(" ")
 is_cur_dir := f_first(is_create)
@@ -1231,20 +1230,42 @@ hb_AIns( func_menu[ len( func_menu ) ], 5, 'editRoles()', .t. )
     aadd(cmain_menu,1)
     aadd(main_menu," ~Сервисы ")
     aadd(main_message,"Сервисы и настройки")
-    aadd(first_menu, {"~Проверка целостности",0,;
-                      "Изменение ~цен ОМС",0,;
-                      "~Импорт",;
-                      "~Экспорт"} )
-    aadd(first_message, { ;
-        "Проверка целостности базы данных на файл-сервере",;
-        "Изменение цен на услуги в соответствии со справочником услуг ТФОМС",;
-        "Различные варианты импорта из других программ",;
-        'Различные варианты экспорта в другие программы/организации';
-      } )
-    aadd(func_menu, {"prover_dbf(,.f.,(tip_polzovat==0))",;
-                     "Change_Cena_OMS()",;
-                     "f_import()",;
-                     "f_export()"} )
+    //
+    if glob_mo[_MO_KOD_TFOMS] == '395301' // Камышин СТОМ
+      aadd(first_menu, {"~Проверка целостности",0,;
+                        "Изменение ~цен ОМС",0,;
+                        "~Импорт",;
+                        "~Экспорт",;
+                        "~Материалы"} )
+      aadd(first_message, { ;
+          "Проверка целостности базы данных на файл-сервере",;
+          "Изменение цен на услуги в соответствии со справочником услуг ТФОМС",;
+          "Различные варианты импорта из других программ",;
+          'Различные варианты экспорта в другие программы/организации',;
+          "Справочник приведенных расходуемых материалов";
+        } )
+      aadd(func_menu, {"prover_dbf(,.f.,(tip_polzovat==0))",;
+                       "Change_Cena_OMS()",;
+                       "f_import()",;
+                       "f_export()",;
+                       "edit_ort()"} )
+
+    else
+      aadd(first_menu, {"~Проверка целостности",0,;
+                        "Изменение ~цен ОМС",0,;
+                        "~Импорт",;
+                        "~Экспорт"} )
+      aadd(first_message, { ;
+          "Проверка целостности базы данных на файл-сервере",;
+          "Изменение цен на услуги в соответствии со справочником услуг ТФОМС",;
+          "Различные варианты импорта из других программ",;
+          'Различные варианты экспорта в другие программы/организации';
+        } )
+      aadd(func_menu, {"prover_dbf(,.f.,(tip_polzovat==0))",;
+                       "Change_Cena_OMS()",;
+                       "f_import()",;
+                       "f_export()"} )
+    endif
     //
     aadd(cmain_menu,20)
     aadd(main_menu," ~Настройки ")
