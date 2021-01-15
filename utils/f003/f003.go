@@ -1,12 +1,14 @@
 package main
 
 import (
+	"bytes"
 	"encoding/csv"
 	"encoding/xml"
 	"fmt"
 	"io"
 	"log"
 	"os"
+	"strconv"
 	"strings"
 
 	"golang.org/x/text/encoding/charmap"
@@ -84,22 +86,45 @@ import (
 // 	DateEdit         string     `xml:"d_edit"`
 // }
 
+// type Transaction struct {
+//     //...
+//     DateEntered     customTime     `xml:"enterdate"` // use your own type that satisfies UnmarshalXML
+//     //...
+// }
+
+// type customTime struct {
+// 	time.Time
+// }
+
+// func (c *customTime) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
+// 	const shortForm = "20060102" // yyyymmdd date format
+// 	var v string
+// 	d.DecodeElement(&v, &start)
+// 	parse, err := time.Parse(shortForm, v)
+// 	if err != nil {
+// 		return err
+// 	}
+// 	*c = customTime{parse}
+// 	return nil
+// }
+
 type MedAdvice struct {
 	YearWork string `xml:"YEAR_WORK"`
-	Duved    string `xml:"DUVED"`
-	Dmp      []int  `xml:"d_mp"`
+	// Duved    string `xml:"DUVED"`
+	// Duved customTime `xml:"DUVED"`
+	// Dmp   []int      `xml:"d_mp"`
 }
 
 type MedCompany struct {
-	XMLName   xml.Name  `xml:"medCompany"`
-	TfOKATO   string    `xml:"tf_okato"`
-	Mcod      string    `xml:"mcod"`
-	NamMop    string    `xml:"nam_mop"`
-	NamMok    string    `xml:"nam_mok"`
-	INN       string    `xml:"inn"`
-	OGRN      string    `xml:"ogrn"`
-	KPP       string    `xml:"KPP"`
-	Medadvice MedAdvice `xml:"medAdvice"`
+	XMLName   xml.Name    `xml:"medCompany"`
+	TfOKATO   string      `xml:"tf_okato"`
+	Mcod      string      `xml:"mcod"`
+	NamMop    string      `xml:"nam_mop"`
+	NamMok    string      `xml:"nam_mok"`
+	INN       string      `xml:"inn"`
+	OGRN      string      `xml:"ogrn"`
+	KPP       string      `xml:"KPP"`
+	Medadvice []MedAdvice `xml:"medAdvice"`
 }
 
 type Packet struct {
@@ -113,6 +138,18 @@ type Packet struct {
 // 	return fmt.Sprintf("\tmcod : %s - Name : %s - Дата уведомления : %s\n", s.Mcod, strings.Replace(s.NamMok, "ГОСУДАРСТВЕННОЕ БЮДЖЕТНОЕ УЧРЕЖДЕНИЕ ЗДРАВООХРАНЕНИЯ", "ГБУЗ", -1), s.Medadvice.Duved)
 // }
 
+func removeQuotes(s string) string {
+	var b bytes.Buffer
+	for _, r := range s {
+		if r != '"' && r != '\'' {
+			b.WriteRune(r)
+		}
+	}
+
+	return b.String()
+}
+
+// https://www2.arhofoms.ru/it/base/%D0%9F%D1%80%D0%B8%D0%BA%D0%B0%D0%B7%20%D0%A4%D0%9E%D0%9C%D0%A1%20%D0%BE%D1%82%2020110407%2079%20(%D1%80%D0%B5%D0%B4.%20%D0%BE%D1%82%2030.08.2019%20173)%20%D0%9E%D0%B1%20%D1%83%D1%82%D0%B2%D0%B5%D1%80%D0%B6%D0%B4%D0%B5%D0%BD%D0%B8%D0%B8%20%D0%BE%D0%B1%D1%89%D0%B8%D1%85%20%D0%BF%D1%80%D0%B8%D0%BD%D1%86%D0%B8%D0%BF%D0%BE%D0%B2%20(%D0%A4%D0%9E%D0%9C%D0%A1).pdf
 func main() {
 	xmlFile, err := os.Open("f003.xml")
 	if err != nil {
@@ -142,10 +179,8 @@ func main() {
 		return
 	}
 	defer file.Close()
-	// file.WriteString( "test" )
 
 	fmt.Fprintf(file, "%+v", companies)
-	// log.Printf("%+v", companies)
 
 	outfile, err := os.Create("f003.csv")
 	if err != nil {
@@ -158,33 +193,37 @@ func main() {
 
 	var name string
 	for _, company := range companies {
-		name = strings.Replace(company.NamMop, "ГОСУДАРСТВЕННОЕ БЮДЖЕТНОЕ УЧРЕЖДЕНИЕ ЗДРАВООХРАНЕНИЯ", "ГБУЗ", -1)
-		name = strings.Replace(name, "ГОСУДАРСТВЕННОЕ ОБЛАСТНОЕ БЮДЖЕТНОЕ УЧРЕЖДЕНИЕ ЗДРАВООХРАНЕНИЯ", "ГОБУЗ", -1)
-		name = strings.Replace(name, "ГОСУДАРСТВЕННОЕ АВТОНОМНОЕ УЧРЕЖДЕНИЕ ЗДРАВООХРАНЕНИЯ", "ГАУЗ", -1)
-		name = strings.Replace(name, "ГОСУДАРСТВЕННОЕ АВТОНОМНОЕ УЧРЕЖДЕНИЕ ЗДРАВООХРАНЕНИЯ", "ГАУЗ", -1)
-		name = strings.Replace(name, "ОБЛАСТНОЕ АВТОНОМНОЕ УЧРЕЖДЕНИЕ ЗДРАВООХРАНЕНИЯ", "ОАУЗ", -1)
-		name = strings.Replace(name, "АВТОНОМНАЯ НЕКОММЕРЧЕСКАЯ ОРГАНИЗАЦИЯ", "АНО", -1)
-		name = strings.Replace(name, "МУНИЦИПАЛЬНОЕ УНИТАРНОЕ ПРЕДПРИЯТИЕ", "МУП", -1)
-		name = strings.Replace(name, "ОБЩЕСТВО С ОГРАНИЧЕННОЙ ОТВЕТСТВЕННОСТЬЮ", "ООО", -1)
-		name = strings.Replace(name, "ЗАКРЫТОЕ АКЦИОНЕРНОЕ ОБЩЕСТВО", "ЗАО", -1)
-		name = strings.Replace(name, "АКЦИОНЕРНОЕ ОБЩЕСТВО", "АО", -1)
+		for _, advice := range company.Medadvice {
+			if year, err := strconv.Atoi(advice.YearWork); err != nil {
+				continue
+			} else {
+				if year == 2021 {
+					name = strings.Replace(company.NamMop, "ГОСУДАРСТВЕННОЕ БЮДЖЕТНОЕ УЧРЕЖДЕНИЕ ЗДРАВООХРАНЕНИЯ", "ГБУЗ", -1)
+					name = strings.Replace(name, "ГОСУДАРСТВЕННОЕ ОБЛАСТНОЕ БЮДЖЕТНОЕ УЧРЕЖДЕНИЕ ЗДРАВООХРАНЕНИЯ", "ГОБУЗ", -1)
+					name = strings.Replace(name, "ГОСУДАРСТВЕННОЕ АВТОНОМНОЕ УЧРЕЖДЕНИЕ ЗДРАВООХРАНЕНИЯ", "ГАУЗ", -1)
+					name = strings.Replace(name, "ГОСУДАРСТВЕННОЕ АВТОНОМНОЕ УЧРЕЖДЕНИЕ ЗДРАВООХРАНЕНИЯ", "ГАУЗ", -1)
+					name = strings.Replace(name, "ОБЛАСТНОЕ АВТОНОМНОЕ УЧРЕЖДЕНИЕ ЗДРАВООХРАНЕНИЯ", "ОАУЗ", -1)
+					name = strings.Replace(name, "АВТОНОМНАЯ НЕКОММЕРЧЕСКАЯ ОРГАНИЗАЦИЯ", "АНО", -1)
+					name = strings.Replace(name, "МУНИЦИПАЛЬНОЕ УНИТАРНОЕ ПРЕДПРИЯТИЕ", "МУП", -1)
+					name = strings.Replace(name, "ОБЩЕСТВО С ОГРАНИЧЕННОЙ ОТВЕТСТВЕННОСТЬЮ", "ООО", -1)
+					name = strings.Replace(name, "ЗАКРЫТОЕ АКЦИОНЕРНОЕ ОБЩЕСТВО", "ЗАО", -1)
+					name = strings.Replace(name, "АКЦИОНЕРНОЕ ОБЩЕСТВО", "АО", -1)
+					name = strings.Replace(name, "ФЕДЕРАЛЬНОЕ БЮДЖЕТНОЕ УЧРЕЖДЕНИЕ ЗДРАВООХРАНЕНИЯ", "ФБУЗ", -1)
+					name = strings.Replace(name, "ФЕДЕРАЛЬНОЕ ГОСУДАРСТВЕННОЕ БЮДЖЕТНОЕ УЧРЕЖДЕНИЕ", "ФГБУ", -1)
+					name = strings.Replace(name, "ФЕДЕРАЛЬНОЕ ГОСУДАРСТВЕННОЕ АВТОНОМНОЕ УЧРЕЖДЕНИЕ", "ФГАУ", -1)
+					name = strings.Replace(name, "ФЕДЕРАЛЬНОЕ КАЗЕННОЕ УЧРЕЖДЕНИЕ ЗДРАВООХРАНЕНИЯ", "ФКУЗ", -1)
+					name = removeQuotes(name)
 
-		// switch company.NamMok[0:4] {
-		// case "ГБУЗ":
-		// 	name = strings.Replace(company.NamMop, "ГОСУДАРСТВЕННОЕ БЮДЖЕТНОЕ УЧРЕЖДЕНИЕ ЗДРАВООХРАНЕНИЯ", "ГБУЗ", -1)
-		// case "ГАУЗ":
-		// 	name = strings.Replace(company.NamMop, "ГОСУДАРСТВЕННОЕ АВТОНОМНОЕ УЧРЕЖДЕНИЕ ЗДРАВООХРАНЕНИЯ", "ГАУЗ", -1)
-		// case "МБУЗ":
-		// 	name = strings.Replace(company.NamMop, "МУНИЦИПАЛЬНОЕ БЮДЖЕТНОЕ УЧРЕЖДЕНИЕ ЗДРАВООХРАНЕНИЯ", "МБУЗ", -1)
-		// default:
-		// 	if strings.Contains(company.NamMok, "ООО") {
-		// 		name = strings.Replace(company.NamMop, "ОБЩЕСТВО С ОГРАНИЧЕННОЙ ОТВЕТСТВЕННОСТЬЮ", "ООО", -1)
-		// 	} else {
-		// 		name = company.NamMop
-		// 	}
-		// }
+					nameMok := removeQuotes(company.NamMok)
 
-		writer.Write([]string{company.Mcod, company.NamMok, name, company.Medadvice.Duved, company.Medadvice.YearWork})
+					// writer.Write([]string{company.Mcod, company.NamMok, name, advice.YearWork})
+					writer.Write([]string{company.Mcod, nameMok, name, advice.YearWork})
+				}
+			}
+
+		}
+
+		// writer.Write([]string{company.Mcod, company.NamMok, name, company.Medadvice.Duved, company.Medadvice.YearWork})
 
 	}
 
