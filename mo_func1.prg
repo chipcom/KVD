@@ -2260,11 +2260,13 @@ if !emptyany(lMETVMP,lVIDVMP) ;
 endif
 return s
 
-***** 12.01.20 в GET-е вернуть строку из glob_V018
+***** 03.01.21 в GET-е вернуть строку из glob_V018
 Function f_get_vidvmp(k,r,c)
 Static sy := 0, arr, svidvmp := ""
 Local ret, ret_arr, y
-if (y := year(mk_data)) > 2019
+if (y := year(mk_data)) > 2020
+  y := 2021
+elseif y == 2020
   y := 2020
 elseif y == 2019
   y := 2019
