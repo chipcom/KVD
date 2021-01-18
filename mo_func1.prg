@@ -311,9 +311,9 @@ Function date_reg_schet()
 // если нет даты регистрации, берём дату счёта
 return iif(empty(schet_->dregistr), schet_->dschet, schet_->dregistr)
 
-***** 05.01.2020
+***** 18.01.2021
 Function ret_vid_pom(k,mshifr,lk_data)
-Local svp, vp := 0, lal := "lusl", y := 2020
+Local svp, vp := 0, lal := "lusl", y := 2021
 if valtype(lk_data) == "D"
   y := year(lk_data)
 endif
