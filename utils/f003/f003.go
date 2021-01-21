@@ -35,7 +35,10 @@ import (
 // 	*c = customTime{parse}
 // 	return nil
 // }
-
+type JurAddress struct {
+	Index   string `xml:"index_j"`
+	Address string `xml:"addr_j"`
+}
 type MedAdvice struct {
 	YearWork string `xml:"YEAR_WORK"`
 }
@@ -47,8 +50,9 @@ type MedCompany struct {
 	NamMop    string      `xml:"nam_mop"`
 	NamMok    string      `xml:"nam_mok"`
 	INN       string      `xml:"inn"`
-	OGRN      string      `xml:"ogrn"`
 	KPP       string      `xml:"KPP"`
+	OGRN      string      `xml:"ogrn"`
+	Address   JurAddress  `xml:"jurAddress"`
 	Medadvice []MedAdvice `xml:"medAdvice"`
 }
 
@@ -199,6 +203,7 @@ func main() {
 		{name: "MCOD", typ: None, length: 6},
 		{name: "NAMEMOK", typ: None, length: 50, truncate: true},
 		{name: "NAMEMOP", typ: None, length: 150, truncate: true},
+		{name: "ADDRESS", typ: None, length: 250, truncate: true},
 		{name: "YEAR", typ: Int, length: 4},
 	}
 
@@ -276,6 +281,7 @@ func main() {
 					db.SetFieldValueByName(n, "MCOD", company.Mcod)
 					db.SetFieldValueByName(n, "NAMEMOK", utfTOcp886(nameMok))
 					db.SetFieldValueByName(n, "NAMEMOP", utfTOcp886(name))
+					db.SetFieldValueByName(n, "ADDRESS", utfTOcp886(company.Address.Address))
 					db.SetFieldValueByName(n, "YEAR", advice.YearWork)
 
 				}
