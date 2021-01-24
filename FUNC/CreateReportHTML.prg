@@ -15,7 +15,8 @@
 function CreateReportHTML( cTitle )
 	local oDoc, oNode, oForm, oButton
 	local item, cFile, tmpDir
-	local aFiles := { 'chip.css', 'chip_mo.js', 'jquery-3.2.1.min.js' }
+	// local aFiles := { 'chip.css', 'chip_mo.js', 'jquery-3.2.1.min.js' }
+	local aFiles := { 'chip.css', 'chip_mo.js' }
 
 	tmpDir := hb_DirTemp()
 	// вначале запишем необходимые файлы во временный каталог

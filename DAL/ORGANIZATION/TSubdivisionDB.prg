@@ -120,11 +120,13 @@ METHOD Save( oSubdivision ) CLASS TSubdivisionDB
 		hb_hSet(aHash, 'IDSP',			oSubdivision:IDSP )
 		hb_hSet(aHash, 'IDUMP',			oSubdivision:IDUMP )
 		hb_hSet(aHash, 'IDVMP',			oSubdivision:IDVMP )
+		hb_hSet(aHash, 'TIP_OTD',		oSubdivision:TypePodr )
 		hb_hSet(aHash, 'KOD_PODR',		oSubdivision:KodPodr )
 		hb_hSet(aHash, 'TIPLU',			oSubdivision:TypeLU )
 		hb_hSet(aHash, 'CODE_DEP',		oSubdivision:CodeSubTFOMS )
 		hb_hSet(aHash, 'KOD_SOGL',		oSubdivision:KodSogl )
 	
+		hb_hSet(aHash, 'ADDRESS',		oSubdivision:Address )
 		hb_hSet(aHash, 'ADRES_PODR',	oSubdivision:AddressSubdivision )
 		hb_hSet(aHash, 'CODE_TFOMS',	oSubdivision:CodeTFOMS )
 		hb_hSet(aHash, 'SOME_SOGL',		oSubdivision:SomeSogl )
@@ -164,10 +166,12 @@ METHOD FillFromHash( hbArray )     CLASS TSubdivisionDB
 	obj:IDSP := hbArray[ 'IDSP' ]
 	obj:IDUMP := hbArray[ 'IDUMP' ]
 	obj:IDVMP := hbArray[ 'IDVMP' ]
+	obj:TypePodr := hbArray[ 'TIP_OTD' ]
 	obj:KodPodr := hbArray[ 'KOD_PODR' ]
 	obj:TypeLU := hbArray[ 'TIPLU' ]
 	obj:KodSogl := hbArray[ 'KOD_SOGL' ]
 	obj:AddressSubdivision := hbArray[ 'ADRES_PODR' ]
+	obj:Address := hbArray[ 'ADDRESS' ]
 	obj:CodeTFOMS := hbArray[ 'CODE_TFOMS' ]
 	obj:SomeSogl := hbArray[ 'SOME_SOGL' ]
 	obj:CodeSubTFOMS  := hbArray[ 'CODE_DEP' ]

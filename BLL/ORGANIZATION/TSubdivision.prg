@@ -22,39 +22,42 @@ CREATE CLASS TSubdivision	INHERIT	TBaseObjectBLL
 								{ 'гемодиализ'                           ,TIP_LU_H_DIA }, ;  // 10
 								{ 'перитонеальный диализ'                ,TIP_LU_P_DIA } }   // 11
 		
-		PROPERTY Code READ getCode WRITE setCode								// код
-		PROPERTY Name READ getName WRITE setName								// наименование
+		PROPERTY Code READ getCode WRITE setCode							// код
+		PROPERTY Name READ getName WRITE setName							// наименование
 		PROPERTY Name1251 READ getName1251
 		PROPERTY ShortName READ getShortName WRITE setShortName				// сокращенное наименование
 		PROPERTY ShortName1251 READ getShortName1251
-		PROPERTY IDDepartment READ getIDDepartment WRITE setIDDepartment		// код учреждения
+		PROPERTY IDDepartment READ getIDDepartment WRITE setIDDepartment	// код учреждения
 		PROPERTY TypeLU READ getTypeLU WRITE setTypeLU						// тип листа учёта: 0-стандарт,1-СМП,2-ДДС,3-ДВН
 		PROPERTY Profil READ getProfil WRITE setProfil						// профиль для данного отделения;по справочнику V002, по умолчанию прописывать его в лист учета и в услугу
 		PROPERTY ProfilK READ getProfilK WRITE setProfilK					// 
 		PROPERTY DBegin READ getDBegin WRITE setDBegin						// дата начала действия в задаче ОМС - поставить 01.01.1993
-		PROPERTY DEnd READ getDEnd WRITE setDEnd								// дата окончания действия в задаче ОМС
+		PROPERTY DEnd READ getDEnd WRITE setDEnd							// дата окончания действия в задаче ОМС
 		PROPERTY DBeginP READ getDBeginP WRITE setDBeginP					// дата начала действия в задаче "Платные услуги" - поставить 01.01.1993
 		PROPERTY DEndP READ getDEndP WRITE setDEndP							// дата окончания действия в задаче "Платные услуги"
 		PROPERTY DBeginO READ getDBeginO WRITE setDBeginO					// дата начала действия в задаче "Ортопедия" - поставить 01.01.1993
 		PROPERTY DEndO READ getDEndO WRITE setDEndO							// дата окончания действия в задаче "Ортопедия"
 		PROPERTY KodPodr READ getKodPodr WRITE setKodPodr					// код подразделения по паспорту ЛПУ
+		PROPERTY TypePodr READ getTypePodr WRITE setTypePodr				// тип отд-ия: 1-приёмный покой
 		PROPERTY Plan_VP READ getPlan_VP WRITE setPlan_VP					// план врачебных приемов
 		PROPERTY Plan_PF READ getPlan_PF WRITE setPlan_PF					// план профилактик
 		PROPERTY Plan_PD READ getPlan_PD WRITE setPlan_PD					// план приемов на дому
-		PROPERTY IDSP READ getIDSP WRITE setIDSP								// код способа оплаты мед.помощи для данного отделения;по справочнику V010
+		PROPERTY IDSP READ getIDSP WRITE setIDSP							// код способа оплаты мед.помощи для данного отделения;по справочнику V010
 		PROPERTY IDUMP READ getIDUMP WRITE setIDUMP							// код условий оказания медицинской помощи
 		PROPERTY IDVMP READ getIDVMP WRITE setIDVMP							// код видов медицинской помощи
 		PROPERTY KodSogl READ getKodSogl WRITE setKodSogl					// код согласования с программой SDS
 		
-		PROPERTY CodeSubTFOMS READ getCodeSubTFOMS WRITE setCodeSubTFOMS		// код отделения по кодировке ТФОМС из справочника SprDep - 2018 год
+		PROPERTY CodeSubTFOMS READ getCodeSubTFOMS WRITE setCodeSubTFOMS	// код отделения по кодировке ТФОМС из справочника SprDep - 2018 год
 		PROPERTY AddressSubdivision READ getAddressSub WRITE setAddressSub	// код удалённого подразделения по массиву glob_arr_podr - 2017 год
 		PROPERTY CodeTFOMS READ getCodeTFOMS WRITE setCodeTFOMS				// код подразделения по кодировке ТФОМС - 2017 год
-		PROPERTY SomeSogl READ getSomeSogl WRITE setSomeSogl					// код согласования нескольких отделений с программой SDS
+		PROPERTY SomeSogl READ getSomeSogl WRITE setSomeSogl				// код согласования нескольких отделений с программой SDS
 		PROPERTY Department READ getDepartment
 		
 		PROPERTY TypeLU_F READ getTypeLUFormat
 		PROPERTY Profil_F READ getProfilFormat
-  
+
+		PROPERTY Address READ getAddress WRITE setAddress					// адрес отделения
+		
 		METHOD New( nId, lNew, lDeleted )
   
 		&& METHOD listForJSON()
@@ -87,6 +90,7 @@ CREATE CLASS TSubdivision	INHERIT	TBaseObjectBLL
 		DATA FDBeginO		INIT ctod( '01/01/1993' )
 		DATA FDEndO			INIT ctod( '' )
 		DATA FKodPodr		INIT space( 25 )
+		DATA FTypePodr		INIT 0
 		DATA FPlanVP		INIT 0
 		DATA FPlanPF		INIT 0
 		DATA FPlanPD		INIT 0
@@ -100,6 +104,7 @@ CREATE CLASS TSubdivision	INHERIT	TBaseObjectBLL
 		DATA FCodeTFOMS		INIT space( 6 )
 		DATA FSomeSogl		INIT space( 255 )
 		DATA FDepartment	INIT nil
+		DATA FAddress		INIT space(150)
 		
 		METHOD getCode
 		METHOD setCode( nVal )
@@ -131,6 +136,8 @@ CREATE CLASS TSubdivision	INHERIT	TBaseObjectBLL
 		METHOD setDEndO( dVal )
 		METHOD getKodPodr
 		METHOD setKodPodr( cVar )
+		METHOD getTypePodr
+		METHOD setTypePodr( nVar )
 		METHOD getPlan_VP
 		METHOD setPlan_VP( nVal )
 		METHOD getPlan_PD
@@ -145,7 +152,9 @@ CREATE CLASS TSubdivision	INHERIT	TBaseObjectBLL
 		METHOD setIDVMP( nVal )
 		METHOD getKodSogl
 		METHOD setKodSogl( nVal )
-
+		METHOD getAddress
+		METHOD setAddress( cVar )
+		
 		METHOD getCodeSubTFOMS()				INLINE ::FCodeSubTFOMS
 		METHOD setCodeSubTFOMS( param )		INLINE ::FCodeSubTFOMS := param
 		METHOD getAddressSub
@@ -329,6 +338,14 @@ METHOD PROCEDURE setKodPodr( cVar ) 		 CLASS TSubdivision
 	::FKodPodr := cVar
 	return
 
+METHOD FUNCTION getTypePodr() 		 CLASS TSubdivision
+	return ::FTypePodr
+
+METHOD PROCEDURE setTypePodr( nVar ) 		 CLASS TSubdivision
+
+	::FTypePodr := nVar
+	return
+
 METHOD FUNCTION getPlan_VP() 		 CLASS TSubdivision
 	return ::FPlanVP
 
@@ -410,6 +427,14 @@ METHOD FUNCTION getSomeSogl() 		 CLASS TSubdivision
 METHOD PROCEDURE setSomeSogl( cVar ) 		 CLASS TSubdivision
 
 	::FSomeSogl := cVar
+	return
+
+METHOD FUNCTION getAddress() 		 CLASS TSubdivision
+	return ::FAddress
+
+METHOD PROCEDURE setAddress( cVar ) 		 CLASS TSubdivision
+
+	::FAddress := cVar
 	return
 
 METHOD Clone()		 CLASS TSubdivision

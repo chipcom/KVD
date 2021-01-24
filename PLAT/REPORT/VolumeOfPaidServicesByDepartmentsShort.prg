@@ -15,7 +15,8 @@
 * сформировать заголовок HTML отчета	
 function CreateReportHTMLOld( cTitle )
 	local oDoc, oNode, oForm, oButton
-	local item, cFile, tmpDir, aFiles := { 'chip_mo.css', 'chip_mo.js', 'jquery-3.2.1.min.js' }
+	// local item, cFile, tmpDir, aFiles := { 'chip_mo.css', 'chip_mo.js', 'jquery-3.2.1.min.js' }
+	local item, cFile, tmpDir, aFiles := { 'chip_mo.css', 'chip_mo.js' }
 
 	tmpDir := hb_DirTemp()
 	// вначале запишем необходимые файлы во временный каталог

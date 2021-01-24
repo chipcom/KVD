@@ -311,16 +311,20 @@ Function date_reg_schet()
 // если нет даты регистрации, берём дату счёта
 return iif(empty(schet_->dregistr), schet_->dschet, schet_->dregistr)
 
-***** 25.01.2018
+***** 18.01.2021
 Function ret_vid_pom(k,mshifr,lk_data)
-Local svp, vp := 0, lal, is_18 := .t.
+Local svp, vp := 0, lal := "lusl", y := 2021
 if valtype(lk_data) == "D"
-  is_19 := (year(lk_data) > 2018)
+  y := year(lk_data)
 endif
 if select("LUSL") == 0
   Use_base("lusl")
 endif
-lal := iif(is_19,"lusl","lusl18")
+if y == 2019
+  lal += "19"
+elseif y < 2019
+  lal += "18"
+endif
 dbSelectArea(lal)
 find (padr(mshifr,10))
 if found()
@@ -1072,11 +1076,73 @@ if !empty(cCode)
 endif
 return arr
 
-***** 18.12.14 в GET-е вернуть {_MO_SHORT_NAME,_MO_KOD_TFOMS} и по пробелу - очистка поля
-Function f_get_mo(k,r,c,lusl)
+***** 14.09.20 проверить направляющую МО по дате направления и дате окончания действия
+Function verify_dend_mo(cCode,ldate,is_record)
+Static a_mo := {;
+  {255315,{255416}},;
+  {115309,{425301}},;
+  {105301,{185301}},;
+  {155307,{595301}},;
+  {451001,{105903, 456001}},;
+  {121125,{101902}},;
+  {103001,{103002, 103003}},;
+  {251008,{255601}},;
+  {251002,{255802}},;
+  {126501,{256501, 456501, 396501}},;
+  {251003,{254504}},;
+  {165531,{165525}},;
+  {145516,{145526}},;
+  {115506,{115510}},;
+  {186002,{126406}},;
+  {125901,{158201}},;
+  {134505,{134510}},;
+  {131001,{136003}},;
+  {395301,{395302, 395303}},;
+  {175303,{175304}},;
+  {155307,{155306}},;
+  {111008,{171002}},;
+  {155601,{155502}},;
+  {175603,{175627}},;
+  {185515,{125505}},;
+  {171004,{171006}},;
+  {184603,{184512}},;
+  {114504,{114506}},;
+  {174601,{175709}},;
+  {124528,{121018}},;
+  {154602,{154620, 154608}},;
+  {101003,{184711, 181003}},;
+  {711001,{711005}};
+ }
+Local i, j, fl, s := ""
+DEFAULT is_record TO .f.
+cCode := ret_mo(cCode)[_MO_KOD_TFOMS]
+if (i := ascan(glob_arr_mo,{|x| x[_MO_KOD_TFOMS] == cCode })) > 0
+  if ldate > glob_arr_mo[i,_MO_DEND]
+    fl := .f.
+    if is_record
+      for j := 1 to len(a_mo)
+        if ascan(a_mo[j,2],int(val(cCode))) > 0
+          fl := .t. ; exit
+        endif
+      next
+    endif
+    if fl
+      human_->NPR_MO := lstr(a_mo[j,1]) // перезаписываем код направляющего МО в листе учёта ОМС
+    else
+      s := "<"+glob_arr_mo[i,_MO_SHORT_NAME]+"> закончила свою деятельность "+date_8(glob_arr_mo[i,_MO_DEND])+"г."
+    endif
+  endif
+else
+  s := "в справочнике медицинских организаций не найдена МО с кодом "+cCode
+endif
+return s
+
+***** 13.10.20 в GET-е вернуть {_MO_SHORT_NAME,_MO_KOD_TFOMS} и по пробелу - очистка поля
+Function f_get_mo(k,r,c,lusl,lpar)
 Static skodN := ""
 Local arr_mo3 := {}, ret, r1, r2, i, lcolor, tmp_select := select()
-Private muslovie, loc_arr_MO
+DEFAULT lpar TO 1
+Private muslovie, loc_arr_MO, ppar := lpar
 if lusl != NIL
   muslovie := lusl
 endif
@@ -1101,11 +1167,12 @@ if valtype(k) == "C" .and. !empty(k)
     lmo3 := 0
   endif
 endif
-if empty(arr_mo3)
+if empty(arr_mo3) .or. ppar == 2
   lmo3 := 0
 endif
 dbcreate(cur_dir+"tmp_mo",{;
   {"kodN","C", 6,0},;
+  {"kodF","C", 6,0},;
   {"mo3", "N", 1,0},;
   {"name","C",72,0};
  })
@@ -1114,11 +1181,17 @@ do while .t.
   zap
   if lmo3 == 0
     lcolor := color5
+    if ppar == 2
+      append blank
+      rg->kodN := rg->kodF := '999999'
+      rg->name := '=== сторонняя МО (не в ОМС или не в Волгоградской области) ==='
+    endif
     for i := 1 to len(glob_arr_mo)
       loc_arr_MO := glob_arr_mo[i]
-      if iif(muslovie == NIL, .t., &muslovie)
+      if iif(muslovie == NIL, .t., &muslovie) .and. year(sys_date) < year(glob_arr_mo[i,_MO_DEND])
         append blank
         rg->kodN := glob_arr_mo[i,_MO_KOD_TFOMS]
+        rg->kodF := glob_arr_mo[i,_MO_KOD_FFOMS]
         rg->name := glob_arr_mo[i,_MO_SHORT_NAME]
         if ascan(arr_mo3,rg->kodN) > 0
           rg->mo3 := 1
@@ -1128,9 +1201,10 @@ do while .t.
   else
     lcolor := "N/W*,GR+/R"
     for j := 1 to len(arr_mo3)
-      if (i := ascan(glob_arr_mo,{|x| x[_MO_KOD_TFOMS] == arr_mo3[j] })) > 0
+      if (i := ascan(glob_arr_mo,{|x| x[_MO_KOD_TFOMS]==arr_mo3[j] })) > 0 .and. year(sys_date) < year(glob_arr_mo[i,_MO_DEND])
         append blank
         rg->kodN := glob_arr_mo[i,_MO_KOD_TFOMS]
+        rg->kodF := glob_arr_mo[i,_MO_KOD_FFOMS]
         rg->name := glob_arr_mo[i,_MO_SHORT_NAME]
         rg->mo3 := 1
       endif
@@ -1166,21 +1240,38 @@ rg->(dbCloseArea())
 select (tmp_select)
 return ret
 
-***** 18.12.14
+***** 13.10.20
 Function f2get_mo(oBrow)
 Local n := 72
 oBrow:addColumn(TBColumnNew(center("Наименование МО",n), {|| padr(rg->name,n) }) )
-if lmo3 == 0
+if ppar == 2
+  status_key("^<Esc>^ - выход;  ^<Enter>^ - выбор МО")
+elseif lmo3 == 0
   status_key("^<Esc>^ - выход;  ^<Enter>^ - выбор МО;  ^<Пробел>^ - очистка"+iif(glob_task==X_263.or.muslovie!=NIL,"",";  ^<F3>^ - краткий список"))
 else
   status_key("^<Esc>^ - выход;  ^<Enter>^ - выбор МО;  ^<Пробел>^ - очистка"+iif(glob_task==X_263.or.muslovie!=NIL,"",";  ^<F3>^ - все МО"))
 endif
 return NIL
 
-***** 18.12.14
-Function f3get_mo(nkey)
-Local ret := -1
-if nKey == K_F3 .and. glob_task != X_263 .and. muslovie == NIL
+***** 13.10.20
+Function f3get_mo(nkey,oBrow)
+Local ret := -1, cCode, rec
+if nKey == K_F2 .and. lmo3 == 0
+  if (cCode := input_value(18,2,20,77,color1,;
+                           "Введите код МО или обособленного подразделения, присвоенный ТФОМС",;
+                           space(6),"999999")) != NIL .and. !empty(cCode)
+    rec := rg->(recno())
+    go top
+    oBrow:gotop()
+    Locate for rg->kodN == cCode .or. rg->kodF == cCode
+    if !found()
+      go top
+      oBrow:gotop()
+      goto (rec)
+    endif
+    ret := 0
+  endif
+elseif nKey == K_F3 .and. glob_task != X_263 .and. muslovie == NIL .and. ppar == 1
   ret := 1
   p_mo := 1
   pkodN := rg->kodN
@@ -1208,16 +1299,14 @@ return s
 ***** выбор нескольких МО
 Function inp_bit_mo(k,r,c)
 Static arr
-Local mlen, t_mas := {}, buf := savescreen(), ret, ;
-      i, tmp_color := setcolor(), m1var := "", s := "", r1, r2,;
-      top_bottom := (r < maxrow()/2)
+Local mlen, t_mas := {}, buf := savescreen(), ret, i, tmp_color := setcolor(), ;
+      m1var := "", s := "", r1, r2, top_bottom := (r < maxrow()/2)
 mywait()
 if arr == NIL
   arr := {}
   aeval(glob_arr_mo,{|x| aadd(arr,x[_MO_SHORT_NAME])})
 endif
-aeval(glob_arr_mo, {|x| aadd(t_mas,iif(x[_MO_KOD_TFOMS] $ k," * ","   ")+;
-                                   x[_MO_SHORT_NAME]) })
+aeval(glob_arr_mo, {|x| aadd(t_mas,iif(x[_MO_KOD_TFOMS] $ k," * ","   ")+x[_MO_SHORT_NAME]) })
 mlen := len(t_mas)
 i := 1
 status_key("^<Esc>^ - отказ; ^<Enter>^ - подтверждение; ^<Ins,+,->^ - смена выбора МО")
@@ -1632,15 +1721,15 @@ end_date += chr(12)+chr(1)
 end_date := dtoc4(eom(c4tod(end_date)))
 return {ky, 1, 12, "за"+str(ky,5)+" год", c4tod(begin_date), c4tod(end_date), begin_date, end_date}
 
-***** 31.10.13
+***** 18.02.20
 Function year_month(rr,cc,za_v,kmp,ch_mm,ret_time)
-// kmp = от 1 до 4(5)
+// kmp = от 1 до 4(5) или массив {3,4}
 // za_v = .t. - строка в винит.падеже
 // za_v = .f. - строка в творит.падеже
 Local mas2_pmt := {"За ~день","В диапа~зоне дат","За ~месяц","За ~период"}
 Local ky, km, kp, ret_arr, buf, s_mes_god, ret_year, dekad_date, blk,;
       begin_date, end_date, old_set, fl, ar, r1, c1, r2, c2
-Local sy, smp, sm, mbeg, mend, sdate, sdek, s1date, s1time, s2time
+Local i, sy, smp, sm, mbeg, mend, sdate, sdek, s1date, s1time, s2time
 ar := GetIniSect(tmp_ini,"ymonth")
 sy     := int(val(a2default(ar,"sy",lstr(year(sys_date)))))
 sm     := int(val(a2default(ar,"sm",lstr(month(sys_date)))))
@@ -1658,6 +1747,11 @@ Private k1, k2
 ym_kol_mes := 0  // определить количество месяцев
 if kmp == NIL .and. (kmp := popup_prompt(rr,cc,smp,mas2_pmt)) == 0
   return NIL
+elseif valtype(kmp) == "A" // специально только третья и четвёртая строки меню
+  if (i := popup_prompt(rr,cc,smp-2,{"За ~месяц","За ~период"})) == 0
+    return NIL
+  endif
+  kmp := i+2
 endif
 Store 0 TO r1, c1, r2, c2
 if eq_any(kmp,3,4)
@@ -1671,8 +1765,8 @@ smp := iif(kmp == 5, 2, kmp)
 if kmp == 1
   get_row_col_max(18,5,@r1,@c1,@r2,@c2)
   if (dekad_date := input_value(r1,c1,r2,c2,color1,;
-        "Введите дату, за которую необходимо получить информацию",;
-        ctod(left(dtoc(sdate),6)+lstr(sy)))) == NIL
+                                "Введите дату, за которую необходимо получить информацию",;
+                                ctod(left(dtoc(sdate),6)+lstr(sy)))) == NIL
     return NIL
   endif
   sdate := dekad_date
@@ -2166,16 +2260,18 @@ if !emptyany(lMETVMP,lVIDVMP) ;
 endif
 return s
 
-***** 20.01.19 в GET-е вернуть строку из glob_V018
+***** 03.01.21 в GET-е вернуть строку из glob_V018
 Function f_get_vidvmp(k,r,c)
 Static sy := 0, arr, svidvmp := ""
 Local ret, ret_arr, y
-if (y := year(mk_data)) > 2018
+if (y := year(mk_data)) > 2020
+  y := 2021
+elseif y == 2020
+  y := 2020
+elseif y == 2019
   y := 2019
-elseif y  == 2018
-  y := 2018
 else
-  y := 2017
+  y := 2018
 endif
 if sy != y  // при первом вызове или смене года
   make_V018_V019(mk_data)
