@@ -35,7 +35,7 @@ hbmzip.hbc
 #-shared
 -mt
 -inc
--workdir=..\TEMP
+-workdir=..\TEMP\KVD
 -ochip_mo
 
 ..\2.x\chip_mo.rc
