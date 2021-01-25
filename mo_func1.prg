@@ -322,6 +322,8 @@ if select("LUSL") == 0
 endif
 if y == 2019
   lal += "19"
+elseif y == 2020
+  lal += "20"
 elseif y < 2019
   lal += "18"
 endif
@@ -1544,7 +1546,7 @@ HB_FNameSplit(cFile,,,@cExt)
 return cExt
 
 ***** 29.10.18 возврат кода по картотеке
-Function polikl1_kart_old()		// исправил Байкин В.Г.
+Function polikl1_kart()
 Static sesc := "^<Esc>^ выход  "
 Static senter := "^<Enter>^ ввод  "
 Static sF10p := "^<F10>^ поиск по полису  "
