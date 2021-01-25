@@ -35,7 +35,7 @@ hbmzip.hbc
 #-shared
 -mt
 -inc
--workdir=..\TEMP
+-workdir=..\TEMP\KVD
 -ochip_mo
 
 ..\2.x\chip_mo.rc
@@ -434,7 +434,7 @@ hbmzip.hbc
 #
 # Регистратура
 .\RegisterOffice\funcRegisterOffice.prg
-.\RegisterOffice\polikl1_kart.prg
+#.\RegisterOffice\polikl1_kart.prg
 #
 # файлы для ОМС
 #
