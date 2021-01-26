@@ -12,8 +12,10 @@ hbmzip.hbc
 -i.\include
 
 # Lib section
--L..\_mylib_hbt
+# -L..\_mylib_hbt
+-L..\LIB
 -lMyLib_HBT
+-lFunLib
 
 ############################
 -lxhb
@@ -93,6 +95,15 @@ hbmzip.hbc
 ..\2.x\mo_263.prg
 ..\2.x\mo_263p.prg
 ..\2.x\mo_263s.prg
+
+
+..\2.x\ref\viewF003.prg
+..\2.x\oms\kslp.prg
+..\2.x\oms\definition_KSG.prg
+..\2.x\oms\f_cena_kslp.prg
+..\2.x\oms\oms_sluch.prg
+..\2.x\oms\oms_usl_sluch.prg
+
 #
 #..\2.x\mo_main.prg
 #..\2.x\mo_spr.prg
