@@ -95,12 +95,11 @@ hbmzip.hbc
 ..\2.x\mo_263.prg
 ..\2.x\mo_263p.prg
 ..\2.x\mo_263s.prg
-
+..\2.x\mo_spri.prg
 
 #
 #..\2.x\mo_main.prg
 #..\2.x\mo_spr.prg
-#..\2.x\mo_spri.prg
 #
 #mo_plat.prg
 #mo_platv.prg
@@ -116,7 +115,6 @@ hbmzip.hbc
 .\mo_func1.prg
 .\mo_main_bay.prg
 .\mo_spr_bay.prg
-.\mo_spri_bay.prg
 .\mo_index_bay.prg
 
 ### подсистема доступа к данным
@@ -445,16 +443,14 @@ hbmzip.hbc
 #
 #
 #для отладки
-.\FUNC\xtoc.prg
+#.\FUNC\xtoc.prg
 
 ..\2.x\ref\viewF003.prg
-..\2.x\oms\kslp.prg
 ..\2.x\oms\definition_KSG.prg
-..\2.x\oms\f_cena_kslp.prg
 ..\2.x\oms\oms_sluch.prg
 ..\2.x\oms\oms_usl_sluch.prg
 ..\2.x\oms\f2oms_usl_sluch.prg
 ..\2.x\oms\f5editkusl.prg
 ..\2.x\oms\f_usl_definition_KSG.prg
 ..\2.x\oms\f_valid2ad_cr.prg
-..\2.x\oms\put_str_kslp_kiro.prg
+..\2.x\oms\kiroANDkslp.prg
