@@ -15,8 +15,8 @@
 #include "chip_mo.ch"
 
 Static _version := {2,11,15}
-Static char_version := ""
-Static _date_version := "01.02.21г."
+Static char_version := "a"
+Static _date_version := "02.02.21г."
 Static __s_full_name := "ЧИП + Учёт работы Медицинской Организации"
 Static __s_version
 
@@ -47,6 +47,7 @@ FOR EACH s IN hb_AParams() // анализ входных параметров
   ENDCASE
 NEXT
 //
+public Err_version := fs_version(_version)+char_version+" от "+_date_version  // 02.02.2021
 Public kod_VOUNC := '101004'
 Public kod_LIS   := {'125901','805965'}
 //
