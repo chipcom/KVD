@@ -458,3 +458,5 @@ hbmzip.hbc
 ..\2.x\oms\kiroANDkslp.prg
 
 ..\2.x\oms\getPrice.prg
+..\2.x\oms\verify_1_sluch.prg
+..\2.x\oms\conditionKSLP_21.prg
