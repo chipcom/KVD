@@ -445,6 +445,8 @@ hbmzip.hbc
 #для отладки
 #.\FUNC\xtoc.prg
 
+..\2.x\calendar\calendar.prg
+
 ..\2.x\ref\dbV018.prg
 ..\2.x\ref\dbV019.prg
 ..\2.x\ref\viewF003.prg
