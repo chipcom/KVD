@@ -307,7 +307,6 @@ hbmzip.hbc
 .\BLL\DICT\TT007.prg
 
 # системные функции
-.\SYSTEM\calendar.prg
 .\SYSTEM\TWorkingUser.prg
 .\SYSTEM\ChatMessages.prg
 .\SYSTEM\popup_f.prg
