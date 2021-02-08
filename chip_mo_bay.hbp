@@ -46,7 +46,7 @@ hbmzip.hbc
 #..\2.x\mo_main.prg
 ..\2.x\mo_kart.prg
 ..\2.x\mo_func.prg
-#..\2.x\mo_func1.prg
+..\2.x\mo_func1.prg
 ..\2.x\mo_func2.prg
 ..\2.x\mo_adres.prg
 ..\2.x\mo_init.prg
@@ -112,7 +112,6 @@ hbmzip.hbc
 #
 ### главный модуль программы
 .\xmlparse_bay.c
-.\mo_func1.prg
 .\mo_main_bay.prg
 .\mo_spr_bay.prg
 .\mo_index_bay.prg
