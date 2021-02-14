@@ -449,7 +449,10 @@ hbmzip.hbc
 
 ..\2.x\ref\dbV018.prg
 ..\2.x\ref\dbV019.prg
+..\2.x\ref\dbV022.prg
 ..\2.x\ref\dbVMP_USL.prg
+..\2.x\ref\make_V018_V019.prg
+
 ..\2.x\oms\definition_KSG.prg
 ..\2.x\oms\oms_sluch.prg
 ..\2.x\oms\oms_usl_sluch.prg
@@ -462,3 +465,5 @@ hbmzip.hbc
 ..\2.x\oms\getPrice.prg
 ..\2.x\oms\verify_1_sluch.prg
 ..\2.x\oms\conditionKSLP_21.prg
+
+..\2.x\onkologiya\onko.prg
