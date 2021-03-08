@@ -14,9 +14,9 @@
 #include "..\_mylib_hbt\edit_spr.ch"
 #include "chip_mo.ch"
 
-Static _version := {2,11,16}
-Static char_version := "h"
-Static _date_version := "01.03.21г."
+Static _version := {2,11,17}
+Static char_version := "a"
+Static _date_version := "08.03.21г."
 Static __s_full_name := "ЧИП + Учёт работы Медицинской Организации"
 Static __s_version
 
@@ -55,7 +55,8 @@ Public DELAY_SPRD := 0 // время задержки для разворачивания строк
 Public sdbf := ".DBF", sntx := ".NTX", stxt := ".TXT", szip := ".ZIP",;
        smem := ".MEM", srar := ".RAR", sxml := ".XML", sini := ".INI",;
        sfr3 := ".FR3", sfrm := ".FRM", spdf := ".PDF", scsv := ".CSV",;
-       sxls := ".xls", schip := ".CHIP", cslash := "\"
+       sxls := ".xls", schip := ".CHIP", cslash := "\",;
+       sdbt := ".dbt"
 PUBLIC public_mouse := .f., pravo_write := .t., pravo_read := .t., ;
        MenuTo_Minut := 0, sys_date := DATE(), cScrMode := "COLOR", ;
        DemoMode := .f., picture_pf := "@R 999-999-999 99", ;
@@ -663,6 +664,11 @@ do case
     aadd(first_menu[1],"~Справка ОМС")
     aadd(first_message[1],"Ввод и распечатка справки о стоимости оказанной медицинской помощи в сфере ОМС")
     aadd(func_menu[1],"f_spravka_OMS()")
+    //
+    aadd(first_menu[1], 0)
+    aadd(first_menu[1],"Изменение ~цен ОМС")
+    aadd(first_message[1],"Изменение цен на услуги в соответствии со справочником услуг ТФОМС")
+    aadd(func_menu[1],"Change_Cena_OMS()")
     //
     aadd(cmain_menu,cmain_next_pos(3))
     aadd(main_menu," ~Реестры ")

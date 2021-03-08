@@ -443,10 +443,12 @@ hbmzip.hbc
 #для отладки
 #.\FUNC\xtoc.prg
 
+..\2.x\init\init_mo.prg
+..\2.x\init\notExistsFileNSI.prg
+
 ..\2.x\calendar\calendar.prg
 
 ..\2.x\ref\initSpravFFOMS.prg
-..\2.x\ref\notExistsFileNSI.prg
 ..\2.x\ref\dbO001.prg
 ..\2.x\ref\dbF003.prg
 ..\2.x\ref\dbF005.prg
@@ -493,6 +495,7 @@ hbmzip.hbc
 ..\2.x\oms\f_valid2ad_cr.prg
 ..\2.x\oms\kiroANDkslp.prg
 ..\2.x\oms\f_1pac_definition_KSG.prg
+..\2.x\oms\Change_Cena_OMS.prg
 
 ..\2.x\oms\getPrice.prg
 ..\2.x\oms\verify_1_sluch.prg
