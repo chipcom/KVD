@@ -9,11 +9,11 @@ hbssl.hbc
 hbmzip.hbc
 
 # Include section
--i.\include
+-i..\include
 
 # Lib section
-# -L..\_mylib_hbt
 -L..\LIB
+-lMyLib_HBT
 -lMyLib_HBT
 -lFunLib
 
@@ -500,5 +500,6 @@ hbmzip.hbc
 ..\2.x\oms\getPrice.prg
 ..\2.x\oms\verify_1_sluch.prg
 ..\2.x\oms\conditionKSLP_21.prg
+..\2.x\oms\diagnoze.prg
 
 ..\2.x\onkologiya\onko.prg

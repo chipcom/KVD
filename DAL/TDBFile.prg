@@ -1,5 +1,5 @@
 #include "hbclass.ch"
-#include "..\_mylib_hbt\function.ch"
+#include "function.ch"
 
 CREATE CLASS TDBFile
 

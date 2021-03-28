@@ -1,9 +1,9 @@
 #include "inkey.ch"
-#include "..\_mylib_hbt\function.ch"
-#include "..\_mylib_hbt\edit_spr.ch"
+#include "function.ch"
+#include "edit_spr.ch"
 #include "chip_mo.ch"
 
-***** ╨┐╤А╨╛╨▓╨╡╤А╨╕╤В╤М ╨┤╨░╤В╤Г, ╨┐╨╛ ╨║╨╛╤В╨╛╤А╤Г╤О (╨▓╨║╨╗╤О╤З╨╕╤В╨╡╨╗╤М╨╜╨╛) ╨╖╨░╨┐╤А╨╡╤Й╨╡╨╜╨╛ ╤А╨╡╨┤╨░╨║╤В╨╕╤А╨╛╨▓╨░╤В╤М ╨┤╨░╨╜╨╜╤Л╨╡
+***** проверить дату, по которую (включительно) запрещено редактировать данные
 function ver_pub_date( ldate, is_msg )
 	local is_public_date := .t.
 
@@ -12,7 +12,7 @@ function ver_pub_date( ldate, is_msg )
 			.and. !empty( ldate ) .and. public_date >= ldate
 		is_public_date := .f.
 		if hb_DefaultValue( is_msg, .f. )
-			func_error( 2, '╨Я╨╛ ' + full_date( public_date ) + '╨│. ╨▓╨║╨╗╤О╤З╨╕╤В╨╡╨╗╤М╨╜╨╛ ╨┤╨░╨╜╨╜╤Л╨╡ ╨╖╨░╨║╤А╤Л╤В╤Л ╨┤╨╗╤П ╤А╨╡╨┤╨░╨║╤В╨╕╤А╨╛╨▓╨░╨╜╨╕╤П!' )
+			func_error( 2, 'По ' + full_date( public_date ) + 'г. включительно данные закрыты для редактирования!' )
 		endif
 	endif
 	return is_public_date
