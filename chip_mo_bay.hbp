@@ -16,6 +16,7 @@ hbmzip.hbc
 -lMyLib_HBT
 -lMyLib_HBT
 -lFunLib
+-lhblibxlsxwriter
 
 ############################
 -lxhb
@@ -479,6 +480,7 @@ hbmzip.hbc
 ..\2.x\ref\dbV022.prg
 ..\2.x\ref\dbQ015.prg
 ..\2.x\ref\dbQ017.prg
+..\2.x\ref\dbT005.prg
 ..\2.x\ref\dbT008.prg
 ..\2.x\ref\dbT012.prg
 ..\2.x\ref\dbVMP_USL.prg
@@ -497,9 +499,12 @@ hbmzip.hbc
 ..\2.x\oms\f_1pac_definition_KSG.prg
 ..\2.x\oms\Change_Cena_OMS.prg
 
-..\2.x\oms\getPrice.prg
 ..\2.x\oms\verify_1_sluch.prg
 ..\2.x\oms\conditionKSLP_21.prg
 ..\2.x\oms\diagnoze.prg
+..\2.x\oms\mo_oms131.prg
+..\2.x\oms\errorFromTFOMS.prg
 
 ..\2.x\onkologiya\onko.prg
+
+..\2.x\reports\createXLS.prg
