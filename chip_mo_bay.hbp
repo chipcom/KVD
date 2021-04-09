@@ -504,7 +504,12 @@ hbmzip.hbc
 ..\2.x\oms\diagnoze.prg
 ..\2.x\oms\mo_oms131.prg
 ..\2.x\oms\errorFromTFOMS.prg
+..\2.x\oms\TFOMS_hodatajstvo.prg
 
 ..\2.x\onkologiya\onko.prg
 
 ..\2.x\reports\createXLS.prg
+..\2.x\reports\hodotajstvoXLS.prg
+
+..\2.x\util\workWithZIP.prg
+..\2.x\util\runExternalProgram.prg
