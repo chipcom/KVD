@@ -161,34 +161,6 @@ f_main(r,a_parol)
 f_end()
 return
 
-// #define SW_SHOWNORMAL 1
-
-// *****
-// Function f_help()
-// Local spar := ""
-// if chm_help_code >= 0
-//   spar := '-mapid '+lstr(chm_help_code)+' '
-// endif
-// ShellExecute(GetDeskTopWindow(),;
-//              'open',;
-//              'hh.exe',;
-//              spar+exe_dir+cslash+'CHIP_MO.CHM',;
-//              ,;
-//              SW_SHOWNORMAL)
-// return NIL
-
-// *****
-// Function file_AdobeReader(cFile)
-// ShellExecute(GetDeskTopWindow(),;
-//              'open',;
-//              'AcroRd32.exe',;
-//              cFile,;
-//              ,;
-//              SW_SHOWNORMAL)
-// return NIL
-
-*
-
 ***** 04.10.16
 Function f_main(r0,a_parol)
 Static arr1 := {;
@@ -368,8 +340,6 @@ else
   endif
 endif
 return NIL
-
-*
 
 ***** 21.07.14
 Function f1main(n_Task)
@@ -1306,19 +1276,6 @@ Static Function cmain_next_pos(n)
 DEFAULT n TO 5
 return atail(cmain_menu)+len(atail(main_menu))+n
 
-// ***** 18.08.18
-// Function readme2wordpad(rtf_file)
-// DEFAULT rtf_file TO exe_dir+cslash+'README.RTF'
-// ShellExecute(GetDeskTopWindow(),;
-//              'open',;
-//              'wordpad.exe',;
-//              rtf_file,;
-//              ,;
-//              SW_SHOWNORMAL)
-// return NIL
-
-*
-
 *****
 Function m_help()
 Local tmp_help, pt
@@ -1327,8 +1284,6 @@ chm_help_code := 100  // ?????
 f_help()
 chm_help_code := tmp_help
 return NIL
-
-*
 
 ***** 24.10.17
 FUNCTION f_first(is_create)
@@ -1449,8 +1404,6 @@ SETCURSOR(0)
 SET COLOR TO
 RETURN is_cur_dir
 
-*
-
 ***** 02.11.15
 Function hard_err(p)
 // k = 1 - проверка диска на наличие временного файла hard_err.meh
@@ -1495,8 +1448,6 @@ do case
     delete file hard_err.meh
 endcase
 return NIL
-
-*
 
 ***** 06.10.19
 FUNCTION f_end(yes_copy)
@@ -1563,8 +1514,6 @@ CLS
 QUIT
 RETURN NIL
 
-*
-
 ***** 03.12.13
 Function f_err_sem_vagno_task(n_Task)
 return func_error(4,'В задаче "'+array_tasks[ind_task(n_Task),5]+;
@@ -1586,8 +1535,6 @@ return fl
 ***** 03.12.13
 Function mo_UnLock_Task(n_Task)
 return G_SUnLock(sem_vagno_task[n_Task])
-
-*
 
 ***** вернуть имя задачи по цифровому коду
 Function f_name_task(n_Task)
@@ -1619,8 +1566,6 @@ if (it := ascan(array_tasks, {|x| x[2] == n_Task})) == 0
   it := 3 // ОМС
 endif
 return it
-
-*
 
 ***** 22.02.19 запрос "хитрого" пароля для доступа к операции аннулирования
 Function involved_password(par,_n_reestr,smsg)
@@ -1870,8 +1815,6 @@ close databases
 fclose(fp)
 viewtext(n_file,,,,.f.,,,2)
 return NIL
-
-*
 
 *****
 Function my_mo_f_main()
