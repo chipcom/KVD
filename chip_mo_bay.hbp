@@ -445,6 +445,7 @@ hbmzip.hbc
 #.\FUNC\xtoc.prg
 
 ..\2.x\init\init_mo.prg
+..\2.x\init\reconstruct_DB.prg
 ..\2.x\init\notExistsFileNSI.prg
 
 ..\2.x\calendar\calendar.prg
@@ -508,8 +509,10 @@ hbmzip.hbc
 
 ..\2.x\onkologiya\onko.prg
 
+..\2.x\reports\reports.prg
 ..\2.x\reports\createXLS.prg
 ..\2.x\reports\hodotajstvoXLS.prg
+..\2.x\reports\exportKartExcel.prg
 
 ..\2.x\util\workWithZIP.prg
 ..\2.x\util\runExternalProgram.prg
