@@ -13,10 +13,10 @@
 #include "edit_spr.ch"
 #include "chip_mo.ch"
 
-Static _version := {2,11,20}
-Static char_version := "e"
-Static _date_version := "27.04.21г."
-Static __s_full_name := "ЧИП + Учёт работы Медицинской Организации"
+Static _version := {2, 11, 20, 'g'}
+// Static char_version := "g"
+Static _date_version := '07.05.21г.'
+Static __s_full_name := 'ЧИП + Учёт работы Медицинской Организации'
 Static __s_version
 
 external ust_printer, ErrorSys, ReadModal, like, flstr, prover_dbf, net_monitor, pr_view, ne_real
@@ -46,7 +46,9 @@ FOR EACH s IN hb_AParams() // анализ входных параметров
   ENDCASE
 NEXT
 //
-public Err_version := fs_version(_version)+char_version+" от "+_date_version  // 02.02.2021
+// public charVersion := char_version
+// public Err_version := fs_version(_version)+char_version+" от "+_date_version  // 02.02.2021
+public Err_version := fs_version(_version)+" от "+_date_version  // 30.04.2021
 Public kod_VOUNC := '101004'
 Public kod_LIS   := {'125901','805965'}
 //
@@ -83,7 +85,8 @@ Public d_01_05_2019 := 0d20190501
 Public d_01_11_2019 := 0d20191101
 Public d_01_01_2021 := 0d20210101
 //
-__s_version := "  в. "+fs_version(_version)+char_version+" от "+_date_version+" тел.(8442)23-69-56"
+// __s_version := "  в. "+fs_version(_version)+char_version+" от "+_date_version+" тел.(8442)23-69-56"
+__s_version := "  в. "+fs_version(_version)+" от "+_date_version+" тел.(8442)23-69-56"
 SET(_SET_DELETED, .T.)
 SETCLEARB(" ")
 is_cur_dir := f_first(is_create)
@@ -99,9 +102,9 @@ r := init_mo() // инициализация массива МО, запрос кода МО (при необходимости)
 //
 a_parol := inp_password_bay(is_cur_dir,is_create)
 // создаем поток для обмена сообщениями
-if empty( handle := udpServerStart( hb_user_curUser:Name1251, dir_server + 'system' )	)
-	hb_Alert( 'Обмен сообщениями не доступен!' )
-endif
+// if empty( handle := udpServerStart( hb_user_curUser:Name1251, dir_server + 'system' )	)
+//	hb_Alert( 'Обмен сообщениями не доступен!' )
+// endif
 
 // объект организация с которой работаем
 public hb_main_curOrg := TOrganizationDB():GetOrganization()
@@ -124,6 +127,9 @@ if !G_SOpen(sem_task,sem_vagno,fio_polzovat,p_name_comp)
   endif
 endif
 //
+
+// checkVersionInternet( r, _version )
+
 Public chm_help_code := 0
 Init_first() // начальная инициализация программы (переменных, массивов,...)
 if ControlBases(1,_version) // если необходимо
@@ -1204,11 +1210,18 @@ hb_AIns( func_menu[ len( func_menu ) ], 5, 'editRoles()', .t. )
     aadd(cmain_menu,1)
     aadd(main_menu," ~Резервное копирование ")
     aadd(main_message,"Резервное копирование базы данных")
-    aadd(first_menu, {"Копирование ~базы данных"})
+    aadd(first_menu, {;
+        'Копирование ~базы данных',;
+        'Отправка базы ~данных';
+        })
     aadd(first_message, { ;
-        "Резервное копирование базы данных";
+        'Резервное копирование базы данных',;
+        'Резервное копирование базы данных и отправка копии службу поддержки';
       } )
-    aadd(func_menu, {"m_copy_DB()"})
+    aadd(func_menu, {;
+        'm_copy_DB(1)',;
+        'm_copy_DB(2)';
+      })
   case glob_task == X_INDEX //
     aadd(cmain_menu,1)
     aadd(main_menu," ~Переиндексирование ")
@@ -1250,9 +1263,9 @@ if hb_user_curUser:IsAdmin()
 	hb_AIns( first_message[ len( first_message ) ], 5, 'Настройка общих параметров системы', .t. )
 	hb_AIns( func_menu[ len( func_menu ) ], 5, 'settingsSystem()', .t. )
 endif
-hb_AIns( first_menu[ len( first_menu ) ], 6 + if( hb_user_curUser:IsAdmin(), 1, 0 ), 'Отправка ~сообщения', .t. )
-hb_AIns( first_message[ len( first_message ) ], 5 + if( hb_user_curUser:IsAdmin(), 1, 0 ), 'Отправка сообщения работающим пользователям', .t. )
-hb_AIns( func_menu[ len( func_menu ) ], 5 + if( hb_user_curUser:IsAdmin(), 1, 0 ), 'SendMessage()', .t. )
+// hb_AIns( first_menu[ len( first_menu ) ], 6 + if( hb_user_curUser:IsAdmin(), 1, 0 ), 'Отправка ~сообщения', .t. )
+// hb_AIns( first_message[ len( first_message ) ], 5 + if( hb_user_curUser:IsAdmin(), 1, 0 ), 'Отправка сообщения работающим пользователям', .t. )
+// hb_AIns( func_menu[ len( func_menu ) ], 5 + if( hb_user_curUser:IsAdmin(), 1, 0 ), 'SendMessage()', .t. )
 
 // конец перестройки меню
 
@@ -1497,13 +1510,11 @@ endif
 // удалим файлы отчетов в формате '*.HTML' из временной директории
 filedelete( HB_DirTemp() + "*.HTML")
 // закроем если нужно доплнительный поток для сообщений
-if __mvExist( 'hb_user_curUser' )
-	if hb_user_curUser != nil
-	&& if !empty( fio_polzovat )
-		udpSendMessage( 'KIL', 'ALL', hb_user_curUser:Name1251, '' )
-		&& udpSendMessage( 'KIL', 'ALL', fio_polzovat, '' )
-	endif
-endif
+// if __mvExist( 'hb_user_curUser' )
+//	if hb_user_curUser != nil
+//		udpSendMessage( 'KIL', 'ALL', hb_user_curUser:Name1251, '' )
+//	endif
+// endif
 SET KEY K_ALT_F3 TO
 SET KEY K_ALT_F2 TO
 SET KEY K_ALT_X  TO

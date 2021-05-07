@@ -34,6 +34,8 @@ hbmzip.hbc
 # библиотека для декодирования штрих-кодов ОМС
 -lpcbcode.lib
 
+hbtip.hbc
+hbziparc.hbc
 
 #-shared
 -mt
@@ -308,7 +310,7 @@ hbmzip.hbc
 
 # системные функции
 .\SYSTEM\TWorkingUser.prg
-.\SYSTEM\ChatMessages.prg
+# .\SYSTEM\ChatMessages.prg
 .\SYSTEM\popup_f.prg
 .\SYSTEM\TBox.prg
 .\SYSTEM\TVersion.prg
@@ -517,3 +519,5 @@ hbmzip.hbc
 
 ..\2.x\util\workWithZIP.prg
 ..\2.x\util\runExternalProgram.prg
+..\2.x\util\workWithInternet.prg
+..\2.x\util\backup.prg
