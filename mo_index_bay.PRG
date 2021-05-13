@@ -62,7 +62,7 @@ do while !eof()
   select KART
   if recno() % 5000 == 0
     commit
-  endif 
+  endif
   skip
 enddo
 index on if(kod>0,"1","0")+kod_mis to (dir_server+"kartotee") progress
@@ -155,7 +155,7 @@ if !empty(arr_rak) // не заполнен kod_xml из-за моей ошибки
   Use (dir_server+"mo_xml") new alias MO_XML
   index on str(kod,6) to (cur_dir+"tmpxml") ;
         for TIP_IN == _XML_FILE_RAK .and. between(DFILE,min_date,max_date)
-  arr_xml := {}      
+  arr_xml := {}
   dbeval({|| aadd(arr_xml, {kod,fname,dfile}) })
   if !empty(arr_xml)
     mywait("Ждите! Производится исправление ошибки чтения РАК...")
@@ -165,7 +165,7 @@ if !empty(arr_rak) // не заполнен kod_xml из-за моей ошибки
     cFile := alltrim(arr_xml[j,2])
     if Extract_Zip_XML(dir_server+dir_XML_TF,cFile+szip) != NIL
       oXmlDoc := HXMLDoc():Read(_tmp_dir1+cFile+sxml)
-      reestr_rak_tmpfile(oXmlDoc,{},_tmp_dir1+cFile+szip) 
+      reestr_rak_tmpfile(oXmlDoc,{},_tmp_dir1+cFile+szip)
       Use (dir_server+"mo_rak") new alias RAK
       select TMP2
       go top
@@ -182,7 +182,7 @@ if !empty(arr_rak) // не заполнен kod_xml из-за моей ошибки
       enddo
     endif
   next
-endif  
+endif
 close databases*/
 Use (dir_server+"mo_nnapr") new alias NAPR
 go top
@@ -194,7 +194,7 @@ do while !eof()
     napr->USL_OK_4 := 1
   endif
   skip
-enddo   
+enddo
 Use (dir_server+"mo_n7in") new alias N7i
 go top
 do while !eof()
@@ -202,7 +202,7 @@ do while !eof()
     n7i->USL_OK := 1
   endif
   skip
-enddo   
+enddo
 Use (dir_server+"mo_n7out") new alias N7
 go top
 do while !eof()
@@ -210,7 +210,7 @@ do while !eof()
     n7->USL_OK := 1
   endif
   skip
-enddo   
+enddo
 close databases
 Use (dir_server+"mo_kekh") new alias HU
 go top
@@ -219,7 +219,7 @@ do while !eof()
     hu->USL_OK := 1
   endif
   skip
-enddo   
+enddo
 close databases
 //
 stat_msg("Пеpеиндексирование завеpшено!")
@@ -913,8 +913,8 @@ stat_msg("Поиск/попытка исправления полисов в картотеке")
 Use (dir_server+"human_") new
 use (dir_server+"human") new
 set relation to recno() into HUMAN_
-Private mdate := stod("20180630")
-index on str(kod_k,7)+str(descend(k_data),10) to (cur_dir+"tmp_human") for k_data > mdate 
+Private mdate := stod("20190630")
+index on str(kod_k,7)+str(descend(k_data),10) to (cur_dir+"tmp_human") for k_data > mdate
 use_base("kartotek",,.t.) // открываем в монопольном режиме
 set order to 2
 find ("1")
@@ -924,7 +924,7 @@ do while kart->kod > 0 .and. !eof()
   endif
   select HUMAN
   find (str(kart->kod,7))
-  do while human->kod_k == kart->kod .and. !eof() 
+  do while human->kod_k == kart->kod .and. !eof()
     if !empty(k_data) .and. kod > 0 .and. ;
        between(human_->VPOLIS,1,3) .and. schet > 0 .and. ; // в счете
        human_->REESTR > 0 .and. between(human_->smo,'34001','34007')
@@ -935,9 +935,6 @@ do while kart->kod > 0 .and. !eof()
         fl := .t.
       endif
       if fl
-        /*my_debug(,str(kart->kod,7)+" "+rtrim(kart->fio)+" "+full_date(kart->date_r)+"/"+date_8(human->k_data))
-        my_debug(,space(7)+lstr(kart_->VPOLIS)+"/"+alltrim(kart_->SPOLIS)+"/"+alltrim(kart_->NPOLIS)+;
-                 " => "+lstr(human_->VPOLIS)+"/"+alltrim(human_->SPOLIS)+"/"+alltrim(human_->NPOLIS))*/
         kart->POLIS   := make_polis(human_->spolis,human_->npolis)
         kart_->VPOLIS := human_->VPOLIS
         kart_->SPOLIS := human_->SPOLIS
@@ -992,7 +989,7 @@ do while !eof()
   endif
   select NF
   skip
-enddo        
+enddo
 close databases
 rest_box(buf)
 return NIL
@@ -1184,7 +1181,7 @@ aadd(array_files_DB,"mo_rpdsh")
 aadd(array_files_DB,"mo_onkna")
 aadd(array_files_DB,"mo_onksl")
 aadd(array_files_DB,"mo_onkdi")
-aadd(array_files_DB,"mo_onkpr")  
+aadd(array_files_DB,"mo_onkpr")
 aadd(array_files_DB,"mo_onkus")
 aadd(array_files_DB,"mo_onkco")
 aadd(array_files_DB,"mo_onkle")
