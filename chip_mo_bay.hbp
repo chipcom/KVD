@@ -117,7 +117,7 @@ hbziparc.hbc
 .\xmlparse_bay.c
 .\mo_main_bay.prg
 .\mo_spr_bay.prg
-.\mo_index_bay.prg
+#.\mo_index_bay.prg
 
 ### подсистема доступа к данным
 .\DAL\TDBFile.prg
@@ -449,6 +449,8 @@ hbziparc.hbc
 ..\2.x\init\init_mo.prg
 ..\2.x\init\reconstruct_DB.prg
 ..\2.x\init\notExistsFileNSI.prg
+..\2.x\init\index.prg
+..\2.x\init\initArrayFilesDB.prg
 
 ..\2.x\calendar\calendar.prg
 
