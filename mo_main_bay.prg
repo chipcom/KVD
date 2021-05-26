@@ -81,8 +81,9 @@ procedure main( ... )
   Public d_01_05_2019 := 0d20190501
   Public d_01_11_2019 := 0d20191101
   Public d_01_01_2021 := 0d20210101
-
   //
+
+	
   __s_version := "  в. "+fs_version(_version)+" от "+_date_version+" тел.(8442)23-69-56"
   SET(_SET_DELETED, .T.)
   SETCLEARB(" ")
@@ -94,7 +95,7 @@ procedure main( ... )
   cur_year := STR(YEAR(sys_date),4)
   new_dir = ""
   SETCOLOR(color1)
-  
+
   r := init_mo() // инициализация массива МО, запрос кода МО (при необходимости)
   //a_parol := inp_password(is_cur_dir,is_create)
   //
@@ -129,7 +130,9 @@ procedure main( ... )
 // checkVersionInternet( r, _version )
 
   Public chm_help_code := 0
+
   Init_first() // начальная инициализация программы (переменных, массивов,...)
+
   if ControlBases(1,_version) // если необходимо
     if G_SLock1Task(sem_task,sem_vagno)  // запрет доступа всем
       buf := savescreen()
@@ -170,29 +173,30 @@ procedure main( ... )
 
 ***** 17.05.21
 Function f_main(r0,a_parol)
-Static arr1 := {;
-  {"Регистратура поликлиники"            ,X_REGIST,,.t.,"РЕГИСТРАТУРА"},;
-  {"Приёмный покой стационара"           ,X_PPOKOJ,,.t.,"ПРИЁМНЫЙ ПОКОЙ"},;
-  {"Обязательное медицинское страхование",X_OMS   ,,.t.,"ОМС"},;
-  {"Учёт направлений на госпитализацию"  ,X_263   ,,.F.,"ГОСПИТАЛИЗАЦИЯ"},;
-  {"Платные услуги"                      ,X_PLATN ,,.t.,"ПЛАТНЫЕ УСЛУГИ"},;
-  {"Ортопедические услуги в стоматологии",X_ORTO  ,,.t.,"ОРТОПЕДИЯ"},;
-  {"Касса медицинской организации"       ,X_KASSA ,,.t.,"КАССА"},;
-  {"КЭК медицинской организации"         ,X_KEK   ,,.F.,"КЭК"};
- }
-Static arr2 := {;
-  {"Редактирование справочников"         ,X_SPRAV ,,.t.},;
-  {"Сервисы и настройки"                 ,X_SERVIS,,.t.},;
-  {"Резервное копирование базы данных"   ,X_COPY  ,,.t.},;
-  {"Переиндексирование базы данных"      ,X_INDEX ,,.t.};
- }
-Local i, lens := 0, r, c, oldTfoms, arr, ar, k, fl_exit := .t.
-PUBLIC array_tasks := {}, sem_vagno_task[24]
-afill(sem_vagno_task,"")
-for i := 1 to len(arr1)
-  aadd(array_tasks,arr1[i])
-  sem_vagno_task[arr1[i,2]] := 'Важный режим в задаче "'+arr1[i,5]+'"'
-next
+  Static arr1 := {;
+    {"Регистратура поликлиники"            ,X_REGIST,,.t.,"РЕГИСТРАТУРА"},;
+    {"Приёмный покой стационара"           ,X_PPOKOJ,,.t.,"ПРИЁМНЫЙ ПОКОЙ"},;
+    {"Обязательное медицинское страхование",X_OMS   ,,.t.,"ОМС"},;
+    {"Учёт направлений на госпитализацию"  ,X_263   ,,.F.,"ГОСПИТАЛИЗАЦИЯ"},;
+    {"Платные услуги"                      ,X_PLATN ,,.t.,"ПЛАТНЫЕ УСЛУГИ"},;
+    {"Ортопедические услуги в стоматологии",X_ORTO  ,,.t.,"ОРТОПЕДИЯ"},;
+    {"Касса медицинской организации"       ,X_KASSA ,,.t.,"КАССА"},;
+    {"КЭК медицинской организации"         ,X_KEK   ,,.F.,"КЭК"};
+  }
+  Static arr2 := {;
+    {"Редактирование справочников"         ,X_SPRAV ,,.t.},;
+    {"Сервисы и настройки"                 ,X_SERVIS,,.t.},;
+    {"Резервное копирование базы данных"   ,X_COPY  ,,.t.},;
+    {"Переиндексирование базы данных"      ,X_INDEX ,,.t.};
+  }
+  Local i, lens := 0, r, c, oldTfoms, arr, ar, k, fl_exit := .t.
+
+  PUBLIC array_tasks := {}, sem_vagno_task[24]
+  afill(sem_vagno_task,"")
+  for i := 1 to len(arr1)
+    aadd(array_tasks,arr1[i])
+    sem_vagno_task[arr1[i,2]] := 'Важный режим в задаче "'+arr1[i,5]+'"'
+  next
   // arr := my_mo_f_main() // "своя" задача
   // for i := 1 to len(arr)
   //   aadd(array_tasks,arr[i])
@@ -200,73 +204,74 @@ next
   if glob_mo[_MO_KOD_TFOMS] == kod_VOUNC
     aadd(array_tasks, {"ВОУНЦ - трансплантированные",X_MO,"TABLET_ICON",.T.})
   endif
-for i := 1 to len(arr2)
-  aadd(array_tasks,arr2[i])
-next
-//
-arr := {}
-for i := 1 to len(array_tasks)
-  if (k := array_tasks[i,2]) < 10  // код задачи
-    array_tasks[i,4] := (substr(glob_mo[_MO_PROD],k,1)=='1')
-    if array_tasks[i,4]
+
+  for i := 1 to len(arr2)
+    aadd(array_tasks,arr2[i])
+  next
+  //
+  arr := {}
+  for i := 1 to len(array_tasks)
+    if (k := array_tasks[i,2]) < 10  // код задачи
+      array_tasks[i,4] := (substr(glob_mo[_MO_PROD],k,1)=='1')
+      if array_tasks[i,4]
+        fl_exit := .f.
+      endif
+    endif
+    // Учёт направлений на госпитализацию
+    if k == X_263 .and. (is_napr_pol .or. is_napr_stac)
+      array_tasks[i,4] := .t.
       fl_exit := .f.
     endif
-  endif
-  // Учёт направлений на госпитализацию
-  if k == X_263 .and. (is_napr_pol .or. is_napr_stac)
-    array_tasks[i,4] := .t.
-    fl_exit := .f.
-  endif
-  if array_tasks[i,4] .and. hb_user_curUser:IsAllowedTask( i )
-    aadd(arr,array_tasks[i])
-    lens := max(lens,len(array_tasks[i,1]))
-  endif
-next
-Public glob_task, blk_ekran, g_arr_stand := {},;
+    if array_tasks[i,4] .and. hb_user_curUser:IsAllowedTask( i )
+      aadd(arr,array_tasks[i])
+      lens := max(lens,len(array_tasks[i,1]))
+    endif
+  next
+  Public glob_task, blk_ekran, g_arr_stand := {},;
        main_menu, main_message, first_menu,;
        first_message, func_menu, cmain_menu
-if fl_exit
-  func_error(4,"Нет разрешения на работу ни в одной задаче!")
-else
-  // вывести верхние строки главного экрана
-  r0 := main_up_screen()
-  // вывести центральные строки главного экрана
-  main_center_screen(r0,a_parol)
-  if tip_polzovat == TIP_ADM
-    find_unfinished_reestr_sp_tk(.f.,.t.)
-    find_time_limit_human_reestr_sp_tk()
-    find_unfinished_R01()
-    find_unfinished_R11()
+  if fl_exit
+    func_error(4,"Нет разрешения на работу ни в одной задаче!")
+  else
+    // вывести верхние строки главного экрана
+    r0 := main_up_screen()
+    // вывести центральные строки главного экрана
+    main_center_screen(r0,a_parol)
+    if tip_polzovat == TIP_ADM
+      find_unfinished_reestr_sp_tk(.f.,.t.)
+      find_time_limit_human_reestr_sp_tk()
+      find_unfinished_R01()
+      find_unfinished_R11()
+    endif
+    //
+    r := int((maxrow()-r0-len(arr))/2)-1
+    c := int((maxcol()+1-lens)/2)-1
+    ar := GetIniSect(tmp_ini,"task")
+    k := i := int(val(a2default(ar,"current_task",lstr(X_OMS))))
+    do while .t.
+      if (i := popup_2array(arr,r+r0,c,i,,,"Выбор задачи","B+/W","N+/W,W+/N*")) == 0
+        exit
+      endif
+      oldTfoms := glob_mo[_MO_KOD_TFOMS]
+      buf := savescreen()
+      k := i
+      f1main(i)
+      restscreen(buf)
+      reRead_glob_MO()
+      if !(oldTfoms == glob_mo[_MO_KOD_TFOMS])
+        // вывести верхние строки главного экрана
+        r0 := main_up_screen()
+        // вывести центральные строки главного экрана
+        main_center_screen(r0)
+      endif
+      change_sys_date() // перечитать системную дату
+      put_icon(__s_full_name+__s_version,"MAIN_ICON") // перевывести заголовок окна
+      @ r0,0 say full_date(sys_date) color "W+/N" // перевывести дату
+      @ r0,maxcol()-4 say hour_min(seconds()) color "W+/N" // перевывести время
+    enddo
+    SetIniSect(tmp_ini,"task",{{"current_task",lstr(k)}})
   endif
-  //
-  r := int((maxrow()-r0-len(arr))/2)-1
-  c := int((maxcol()+1-lens)/2)-1
-  ar := GetIniSect(tmp_ini,"task")
-  k := i := int(val(a2default(ar,"current_task",lstr(X_OMS))))
-  do while .t.
-    if (i := popup_2array(arr,r+r0,c,i,,,"Выбор задачи","B+/W","N+/W,W+/N*")) == 0
-      exit
-    endif
-    oldTfoms := glob_mo[_MO_KOD_TFOMS]
-    buf := savescreen()
-    k := i
-    f1main(i)
-    restscreen(buf)
-    reRead_glob_MO()
-    if !(oldTfoms == glob_mo[_MO_KOD_TFOMS])
-      // вывести верхние строки главного экрана
-      r0 := main_up_screen()
-      // вывести центральные строки главного экрана
-      main_center_screen(r0)
-    endif
-    change_sys_date() // перечитать системную дату
-    put_icon(__s_full_name+__s_version,"MAIN_ICON") // перевывести заголовок окна
-    @ r0,0 say full_date(sys_date) color "W+/N" // перевывести дату
-    @ r0,maxcol()-4 say hour_min(seconds()) color "W+/N" // перевывести время
-  enddo
-  SetIniSect(tmp_ini,"task",{{"current_task",lstr(k)}})
-endif
-return NIL
+  return NIL
 
 ***** вывести верхние строки главного экрана
 Function main_up_screen()
@@ -297,65 +302,66 @@ Function main_up_screen()
 
 ***** вывести центральные строки главного экрана
 Function main_center_screen(r0,a_parol)
-Static nLen := 11
-Static arr_name := {"инфаркт", "инсульт", "ЧМТ", "онкология",;
+  Static nLen := 11
+  Static arr_name := {"инфаркт", "инсульт", "ЧМТ", "онкология",;
                     "пневмония", "язва", "родовая травма",;
                     "новорожденный с низкой массой тела",;
                     "астма", "диабет","панкреатит"}
-Local s, i, c, k, t_arr, r1, buf, mst := ""
-g_arr_stand := {}
-if valtype(glob_mo[_MO_STANDART]) == "A"
-  for k := 1 to len(glob_mo[_MO_STANDART])
-    t_arr := {glob_mo[_MO_STANDART,k,1],{}}
-    mst := padr(glob_mo[_MO_STANDART,k,2],nLen)
+  Local s, i, c, k, t_arr, r1, buf, mst := ""
+
+  g_arr_stand := {}
+  if valtype(glob_mo[_MO_STANDART]) == "A"
+    for k := 1 to len(glob_mo[_MO_STANDART])
+      t_arr := {glob_mo[_MO_STANDART,k,1],{}}
+      mst := padr(glob_mo[_MO_STANDART,k,2],nLen)
+      for i := 1 to nLen
+        c := substr(mst,i,1)
+        if c == "1"
+          aadd(t_arr[2],i)
+        endif
+      next
+      aadd(g_arr_stand,aclone(t_arr))
+    next
+  endif
+  if .t.//empty(mst)
+    if valtype(a_parol) == "A" .and. (k := len(a_parol)) > 0
+      r1 := r0+int((maxrow()-r0-k)/2)-1
+      n_message(a_parol,,"W+/W*","R/W*",r1,,"N+/W*")
+    endif
+  else
+    s := "Нозологические формы, по которым МО участвует в выполнении стандартов:"
     for i := 1 to nLen
       c := substr(mst,i,1)
-      if c == "1"
-        aadd(t_arr[2],i)
+      if eq_any(c,"1","2")
+        s += " "+arr_name[i]
+        if c == "2"
+          s += "[*]"
+        endif
+        s += ","
       endif
     next
-    aadd(g_arr_stand,aclone(t_arr))
-  next
-endif
-if .t.//empty(mst)
-  if valtype(a_parol) == "A" .and. (k := len(a_parol)) > 0
+    s := left(s,len(s)-1)
+    t_arr := array(2)
+    k := perenos(t_arr,s,64)
     r1 := r0+int((maxrow()-r0-k)/2)-1
-    n_message(a_parol,,"W+/W*","R/W*",r1,,"N+/W*")
-  endif
-else
-  s := "Нозологические формы, по которым МО участвует в выполнении стандартов:"
-  for i := 1 to nLen
-    c := substr(mst,i,1)
-    if eq_any(c,"1","2")
-      s += " "+arr_name[i]
-      if c == "2"
-        s += "[*]"
+    if (k := len(a_parol)) > 0
+      if r1-r0 < k+4
+        r1 := r0+k+4
       endif
-      s += ","
+      buf := save_box(r1-k-4,0,r1-1,maxcol())
+      f_message(a_parol,,"W+/W*","R/W*",r1-k-3)
     endif
-  next
-  s := left(s,len(s)-1)
-  t_arr := array(2)
-  k := perenos(t_arr,s,64)
-  r1 := r0+int((maxrow()-r0-k)/2)-1
-  if (k := len(a_parol)) > 0
-    if r1-r0 < k+4
-      r1 := r0+k+4
+    n_message(t_arr,,"W/W","N/W",r1,,"N+/W")
+    if buf != NIL
+      rest_box(buf)
     endif
-    buf := save_box(r1-k-4,0,r1-1,maxcol())
-    f_message(a_parol,,"W+/W*","R/W*",r1-k-3)
   endif
-  n_message(t_arr,,"W/W","N/W",r1,,"N+/W")
-  if buf != NIL
-    rest_box(buf)
-  endif
-endif
-return NIL
+  return NIL
 
 ***** 21.07.14
 Function f1main(n_Task)
-Local it, s, k, fl := .t., cNameIcon
-
+  Local it, s, k, fl := .t., cNameIcon
+  
 if (it := ascan(array_tasks, {|x| x[2] == n_Task})) == 0
   return func_error("Ошибка в вызове задачи")
 endif
@@ -1038,18 +1044,18 @@ do case
       aadd(main_menu," ~Информация ")
       aadd(main_message,"Просмотр / печать статистики по экспертизам")
       aadd(first_menu, {"~Экспертная карта",;
-                        "Оценка ~качества"})
-                        //"Информация за 201~7 год",0,;
-                        //"Информация за 201~6 год"})
+                        "Оценка ~качества"} )
+																	  
+																	
       aadd(first_message, {;
           "Распечатка экспертной карты",;
-          "Распечатка раличных отчётов по оцеке качества экспертизы"})
-          //"Распечатка раличных отчётов за отчётный период 2017 год",;
-          //"Распечатка раличных отчётов за отчётный период 2016 год и более ранним";
-        //} )
+          "Распечатка раличных отчётов по оцеке качества экспертизы"} )
+																												   
+																																			 
+			 
       aadd(func_menu, {"kek_prn_eks()",;
-                       "kek_info2017()"})//,;
-                       //"kek_info2016()"})
+                       "kek_info2017()"})
+										   
       aadd(cmain_menu,51)
       aadd(main_menu," ~Справочники ")
       aadd(main_message,"Ведение справочников")
