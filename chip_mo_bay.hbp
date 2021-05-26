@@ -86,18 +86,18 @@ hbziparc.hbc
 #..\2.x\mo_kassa.prg
 #..\2.x\mo_kas_p.prg
 #..\2.x\mo_kas_o.prg
-..\2.x\mo_kek.prg
-..\2.x\mo_keki.prg
-..\2.x\mo_keki_17.prg
+..\2.x\KEK\mo_kek.prg
+..\2.x\KEK\mo_keki.prg
+..\2.x\KEK\mo_keki_17.prg
 ..\2.x\mo_sds.prg
 ..\2.x\mo_serv.prg
 #..\2.x\mo_index.prg
 ..\2.x\mo_st39.prg
 #..\2.x\mo_fr.prg
 ..\2.x\mo_vounc.prg
-..\2.x\mo_263.prg
-..\2.x\mo_263p.prg
-..\2.x\mo_263s.prg
+..\2.x\263\mo_263.prg
+..\2.x\263\mo_263p.prg
+..\2.x\263\mo_263s.prg
 ..\2.x\mo_spri.prg
 
 #
@@ -117,7 +117,6 @@ hbziparc.hbc
 .\xmlparse_bay.c
 .\mo_main_bay.prg
 .\mo_spr_bay.prg
-#.\mo_index_bay.prg
 
 ### подсистема доступа к данным
 .\DAL\TDBFile.prg
