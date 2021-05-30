@@ -44,9 +44,7 @@ hbziparc.hbc
 -ochip_mo
 
 ..\2.x\chip_mo.rc
-#..\2.x\xmlparse.c
 ..\2.x\hxmldoc.prg
-#..\2.x\mo_main.prg
 ..\2.x\mo_kart.prg
 ..\2.x\mo_func.prg
 ..\2.x\mo_func1.prg
@@ -58,7 +56,6 @@ hbziparc.hbc
 ..\2.x\mo_oms1.prg
 ..\2.x\mo_oms14.prg
 ..\2.x\mo_oms2.prg
-#..\2.x\mo_oms3.prg
 ..\2.x\mo_omsr.prg
 ..\2.x\mo_omss.prg
 ..\2.x\mo_omso.prg
@@ -77,45 +74,24 @@ hbziparc.hbc
 ..\2.x\mo_mzxml.prg
 ..\2.x\mo_pp.prg
 ..\2.x\mo_ppi.prg
-#..\2.x\mo_plat.prg
-#..\2.x\mo_platv.prg
-#..\2.x\mo_platp.prg
 ..\2.x\mo_r01.prg
-#..\2.x\mo_orto.prg
 ..\2.x\mo_ortop.prg
-#..\2.x\mo_kassa.prg
-#..\2.x\mo_kas_p.prg
-#..\2.x\mo_kas_o.prg
 ..\2.x\KEK\mo_kek.prg
 ..\2.x\KEK\mo_keki.prg
 ..\2.x\KEK\mo_keki_17.prg
 ..\2.x\mo_sds.prg
 ..\2.x\mo_serv.prg
-#..\2.x\mo_index.prg
 ..\2.x\mo_st39.prg
-#..\2.x\mo_fr.prg
 ..\2.x\mo_vounc.prg
 ..\2.x\263\mo_263.prg
 ..\2.x\263\mo_263p.prg
 ..\2.x\263\mo_263s.prg
 ..\2.x\mo_spri.prg
 
-#
-#..\2.x\mo_main.prg
-#..\2.x\mo_spr.prg
-#
-#mo_plat.prg
-#mo_platv.prg
-#mo_platp.prg
-#mo_orto.prg
-#mo_kassa.prg
-#mo_kas_p.prg
-#mo_kas_o.prg
-#
-#
 ### главный модуль программы
 .\xmlparse_bay.c
 .\mo_main_bay.prg
+.\f1main_bay.prg
 .\mo_spr_bay.prg
 
 ### подсистема доступа к данным
