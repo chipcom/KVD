@@ -499,3 +499,4 @@ hbziparc.hbc
 ..\2.x\util\runExternalProgram.prg
 ..\2.x\util\workWithInternet.prg
 ..\2.x\util\backup.prg
+..\2.x\util\security.prg
