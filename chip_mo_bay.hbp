@@ -87,6 +87,7 @@ hbziparc.hbc
 ..\2.x\263\mo_263p.prg
 ..\2.x\263\mo_263s.prg
 ..\2.x\mo_spri.prg
+..\2.x\mo_version.prg
 
 ### главный модуль программы
 .\xmlparse_bay.c
@@ -468,6 +469,7 @@ hbziparc.hbc
 ..\2.x\ref\make_V018_V019.prg
 ..\2.x\ref\dbKSLP.prg
 ..\2.x\ref\dbKIRO.prg
+..\2.x\ref\dbMo_Mo.prg
 
 ..\2.x\oms\oms_double.prg
 ..\2.x\oms\definition_KSG.prg
@@ -500,3 +502,5 @@ hbziparc.hbc
 ..\2.x\util\workWithInternet.prg
 ..\2.x\util\backup.prg
 ..\2.x\util\security.prg
+
+..\2.x\mo\external_mo.prg
