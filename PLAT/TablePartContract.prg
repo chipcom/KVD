@@ -1,7 +1,7 @@
+* 28.06.21 Services( obj ) - редактирование списка услуг платного договора
 * 13.11.18 viewServiceRow( oService ) - вывод информационной строки об услуге
 * 13.11.18 editService( oPayService, aObjects, nKey, lPayment, oContract ) - редактирование услуги входящей в платной договор
 * 12.11.18 editListServices( oBrowse, aObjects, oPayService, nKey, oContract ) - функция-обработчик нажатия клавиш в списке услуг
-* 12.11.18 Services( obj ) - редактирование списка услуг платного договора
 * 25.10.18 viewTotalSum( oContract ) - вывод информационной строки об общей сумме платного договора
 * 12.06.17 getService( get, isAdult, treatment, aComplexService ) - получить информацию о выбранной услуге
 * 15.06.17 validQuantity( get ) - проверка и пересчет общей суммы услуги
@@ -15,7 +15,7 @@
 #include 'chip_mo.ch'
 #include 'def_bay.ch'
 
-* 12.11.18 редактирование списка услуг платного договора
+* 28.06.21 редактирование списка услуг платного договора
 function Services( obj )
 	local flag := .f.
 	local lPayment := obj:HasCheque
@@ -34,7 +34,8 @@ function Services( obj )
 	private oAidman1 := nil, oAidman2 := nil, oAidman3 := nil
 
 	blkEditObject := { | oBrowse, aObjects, object, nKey | editListServices( oBrowse, aObjects, object, nKey, oContract ) }
-	aEdit := if( ! oContract:HasCheque .or. hb_user_curUser:IsAdmin(), { .t., .t., .t., .f. }, { .f., .f., .f., .f. } )
+	// aEdit := if( ! oContract:HasCheque .or. hb_user_curUser:IsAdmin(), { .t., .t., .t., .f. }, { .f., .f., .f., .f. } )
+	aEdit := if( ! oContract:HasCheque .or. hb_user_curUser:IsAdmin(), { .t., .t., .t., .f. }, { .f., .f., .t., .f. } )
 	
 	str_sem := 'Список услуг ' + lstr( oContract:ID )
 	if G_SLock( str_sem )
@@ -141,9 +142,6 @@ function editService( oPayService, aObjects, nKey, lPayment, oContract )
 	local oldDateService
 	
 	// объекты для обработки
-	&& private oDoctor := nil, oAssistant := nil
-	&& private oNurse1 := nil, oNurse2 := nil, oNurse3 := nil
-	&& private oAidman1 := nil, oAidman2 := nil, oAidman3 := nil
 	// поля ввода
 	private mtabn_vr := 0, mvrach := space( 35 )
 	private mtabn_as := 0, massist := space( 35 )
@@ -167,14 +165,6 @@ function editService( oPayService, aObjects, nKey, lPayment, oContract )
 		oAidman2	:= oPayService:Aidman2
 		oAidman3	:= oPayService:Aidman3
 	endif
-	&& oDoctor		:= oPayService:Doctor
-	&& oAssistant	:= oPayService:Assistant
-	&& oNurse1		:= oPayService:Nurse1
-	&& oNurse2		:= oPayService:Nurse2
-	&& oNurse3		:= oPayService:Nurse3
-	&& oAidman1	:= oPayService:Aidman1
-	&& oAidman2	:= oPayService:Aidman2
-	&& oAidman3	:= oPayService:Aidman3
 	// заполним необходимые поля ввода
 	oldDateService := oPayService:Date
 	if empty( oPayService:Date )
