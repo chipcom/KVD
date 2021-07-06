@@ -504,3 +504,5 @@ hbziparc.hbc
 ..\2.x\util\security.prg
 
 ..\2.x\mo\external_mo.prg
+
+..\2.x\EXCHANGE\reestrOMS_XML.prg
