@@ -505,4 +505,13 @@ hbziparc.hbc
 
 ..\2.x\mo\external_mo.prg
 
+..\2.x\dispanser\oms_DVN_COVID.prg
+..\2.x\dispanser\oms_DVN_func_COVID.prg
+..\2.x\dispanser\oms_DVN.prg
+..\2.x\dispanser\oms_DVN_func.prg
+..\2.x\dispanser\oms_DDS.prg
+..\2.x\dispanser\oms_DDS_func.prg
+..\2.x\dispanser\oms_PN.prg
+..\2.x\dispanser\oms_PN_func.prg
+
 ..\2.x\EXCHANGE\reestrOMS_XML.prg
