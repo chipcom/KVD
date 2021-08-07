@@ -57,7 +57,7 @@ hbziparc.hbc
 ..\2.x\mo_oms14.prg
 ..\2.x\mo_oms2.prg
 ..\2.x\mo_omsr.prg
-..\2.x\mo_omss.prg
+#..\2.x\mo_omss.prg
 ..\2.x\mo_omso.prg
 ..\2.x\mo_omsp.prg
 ..\2.x\mo_omsi.prg
@@ -512,5 +512,11 @@ hbziparc.hbc
 ..\2.x\dispanser\oms_DDS_func.prg
 ..\2.x\dispanser\oms_PN.prg
 ..\2.x\dispanser\oms_PN_func.prg
+..\2.x\dispanser\oms_dispans_naprav.prg
 
 ..\2.x\EXCHANGE\reestrOMS_XML.prg
+..\2.x\EXCHANGE\extract_reestr.prg
+..\2.x\EXCHANGE\create_reestr.prg
+..\2.x\EXCHANGE\mo_omss.prg
+
+..\2.x\SYSTEM\extension.prg
