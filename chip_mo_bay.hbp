@@ -515,6 +515,7 @@ hbziparc.hbc
 ..\2.x\dispanser\oms_dispans_naprav.prg
 
 ..\2.x\EXCHANGE\reestrOMS_XML.prg
+..\2.x\EXCHANGE\create_schet19_from_XML.prg
 ..\2.x\EXCHANGE\extract_reestr.prg
 ..\2.x\EXCHANGE\create_reestr.prg
 ..\2.x\EXCHANGE\mo_omss.prg
