@@ -55,7 +55,6 @@ hbziparc.hbc
 ..\2.x\mo_oms.prg
 ..\2.x\mo_oms1.prg
 ..\2.x\mo_oms14.prg
-..\2.x\mo_oms2.prg
 ..\2.x\mo_omsr.prg
 #..\2.x\mo_omss.prg
 ..\2.x\mo_omso.prg
@@ -504,6 +503,7 @@ hbziparc.hbc
 
 ..\2.x\mo\external_mo.prg
 
+..\2.x\dispanser\mo_oms2.prg
 ..\2.x\dispanser\oms_DVN_COVID.prg
 ..\2.x\dispanser\oms_DVN_func_COVID.prg
 ..\2.x\dispanser\oms_DVN.prg
