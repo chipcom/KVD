@@ -71,10 +71,10 @@ hbziparc.hbc
 ..\2.x\mo_omsf.prg
 ..\2.x\mo_moder.prg
 ..\2.x\mo_mzxml.prg
-..\2.x\mo_pp.prg
-..\2.x\mo_ppi.prg
+..\2.x\PP\mo_pp.prg
+..\2.x\PP\mo_ppi.prg
 ..\2.x\mo_r01.prg
-..\2.x\mo_ortop.prg
+..\2.x\KASSA\mo_ortop.prg
 ..\2.x\KEK\mo_kek.prg
 ..\2.x\KEK\mo_keki.prg
 ..\2.x\KEK\mo_keki_17.prg
