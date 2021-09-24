@@ -45,13 +45,13 @@ hbziparc.hbc
 
 ..\2.x\chip_mo.rc
 ..\2.x\hxmldoc.prg
-..\2.x\mo_kart.prg
+..\2.x\KARTOTEK\mo_kart.prg
 ..\2.x\mo_func.prg
 ..\2.x\mo_func1.prg
 ..\2.x\mo_func2.prg
 ..\2.x\mo_adres.prg
 ..\2.x\mo_init.prg
-..\2.x\mo_regi.prg
+..\2.x\KARTOTEK\mo_regi.prg
 ..\2.x\mo_oms.prg
 ..\2.x\mo_oms1.prg
 ..\2.x\mo_oms14.prg
@@ -63,7 +63,7 @@ hbziparc.hbc
 ..\2.x\mo_omsid.prg
 ..\2.x\mo_omsio.prg
 ..\2.x\mo_omsfo.prg
-..\2.x\mo_omsna.prg
+..\2.x\DISPANSER\mo_omsna.prg
 ..\2.x\mo_omsis.prg
 ..\2.x\mo_omsit.prg
 ..\2.x\mo_omsif.prg
@@ -73,7 +73,7 @@ hbziparc.hbc
 ..\2.x\mo_mzxml.prg
 ..\2.x\PP\mo_pp.prg
 ..\2.x\PP\mo_ppi.prg
-..\2.x\mo_r01.prg
+..\2.x\DISPANSER\mo_r01.prg
 ..\2.x\KASSA\mo_ortop.prg
 ..\2.x\KEK\mo_kek.prg
 ..\2.x\KEK\mo_keki.prg
