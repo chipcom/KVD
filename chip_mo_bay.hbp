@@ -428,6 +428,7 @@ hbziparc.hbc
 ..\2.x\init\initArrayFilesDB.prg
 
 ..\2.x\calendar\calendar.prg
+..\2.x\calendar\calendar_func.prg
 
 ..\2.x\ref\initSpravFFOMS.prg
 ..\2.x\ref\dbO001.prg
@@ -489,6 +490,7 @@ hbziparc.hbc
 ..\2.x\oms\mo_oms131.prg
 ..\2.x\oms\errorFromTFOMS.prg
 ..\2.x\oms\TFOMS_hodatajstvo.prg
+..\2.x\oms\verifyOMS.prg
 
 ..\2.x\onkologiya\onko.prg
 
