@@ -526,4 +526,5 @@ hbziparc.hbc
 ..\2.x\EXCHANGE\create_reestr.prg
 ..\2.x\EXCHANGE\mo_omss.prg
 
+..\2.x\SYSTEM\use_func.prg
 ..\2.x\SYSTEM\extension.prg
