@@ -426,6 +426,7 @@ hbziparc.hbc
 ..\2.x\init\index.prg
 ..\2.x\init\index_base.prg
 ..\2.x\init\initArrayFilesDB.prg
+..\2.x\init\notExistsFileNSI.prg
 
 ..\2.x\calendar\calendar.prg
 ..\2.x\calendar\calendar_func.prg
