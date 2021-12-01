@@ -422,11 +422,9 @@ hbziparc.hbc
 
 ..\2.x\init\init_mo.prg
 ..\2.x\init\reconstruct_DB.prg
-#..\2.x\init\notExistsFileNSI.prg
 ..\2.x\init\index.prg
 ..\2.x\init\index_base.prg
 ..\2.x\init\initArrayFilesDB.prg
-..\2.x\init\notExistsFileNSI.prg
 
 ..\2.x\calendar\calendar.prg
 ..\2.x\calendar\calendar_func.prg
@@ -468,8 +466,7 @@ hbziparc.hbc
 ..\2.x\ref\dbT012.prg
 ..\2.x\ref\dbVMP_USL.prg
 ..\2.x\ref\make_V018_V019.prg
-..\2.x\ref\dbKSLP.prg
-..\2.x\ref\dbKIRO.prg
+..\2.x\ref\dbKSLPandKIRO.prg
 ..\2.x\ref\dbMo_Mo.prg
 
 ..\2.x\oms\oms_func.prg
