@@ -50,7 +50,6 @@ hbziparc.hbc
 ..\2.x\mo_func1.prg
 ..\2.x\mo_func2.prg
 ..\2.x\mo_adres.prg
-..\2.x\mo_init.prg
 ..\2.x\KARTOTEK\mo_regi.prg
 ..\2.x\mo_oms.prg
 ..\2.x\mo_oms1.prg
@@ -155,37 +154,14 @@ hbziparc.hbc
 # Услуги
 .\DAL\Services\TUsl_U5DB.prg
 .\DAL\Services\TServiceWoDoctorDB.prg
-.\DAL\Services\TServiceFFOMS7DB.prg
-.\DAL\Services\TServiceFFOMSDB.prg
-.\DAL\Services\TServiceFFOMS5DB.prg
 .\DAL\Services\TServiceBySubdivisionDB.prg
 .\DAL\Services\TMo_suDB.prg
 .\DAL\Services\TIncompatibleServiceDB.prg
 .\DAL\Services\TIntegratedServiceDB.prg
 .\DAL\Services\TServiceDB.prg
-## для услуг 2018 года
-.\DAL\Services\2018\T_mo8uslDB.prg
-.\DAL\Services\2018\T_mo8uslcDB.prg
-.\DAL\Services\2018\T_mo8uslfDB.prg
-.\DAL\Services\2018\T_mo8unitDB.prg
-.\DAL\Services\2018\T_mo8subdivDB.prg
-.\DAL\Services\2018\T_mo8shemaDB.prg
-.\DAL\Services\2018\T_mo8pricesDB.prg
-.\DAL\Services\2018\T_mo8moservDB.prg
-.\DAL\Services\2018\T_mo8lvlpayDB.prg
-.\DAL\Services\2018\T_mo8kslpDB.prg
-.\DAL\Services\2018\T_mo8kiroDB.prg
-.\DAL\Services\2018\T_mo8k006DB.prg
-.\DAL\Services\2018\T_mo8itDB.prg
-.\DAL\Services\2018\T_mo8depprDB.prg
-.\DAL\Services\2018\T_mo8depDB.prg
+
 # ОМС
 .\DAL\OMS\THumanDB.prg
-# классы файлов справочников
-.\DAL\DICT\T_Mo_unitDB.prg
-.\DAL\DICT\TT005DB.prg
-.\DAL\DICT\TT006DB.prg
-.\DAL\DICT\TT007DB.prg
 
 
 # объекты бизнес-логики
@@ -251,37 +227,14 @@ hbziparc.hbc
 # Услуги
 .\BLL\Services\TUsl_U5.prg
 .\BLL\Services\TServiceWoDoctor.prg
-.\BLL\Services\TServiceFFOMS7.prg
-.\BLL\Services\TServiceFFOMS.prg
-.\BLL\Services\TServiceFFOMS5.prg
 .\BLL\Services\TServiceBySubdivision.prg
 .\BLL\Services\TMo_su.prg
 .\BLL\Services\TIncompatibleService.prg
 .\BLL\Services\TIntegratedService.prg
 .\BLL\Services\TService.prg
-## для услуг 2018 года
-.\BLL\Services\2018\T_mo8usl.prg
-.\BLL\Services\2018\T_mo8uslc.prg
-.\BLL\Services\2018\T_mo8uslf.prg
-.\BLL\Services\2018\T_mo8unit.prg
-.\BLL\Services\2018\T_mo8subdiv.prg
-.\BLL\Services\2018\T_mo8shema.prg
-.\BLL\Services\2018\T_mo8prices.prg
-.\BLL\Services\2018\T_mo8moserv.prg
-.\BLL\Services\2018\T_mo8lvlpay.prg
-.\BLL\Services\2018\T_mo8kslp.prg
-.\BLL\Services\2018\T_mo8kiro.prg
-.\BLL\Services\2018\T_mo8k006.prg
-.\BLL\Services\2018\T_mo8it.prg
-.\BLL\Services\2018\T_mo8deppr.prg
-.\BLL\Services\2018\T_mo8dep.prg
+
 # ОМС
 .\BLL\OMS\THuman.prg
-# классы файлов справочников
-.\BLL\DICT\T_Mo_unit.prg
-.\BLL\DICT\TT005.prg
-.\BLL\DICT\TT006.prg
-.\BLL\DICT\TT007.prg
 
 # системные функции
 .\SYSTEM\TWorkingUser.prg
@@ -420,6 +373,7 @@ hbziparc.hbc
 #для отладки
 #.\FUNC\xtoc.prg
 
+..\2.x\init\mo_init.prg
 ..\2.x\init\init_mo.prg
 ..\2.x\init\reconstruct_DB.prg
 ..\2.x\init\index.prg
@@ -458,6 +412,7 @@ hbziparc.hbc
 ..\2.x\ref\dbV020.prg
 ..\2.x\ref\dbV021.prg
 ..\2.x\ref\dbV022.prg
+..\2.x\ref\dbV025.prg
 ..\2.x\ref\dbQ015.prg
 ..\2.x\ref\dbQ016.prg
 ..\2.x\ref\dbQ017.prg
