@@ -35,18 +35,18 @@ do case
     aadd(first_menu, {"~Редактирование",;
                       "~Добавление",0,;
                       "~Удаление",;
-                      "Дублирующиеся ~записи",0; // "~МСЭК";
+                      "Дублирующиеся ~записи",0;
                      })
     aadd(first_message, { ;
        "Редактирование информации из карточки больного и печать листка учета",;
        "Добавление в картотеку информации о больном",;
        "Удаление карточки больного из картотеки",;
-       "Поиск и удаление дублирующихся записей в картотеке"; // "Ввод данных по МСЭК";
+       "Поиск и удаление дублирующихся записей в картотеке";
       })
     aadd(func_menu, {"regi_kart()",;
                      "append_kart()",;
                      "view_kart(2)",;
-                     "dubl_zap()"; //  "func_msek()";
+                     "dubl_zap()";
                     })
     if glob_mo[_MO_IS_UCH]
       aadd(first_menu[1],"Прикреплённое ~население")
@@ -71,8 +71,8 @@ do case
       })
     aadd(func_menu, {"regi_stat()",;
                      "prn_kartoteka()",;
-                     "ne_real()" ;       //     "reg_poisk()";
-                    })                   //    })
+                     "ne_real()" ;
+                    })
     //
     aadd(cmain_menu,51)
     aadd(main_menu," ~Справочники ")
@@ -897,34 +897,37 @@ aadd(main_menu," Помо~щь ")
 aadd(main_message,"Помощь, настройка принтера")
 aadd(first_menu, {"~Новое в программе",;
                   "Помо~щь",;
+                  "~Рабочее место",;
                   "~Принтер",0,;
                   "Сетевой ~монитор",;
                   "~Ошибки"})
 aadd(first_message, { ;
    "Вывод на экран содержания файла README.RTF с текстом нового в программе",;
    "Вывод на экран экрана помощи",;
+   "Настройка рабочего места",;
    "Установка кодов принтера",;
    "Режим просмотра - кто находится в задаче и в каком режиме",;
    "Просмотр файла ошибок"})
 aadd(func_menu, {"file_Wordpad(exe_dir + cslash + 'README.RTF')",;
                  "m_help()",;
+                 "nastr_rab_mesto()",;
                  "ust_printer(T_ROW)",;
                  "net_monitor(T_ROW,T_COL-7,(tip_polzovat==0))",;
                  "view_errors()"})
 
 // перестройка меню
 
-hb_AIns( first_menu[ len( first_menu ) ], 5, 'Настройка ~рабочего места', .t. )
-hb_AIns( first_message[ len( first_message ) ], 4, 'Настройка рабочего места', .t. )
-hb_AIns( func_menu[ len( func_menu ) ], 4, 'settingsWorkPlace()', .t. )
-if hb_user_curUser:IsAdmin()
-	hb_AIns( first_menu[ len( first_menu ) ], 6, '~Настройки системы', .t. )
-	hb_AIns( first_message[ len( first_message ) ], 5, 'Настройка общих параметров системы', .t. )
-	hb_AIns( func_menu[ len( func_menu ) ], 5, 'settingsSystem()', .t. )
-endif
-// hb_AIns( first_menu[ len( first_menu ) ], 6 + if( hb_user_curUser:IsAdmin(), 1, 0 ), 'Отправка ~сообщения', .t. )
-// hb_AIns( first_message[ len( first_message ) ], 5 + if( hb_user_curUser:IsAdmin(), 1, 0 ), 'Отправка сообщения работающим пользователям', .t. )
-// hb_AIns( func_menu[ len( func_menu ) ], 5 + if( hb_user_curUser:IsAdmin(), 1, 0 ), 'SendMessage()', .t. )
+// hb_AIns( first_menu[ len( first_menu ) ], 5, 'Настройка ~рабочего места', .t. )
+// hb_AIns( first_message[ len( first_message ) ], 4, 'Настройка рабочего места', .t. )
+// hb_AIns( func_menu[ len( func_menu ) ], 4, 'settingsWorkPlace()', .t. )
+// if hb_user_curUser:IsAdmin()
+// 	hb_AIns( first_menu[ len( first_menu ) ], 6, '~Настройки системы', .t. )
+// 	hb_AIns( first_message[ len( first_message ) ], 5, 'Настройка общих параметров системы', .t. )
+// 	hb_AIns( func_menu[ len( func_menu ) ], 5, 'settingsSystem()', .t. )
+// endif
+//// hb_AIns( first_menu[ len( first_menu ) ], 6 + if( hb_user_curUser:IsAdmin(), 1, 0 ), 'Отправка ~сообщения', .t. )
+//// hb_AIns( first_message[ len( first_message ) ], 5 + if( hb_user_curUser:IsAdmin(), 1, 0 ), 'Отправка сообщения работающим пользователям', .t. )
+//// hb_AIns( func_menu[ len( func_menu ) ], 5 + if( hb_user_curUser:IsAdmin(), 1, 0 ), 'SendMessage()', .t. )
 
 // конец перестройки меню
 
