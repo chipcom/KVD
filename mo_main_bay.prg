@@ -20,10 +20,10 @@ DYNAMIC f1forma_792_MIAC
 DYNAMIC monitoring_vid_pom
 DYNAMIC b_25_perinat_2
 
-*****
+***** 21.12.21
 procedure main( ... )
   Local r, s, is_create := .f., is_copy := .f., is_index := .f.
-  Local a_parol, buf, is_cur_dir
+  Local a_parol, buf, is_local_version
 
   FOR EACH s IN hb_AParams() // анализ входных параметров
     s := lower(s)
@@ -76,9 +76,10 @@ procedure main( ... )
   //
 	// объект пользователя зарегистрировавшегося в системе
 	public hb_user_curUser := nil
+
   SET(_SET_DELETED, .T.)
   SETCLEARB(" ")
-  is_cur_dir := f_first(is_create)
+  is_local_version := f_first(is_create)
   put_icon(__s_full_name() + __s_version(), 'MAIN_ICON')
   set key K_F1 to f_help()
   hard_err("create")
@@ -89,12 +90,15 @@ procedure main( ... )
 
   // инициализация массива МО, запрос кода МО (при необходимости)
   r := init_mo()
-  //a_parol := inp_password(is_cur_dir,is_create)
-  //
-  a_parol := inp_password_bay(is_cur_dir,is_create)
+
+  // реконструкция файлов доступа к системе
+  Reconstruct_Security(is_local_version)
+
+  // a_parol := inp_password(is_local_version,is_create)
+  a_parol := inp_password_bay(is_local_version,is_create)
 
   checkFilesTFOMS()
-  
+
   // объект организация с которой работаем
   public hb_main_curOrg := TOrganizationDB():GetOrganization()
   //
@@ -105,34 +109,39 @@ procedure main( ... )
     if type("verify_fio_polzovat") == "L" .and. verify_fio_polzovat
       func_error('В данный момент работает другой оператор под фамилией "'+fio_polzovat+'"')
     else
+      // func_error('Доступ запрещен! В данный момент другой задачей выполняется ответственный режим.')
       if !hb_user_curUser:IsAdmin()
         hb_Alert("В данный момент другой задачей выполняется ответственный режим. Проверьте системный монитор")
       else
         func_error('Доступ запрещен! В данный момент другой задачей выполняется ответственный режим.')
       endif
     endif
+    // f_end()
     if !hb_user_curUser:IsAdmin()
       f_end()
     endif
   endif
   //
 
-// checkVersionInternet( r, _version )
+  // checkVersionInternet( r + 3, _version() )
 
   Public chm_help_code := 0
 
   Init_first() // начальная инициализация программы (переменных, массивов,...)
+
+  Init_Program() // инициализация программы (переменных, массивов,...)
 
   if ControlBases(1, _version()) // если необходимо
     if G_SLock1Task(sem_task,sem_vagno)  // запрет доступа всем
       buf := savescreen()
       f_message({"Переход на новую версию программы "+fs_version(_version())+' от '+_date_version()},,,,8)
       // провести реконструкцию БД
-      Reconstruct_DB(is_cur_dir,is_create)
+      Reconstruct_DB(is_local_version,is_create)
       // провести реконструкцию БД учёта направлений на госпитализацию
       _263_init()
       // для начала работы _first_run() (убрал в NOT_USED)
       pereindex() // обязательно
+      update_data_DB(_version())    // провести изменения в базе если необходимо
       // записать новый номер версии
       ControlBases(3)
       if glob_mo[_MO_IS_UCH]
@@ -153,16 +162,16 @@ procedure main( ... )
     endif
   endif
 
-  Init_Program() // инициализация программы (переменных, массивов,...)
+  // Init_Program() // инициализация программы (переменных, массивов,...)
 
-  f_main(r,a_parol)
+  f_main(r, is_local_version, a_parol)
 
   f_end()
 
   return
 
 ***** 17.05.21
-Function f_main(r0,a_parol)
+Function f_main(r0, is_local_version, a_parol)
   Static arr1 := {;
     {"Регистратура поликлиники"            ,X_REGIST,,.t.,"РЕГИСТРАТУРА"},;
     {"Приёмный покой стационара"           ,X_PPOKOJ,,.t.,"ПРИЁМНЫЙ ПОКОЙ"},;
@@ -188,10 +197,7 @@ Function f_main(r0,a_parol)
     aadd(array_tasks,arr1[i])
     sem_vagno_task[arr1[i,2]] := 'Важный режим в задаче "'+arr1[i,5]+'"'
   next
-  // arr := my_mo_f_main() // "своя" задача
-  // for i := 1 to len(arr)
-  //   aadd(array_tasks,arr[i])
-  // next
+
   if glob_mo[_MO_KOD_TFOMS] == kod_VOUNC
     aadd(array_tasks, {"ВОУНЦ - трансплантированные",X_MO,"TABLET_ICON",.T.})
   endif
@@ -213,9 +219,16 @@ Function f_main(r0,a_parol)
       array_tasks[i,4] := .t.
       fl_exit := .f.
     endif
-    if array_tasks[i,4] .and. hb_user_curUser:IsAllowedTask( i )
-      aadd(arr,array_tasks[i])
-      lens := max(lens,len(array_tasks[i,1]))
+    if is_local_version
+      if array_tasks[i,4]
+        aadd(arr,array_tasks[i])
+        lens := max(lens,len(array_tasks[i,1]))
+      endif
+    else
+      if array_tasks[i,4] .and. hb_user_curUser:IsAllowedTask( i )
+        aadd(arr,array_tasks[i])
+        lens := max(lens,len(array_tasks[i,1]))
+      endif
     endif
   next
   Public glob_task, blk_ekran, g_arr_stand := {},;
@@ -362,7 +375,7 @@ Function m_help()
 
 ***** 24.10.17
 FUNCTION f_first(is_create)
-  Local is_cur_dir := .t.
+  Local is_local_version := .t.
 
   REQUEST HB_CODEPAGE_RU866
   HB_CDPSELECT("RU866")
@@ -452,7 +465,7 @@ FUNCTION f_first(is_create)
       p_name_comp := alltrim(netname())+cslash+hb_username()
     endif
     ft_use()
-    is_cur_dir := .f.
+    is_local_version := .f.
   else // иначе = текущий каталог
     dir_server := cur_dir
   endif
@@ -478,7 +491,7 @@ FUNCTION f_first(is_create)
   ksetnum(.t.)    // включить NumLock
   SETCURSOR(0)
   SET COLOR TO
-  RETURN is_cur_dir
+  RETURN is_local_version
 
 ***** 02.11.15
 Function hard_err(p)
