@@ -380,8 +380,6 @@ hbziparc.hbc
 ..\2.x\init\index_base.prg
 ..\2.x\init\initArrayFilesDB.prg
 ..\2.x\init\update_data_DB.prg
-..\2.x\init\correct_DVN_COVID.prg
-..\2.x\init\correct_V004_to_V021.prg
 
 ..\2.x\security\security.prg
 
@@ -420,6 +418,13 @@ hbziparc.hbc
 ..\2.x\ref\dbV021.prg
 ..\2.x\ref\dbV022.prg
 ..\2.x\ref\dbV025.prg
+..\2.x\ref\dbV030.prg
+..\2.x\ref\dbV031.prg
+..\2.x\ref\dbV032.prg
+..\2.x\ref\dbV033.prg
+..\2.x\ref\dbV034.prg
+..\2.x\ref\dbV035.prg
+..\2.x\ref\dbV036.prg
 ..\2.x\ref\dbQ015.prg
 ..\2.x\ref\dbQ016.prg
 ..\2.x\ref\dbQ017.prg
