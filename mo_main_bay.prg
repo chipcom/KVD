@@ -24,7 +24,7 @@ DYNAMIC b_25_perinat_2
 procedure main( ... )
   Local r, s, is_create := .f., is_copy := .f., is_index := .f.
   Local a_parol, buf, is_local_version
-
+  local verify_fio_polzovat := .t.
   FOR EACH s IN hb_AParams() // анализ входных параметров
     s := lower(s)
     DO CASE
@@ -73,6 +73,7 @@ procedure main( ... )
   Public d_01_05_2019 := 0d20190501
   Public d_01_11_2019 := 0d20191101
   Public d_01_01_2021 := 0d20210101
+  Public d_01_01_2022 := 0d20220101 // новый 2022 год и переход на новый ПУМП письмо № 04-18?17 от 28.12.2021
   //
 	// объект пользователя зарегистрировавшегося в системе
 	public hb_user_curUser := nil
@@ -102,21 +103,19 @@ procedure main( ... )
   // объект организация с которой работаем
   public hb_main_curOrg := TOrganizationDB():GetOrganization()
   //
-  if tip_polzovat != TIP_ADM
-    Private verify_fio_polzovat := .f.
+  if ! hb_user_curUser:IsAdmin()  // tip_polzovat != TIP_ADM
+    verify_fio_polzovat := .f.
   endif
-  if !G_SOpen(sem_task,sem_vagno,fio_polzovat,p_name_comp)
+  if !G_SOpen(sem_task, sem_vagno, fio_polzovat, p_name_comp)
     if type("verify_fio_polzovat") == "L" .and. verify_fio_polzovat
       func_error('В данный момент работает другой оператор под фамилией "'+fio_polzovat+'"')
     else
-      // func_error('Доступ запрещен! В данный момент другой задачей выполняется ответственный режим.')
       if !hb_user_curUser:IsAdmin()
         hb_Alert("В данный момент другой задачей выполняется ответственный режим. Проверьте системный монитор")
       else
         func_error('Доступ запрещен! В данный момент другой задачей выполняется ответственный режим.')
       endif
     endif
-    // f_end()
     if !hb_user_curUser:IsAdmin()
       f_end()
     endif
@@ -161,8 +160,6 @@ procedure main( ... )
       f_end(.f.)
     endif
   endif
-
-  // Init_Program() // инициализация программы (переменных, массивов,...)
 
   f_main(r, is_local_version, a_parol)
 
@@ -241,7 +238,7 @@ Function f_main(r0, is_local_version, a_parol)
     r0 := main_up_screen()
     // вывести центральные строки главного экрана
     main_center_screen(r0,a_parol)
-    if tip_polzovat == TIP_ADM
+    if hb_user_curUser:IsAdmin()
       find_unfinished_reestr_sp_tk(.f.,.t.)
       find_time_limit_human_reestr_sp_tk()
       find_unfinished_R01()
@@ -299,7 +296,6 @@ Function main_up_screen()
     s := "Индивидуальные тарифы на медицинские услуги"
   endif
   @ k+1,0 say space(maxcol()+1) color "G+/N"
-  //@ k+1,0 say padc(s,maxcol()+1) color "G+/N"
   @ k+1,0 say full_date(sys_date) color "W+/N"
   @ k+1,maxcol()-4 say hour_min(seconds()) color "W+/N"
   return k+1
@@ -442,11 +438,10 @@ FUNCTION f_first(is_create)
   delete file ttt.ttt
   //
   Public cur_drv := DISKNAME()
-  Public cur_dir := cur_drv+":"+DIRNAME(cur_drv)+cslash
+  Public cur_dir := cur_drv + ":" + DIRNAME(cur_drv) + cslash
   //Public cur_dir := hb_DirBase()
   Public dir_server := "", p_name_comp := ""
-  Public dir_exe := upper(beforatnum(cslash,exename()))+cslash
-  //Public dir_exe := upper(beforatnum(cslash,hb_ProgName()))+cslash
+  Public dir_exe := upper(beforatnum(cslash, exename())) + cslash
   Public exe_dir := dir_exe
   // проверить, запущена ли уже данная задача, если "да" - выход из задачи
   verify_1_task()
