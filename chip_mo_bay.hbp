@@ -36,6 +36,7 @@ hbmzip.hbc
 
 hbtip.hbc
 hbziparc.hbc
+hbsqlit3.hbc
 
 #-shared
 -mt
@@ -400,6 +401,7 @@ hbziparc.hbc
 ..\2.x\ref\dbF012.prg
 ..\2.x\ref\dbF014.prg
 ..\2.x\ref\dbF015.prg
+..\2.x\ref\dbN020.prg
 ..\2.x\ref\dbV002.prg
 ..\2.x\ref\dbV004.prg
 ..\2.x\ref\dbV005.prg
@@ -423,8 +425,9 @@ hbziparc.hbc
 ..\2.x\ref\dbV032.prg
 ..\2.x\ref\dbV033.prg
 ..\2.x\ref\dbV034.prg
-..\2.x\ref\dbV035.prg
+# ..\2.x\ref\dbV035.prg
 ..\2.x\ref\dbV036.prg
+..\2.x\ref\dbV037.prg
 ..\2.x\ref\dbQ015.prg
 ..\2.x\ref\dbQ016.prg
 ..\2.x\ref\dbQ017.prg
@@ -436,6 +439,10 @@ hbziparc.hbc
 ..\2.x\ref\dbKSLPandKIRO.prg
 ..\2.x\ref\dbMo_Mo.prg
 ..\2.x\ref\dbImplant.prg
+..\2.x\ref\dbSeverity.prg
+..\2.x\ref\dbMethodINJ.prg
+..\2.x\ref\dbUnitOfMeasurement.prg
+..\2.x\ref\setupFFOMSref.prg
 
 ..\2.x\oms\oms_func.prg
 ..\2.x\oms\oms_double.prg
@@ -449,14 +456,17 @@ hbziparc.hbc
 ..\2.x\oms\kiroANDkslp.prg
 ..\2.x\oms\f_1pac_definition_KSG.prg
 ..\2.x\oms\Change_Cena_OMS.prg
-
 ..\2.x\oms\verify_1_sluch.prg
 ..\2.x\oms\conditionKSLP_21.prg
+..\2.x\oms\conditionKSLP_22.prg
 ..\2.x\oms\diagnoze.prg
 ..\2.x\oms\mo_oms131.prg
 ..\2.x\oms\errorFromTFOMS.prg
 ..\2.x\oms\TFOMS_hodatajstvo.prg
 ..\2.x\oms\verifyOMS.prg
+..\2.x\oms\oms_covid_19.prg
+..\2.x\oms\oms_implantant.prg
+..\2.x\oms\oms_ser_number.prg
 
 ..\2.x\onkologiya\onko.prg
 

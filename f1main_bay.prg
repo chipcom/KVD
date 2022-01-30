@@ -4,7 +4,7 @@
 #include "edit_spr.ch"
 #include "chip_mo.ch"
 
-***** 21.07.14
+***** 29.12.21
 Function f1main(n_Task)
   Local it, s, k, fl := .t., cNameIcon
   
@@ -663,8 +663,8 @@ do case
                     "fr_nastrojka()",;
                     "nastr_kassa(2)"})
   case glob_task == X_KEK  //
-    if !between(grup_polzovat,1,3)
-      n_message({"Недопустимая группа экспертизы (КЭК): "+lstr(grup_polzovat),;
+    if !between(hb_user_curUser:KEK, 1, 3)
+      n_message({"Недопустимая группа экспертизы (КЭК): "+lstr(hb_user_curUser:KEK),;
                  '',;
                  'Пользователям, которым разрешено работать в подзадаче "КЭК МО",',;
                  'необходимо установить группу экспертизы (от 1 до 3)',;
@@ -691,17 +691,11 @@ do case
       aadd(main_message,"Просмотр / печать статистики по экспертизам")
       aadd(first_menu, {"~Экспертная карта",;
                         "Оценка ~качества"} )
-																	  
-																	
       aadd(first_message, {;
           "Распечатка экспертной карты",;
           "Распечатка раличных отчётов по оцеке качества экспертизы"} )
-																												   
-																																			 
-			 
       aadd(func_menu, {"kek_prn_eks()",;
                        "kek_info2017()"})
-										   
       aadd(cmain_menu,51)
       aadd(main_menu," ~Справочники ")
       aadd(main_message,"Ведение справочников")
@@ -772,7 +766,7 @@ hb_AIns( func_menu[ len( func_menu ) ], 5, 'editRoles()', .t. )
           'Различные варианты экспорта в другие программы/организации',;
           "Справочник приведенных расходуемых материалов";
         } )
-      aadd(func_menu, {"prover_dbf(,.f.,(tip_polzovat==0))",;
+      aadd(func_menu, {"prover_dbf(,.f.,(hb_user_curUser:IsAdmin()))",;
                        "Change_Cena_OMS()",;
                        "f_import()",;
                        "f_export()",;
@@ -789,7 +783,7 @@ hb_AIns( func_menu[ len( func_menu ) ], 5, 'editRoles()', .t. )
           "Различные варианты импорта из других программ",;
           'Различные варианты экспорта в другие программы/организации';
         } )
-      aadd(func_menu, {"prover_dbf(,.f.,(tip_polzovat==0))",;
+      aadd(func_menu, {"prover_dbf(,.f.,(hb_user_curUser:IsAdmin()))",;
                        "Change_Cena_OMS()",;
                        "f_import()",;
                        "f_export()"} )
@@ -912,25 +906,8 @@ aadd(func_menu, {"file_Wordpad(exe_dir + cslash + 'README.RTF')",;
                  "m_help()",;
                  "nastr_rab_mesto()",;
                  "ust_printer(T_ROW)",;
-                 "net_monitor(T_ROW,T_COL-7,(tip_polzovat==0))",;
+                 "net_monitor(T_ROW,T_COL-7,(hb_user_curUser:IsAdmin()))",;
                  "view_errors()"})
-
-// перестройка меню
-
-// hb_AIns( first_menu[ len( first_menu ) ], 5, 'Настройка ~рабочего места', .t. )
-// hb_AIns( first_message[ len( first_message ) ], 4, 'Настройка рабочего места', .t. )
-// hb_AIns( func_menu[ len( func_menu ) ], 4, 'settingsWorkPlace()', .t. )
-// if hb_user_curUser:IsAdmin()
-// 	hb_AIns( first_menu[ len( first_menu ) ], 6, '~Настройки системы', .t. )
-// 	hb_AIns( first_message[ len( first_message ) ], 5, 'Настройка общих параметров системы', .t. )
-// 	hb_AIns( func_menu[ len( func_menu ) ], 5, 'settingsSystem()', .t. )
-// endif
-//// hb_AIns( first_menu[ len( first_menu ) ], 6 + if( hb_user_curUser:IsAdmin(), 1, 0 ), 'Отправка ~сообщения', .t. )
-//// hb_AIns( first_message[ len( first_message ) ], 5 + if( hb_user_curUser:IsAdmin(), 1, 0 ), 'Отправка сообщения работающим пользователям', .t. )
-//// hb_AIns( func_menu[ len( func_menu ) ], 5 + if( hb_user_curUser:IsAdmin(), 1, 0 ), 'SendMessage()', .t. )
-
-// конец перестройки меню
-
 // добавим переиндексирование некоторых файлов внутри задачи
 if eq_any(glob_task,X_PPOKOJ,X_OMS,X_PLATN,X_ORTO,X_KASSA,X_KEK,X_263)
   aadd(atail(first_menu),0)
