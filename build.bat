@@ -1,4 +1,4 @@
-c:\Harbour\bin\hbmk2 chip_mo_bay.hbp
+c:\Harbour\bin\hbmk2 chip_mo_bay.hbp -comp=mingw
 copy chip_mo.exe d:\_mo\chip\exe
 copy chip.css d:\_mo\chip\exe
 copy chip_mo.css d:\_mo\chip\exe
