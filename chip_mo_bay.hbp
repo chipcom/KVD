@@ -504,6 +504,7 @@ hbsqlit3.hbc
 
 ..\2.x\SYSTEM\use_func.prg
 ..\2.x\SYSTEM\extension.prg
+..\2.x\SYSTEM\hashMD5.prg
 
 ..\2.x\TUNING\ret_days_for_akt_sverki.prg
 ..\2.x\TUNING\initPZarray.prg
