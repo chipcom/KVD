@@ -449,7 +449,7 @@ hbsqlit3.hbc
 ..\2.x\oms\definition_KSG.prg
 ..\2.x\oms\oms_sluch.prg
 ..\2.x\oms\oms_usl_sluch.prg
-..\2.x\oms\f2oms_usl_sluch.prg
+..\2.x\oms\f_N_oms_usl_sluch.prg
 ..\2.x\oms\f5editkusl.prg
 ..\2.x\oms\f_usl_definition_KSG.prg
 ..\2.x\oms\f_valid2ad_cr.prg
@@ -464,7 +464,7 @@ hbsqlit3.hbc
 ..\2.x\oms\errorFromTFOMS.prg
 ..\2.x\oms\TFOMS_hodatajstvo.prg
 ..\2.x\oms\verifyOMS.prg
-..\2.x\oms\oms_covid_19.prg
+..\2.x\oms\oms_lek_preparat.prg
 ..\2.x\oms\oms_implantant.prg
 ..\2.x\oms\oms_ser_number.prg
 ..\2.x\oms\oms_vmp.prg
