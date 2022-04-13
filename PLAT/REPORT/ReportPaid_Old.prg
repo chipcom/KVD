@@ -1021,7 +1021,7 @@ Local buf := save_row(maxrow()), sh, HH := 49, arr_title, s, i, k, sk, ss,;
       usl_nds10 := 0, usl_nds10_1 := 0,;
       usl_nds20 := 0, usl_nds20_1 := 0,;
       t_vr, t_as, t_nvr, t_nas, arr_dms, kol_vo := 0,;
-      nom_prihod
+      nom_prihod := 0
 arr_title := {;
 "ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ",;
 "        ”.ˆ..,  ¤à¥á        ",;
