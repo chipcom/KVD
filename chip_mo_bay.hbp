@@ -58,7 +58,6 @@ hbsqlit3.hbc
 ..\2.x\mo_oms.prg
 ..\2.x\mo_oms1.prg
 ..\2.x\mo_oms14.prg
-..\2.x\mo_omsr.prg
 #..\2.x\mo_omss.prg
 ..\2.x\mo_omso.prg
 ..\2.x\mo_omsp.prg
@@ -66,7 +65,6 @@ hbsqlit3.hbc
 ..\2.x\mo_omsid.prg
 ..\2.x\mo_omsio.prg
 ..\2.x\mo_omsfo.prg
-..\2.x\DISPANSER\mo_omsna.prg
 ..\2.x\mo_omsis.prg
 ..\2.x\mo_omsit.prg
 ..\2.x\mo_omsif.prg
@@ -76,7 +74,6 @@ hbsqlit3.hbc
 ..\2.x\mo_mzxml.prg
 ..\2.x\PP\mo_pp.prg
 ..\2.x\PP\mo_ppi.prg
-..\2.x\DISPANSER\mo_r01.prg
 ..\2.x\KASSA\mo_ortop.prg
 ..\2.x\KEK\mo_kek.prg
 ..\2.x\KEK\mo_keki.prg
@@ -501,12 +498,15 @@ hbsqlit3.hbc
 ..\2.x\dispanser\oms_dispans_naprav.prg
 ..\2.x\dispanser\oms_dispans_diagnoze.prg
 ..\2.x\dispanser\oms_dispans_func.prg
+..\2.x\DISPANSER\mo_omsna.prg
+..\2.x\DISPANSER\mo_r01.prg
 
 ..\2.x\EXCHANGE\reestrOMS_XML.prg
 ..\2.x\EXCHANGE\create_schet19_from_XML.prg
 ..\2.x\EXCHANGE\extract_reestr.prg
 ..\2.x\EXCHANGE\create_reestr.prg
 ..\2.x\EXCHANGE\mo_omss.prg
+..\2.x\mo_omsr.prg
 
 ..\2.x\SYSTEM\use_func.prg
 ..\2.x\SYSTEM\extension.prg
