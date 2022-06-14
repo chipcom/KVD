@@ -1,7 +1,12 @@
+<<<<<<< HEAD
 #include 'hbclass.ch'
 #include 'common.ch'
 #include 'property.ch'
 #include 'function.ch'
+=======
+#include "hbclass.ch"
+#include "function.ch"
+>>>>>>> master
 
 CREATE CLASS TDBFile
 	VISIBLE:

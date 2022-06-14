@@ -9,11 +9,14 @@ hbssl.hbc
 hbmzip.hbc
 
 # Include section
--i.\include
+-i..\include
 
 # Lib section
--L..\_mylib_hbt
+-L..\LIB
 -lMyLib_HBT
+-lMyLib_HBT
+-lFunLib
+-lhblibxlsxwriter
 
 ############################
 -lxhb
@@ -31,38 +34,48 @@ hbmzip.hbc
 # библиотека для декодирования штрих-кодов ОМС
 -lpcbcode.lib
 
+hbtip.hbc
+hbziparc.hbc
+hbsqlit3.hbc
 
 #-shared
 -mt
 -inc
--workdir=..\TEMP
+-workdir=..\TEMP\KVD
 -ochip_mo
 
 ..\2.x\chip_mo.rc
-#..\2.x\xmlparse.c
 ..\2.x\hxmldoc.prg
+<<<<<<< HEAD
 #..\2.x\mo_main.prg
 #..\2.x\mo_kart.prg
+=======
+..\2.x\KARTOTEK\mo_kart.prg
+>>>>>>> master
 ..\2.x\mo_func.prg
-#..\2.x\mo_func1.prg
+..\2.x\mo_func1.prg
 ..\2.x\mo_func2.prg
+<<<<<<< HEAD
 #..\2.x\mo_adres.prg
 ..\2.x\mo_init.prg
 ..\2.x\mo_regi.prg
+=======
+..\2.x\mo_adres.prg
+..\2.x\KARTOTEK\mo_regi.prg
+..\2.x\KARTOTEK\polikl1_kart.prg
+..\2.x\KARTOTEK\pripisnoe_naselenie.prg
+..\2.x\KARTOTEK\documents.prg
+>>>>>>> master
 ..\2.x\mo_oms.prg
 ..\2.x\mo_oms1.prg
 ..\2.x\mo_oms14.prg
-..\2.x\mo_oms2.prg
-..\2.x\mo_oms3.prg
-..\2.x\mo_omsr.prg
-..\2.x\mo_omss.prg
+#..\2.x\mo_omss.prg
 ..\2.x\mo_omso.prg
 ..\2.x\mo_omsp.prg
 ..\2.x\mo_omsi.prg
 ..\2.x\mo_omsid.prg
 ..\2.x\mo_omsio.prg
 ..\2.x\mo_omsfo.prg
-..\2.x\mo_omsna.prg
 ..\2.x\mo_omsis.prg
 ..\2.x\mo_omsit.prg
 ..\2.x\mo_omsif.prg
@@ -70,53 +83,35 @@ hbmzip.hbc
 ..\2.x\mo_omsf.prg
 ..\2.x\mo_moder.prg
 ..\2.x\mo_mzxml.prg
-..\2.x\mo_pp.prg
-..\2.x\mo_ppi.prg
-#..\2.x\mo_plat.prg
-#..\2.x\mo_platv.prg
-#..\2.x\mo_platp.prg
-..\2.x\mo_r01.prg
-#..\2.x\mo_orto.prg
-..\2.x\mo_ortop.prg
-#..\2.x\mo_kassa.prg
-#..\2.x\mo_kas_p.prg
-#..\2.x\mo_kas_o.prg
-..\2.x\mo_kek.prg
-..\2.x\mo_keki.prg
-..\2.x\mo_keki_17.prg
+..\2.x\PP\mo_pp.prg
+..\2.x\PP\mo_ppi.prg
+..\2.x\KASSA\mo_ortop.prg
+..\2.x\KEK\mo_kek.prg
+..\2.x\KEK\mo_keki.prg
+..\2.x\KEK\mo_keki_17.prg
 ..\2.x\mo_sds.prg
 ..\2.x\mo_serv.prg
-#..\2.x\mo_index.prg
 ..\2.x\mo_st39.prg
-#..\2.x\mo_fr.prg
 ..\2.x\mo_vounc.prg
-..\2.x\mo_263.prg
-..\2.x\mo_263p.prg
-..\2.x\mo_263s.prg
-#
-#..\2.x\mo_main.prg
-#..\2.x\mo_spr.prg
-#..\2.x\mo_spri.prg
-#
-#mo_plat.prg
-#mo_platv.prg
-#mo_platp.prg
-#mo_orto.prg
-#mo_kassa.prg
-#mo_kas_p.prg
-#mo_kas_o.prg
-#
-#
+..\2.x\263\mo_263.prg
+..\2.x\263\mo_263p.prg
+..\2.x\263\mo_263s.prg
+..\2.x\mo_spri.prg
+..\2.x\mo_version.prg
+
 ### главный модуль программы
 .\xmlparse_bay.c
-.\mo_func1.prg
 .\mo_main_bay.prg
+.\f1main_bay.prg
 .\mo_spr_bay.prg
+<<<<<<< HEAD
 .\mo_spri_bay.prg
 <<<<<<< HEAD
 .\mo_kart_bay.prg
 =======
 .\mo_index_bay.prg
+>>>>>>> master
+=======
 >>>>>>> master
 
 ### подсистема доступа к данным
@@ -180,32 +175,15 @@ hbmzip.hbc
 # Услуги
 .\DAL\Services\TUsl_U5DB.prg
 .\DAL\Services\TServiceWoDoctorDB.prg
-.\DAL\Services\TServiceFFOMS7DB.prg
-.\DAL\Services\TServiceFFOMSDB.prg
-.\DAL\Services\TServiceFFOMS5DB.prg
 .\DAL\Services\TServiceBySubdivisionDB.prg
 .\DAL\Services\TMo_suDB.prg
 .\DAL\Services\TIncompatibleServiceDB.prg
 .\DAL\Services\TIntegratedServiceDB.prg
 .\DAL\Services\TServiceDB.prg
-## для услуг 2018 года
-.\DAL\Services\2018\T_mo8uslDB.prg
-.\DAL\Services\2018\T_mo8uslcDB.prg
-.\DAL\Services\2018\T_mo8uslfDB.prg
-.\DAL\Services\2018\T_mo8unitDB.prg
-.\DAL\Services\2018\T_mo8subdivDB.prg
-.\DAL\Services\2018\T_mo8shemaDB.prg
-.\DAL\Services\2018\T_mo8pricesDB.prg
-.\DAL\Services\2018\T_mo8moservDB.prg
-.\DAL\Services\2018\T_mo8lvlpayDB.prg
-.\DAL\Services\2018\T_mo8kslpDB.prg
-.\DAL\Services\2018\T_mo8kiroDB.prg
-.\DAL\Services\2018\T_mo8k006DB.prg
-.\DAL\Services\2018\T_mo8itDB.prg
-.\DAL\Services\2018\T_mo8depprDB.prg
-.\DAL\Services\2018\T_mo8depDB.prg
+
 # ОМС
 .\DAL\OMS\THumanDB.prg
+<<<<<<< HEAD
 .\DAL\OMS\THumanExtDB.prg
 .\DAL\OMS\THumanAddDB.prg
 # классы файлов справочников
@@ -213,6 +191,8 @@ hbmzip.hbc
 .\DAL\DICT\TT005DB.prg
 .\DAL\DICT\TT006DB.prg
 .\DAL\DICT\TT007DB.prg
+=======
+>>>>>>> master
 
 
 # объекты бизнес-логики
@@ -278,32 +258,15 @@ hbmzip.hbc
 # Услуги
 .\BLL\Services\TUsl_U5.prg
 .\BLL\Services\TServiceWoDoctor.prg
-.\BLL\Services\TServiceFFOMS7.prg
-.\BLL\Services\TServiceFFOMS.prg
-.\BLL\Services\TServiceFFOMS5.prg
 .\BLL\Services\TServiceBySubdivision.prg
 .\BLL\Services\TMo_su.prg
 .\BLL\Services\TIncompatibleService.prg
 .\BLL\Services\TIntegratedService.prg
 .\BLL\Services\TService.prg
-## для услуг 2018 года
-.\BLL\Services\2018\T_mo8usl.prg
-.\BLL\Services\2018\T_mo8uslc.prg
-.\BLL\Services\2018\T_mo8uslf.prg
-.\BLL\Services\2018\T_mo8unit.prg
-.\BLL\Services\2018\T_mo8subdiv.prg
-.\BLL\Services\2018\T_mo8shema.prg
-.\BLL\Services\2018\T_mo8prices.prg
-.\BLL\Services\2018\T_mo8moserv.prg
-.\BLL\Services\2018\T_mo8lvlpay.prg
-.\BLL\Services\2018\T_mo8kslp.prg
-.\BLL\Services\2018\T_mo8kiro.prg
-.\BLL\Services\2018\T_mo8k006.prg
-.\BLL\Services\2018\T_mo8it.prg
-.\BLL\Services\2018\T_mo8deppr.prg
-.\BLL\Services\2018\T_mo8dep.prg
+
 # ОМС
 .\BLL\OMS\THuman.prg
+<<<<<<< HEAD
 .\BLL\OMS\THumanExt.prg
 .\BLL\OMS\THumanAdd.prg
 # классы файлов справочников
@@ -312,13 +275,13 @@ hbmzip.hbc
 .\BLL\DICT\TT006.prg
 .\BLL\DICT\TT007.prg
 .\BLL\DICT\TCountry.prg
+=======
+>>>>>>> master
 
 # системные функции
-.\SYSTEM\calendar.prg
 .\SYSTEM\TWorkingUser.prg
-.\SYSTEM\ChatMessages.prg
+# .\SYSTEM\ChatMessages.prg
 .\SYSTEM\popup_f.prg
-.\SYSTEM\TBox.prg
 .\SYSTEM\TVersion.prg
 .\SYSTEM\TListObjects.prg
 .\SYSTEM\OSFunction.prg
@@ -446,7 +409,7 @@ hbmzip.hbc
 .\RegisterOffice\editKartotek.prg
 .\RegisterOffice\viewDuplicateRecords.prg
 .\RegisterOffice\funcRegisterOffice.prg
-.\RegisterOffice\polikl1_kart.prg
+#.\RegisterOffice\polikl1_kart.prg
 #
 # Адресная информация
 .\AddressInfo\mo_adres_bay.PRG
@@ -457,4 +420,145 @@ hbmzip.hbc
 #
 #
 #для отладки
-.\FUNC\xtoc.prg
+#.\FUNC\xtoc.prg
+
+..\2.x\init\mo_init.prg
+..\2.x\init\init_mo.prg
+..\2.x\init\reconstruct_DB.prg
+..\2.x\init\index.prg
+..\2.x\init\index_base.prg
+..\2.x\init\initArrayFilesDB.prg
+..\2.x\init\update_data_DB.prg
+
+..\2.x\security\security.prg
+
+..\2.x\calendar\calendar.prg
+..\2.x\calendar\calendar_func.prg
+
+..\2.x\ref\initSpravFFOMS.prg
+..\2.x\ref\dbAdditionalCriteria.prg
+..\2.x\ref\dbO001.prg
+..\2.x\ref\dbF003.prg
+..\2.x\ref\dbF005.prg
+..\2.x\ref\dbF006.prg
+..\2.x\ref\dbF007.prg
+..\2.x\ref\dbF008.prg
+..\2.x\ref\dbF009.prg
+..\2.x\ref\dbF010.prg
+..\2.x\ref\dbF011.prg
+..\2.x\ref\dbF012.prg
+..\2.x\ref\dbF014.prg
+..\2.x\ref\dbF015.prg
+..\2.x\ref\dbN020.prg
+..\2.x\ref\dbV002.prg
+..\2.x\ref\dbV004.prg
+..\2.x\ref\dbV005.prg
+..\2.x\ref\dbV006.prg
+..\2.x\ref\dbV008.prg
+..\2.x\ref\dbV009.prg
+..\2.x\ref\dbV010.prg
+..\2.x\ref\dbV012.prg
+..\2.x\ref\dbV014.prg
+..\2.x\ref\dbV015.prg
+..\2.x\ref\dbV016.prg
+..\2.x\ref\dbV017.prg
+..\2.x\ref\dbV018.prg
+..\2.x\ref\dbV019.prg
+..\2.x\ref\dbV020.prg
+..\2.x\ref\dbV021.prg
+..\2.x\ref\dbV022.prg
+..\2.x\ref\dbV025.prg
+..\2.x\ref\dbV030.prg
+..\2.x\ref\dbV031.prg
+..\2.x\ref\dbV032.prg
+..\2.x\ref\dbV033.prg
+# ..\2.x\ref\dbV034.prg
+# ..\2.x\ref\dbV035.prg
+..\2.x\ref\dbV036.prg
+# ..\2.x\ref\dbV037.prg
+..\2.x\ref\dbQ015.prg
+..\2.x\ref\dbQ016.prg
+..\2.x\ref\dbQ017.prg
+..\2.x\ref\dbT005.prg
+..\2.x\ref\dbT008.prg
+..\2.x\ref\dbT012.prg
+..\2.x\ref\dbVMP_USL.prg
+#..\2.x\ref\make_V018_V019.prg
+..\2.x\ref\dbKSLPandKIRO.prg
+..\2.x\ref\dbMo_Mo.prg
+..\2.x\ref\dbImplant.prg
+..\2.x\ref\dbSeverity.prg
+..\2.x\ref\dbMethodINJ.prg
+..\2.x\ref\dbUnitOfMeasurement.prg
+..\2.x\ref\setupFFOMSref.prg
+
+..\2.x\oms\oms_func.prg
+..\2.x\oms\oms_double.prg
+..\2.x\oms\definition_KSG.prg
+..\2.x\oms\oms_sluch.prg
+..\2.x\oms\oms_usl_sluch.prg
+..\2.x\oms\f_N_oms_usl_sluch.prg
+..\2.x\oms\f5editkusl.prg
+..\2.x\oms\f_usl_definition_KSG.prg
+..\2.x\oms\f_valid2ad_cr.prg
+..\2.x\oms\kiroANDkslp.prg
+..\2.x\oms\f_1pac_definition_KSG.prg
+..\2.x\oms\Change_Cena_OMS.prg
+..\2.x\oms\verify_1_sluch.prg
+..\2.x\oms\conditionKSLP_21.prg
+..\2.x\oms\conditionKSLP_22.prg
+..\2.x\oms\diagnoze.prg
+..\2.x\oms\mo_oms131.prg
+..\2.x\oms\errorFromTFOMS.prg
+..\2.x\oms\TFOMS_hodatajstvo.prg
+..\2.x\oms\verifyOMS.prg
+..\2.x\oms\oms_lek_preparat.prg
+..\2.x\oms\oms_implantant.prg
+..\2.x\oms\oms_ser_number.prg
+..\2.x\oms\oms_vmp.prg
+..\2.x\oms\oms_sluch_med_reab.prg
+..\2.x\oms\oms_sluch_med_reab_func.prg
+
+..\2.x\onkologiya\onko.prg
+
+..\2.x\reports\reports.prg
+..\2.x\reports\createXLS.prg
+..\2.x\reports\hodotajstvoXLS.prg
+..\2.x\reports\exportKartExcel.prg
+..\2.x\reports\create_xls_rdl.prg
+
+..\2.x\util\workWithZIP.prg
+..\2.x\util\runExternalProgram.prg
+..\2.x\util\workWithInternet.prg
+..\2.x\util\backup.prg
+
+..\2.x\mo\external_mo.prg
+
+..\2.x\dispanser\mo_oms2.prg
+..\2.x\dispanser\oms_DVN_COVID.prg
+..\2.x\dispanser\oms_DVN_func_COVID.prg
+..\2.x\dispanser\oms_DVN.prg
+..\2.x\dispanser\oms_DVN_func.prg
+..\2.x\dispanser\oms_DDS.prg
+..\2.x\dispanser\oms_DDS_func.prg
+..\2.x\dispanser\oms_PN.prg
+..\2.x\dispanser\oms_PN_func.prg
+..\2.x\dispanser\oms_dispans_naprav.prg
+..\2.x\dispanser\oms_dispans_diagnoze.prg
+..\2.x\dispanser\oms_dispans_func.prg
+..\2.x\DISPANSER\mo_omsna.prg
+..\2.x\DISPANSER\mo_r01.prg
+
+..\2.x\EXCHANGE\reestrOMS_XML.prg
+..\2.x\EXCHANGE\create_schet19_from_XML.prg
+..\2.x\EXCHANGE\extract_reestr.prg
+..\2.x\EXCHANGE\create_reestr.prg
+..\2.x\EXCHANGE\mo_omss.prg
+..\2.x\EXCHANGE\mo_omsr.prg
+
+..\2.x\SYSTEM\use_func.prg
+..\2.x\SYSTEM\extension.prg
+..\2.x\SYSTEM\hashMD5.prg
+
+..\2.x\TUNING\ret_days_for_akt_sverki.prg
+..\2.x\TUNING\initPZarray.prg

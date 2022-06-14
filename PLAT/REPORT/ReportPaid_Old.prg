@@ -1012,14 +1012,16 @@ viewtext(n_file,,,,(sh>80),,,1)
 rest_box(buf)
 return nil
 
-***** 18.11.16
-function pl_pl_2dogovor()
-local buf := save_row(maxrow()), sh, HH := 49, arr_title, s, i, k, sk, ss,;
+***** 01.03.19
+Function pl_pl_2dogovor()
+Local buf := save_row(maxrow()), sh, HH := 49, arr_title, s, i, k, sk, ss,;
       arr2title, reg_print := 6, afio[10], lfio := 19, kfio, lsk, lss, adbf,;
       aadres[2], kadres, apolis[10], kpolis, name_file := "jurnal1.txt",;
       usl_nds18 := 0, usl_nds18_1 := 0,;
       usl_nds10 := 0, usl_nds10_1 := 0,;
-      t_vr, t_as, t_nvr, t_nas, arr_dms, kol_vo := 0
+      usl_nds20 := 0, usl_nds20_1 := 0,;
+      t_vr, t_as, t_nvr, t_nas, arr_dms, kol_vo := 0,;
+      nom_prihod := 0
 arr_title := {;
 "ƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒ",;
 "        î.à.é., †§‡•·        ",;
@@ -1164,19 +1166,19 @@ arr_01 := {;
  "≥  „·´„£®  ",;
  "¡ƒƒƒƒƒƒƒƒƒƒ"}
 
-private krvz
-if (krvz := fbp_tip_usl(T_ROW,T_COL-5,@arr_dms)) == nil
-  return nil
+Private krvz
+if (krvz := fbp_tip_usl(T_ROW,T_COL-5,@arr_dms)) == NIL
+  return NIL
 endif
-private glob_pozic
-if (glob_pozic := inputNplpozic(T_ROW,T_COL+5)) == nil
-  return nil
+Private glob_pozic
+if (glob_pozic := inputNplpozic(T_ROW,T_COL+5)) == NIL
+  return NIL
 endif
-if (arr_m := year_month()) == nil
-  return nil
+if (arr_m := year_month()) == NIL
+  return NIL
 endif
-if (st_a_uch := inputN_uch(T_ROW,T_COL-5)) == nil
-  return nil
+if (st_a_uch := inputN_uch(T_ROW,T_COL-5)) == NIL
+  return NIL
 endif
 mywait()
 // ·Æß§†•¨ ß†£Æ´Æ¢Æ™
@@ -1206,7 +1208,11 @@ R_Use(dir_server+"kartotek",,"KART")
 R_Use(dir_server+"uslugi",,"USL")
 R_Use(dir_server+"hum_p_u",dir_server+"hum_p_u","HPU")
 R_Use(dir_server+"hum_p",,"HU")
-index on pdate+str(kv_cia,6) to (cur_dir+"tmp_hum") for between(pdate,arr_m[7],arr_m[8])
+if glob_mo[_MO_KOD_TFOMS] == '171004' // äÅ-4
+  index on dtos(N_data)+str(kv_cia,6) to (cur_dir+"tmp_hum") for between(N_data,arr_m[5],arr_m[6])
+else
+  index on pdate+str(kv_cia,6) to (cur_dir+"tmp_hum") for between(pdate,arr_m[7],arr_m[8])
+endif
 set index to (dir_server+"hum_pkk"),(cur_dir+"tmp_hum")
 set order to 2
 //
@@ -1257,49 +1263,91 @@ do while !eof()
         //goto (hpu->kod_as)
         //t_nas := "  "//fam_i_o(perso->fio)
         //
-        add_string(afio[1]+" "+;
-                   iif(f_is_pozic(glob_pozic,0),full_date(kart->date_r)+" ","")+;
-                   iif(f_is_pozic(glob_pozic,1),padr(lstr(hu->kod_k),7)+" ","")+;
-                   iif(f_is_pozic(glob_pozic,2),padr(lstr(hu->kod_k)+"/"+lstr(nom_prihod),9)+" ","")+;
-                   iif(f_is_pozic(glob_pozic,3),padr(lstr(hu->kv_cia),6)+" ","")+;
-                   iif(f_is_pozic(glob_pozic,4),usl->shifr+" ","")+;
-                   iif(f_is_pozic(glob_pozic,5),padr(alltrim(usl->name),51)+" ","")+;
-                   iif(f_is_pozic(glob_pozic,6),iif(t_vr>0,padl(lstr(t_vr),5),space(5))+" ","")+;
-                   iif(f_is_pozic(glob_pozic,7),iif(t_as>0,padr(lstr(t_as),5),space(5))+" ","")+;
-                   iif(f_is_pozic(glob_pozic,8),padr(t_nvr,15)+" ","")+;
-                   iif(f_is_pozic(glob_pozic,9),padr(t_nvr,15)+" ","")+;
-                   iif(f_is_pozic(glob_pozic,10),put_kop(hpu->u_cena,7)+" ","")+;
-                   iif(f_is_pozic(glob_pozic,11),put_kop(hpu->u_cena,7)+" ","")+;
-                   iif(f_is_pozic(glob_pozic,12),padr(lstr(hpu->kol),4)+" ","")+;
-                   iif(f_is_pozic(glob_pozic,13),full_date(c4tod(hu->pdate))+" ","")+;
-                   iif(f_is_pozic(glob_pozic,14),full_date(c4tod(hpu->date_u))+" ","")+;
-                   put_kop(hpu->stoim,10)+" "+;
-                   full_date(c4tod(hpu->date_u)))
+        if glob_mo[_MO_KOD_TFOMS] == '171004' // äÅ-4
+          add_string(afio[1]+" "+;
+                     iif(f_is_pozic(glob_pozic,0),full_date(kart->date_r)+" ","")+;
+                     iif(f_is_pozic(glob_pozic,1),padr(lstr(hu->kod_k),7)+" ","")+;
+                     iif(f_is_pozic(glob_pozic,2),padr(lstr(hu->kod_k)+"/"+lstr(nom_prihod),9)+" ","")+;
+                     iif(f_is_pozic(glob_pozic,3),padr(lstr(hu->kv_cia),6)+" ","")+;
+                     iif(f_is_pozic(glob_pozic,4),usl->shifr+" ","")+;
+                     iif(f_is_pozic(glob_pozic,5),padr(alltrim(usl->full_name),51)+" ","")+;
+                     iif(f_is_pozic(glob_pozic,6),iif(t_vr>0,padl(lstr(t_vr),5),space(5))+" ","")+;
+                     iif(f_is_pozic(glob_pozic,7),iif(t_as>0,padr(lstr(t_as),5),space(5))+" ","")+;
+                     iif(f_is_pozic(glob_pozic,8),padr(t_nvr,15)+" ","")+;
+                     iif(f_is_pozic(glob_pozic,9),padr(t_nvr,15)+" ","")+;
+                     iif(f_is_pozic(glob_pozic,10),put_kop(hpu->u_cena,7)+" ","")+;
+                     iif(f_is_pozic(glob_pozic,11),put_kop(hpu->u_cena,7)+" ","")+;
+                     iif(f_is_pozic(glob_pozic,12),padr(lstr(hpu->kol),4)+" ","")+;
+                     iif(f_is_pozic(glob_pozic,13),iif(hu->kv_cia > 0,full_date(c4tod(hu->pdate)),space(10))+" ","")+;
+                     iif(f_is_pozic(glob_pozic,14),full_date(c4tod(hpu->date_u))+" ","")+;
+                     put_kop(hpu->stoim,10)+" "+;
+                     full_date(c4tod(hpu->date_u)))
+        else
+          add_string(afio[1]+" "+;
+                     iif(f_is_pozic(glob_pozic,0),full_date(kart->date_r)+" ","")+;
+                     iif(f_is_pozic(glob_pozic,1),padr(lstr(hu->kod_k),7)+" ","")+;
+                     iif(f_is_pozic(glob_pozic,2),padr(lstr(hu->kod_k)+"/"+lstr(nom_prihod),9)+" ","")+;
+                     iif(f_is_pozic(glob_pozic,3),padr(lstr(hu->kv_cia),6)+" ","")+;
+                     iif(f_is_pozic(glob_pozic,4),usl->shifr+" ","")+;
+                     iif(f_is_pozic(glob_pozic,5),padr(alltrim(usl->name),51)+" ","")+;
+                     iif(f_is_pozic(glob_pozic,6),iif(t_vr>0,padl(lstr(t_vr),5),space(5))+" ","")+;
+                     iif(f_is_pozic(glob_pozic,7),iif(t_as>0,padr(lstr(t_as),5),space(5))+" ","")+;
+                     iif(f_is_pozic(glob_pozic,8),padr(t_nvr,15)+" ","")+;
+                     iif(f_is_pozic(glob_pozic,9),padr(t_nvr,15)+" ","")+;
+                     iif(f_is_pozic(glob_pozic,10),put_kop(hpu->u_cena,7)+" ","")+;
+                     iif(f_is_pozic(glob_pozic,11),put_kop(hpu->u_cena,7)+" ","")+;
+                     iif(f_is_pozic(glob_pozic,12),padr(lstr(hpu->kol),4)+" ","")+;
+                     iif(f_is_pozic(glob_pozic,13),full_date(c4tod(hu->pdate))+" ","")+;
+                     iif(f_is_pozic(glob_pozic,14),full_date(c4tod(hpu->date_u))+" ","")+;
+                     put_kop(hpu->stoim,10)+" "+;
+                     full_date(c4tod(hpu->date_u)))
+        endif
         i := 1
         ++kol_vo
       else
         ++i
-        add_string(iif(i<=kfio,afio[i],space(29))+" "+;
-                   iif(f_is_pozic(glob_pozic,0),space(11),"")+;
-                   iif(f_is_pozic(glob_pozic,1),space(8),"")+;
-                   iif(f_is_pozic(glob_pozic,2),space(10),"")+;
-                   iif(f_is_pozic(glob_pozic,3),space(7),"")+;
-                   iif(f_is_pozic(glob_pozic,4),usl->shifr+" ","")+;
-                   iif(f_is_pozic(glob_pozic,5),padr(alltrim(usl->name),51)+" ","")+;
-                   iif(f_is_pozic(glob_pozic,6),iif(t_vr>0,padl(lstr(t_vr),5),space(5))+" ","")+;
-                   iif(f_is_pozic(glob_pozic,7),iif(t_as>0,padl(lstr(t_as),5),space(5))+" ","")+;
-                   iif(f_is_pozic(glob_pozic,8),padr(t_nvr,15)+" ","")+;
-                   iif(f_is_pozic(glob_pozic,9),padr(t_nvr,15)+" ","")+;
-                   iif(f_is_pozic(glob_pozic,10),put_kop(hpu->u_cena,7)+" ","")+;
-                   iif(f_is_pozic(glob_pozic,11),put_kop(hpu->u_cena,7)+" ","")+;
-                   iif(f_is_pozic(glob_pozic,12),padr(lstr(hpu->kol),4)+" ","")+;
-                   iif(f_is_pozic(glob_pozic,13),space(10)+" ","")+;
-                   iif(f_is_pozic(glob_pozic,14),full_date(c4tod(hpu->date_u))+" ","")+;
-                   put_kop(hpu->stoim,10)+" "+;
-                   full_date(c4tod(hpu->date_u)))
+        if glob_mo[_MO_KOD_TFOMS] == '171004' // äÅ-4
+          add_string(iif(i<=kfio,afio[i],space(29))+" "+;
+                     iif(f_is_pozic(glob_pozic,0),space(11),"")+;
+                     iif(f_is_pozic(glob_pozic,1),space(8),"")+;
+                     iif(f_is_pozic(glob_pozic,2),space(10),"")+;
+                     iif(f_is_pozic(glob_pozic,3),space(7),"")+;
+                     iif(f_is_pozic(glob_pozic,4),usl->shifr+" ","")+;
+                     iif(f_is_pozic(glob_pozic,5),padr(alltrim(usl->full_name),51)+" ","")+;
+                     iif(f_is_pozic(glob_pozic,6),iif(t_vr>0,padl(lstr(t_vr),5),space(5))+" ","")+;
+                     iif(f_is_pozic(glob_pozic,7),iif(t_as>0,padl(lstr(t_as),5),space(5))+" ","")+;
+                     iif(f_is_pozic(glob_pozic,8),padr(t_nvr,15)+" ","")+;
+                     iif(f_is_pozic(glob_pozic,9),padr(t_nvr,15)+" ","")+;
+                     iif(f_is_pozic(glob_pozic,10),put_kop(hpu->u_cena,7)+" ","")+;
+                     iif(f_is_pozic(glob_pozic,11),put_kop(hpu->u_cena,7)+" ","")+;
+                     iif(f_is_pozic(glob_pozic,12),padr(lstr(hpu->kol),4)+" ","")+;
+                     iif(f_is_pozic(glob_pozic,13),space(10)+" ","")+;
+                     iif(f_is_pozic(glob_pozic,14),full_date(c4tod(hpu->date_u))+" ","")+;
+                     put_kop(hpu->stoim,10)+" "+;
+                     full_date(c4tod(hpu->date_u)))
+        else
+          add_string(iif(i<=kfio,afio[i],space(29))+" "+;
+                     iif(f_is_pozic(glob_pozic,0),space(11),"")+;
+                     iif(f_is_pozic(glob_pozic,1),space(8),"")+;
+                     iif(f_is_pozic(glob_pozic,2),space(10),"")+;
+                     iif(f_is_pozic(glob_pozic,3),space(7),"")+;
+                     iif(f_is_pozic(glob_pozic,4),usl->shifr+" ","")+;
+                     iif(f_is_pozic(glob_pozic,5),padr(alltrim(usl->name),51)+" ","")+;
+                     iif(f_is_pozic(glob_pozic,6),iif(t_vr>0,padl(lstr(t_vr),5),space(5))+" ","")+;
+                     iif(f_is_pozic(glob_pozic,7),iif(t_as>0,padl(lstr(t_as),5),space(5))+" ","")+;
+                     iif(f_is_pozic(glob_pozic,8),padr(t_nvr,15)+" ","")+;
+                     iif(f_is_pozic(glob_pozic,9),padr(t_nvr,15)+" ","")+;
+                     iif(f_is_pozic(glob_pozic,10),put_kop(hpu->u_cena,7)+" ","")+;
+                     iif(f_is_pozic(glob_pozic,11),put_kop(hpu->u_cena,7)+" ","")+;
+                     iif(f_is_pozic(glob_pozic,12),padr(lstr(hpu->kol),4)+" ","")+;
+                     iif(f_is_pozic(glob_pozic,13),space(10)+" ","")+;
+                     iif(f_is_pozic(glob_pozic,14),full_date(c4tod(hpu->date_u))+" ","")+;
+                     put_kop(hpu->stoim,10)+" "+;
+                     full_date(c4tod(hpu->date_u)))
+        endif
       endif
       select HPU
-      // ÇÎ°Æ‡™† çÑë 18/10
+      // ÇÎ°Æ‡™† çÑë 18/10/20
       // ¢Æß‡†·‚
       if fv_dog_date_r(hu->n_data,kart->date_r) > 0 // §•‚®
         if round_5(usl->pnds_d,0) == 18
@@ -1308,6 +1356,9 @@ do while !eof()
         elseif round_5(usl->pnds_d,0) == 10
           usl_nds10 := usl_nds10+hpu->kol
           usl_nds10_1 := usl_nds10_1+hpu->stoim
+        elseif round_5(usl->pnds_d,0) == 20
+          usl_nds20 := usl_nds20+hpu->kol
+          usl_nds20_1 := usl_nds20_1+hpu->stoim
         endif
       else
         if round_5(usl->pnds,0) == 18
@@ -1316,6 +1367,9 @@ do while !eof()
         elseif round_5(usl->pnds,0) == 10
           usl_nds10 := usl_nds10+hpu->kol
           usl_nds10_1 := usl_nds10_1+hpu->stoim
+        elseif round_5(usl->pnds,0) == 20
+          usl_nds20 := usl_nds20+hpu->kol
+          usl_nds20_1 := usl_nds20_1+hpu->stoim
         endif
       endif
       skip
@@ -1346,14 +1400,20 @@ endif
 if usl_nds10_1 > 0
   add_string(padl("ë„¨¨† „·´„£ · çÑë 10% : "+str(usl_nds10_1,11,2),sh-11))
 endif
+if usl_nds20 > 0
+  add_string(padl("äÆ´®Á•·‚¢Æ „·´„£ · çÑë 20% : "+str(usl_nds20,11),sh-12))
+endif
+if usl_nds20_1 > 0
+  add_string(padl("ë„¨¨† „·´„£ · çÑë 20% : "+str(usl_nds20_1,11,2),sh-12))
+endif
 add_string("")
 add_string("")
 add_string(center("É´†¢≠Î© ¢‡†Á _________________                         É´†¢≠Î© °„Â£†´‚•‡ _________________",sh))
 fclose(fp)
 rest_box(buf)
-private yes_albom := .t.
+Private yes_albom := .t.
 viewtext(name_file,,,,(sh>80),,,reg_print)
-return nil
+return NIL
 
 ***** 11.02.13
 function pl_vzaimozach()
