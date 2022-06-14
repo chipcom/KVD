@@ -20,7 +20,11 @@ CREATE CLASS TSubdivision	INHERIT	TBaseObjectBLL
 								{ 'дисп-ия/профосмотр взрослых'          ,TIP_LU_DVN   }, ;  // 8
 								{ 'пренатальная диагностика'             ,TIP_LU_PREND }, ;  // 9
 								{ 'гемодиализ'                           ,TIP_LU_H_DIA }, ;  // 10
-								{ 'перитонеальный диализ'                ,TIP_LU_P_DIA } }   // 11
+								{ 'перитонеальный диализ'                ,TIP_LU_P_DIA }, ;  // 11
+								{ 'жидкостная цитология'                ,TIP_LU_G_CIT }, ;  // 12
+								{ 'неотложная медицинская помощь'       ,TIP_LU_NMP }, ;  // 13
+								{ 'COVID углубленная диспансеризация взрослого населения',TIP_LU_DVN_COVID }, ;  // 15
+								{ 'амбулаторная медицинская реабилитация',TIP_LU_MED_REAB } }  // 16
 		
 		PROPERTY Code READ getCode WRITE setCode							// код
 		PROPERTY Name READ getName WRITE setName							// наименование
@@ -211,9 +215,12 @@ METHOD function forJSON()    CLASS TSubdivision
 
 
 METHOD FUNCTION getProfilFormat() 		 CLASS TSubdivision
-	local ret := ''
+	local ret := '', it
+
 	if ::FProfil != 0
-		ret := glob_V002[ ::FProfil, 1 ]
+		if (it := ascan(glob_V002, {|x| x[2] == ::FProfil})) > 0
+			ret := glob_V002[ it, 1 ]
+		endif
 	endif
 	return ret
 
@@ -237,7 +244,7 @@ METHOD PROCEDURE setName( cVar ) 		 CLASS TSubdivision
 	return
 
 METHOD FUNCTION getName1251() 		 CLASS TSubdivision
-	return win_OEMToANSI( ::FName )
+	return hb_OEMToANSI( ::FName )
 
 METHOD FUNCTION getShortName() 		 CLASS TSubdivision
 	return ::FShortName
@@ -248,7 +255,7 @@ METHOD PROCEDURE setShortName( cVar ) 		 CLASS TSubdivision
 	return
 
 METHOD FUNCTION getShortName1251() 		 CLASS TSubdivision
-	return win_OEMToANSI( ::FShortName )
+	return hb_OEMToANSI( ::FShortName )
 
 METHOD FUNCTION getIDDepartment() 		 CLASS TSubdivision
 	return ::FIDDepartment
