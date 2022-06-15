@@ -62,7 +62,6 @@ hbsqlit3.hbc
 ..\2.x\mo_omso.prg
 ..\2.x\mo_omsp.prg
 ..\2.x\mo_omsi.prg
-..\2.x\mo_omsid.prg
 ..\2.x\mo_omsio.prg
 ..\2.x\mo_omsfo.prg
 ..\2.x\mo_omsis.prg
@@ -500,6 +499,7 @@ hbsqlit3.hbc
 ..\2.x\dispanser\oms_dispans_func.prg
 ..\2.x\DISPANSER\mo_omsna.prg
 ..\2.x\DISPANSER\mo_r01.prg
+..\2.x\DISPANSER\mo_omsid.prg
 
 ..\2.x\EXCHANGE\reestrOMS_XML.prg
 ..\2.x\EXCHANGE\create_schet19_from_XML.prg
