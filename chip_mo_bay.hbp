@@ -88,7 +88,7 @@ hbsqlit3.hbc
 ..\2.x\mo_version.prg
 
 ### главный модуль программы
-.\xmlparse_bay.c
+..\2.x\xmlparse.c
 .\mo_main_bay.prg
 .\f1main_bay.prg
 .\mo_spr_bay.prg
