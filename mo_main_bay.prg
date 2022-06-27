@@ -868,16 +868,3 @@ Function my_mo_begin_task()
     fl := vounc_begin_task()
   endif
   return fl
-
-** 26.06.22
-procedure quit_app(sError, lQuiet)
-
-  default lQuiet to .f.
-  OutStd(sError, hb_eol())
-  if ! lQuiet
-    hb_Alert(sError)
-  endif
-  SET COLOR TO
-  SET CURSOR ON
-  QUIT
-  return
