@@ -32,7 +32,7 @@ hbmzip.hbc
 -lhbtip
 
 # библиотека для декодирования штрих-кодов ОМС
--lpcbcode.lib
+-lpcbcode
 
 hbtip.hbc
 hbziparc.hbc

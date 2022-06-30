@@ -20,6 +20,7 @@ else
 endif
 return fl
 
+*
 
 ***** Редактирование справочника услуг
 Function edit_spr_uslugi(k)
@@ -28,7 +29,7 @@ Local str_sem, mas_pmt, mas_msg, mas_fun, j
 DEFAULT k TO 0
 do case
   case k == 0
-    if ! hb_user_curUser:IsAdmin()
+    if tip_polzovat != 0
       return func_error(4,err_admin)
     endif
     mas_pmt := {"~Редактирование услуг",;
@@ -64,92 +65,101 @@ do case
   case k == 2
     spr_uslugi_FFOMS()
   case k == 3
-    f_k_uslugi()
+//    f_k_uslugi()
+	editIntegratedServices()
   case k == 4
     f_trkoef()
   case k == 5
-    f_trpers()
+//    f_trpers()
+	editPlannedMonthlyStaff()
   case k == 6
-    f_ns_uslugi()
+//    f_ns_uslugi()
+	editCompositionIncompServices()
   case k == 7
-    f_usl_uva()
+//    f_usl_uva()
+	editServicesWoDoctor()
   case k == 8
     f_usl_raz()
   case k == 9
-    f5_uslugi(2,T_COL+10)
+	viewSlugba()
+//    f5_uslugi(2,T_COL+10)
 endcase
 if k > 0
   sk := k
 endif
 return NIL
 
+*
 
-***** 02.12.21
+***** 15.01.19
 FUNCTION f1_uslugi()
 Local arr_block, buf := savescreen(), str_sem := "Редактирование услуг"
-local tmpAlias, i
-
-  if !G_SLock(str_sem)
-    return func_error(4,err_slock)
-  endif
-  if !Use_base("lusl") .or. !Use_base("luslc") .or. ;
-      !G_Use(dir_server+"uslugi1",{dir_server+"uslugi1",;
+if !G_SLock(str_sem)
+  return func_error(4,err_slock)
+endif
+if !Use_base("lusl") .or. !Use_base("luslc") .or. ;
+   !G_Use(dir_server+"uslugi1",{dir_server+"uslugi1",;
                                 dir_server+"uslugi1s"},"USL1") .or. ;
-      !G_Use(dir_server+"uslugi",,"USL") .or. ;
-      !G_Use(dir_server+"usl_otd",dir_server+"usl_otd","UO") .or. ;
-      !R_Use(dir_server+"slugba",dir_server+"slugba","SL")
-    close databases
-    return NIL
-  endif
-  mywait()
-  if is_otd_dep .and. glob_otd_dep == 0 .and. len(mm_otd_dep) > 0
-    glob_otd_dep := mm_otd_dep[1,2] // просто берём первое отделение
-  endif
-  if !(type("arr_date_usl") == "A")
-    Public arr_date_usl := {}
-    for i := 2018 to WORK_YEAR
-      tmpAlias := create_name_alias('LUSLC', i)
-      select (tmpAlias)
-      index on dtos(datebeg) to (cur_dir + "tmp1") unique
-      dbeval({|| aadd(arr_date_usl, (tmpAlias)->datebeg) })
-      set index to (cur_dir + prefixFileRefName(i) + "uslc"), (cur_dir + prefixFileRefName(i) + "uslu")
-    next
-  endif
-  Private tmp_V002 := create_classif_FFOMS(0,"V002") // PROFIL
-  dbcreate(cur_dir+"tmp_usl1",{{"shifr1",  "C",10,0},;
+   !G_Use(dir_server+"uslugi",,"USL") .or. ;
+   !G_Use(dir_server+"usl_otd",dir_server+"usl_otd","UO") .or. ;
+   !R_Use(dir_server+"slugba",dir_server+"slugba","SL")
+  close databases
+  return NIL
+endif
+mywait()
+if is_otd_dep .and. glob_otd_dep == 0 .and. len(mm_otd_dep) > 0
+  glob_otd_dep := mm_otd_dep[1,2] // просто берём первое отделение
+endif
+if !(type("arr_date_usl") == "A")
+  Public arr_date_usl := {}
+  select LUSLC19
+  index on dtos(datebeg) to (cur_dir+"tmp1") unique
+  dbeval({|| aadd(arr_date_usl,luslc19->datebeg) })
+  set index to (cur_dir+"_mo9uslc"),(cur_dir+"_mo9uslu")
+  select LUSLC20
+  index on dtos(datebeg) to (cur_dir+"tmp1") unique
+  dbeval({|| aadd(arr_date_usl,luslc20->datebeg) })
+  set index to (cur_dir+"_mo0uslc"),(cur_dir+"_mo0uslu")
+  select LUSLC
+  index on dtos(datebeg) to (cur_dir+"tmp1") unique
+  dbeval({|| aadd(arr_date_usl,luslc->datebeg) })
+  set index to (cur_dir+"_mo1uslc"),(cur_dir+"_mo1uslu")
+endif
+Private tmp_V002 := create_classif_FFOMS(0,"V002") // PROFIL
+dbcreate(cur_dir+"tmp_usl1",{{"shifr1",  "C",10,0},;
                              {"name",    "C",77,0},;
                              {"date_b",  "D", 8,0}})
-  use (cur_dir+"tmp_usl1") new
-  index on dtos(date_b) to (cur_dir+"tmp_usl1")
-  select USL
-  index on iif(kod>0,"1","0")+fsort_usl(shifr) to (cur_dir+"tmp_usl")
-  set index to (cur_dir+"tmp_usl"),;
+use (cur_dir+"tmp_usl1") new
+index on dtos(date_b) to (cur_dir+"tmp_usl1")
+select USL
+index on iif(kod>0,"1","0")+fsort_usl(shifr) to (cur_dir+"tmp_usl")
+set index to (cur_dir+"tmp_usl"),;
              (dir_server+"uslugi"),;
              (dir_server+"uslugish"),;
              (dir_server+"uslugis1"),;
              (dir_server+"uslugisl")
-  Private str_find := "1", muslovie := "usl->kod > 0"
-  arr_block := {{|| FindFirst(str_find)},;
+Private str_find := "1", muslovie := "usl->kod > 0"
+arr_block := {{|| FindFirst(str_find)},;
               {|| FindLast(str_find)},;
               {|n| SkipPointer(n, muslovie)},;
               str_find,muslovie;
              }
-  find ("1")
-  Private fl_found := found()
-  if fl_found
-    do while empty(shifr) .and. !eof()
-      skip
-    enddo
-  else
-    keyboard chr(K_INS)
-  endif
-  Alpha_Browse(2,0,maxrow()-1,79,"f1_es_uslugi",color0,"Редактирование услуг","B/BG",;
+find ("1")
+Private fl_found := found()
+if fl_found
+  do while empty(shifr) .and. !eof()
+    skip
+  enddo
+else
+  keyboard chr(K_INS)
+endif
+Alpha_Browse(2,0,maxrow()-1,79,"f1_es_uslugi",color0,"Редактирование услуг","B/BG",;
              .f.,,arr_block,,"f2_es_uslugi",,;
              {"═","░","═","N/BG,W+/N,B/BG,BG+/B,R/BG,W+/R,N+/BG,W/N,RB/BG,W+/RB",.t.,180} )
-  close databases
-  G_SUnLock(str_sem)
-  restscreen(buf)
-  return NIL
+close databases
+G_SUnLock(str_sem)
+restscreen(buf)
+return NIL
 
 ***** 15.01.19
 Function f0_es_uslugi()
@@ -2539,31 +2549,38 @@ do case
     endif
     popup_prompt(T_ROW, T_COL+5, sk1, mas_pmt, mas_msg, mas_fun)
   case k == 1
-    edit_s_adres()
+//    edit_s_adres()
+	viewCommon( 1 )
   case k == 2
-    str_sem := "Редактирование места работы"
-    if G_SLock(str_sem)
-      popup_edit(dir_server+"s_mr",T_ROW,T_COL+5,maxrow()-2,,1)
-      G_SUnLock(str_sem)
-    else
-      func_error(4,err_slock)
-    endif
+    // str_sem := "Редактирование места работы"
+    // if G_SLock(str_sem)
+      // popup_edit(dir_server+"s_mr",T_ROW,T_COL+5,maxrow()-2,,1)
+      // G_SUnLock(str_sem)
+    // else
+      // func_error(4,err_slock)
+    // endif
+	viewCommon( 2 )
   case k == 3
-    mas_pmt := {"~Редактирование",;
-                "Удаление ~дубликатов"}
-    mas_msg := {"Редактирование справочника организаций, выдающих документы",;
-                "Удаление дубликатов организаций"}
-    mas_fun := {"edit_proch_spr(11)",;
-                "edit_proch_spr(12)"}
-    popup_prompt(T_ROW, T_COL+5, sk2, mas_pmt, mas_msg, mas_fun)
+    // mas_pmt := {"~Редактирование",;
+                // "Удаление ~дубликатов"}
+    // mas_msg := {"Редактирование справочника организаций, выдающих документы",;
+                // "Удаление дубликатов организаций"}
+    // mas_fun := {"edit_proch_spr(11)",;
+                // "edit_proch_spr(12)"}
+    // popup_prompt(T_ROW, T_COL+5, sk2, mas_pmt, mas_msg, mas_fun)
+	viewCommon( 3 )
   case k == 4
-    edit_strah()
+//    edit_strah()
+	viewCommitte( 1 )
   case k == 5
-    edit_komit()
+//    edit_komit()
+	viewCommitte( 2 )
   case k == 6
-    edit_school()
+//    edit_school()
+	viewSchool()
   case k == 7
-    edit_dds_stac()
+//    edit_dds_stac()
+	viewStdds()
   case k == 11
     fedit_s_kem()
   case k == 12
@@ -2833,6 +2850,8 @@ if tmp_select > 0
 endif
 return fl
 
+*
+
 ***** удаление дубликатов организаций, выдающих документы
 Function fdeld_s_kem()
 Static sk
@@ -2840,7 +2859,7 @@ Local buf, s1, s2, k1, k2, hGauge, r
 buf := savescreen()
 s1 := s2 := ""
 r := T_ROW
-if ! hb_user_curUser:IsAdmin()
+if tip_polzovat != 0
   return func_error(4,"Оператору доступ в данный режим запрещен!")
 endif
 if !G_SLock1Task(sem_task,sem_vagno)  // запрет доступа всем
@@ -3026,15 +3045,20 @@ do case
     //spr_opl_52()
 	editEmployees( 2 )
   case k == 12
-    spr_opl_51(O5_VR_OMS,"врачам (ОМС)")
+//    spr_opl_51(O5_VR_OMS,"врачам (ОМС)")
+	editLevelPayments( O5_VR_OMS )
   case k == 13
-    spr_opl_51(O5_AS_OMS,"ассистентам (ОМС)")
+//    spr_opl_51(O5_AS_OMS,"ассистентам (ОМС)")
+	editLevelPayments( O5_AS_OMS )
   case k == 16
-    spr_opl_51(O5_VR_PLAT,"врачам (платные услуги)")
+//    spr_opl_51(O5_VR_PLAT,"врачам (платные услуги)")
+	editLevelPayments( O5_VR_PLAT )
   case k == 17
-    spr_opl_51(O5_AS_PLAT,"ассистентам (платные услуги)")
+//    spr_opl_51(O5_AS_PLAT,"ассистентам (платные услуги)")
+	editLevelPayments( O5_AS_PLAT )
   case k == 18
-    spr_opl_51(O5_VR_NAPR,"за направление на платные услуги")
+//    spr_opl_51(O5_VR_NAPR,"за направление на платные услуги")
+	editLevelPayments( O5_VR_NAPR )
 endcase
 if between(k,11,20)
   si1 := k-10
@@ -3077,17 +3101,23 @@ do case
   case k == 11
     spr_opl_71()
   case k == 12
-    spr_opl_51(O5_VR_OMS,"врачам (ОМС)")
+//    spr_opl_51(O5_VR_OMS,"врачам (ОМС)")
+	editLevelPayments( O5_VR_OMS )
   case k == 13
-    spr_opl_51(O5_AS_OMS,"ассистентам (ОМС)")
+//    spr_opl_51(O5_AS_OMS,"ассистентам (ОМС)")
+	editLevelPayments( O5_AS_OMS )
   case k == 14
-    spr_opl_51(O5_VR_PLAT,"врачам (платные услуги)")
+//    spr_opl_51(O5_VR_PLAT,"врачам (платные услуги)")
+	editLevelPayments( O5_VR_PLAT )
   case k == 15
-    spr_opl_51(O5_AS_PLAT,"ассистентам (платные услуги)")
+//    spr_opl_51(O5_AS_PLAT,"ассистентам (платные услуги)")
+	editLevelPayments( O5_AS_PLAT )
   case k == 16
-    spr_opl_51(O5_VR_DMS,"врачам (ДМС)")
+//    spr_opl_51(O5_VR_DMS,"врачам (ДМС)")
+	editLevelPayments( O5_VR_DMS )
   case k == 17
-    spr_opl_51(O5_AS_DMS,"ассистентам (ДМС)")
+//    spr_opl_51(O5_AS_DMS,"ассистентам (ДМС)")
+	editLevelPayments( O5_AS_DMS )
 endcase
 if between(k,11,20)
   si1 := k-10
@@ -3651,11 +3681,14 @@ do case
     endif
     popup_prompt(T_ROW, T_COL+5, sk, mas_pmt, mas_msg, mas_fun)
   case k == 1
-    edit_pers()
+//    edit_pers()
+    editEmployees( 1 )
   case k == 2
-    edit_otd()
+//    edit_otd()
+	editSubdivisions()
   case k == 3
-    edit_uch()
+//    edit_uch()
+	editDepartments()
   case k == 4
     str_sem := "Редактирование реквизитов организации"
     if G_SLock(str_sem)
@@ -3669,7 +3702,8 @@ do case
   case k == 5
     str_sem := "Привязка участковых врачей к участкам"
     if G_SLock(str_sem)
-      f_attach_uch_vrach()
+//      f_attach_uch_vrach()
+	  editDistrictDoctors()
       G_SUnLock(str_sem)
     else
       func_error(4,err_slock)
@@ -4527,7 +4561,7 @@ endif
 select (tmp_select)
 return ret
 
-** 17.05.22 редактирование справочника отделений
+***** 18.02.20 редактирование справочника отделений
 Function edit_otd()
 Local i, j, blk, arr[US_LEN], fl
 if input_uch(T_ROW-1,T_COL+5) == NIL
@@ -4550,9 +4584,7 @@ Private mm_tiplu := {;
   {"диспансеризация/профосмотр взрослых"  ,TIP_LU_DVN  },;  // 8
   {"пренатальная диагностика"             ,TIP_LU_PREND},;  // 9
   {"гемодиализ"                           ,TIP_LU_H_DIA},;  // 10
-  {"перитонеальный диализ"                ,TIP_LU_P_DIA},;  // 11
-  {"COVID - углубленная диспансеризация" ,TIP_LU_DVN_COVID},;  // 15
-  {"медицинская реабилитация"            ,TIP_LU_MED_REAB}}  // 16
+  {"перитонеальный диализ"                ,TIP_LU_P_DIA}}   // 11
 if glob_mo[_MO_KOD_TFOMS] == '126501'
   Ins_Array(mm_tiplu, 3, {"неотложная медицинская помощь",TIP_LU_NMP})
 endif
@@ -4599,7 +4631,7 @@ arr[US_EDIT_SPR ] := {{"name","C",30,0,,,space(30),,"Наименование отделения"},;
                        "Профиль мед.помощи"},;
                       {"PROFIL_K","N",3,0,,;
                        {|x|menu_reader(x,tmp_V020,A__MENUVERT_SPACE,,,.f.)},;
-                       0,{|x|inieditspr(A__MENUVERT, getV020(), x)},;
+                       0,{|x|inieditspr(A__MENUVERT,glob_V020,x)},;
                        "Профиль койки"},;
                       {"IDUMP","N",2,0,,;
                        {|x|menu_reader(x,tmp_V006,A__MENUVERT,,,.f.)},;
