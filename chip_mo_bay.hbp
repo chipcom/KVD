@@ -447,6 +447,7 @@ hbsqlit3.hbc
 ..\2.x\oms\oms_double.prg
 ..\2.x\oms\definition_KSG.prg
 ..\2.x\oms\oms_sluch.prg
+..\2.x\oms\oms_sluch_main.prg
 ..\2.x\oms\oms_usl_sluch.prg
 ..\2.x\oms\f_N_oms_usl_sluch.prg
 ..\2.x\oms\f5editkusl.prg
@@ -469,6 +470,7 @@ hbsqlit3.hbc
 ..\2.x\oms\oms_vmp.prg
 ..\2.x\oms\oms_sluch_med_reab.prg
 ..\2.x\oms\oms_sluch_med_reab_func.prg
+..\2.x\oms\oms_sluch_dializ.prg
 
 ..\2.x\onkologiya\onko.prg
 
