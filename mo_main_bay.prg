@@ -1,9 +1,9 @@
-***** mo_main.prg - главный модуль
-*******************************************************************************
+** mo_main.prg - главный модуль
+**
 * Функции для plug-in'ов
-*******************************************************************************
+**
 * my_mo_begin_task()
-*******************************************************************************
+**
 #include 'set.ch'
 #include 'inkey.ch'
 #include 'function.ch'
@@ -20,70 +20,192 @@ DYNAMIC f1forma_792_MIAC
 DYNAMIC monitoring_vid_pom
 DYNAMIC b_25_perinat_2
 
-** 12.06.22
+** 19.07.22
 procedure main( ... )
-  Local r, s, is_create := .f., is_copy := .f., is_index := .f.
-  Local a_parol, buf, is_local_version
+  local r, s, is_create := .f., is_copy := .f., is_index := .f., is_ftp := .f.
+  local a_parol, buf, is_local_version := .t.
   local verify_fio_polzovat := .t.
+  local nameTask := StripPath( HB_ArgV(0) )
+  local lQuiet := .f., i
+  local sourceDB := '', work_dir := ''
 
-  FOR EACH s IN hb_AParams() // анализ входных параметров
+  REQUEST HB_CODEPAGE_RU866
+  HB_CDPSELECT('RU866')
+  REQUEST HB_LANG_RU866
+  HB_LANGSELECT('RU866')
+
+  REQUEST DBFNTX
+  RDDSETDEFAULT('DBFNTX')
+
+  for each s in hb_AParams() // анализ входных параметров
     s := lower(s)
-    DO CASE
-      CASE s == '/create'
+    do case
+      case s == '-create'
         is_create := .t.
-      CASE s == '/copy'
+      case s == '-copy'
         is_copy := .t.
-      CASE s == '/index'
+      case s == '-index'
         is_index := .t.
-    ENDCASE
-  NEXT
+      case s == '-ftp'
+        is_ftp := .t.
+      case hb_LeftEq( s, '--base_dir=' )
+        sourceDB := SubStr( s, 11 + 1 )
+        if right(sourceDB, 1) != hb_ps()
+          sourceDB += hb_ps()
+        endif
+      case hb_LeftEq( s, '--work_dir=' )
+        work_dir := SubStr( s, 11 + 1 )
+        if right(work_dir, 1) != hb_ps()
+          work_dir += hb_ps()
+        endif
+      // case s == '-quiet'
+      //   lQuiet := .t.
+    endcase
+  next
   //
-  public Err_version := fs_version(_version()) + ' от ' + _date_version()
-  Public kod_VOUNC := '101004'
-  Public kod_LIS   := {'125901', '805965'}
-  //
-  Public DELAY_SPRD := 0 // время задержки для разворачивания строк
-  Public sdbf := ".DBF", sntx := ".NTX", stxt := ".TXT", szip := ".ZIP",;
-    smem := ".MEM", srar := ".RAR", sxml := ".XML", sini := ".INI",;
-    sfr3 := ".FR3", sfrm := ".FRM", spdf := ".PDF", scsv := ".CSV",;
-    sxls := ".xls", schip := ".CHIP", sdbt := ".dbt"
-  public cslash := hb_ps()    // '\'
-    
-  PUBLIC public_mouse := .f., pravo_write := .t., pravo_read := .t., ;
-       MenuTo_Minut := 0, sys_date := DATE(), cScrMode := 'COLOR', ;
-       DemoMode := .f., picture_pf := '@R 999-999-999 99', ;
-       pict_cena := '9999999.99', forever := 'forever'
-  Public gpasskod := ret_gpasskod()
-  PUBLIC sem_task := 'Учёт работы МО'
-  PUBLIC sem_vagno := 'Учёт работы МО - ответственный режим'
-  PUBLIC err_slock := 'В данный момент с этим режимом работает другой пользователь. Доступ запрещён!'
-  PUBLIC err_admin := 'Доступ в данный режим разрешен только администратору системы!'
-  PUBLIC err_sdemo := 'Это демонстрационная версия. Операция запрещена!'
-  PUBLIC fr_data := '_data', fr_titl := '_titl'
-  Public dir_XML_MO := 'XML_MO', dir_XML_TF := 'XML_TF'
-  Public dir_NAPR_MO := 'NAPR_MO', dir_NAPR_TF := 'NAPR_TF'
-  Public _tmp_dir  := 'TMP___'
-  Public _tmp_dir1 := _tmp_dir + cslash
-  Public _tmp2dir  := 'TMP2___'
-  Public _tmp2dir1 := _tmp2dir + cslash
-  Public d_01_04_2013 := 0d20130401
-  Public d_01_04_2015 := 0d20150401
-  Public d_01_08_2016 := 0d20160801
-  Public d_01_08_2017 := 0d20170801
-  Public d_01_09_2017 := 0d20170901
-  Public d_01_05_2018 := 0d20180501
-  Public d_01_05_2019 := 0d20190501
-  Public d_01_11_2019 := 0d20191101
-  Public d_01_01_2021 := 0d20210101
-  Public d_01_01_2022 := 0d20220101 // новый 2022 год и переход на новый ПУМП письмо № 04-18?17 от 28.12.2021
-  Public d_01_04_2022 := 0d20220401 // изменения в ПУМП 04-18-007 от 23.03.22
-  //
-	// объект пользователя зарегистрировавшегося в системе
-	public hb_user_curUser := nil
+  do case
+    case is_create .and. is_copy
+      quit_app('Запрещено одновременное указание ключей запуска -create и -copy!', lQuiet)
+    case is_create .and. is_index
+      quit_app('Запрещено одновременное указание ключей запуска -create и -index!', lQuiet)
+    case is_create .and. is_ftp
+        quit_app('Запрещено одновременное указание ключей запуска -create и -ftp!', lQuiet)
+    case is_copy .and. is_index
+      quit_app('Запрещено одновременное указание ключей запуска -copy и -index!', lQuiet)
+    case is_copy .and. is_ftp
+      quit_app('Запрещено одновременное указание ключей запуска -copy и -ftp!', lQuiet)
+    endcase
 
+  if is_copy .or. is_index .or. is_ftp
+    lQuiet := .t.
+  endif
+
+  if ! empty(sourceDB) .and. ! hb_vfDirExists(sourceDB)
+    quit_app('Каталог базы данных ' + sourceDB + ' не существует!', lQuiet)
+  endif
+
+  if ! empty(work_dir) .and. empty(sourceDB) .and. ! hb_vfDirExists(work_dir)
+    quit_app('Рабочий каталог пользователя ' + work_dir + ' не существует и не указана опция --base_dir!', lQuiet)
+  elseif ! empty(work_dir) .and. empty(sourceDB) .and. hb_vfDirExists(work_dir) .and. ! hb_FileExists(work_dir + 'server.mem')
+    quit_app('В рабочем каталоге пользователя ' + work_dir + ' отсутствует файл server.mem!', lQuiet)
+  elseif ! empty(work_dir) .and. ! empty(sourceDB) .and. ! hb_vfDirExists(work_dir)
+    hb_vfDirMake(work_dir)
+    DirChange(work_dir)
+  elseif ! empty(work_dir) .and. ! empty(sourceDB) .and. hb_vfDirExists(work_dir)
+    DirChange(work_dir)
+  endif
+  // проверка на повторный запуск задачи, если "да" - выход
+  if IsExeRunning(nameTask)
+    quit_app('Программа "' + upper(nameTask) + '" уже запущена. Запуск второй копии запрещен!', lQuiet)
+  endif
+
+  //SET(_SET_EVENTMASK,INKEY_KEYBOARD)
+  SET SCOREBOARD OFF
+  SET EXACT ON
+  SET DATE GERMAN
+  SET WRAP ON
+  SET CENTURY ON
+  SET EXCLUSIVE ON
+  SET DELETED ON
+  setblink(.f.)
+  READINSERT(.T.) // режим редактирования по умолчанию Insert
+  KEYBOARD ''
+  ksetnum(.t.)    // включить NumLock
+  SETCURSOR(0)
+  SET COLOR TO
   SET(_SET_DELETED, .T.)
   SETCLEARB(' ')
-  is_local_version := f_first(is_create)
+
+  if is_index .and. empty(sourceDB)
+    quit_app('Для ключа -index не указан ключ -base_dir!', lQuiet)
+  endif
+
+  if is_copy .and. empty(sourceDB)
+    quit_app('Для ключа -copy не указан ключ -base_dir!', lQuiet)
+  endif
+
+  if is_ftp .and. empty(sourceDB)
+    quit_app('Для ключа -ftp не указан ключ -base_dir!', lQuiet)
+  endif
+
+  declare_public()
+  if !empty(sourceDB)
+    dir_server := sourceDB
+  endif
+  if !empty(work_dir)
+    cur_dir := work_dir
+  endif
+  declare_public_2()
+
+  checkAccessDirectory(dir_server, lQuiet)
+  checkAccessDirectory(cur_dir, lQuiet)
+
+  if is_index
+    Private fl_open := .t.
+    OutStd('Начало переиндексации', hb_eol())
+    for i := 1 to len(array_files_DB)
+      index_base(array_files_DB[i], lQuiet)
+    next
+
+    use (dir_server + 'mo_ppadd') new
+    pack
+    use
+  
+    pereindex_263(lQuiet)
+    copy_ENP(lQuiet)
+    ochistka_RAK(lQuiet)
+    // удалим временные файлы
+	  filedelete(cur_dir + 'tmp*.dbf')
+	  filedelete(cur_dir + 'tmp*.ntx')
+
+    quit_app('Окончание переиндексации', lQuiet)
+  endif
+
+  SET KEY K_ALT_F3 TO calendar
+  SET KEY K_ALT_F2 TO calc
+  SET KEY K_ALT_X  TO f_end
+
+  delete file ttt.ttt
+  // is_local_version := f_first(is_create)
+
+  if empty(dir_server)
+    if hb_FileExists(cur_dir+ 'server.mem')
+      ft_use(cur_dir + 'server.mem')
+      dir_server := alltrim(ft_readln())
+      ft_use()
+      is_local_version := .f.
+    else // иначе = текущий каталог
+      dir_server := cur_dir
+    endif
+    if right(dir_server, 1) != cslash
+      dir_server += cslash
+    endif
+  else
+    if lower(alltrim(dir_server)) != lower(alltrim(cur_dir))
+      is_local_version := .f.
+    endif
+  endif
+
+  if !is_create .and. !hb_FileExists(dir_server + 'human' + sdbf)
+    quit_app('Не обнаружены файлы базы данных! Обратитесь к системному администратору.', lQuiet)
+  endif
+  //
+
+  // инициализация массива МО, запрос кода МО (при необходимости)
+  // r := init_mo(lQuiet)
+  init_mo(lQuiet)
+
+  if is_copy .or. is_ftp
+    OutStd('Начало резервного копирования', hb_eol())
+    // if is_copy
+      m_copy_DB(iif(is_copy, 3, 2), lQuiet, .f.) //, spath)
+    // else
+      // m_copy_DB(2, lQuiet, .f.) //, spath)
+    // endif
+    quit_app('Окончание резервного копирования', lQuiet)
+  endif
+
+  // инициализаия экрана
   put_icon(__s_full_name() + __s_version(), 'MAIN_ICON')
   set key K_F1 to f_help()
   hard_err('create')
@@ -92,8 +214,7 @@ procedure main( ... )
   new_dir = ''
   SETCOLOR(color1)
 
-  // инициализация массива МО, запрос кода МО (при необходимости)
-  r := init_mo()
+  r := main_up_screen()
 
   // реконструкция файлов доступа к системе
   Reconstruct_Security(is_local_version)
@@ -125,7 +246,7 @@ procedure main( ... )
   endif
   //
 
-  // checkVersionInternet( r + 3, _version() )
+  checkVersionInternet( r + 3, _version() )
 
   Public chm_help_code := 0
 
@@ -170,7 +291,7 @@ procedure main( ... )
 
   return
 
-***** 17.05.21
+** 17.05.21
 Function f_main(r0, is_local_version, a_parol)
   Static arr1 := {;
     {"Регистратура поликлиники"            ,X_REGIST,,.t.,"РЕГИСТРАТУРА"},;
@@ -277,7 +398,7 @@ Function f_main(r0, is_local_version, a_parol)
   endif
   return NIL
 
-***** вывести верхние строки главного экрана
+** вывести верхние строки главного экрана
 Function main_up_screen()
   Local i, k, s, arr[2]
 
@@ -303,7 +424,7 @@ Function main_up_screen()
   @ k+1,maxcol()-4 say hour_min(seconds()) color "W+/N"
   return k+1
 
-***** вывести центральные строки главного экрана
+** вывести центральные строки главного экрана
 Function main_center_screen(r0,a_parol)
   Static nLen := 11
   Static arr_name := {"инфаркт", "инсульт", "ЧМТ", "онкология",;
@@ -362,7 +483,7 @@ Function main_center_screen(r0,a_parol)
   return NIL
 
 
-*****
+**
 Function m_help()
   Local tmp_help, pt
 
@@ -372,125 +493,7 @@ Function m_help()
   chm_help_code := tmp_help
   return NIL
 
-***** 24.10.17
-FUNCTION f_first(is_create)
-  Local is_local_version := .t.
-
-  REQUEST HB_CODEPAGE_RU866
-  HB_CDPSELECT("RU866")
-  REQUEST HB_LANG_RU866
-  HB_LANGSELECT("RU866")
-
-  REQUEST DBFNTX
-  RDDSETDEFAULT("DBFNTX")
-
-  //SET(_SET_EVENTMASK,INKEY_KEYBOARD)
-  SET SCOREBOARD OFF
-  SET EXACT ON
-  SET DATE GERMAN
-  SET WRAP ON
-  SET CENTURY ON
-  SET EXCLUSIVE ON
-  SET DELETED ON
-  setblink(.f.)
-
-  PUBLIC help_code := -1
-
-  PUBLIC yes_color := .t.
-
-  PUBLIC color0, color1, cColorWait, cColorSt2Msg, cColorStMsg,;
-       cCalcMain, cHelpCMain, cColorText,;
-       cHelpCTitle, cHelpCStatus, cDataCScr, cDataCGet, cDataCSay,;
-       cDataCMenu, color13, color14, cColorSt1Msg, cDataPgDn, col_tit_popup,;
-       color5, color8, col1menu := "", col2menu := "",;
-       color_uch, col_tit_uch
-  Public n_list := 1, tek_stroke := 0, fp
-  Public p_color_screen := "W/N*", p_char_screen := " " // заполнение экрана
-  Public c__cw := "N+/N" // цвет теней
-  //
-  color0 := "N/BG,W+/N"
-  color1 := "W+/B,W+/R"
-  color_uch := "B/BG,W+/B" ; col_tit_uch := "B+/BG"
-  col1menu := color0+",B/BG,BG+/N"
-  col2menu := color0+",B/BG,BG+/N"
-  col_tit_popup := "B/BG"
-  //
-  cColorStMsg := "W+/R,,,,B/W"                 //    Stat_msg
-  cColorSt1Msg := "W+/R,,,,B/W"                //    Stat_msg
-  cColorSt2Msg := "GR+/R,,,,B/W"               //    Stat_msg
-  cColorWait := "W+/R*,,,,B/W"                 //    Ждите
-  //
-  cCalcMain := "N/W,GR+/R"                     //    Калькулятор
-  //
-  cColorText := "W+/N,BG+/N,,,B/W"
-  //
-  cHelpCMain := "W+/RB,W+/N,,,B/W"             //    Помощь
-  cHelpCTitle := "G+/RB"
-  cHelpCStatus := "BG+/RB"
-  //                                           //     Ввод данных
-  cDataCScr  := "W+/B,B/BG"
-  cDataCGet  := "W+/B,W+/R,,,BG+/B"
-  cDataCSay  := "BG+/B,W+/R,,,BG+/B"
-  cDataCMenu := "N/BG,W+/N,,,B/W"
-  cDataPgDn  := "BG/B"
-  color5     := "N/W,GR+/R,,,B/W"
-  color8     := "GR+/B,W+/R"
-  color13    := "W/B,W+/R,,,BG+/B"             // некотоpое выделение
-  color14    := "G+/B,W+/R"
-  //
-  delete file ttt.ttt
-  //
-  Public cur_drv := DISKNAME()
-  Public cur_dir := cur_drv + ":" + DIRNAME(cur_drv) + cslash
-  Public dir_server := "", p_name_comp := ""
-  Public dir_exe := upper(beforatnum(cslash, exename())) + cslash
-  Public exe_dir := dir_exe
-  // проверить, запущена ли уже данная задача, если "да" - выход из задачи
-  verify_1_task()
-  //
-  if hb_FileExists("server.mem")
-    ft_use("server.mem")
-    dir_server := alltrim(ft_readln())
-    if !ft_eof()
-      ft_skip()
-      p_name_comp := alltrim(ft_readln())
-      if cslash $ p_name_comp
-        p_name_comp := ""
-      endif
-    endif
-    if len(p_name_comp) < 2
-      p_name_comp := alltrim(netname())+cslash+hb_username()
-    endif
-    ft_use()
-    is_local_version := .f.
-  else // иначе = текущий каталог
-    dir_server := cur_dir
-  endif
-  if right(dir_server,1) != cslash
-    dir_server += cslash
-  endif
-  is_server(dir_server,cur_dir)
-  if !is_create .and. !hb_FileExists(dir_server+"human"+sdbf)
-    func_error("Не обнаружены файлы базы данных! Обратитесь к системному администратору.")
-    QUIT
-  endif
-  //
-  if hb_FileExists(dir_server+"plat.dbf")
-    func_error("Вероятнее всего, Вы запускаете программу в каталоге СЧЕТА. Это недопустимо!")
-    QUIT
-  endif
-  SET KEY K_ALT_F3 TO calendar
-  SET KEY K_ALT_F2 TO calc
-  SET KEY K_ALT_X  TO f_end
-  Public flag_chip := .f.
-  READINSERT(.T.) // режим редактирования по умолчанию Insert
-  KEYBOARD ""
-  ksetnum(.t.)    // включить NumLock
-  SETCURSOR(0)
-  SET COLOR TO
-  RETURN is_local_version
-
-***** 02.11.15
+** 02.11.15
 Function hard_err(p)
 // k = 1 - проверка диска на наличие временного файла hard_err.meh
 //         и, если он есть, вывод текста о необходимости переиндексирования;
@@ -536,8 +539,8 @@ Function hard_err(p)
   endcase
   return NIL
 
-** 13.06.22
-FUNCTION f_end(yes_copy)
+** 14.07.22
+FUNCTION f_end(yes_copy, lQuiet)
   Static group_ini := 'RAB_MESTO'
   Local i, spath := '', bSaveHandler := ERRORBLOCK( {|x| BREAK(x)} )
 
@@ -545,6 +548,7 @@ FUNCTION f_end(yes_copy)
     write_rest_pp() // записать незаписанные истории болезней из приёмного покоя
     CLOSE ALL
     DEFAULT yes_copy TO .t.
+    DEFAULT lQuiet TO .f.
     if yes_copy
       i := GetIniVar(tmp_ini, {{group_ini, 'base_copy', '1'}, ;
                              {group_ini, 'path_copy', ''}} )
@@ -552,7 +556,8 @@ FUNCTION f_end(yes_copy)
         if len(i) > 1 .and. i[2] != NIL .and. !empty(i[2])
           spath := i[2]
         endif
-        m_copy_DB_from_end(.f., spath) // резервное копирование
+        // m_copy_DB_from_end(.f., spath) // резервное копирование
+        m_copy_DB(3, lQuiet, .f., spath)
         G_SUnLock(sem_vagno) // разрешение доступа всем
       endif
     endif
@@ -704,7 +709,7 @@ Function find_unfinished_reestr_sp_tk(is_oper, is_count)
 
 ** 10.06.21 проверить, есть ли неотосланные просроченные листы учёта
 Function find_time_limit_human_reestr_sp_tk()
-  Local buf := savescreen(), arr[10, 2], i, mas_pmt, r, c, n, d := sys_date-23
+  Local buf := savescreen(), arr[10, 2], i, mas_pmt, r, c, n, d := sys_date - 23
   Local fl := .f., bSaveHandler := ERRORBLOCK( {|x| BREAK(x)} )
 
   mywait('Подождите, проверяем просроченные случаи (неотправленные в ТФОМС)...')
@@ -815,38 +820,38 @@ Function find_time_limit_human_reestr_sp_tk()
   restscreen(buf)
   return NIL
 
-**
+** 29.06.22
 Function f1find_time_limit_human_reestr_sp_tk(i, arr)
-  Local n_file := "time_lim" + stxt, sh := 80, HH := 60
+  Local n_file := cur_dir + 'time_lim' + stxt, sh := 80, HH := 60
 
   fp := fcreate(n_file) ; n_list := 1 ; tek_stroke := 0
-  add_string("")
-  add_string(center("Список случаев, вернувшихся с ошибкой и ещё не отосланных в ТФОМС", sh))
+  add_string('')
+  add_string(center('Список случаев, вернувшихся с ошибкой и ещё не отосланных в ТФОМС', sh))
   if i == 10
-    add_string(center("(просрочено более " + lstr(arr[9, 1]) + " дн.)", sh))
+    add_string(center('(просрочено более ' + lstr(arr[9, 1]) + ' дн.)', sh))
   else
-    add_string(center("(просрочено " + lstr(arr[i, 1]) + " дн.)", sh))
+    add_string(center('(просрочено ' + lstr(arr[i, 1]) + ' дн.)', sh))
   endif
-  add_string(center("по состоянию на " + full_date(sys_date) + " " + hour_min(seconds()), sh))
-  add_string("")
-  R_Use(dir_server + "mo_otd", , "OTD")
-  R_Use(dir_server + "human_", , "HUMAN_")
-  R_Use(dir_server + "human", , "HUMAN")
+  add_string(center('по состоянию на ' + full_date(sys_date) + ' ' + hour_min(seconds()), sh))
+  add_string('')
+  R_Use(dir_server + 'mo_otd', , 'OTD')
+  R_Use(dir_server + 'human_', , 'HUMAN_')
+  R_Use(dir_server + 'human', , 'HUMAN')
   set relation to recno() into HUMAN_, to otd into OTD
-  use (cur_dir + "tmp_tl") new
+  use (cur_dir + 'tmp_tl') new
   set relation to kod_h into HUMAN
   if i == 10
-    index on upper(human->fio) to (cur_dir + "tmp_tl") for dni > arr[9, 1]
+    index on upper(human->fio) to (cur_dir + 'tmp_tl') for dni > arr[9, 1]
   else
-    index on upper(human->fio) to (cur_dir + "tmp_tl") for dni == arr[i, 1]
+    index on upper(human->fio) to (cur_dir + 'tmp_tl') for dni == arr[i, 1]
   endif
   i := 0
   go top
   do while !eof()
     verify_FF(HH, .t., sh)
-    add_string(lstr(++i) + ". " + alltrim(human->fio) + ", " + full_date(human->date_r) + ;
-             iif(empty(otd->SHORT_NAME), "", " [" + alltrim(otd->SHORT_NAME) + "]") + ;
-             " " + date_8(human->n_data) + "-" + date_8(human->k_data))
+    add_string(lstr(++i) + '. ' + alltrim(human->fio) + ', ' + full_date(human->date_r) + ;
+             iif(empty(otd->SHORT_NAME), '', ' [' + alltrim(otd->SHORT_NAME) + ']') + ;
+             ' ' + date_8(human->n_data) + '-' + date_8(human->k_data))
     select TMP_TL
     skip
   enddo
@@ -855,7 +860,7 @@ Function f1find_time_limit_human_reestr_sp_tk(i, arr)
   viewtext(n_file, , , , .f., , , 2)
   return NIL
 
-***
+**
 Function my_mo_begin_task()
   Local fl := .t.
 
@@ -863,3 +868,16 @@ Function my_mo_begin_task()
     fl := vounc_begin_task()
   endif
   return fl
+
+** 26.06.22
+procedure quit_app(sError, lQuiet)
+
+  default lQuiet to .f.
+  OutStd(sError, hb_eol())
+  if ! lQuiet
+    hb_Alert(sError)
+  endif
+  SET COLOR TO
+  SET CURSOR ON
+  QUIT
+  return
