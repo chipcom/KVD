@@ -9,6 +9,7 @@
 #i_var  $3 full_date(date())
 #i_var  $4 upper( srub_kop( tt_summa, .t. ) )
 #i_var  $5 full_date( aContracts[ i ]:DatePay )
+#i_var	$6 alltrim(TOrganizationDB():GetOrganization():Bux)
 //
 #private t_arr, t_summa, tt_k_data
 #private tt_summa, t_arr2
@@ -77,7 +78,7 @@
 	#enddo
 #endif
 
-Фамилия, имя, отчество и должность лица выдавшего справку: главный бухгалтер Воронова Ирина Анатольевна
+Фамилия, имя, отчество и должность лица выдавшего справку: главный бухгалтер Мунтаев Р.Ж.
 
 Номер телефона: ( 8442 ) 35-83-33.
 
