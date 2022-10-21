@@ -4438,7 +4438,8 @@ index on kod to (cur_dir+"tmpkV004")
 tmp_V004->(dbCloseArea())
 //
 len1 := 0
-_glob_array := glob_V015
+// _glob_array := glob_V015
+_glob_array := getV015()
 for i := 1 to len(_glob_array)
   if iif(is_all, .t., between_date(_glob_array[i,5],_glob_array[i,6],_date))
     len1 := max(len1,len(lstr(_glob_array[i,2])+alltrim(_glob_array[i,1]))+1)
@@ -4629,10 +4630,14 @@ arr[US_EDIT_SPR ] := {{"name","C",30,0,,,space(30),,"Наименование отделения"},;
                        {|x|menu_reader(x,tmp_V002,A__MENUVERT_SPACE,,,.f.)},;
                        0,{|x|inieditspr(A__MENUVERT,glob_V002,x)},;
                        "Профиль мед.помощи"},;
+                      // {"PROFIL_K","N",3,0,,;
+                      //  {|x|menu_reader(x,tmp_V020,A__MENUVERT_SPACE,,,.f.)},;
+                      //  0,{|x|inieditspr(A__MENUVERT,glob_V020,x)},;
+                      //  "Профиль койки"},;
                       {"PROFIL_K","N",3,0,,;
-                       {|x|menu_reader(x,tmp_V020,A__MENUVERT_SPACE,,,.f.)},;
-                       0,{|x|inieditspr(A__MENUVERT,glob_V020,x)},;
-                       "Профиль койки"},;
+                        {|x|menu_reader(x,tmp_V020,A__MENUVERT_SPACE,,,.f.)},;
+                        0,{|x|inieditspr(A__MENUVERT,getV020(),x)},;
+                        "Профиль койки"},;
                       {"IDUMP","N",2,0,,;
                        {|x|menu_reader(x,tmp_V006,A__MENUVERT,,,.f.)},;
                        0,{|x|inieditspr(A__MENUVERT,glob_V006,x)},;

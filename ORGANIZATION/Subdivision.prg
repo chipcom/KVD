@@ -114,7 +114,8 @@ function editSubdivision( oBrowse, aObjects, oSubdivision, nKey )
 		m1mprofil 	:= oSubdivision:Profil
 		mmprofil	:= inieditspr( A__MENUVERT, glob_V002, m1mprofil )
 		m1mprofilK 	:= oSubdivision:ProfilK
-		mmprofilK	:= inieditspr( A__MENUVERT, glob_V020, m1mprofilK )
+		// mmprofilK	:= inieditspr( A__MENUVERT, glob_V020, m1mprofilK )
+		mmprofilK	:= inieditspr( A__MENUVERT, getV020(), m1mprofilK )
 		// условия оказания медицинской помощи
 		m1mIDUMP	:= oSubdivision:IDUMP
 		mmIDUMP	:= inieditspr( A__MENUVERT, glob_V006, m1mIDUMP )
