@@ -118,7 +118,8 @@ function editSubdivision( oBrowse, aObjects, oSubdivision, nKey )
 		mmprofilK	:= inieditspr( A__MENUVERT, getV020(), m1mprofilK )
 		// условия оказания медицинской помощи
 		m1mIDUMP	:= oSubdivision:IDUMP
-		mmIDUMP	:= inieditspr( A__MENUVERT, glob_V006, m1mIDUMP )
+		// mmIDUMP	:= inieditspr( A__MENUVERT, glob_V006, m1mIDUMP )
+		mmIDUMP	:= inieditspr( A__MENUVERT, getV006(), m1mIDUMP )
 		// код подразделения
 		mmkodpodr := ini_kod_podr( oSubdivision:KodPodr )
 
