@@ -125,16 +125,6 @@ function editSubdivision( oBrowse, aObjects, oSubdivision, nKey )
 		m1mCodeSubTFOMS := oSubdivision:CodeSubTFOMS
 		mmCodeSubTFOMS := inieditspr( A__MENUVERT, mm_otd_dep, m1mCodeSubTFOMS )
 		
-/*		m1mIDSP	:= oSubdivision:IDSP
-		mmIDSP	:= inieditspr( A__MENUVERT, glob_V010, m1mIDSP )
-		m1mIDVMP	:= oSubdivision:IDVMP
-		mmIDVMP	:= inieditspr( A__MENUVERT, glob_V008, m1mIDSP )
-		
-		// TODO
-		// // адрес подразделения по ТФОМС
-		m1mAddress	:= oSubdivision:AddressSubdivision
-		mmAdress	:= inieditspr( A__MENUVERT, mm_adres_podr, m1mAddress )
-*/		
 		if oSubdivision:IDDepartment() == 0
 			oSubdivision:IDDepartment := oDepartment:ID()
 		endif
