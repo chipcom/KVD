@@ -383,6 +383,8 @@ hbsqlit3.hbc
 ..\2.x\init\update_data_DB.prg
 #..\2.x\init\declare_public.prg
 
+..\2.x\information\view_list_uch.prg
+
 ..\2.x\security\security.prg
 
 ..\2.x\calendar\calendar.prg
