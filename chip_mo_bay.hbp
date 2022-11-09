@@ -84,7 +84,7 @@ hbsqlit3.hbc
 ..\2.x\263\mo_263.prg
 ..\2.x\263\mo_263p.prg
 ..\2.x\263\mo_263s.prg
-..\2.x\mo_spri.prg
+..\2.x\dictionary\mo_spri.prg
 ..\2.x\mo_version.prg
 
 ### главный модуль программы
