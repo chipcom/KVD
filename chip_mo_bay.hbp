@@ -480,6 +480,10 @@ hbsqlit3.hbc
 ..\2.x\oms\oms_sluch_med_reab.prg
 ..\2.x\oms\oms_sluch_med_reab_func.prg
 ..\2.x\oms\oms_sluch_dializ.prg
+..\2.x\oms\oms_sluch_onko_disp.prg
+..\2.x\oms\oms_sluch_smp.prg
+
+..\2.x\personal\personal_func.prg
 
 ..\2.x\onkologiya\onko.prg
 
