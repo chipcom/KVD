@@ -451,6 +451,7 @@ hbsqlit3.hbc
 ..\2.x\ref\dbMethodINJ.prg
 ..\2.x\ref\dbUnitOfMeasurement.prg
 ..\2.x\ref\setupFFOMSref.prg
+..\2.x\ref\refPRVS.prg
 
 ..\2.x\oms\oms_func.prg
 ..\2.x\oms\oms_double.prg
