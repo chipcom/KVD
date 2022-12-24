@@ -214,7 +214,7 @@ function editService( oPayService, aObjects, nKey, lPayment, oContract )
 		@ row(), 40 say 'Цена услуги' get mu_cena pict pict_cena when .f. color color14
 		@ ++r1, 2 say 'Услуга' get mname_u when .f. color color14
 		
-		for x := 1 to 3
+		for x := 1 to 3 
 			if mem_por_vr == x
 				@ ++r1, 2 say 'Таб.№ врача' get mtabn_vr pict '99999' ;
 								valid { | g | validEmployer( g, 'врач', @oDoctor ) }
@@ -274,14 +274,14 @@ function editService( oPayService, aObjects, nKey, lPayment, oContract )
 				flagError := .t.
 				aadd( arrError, 'не заполнено поле количество услуг' )
 			endif
-			if oService:WithDoctor .and. mtabn_vr == 0
-				flagError := .t.
-				aadd( arrError, 'не выбран врач' )
-			endif
-			if !oService:WithDoctor .and. oService:WithAssistant .and. mtabn_as == 0
-				flagError := .t.
-				aadd( arrError, 'не выбран ассистент' )
-			endif
+			// if oService:WithDoctor .and. mtabn_vr == 0
+			// 	flagError := .t.
+			// 	aadd( arrError, 'не выбран врач' )
+			// endif
+			// if !oService:WithDoctor .and. oService:WithAssistant .and. mtabn_as == 0
+			// 	flagError := .t.
+			// 	aadd( arrError, 'не выбран ассистент' )
+			// endif
 			if flagError
 				hb_Alert( arrError, , , 4 )
 				loop
