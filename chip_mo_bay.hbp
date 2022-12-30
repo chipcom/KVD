@@ -489,6 +489,7 @@ hbsqlit3.hbc
 ..\2.x\reports\hodotajstvoXLS.prg
 ..\2.x\reports\exportKartExcel.prg
 ..\2.x\reports\create_xls_rdl.prg
+..\2.x\reports\forma14_med_oms.prg
 
 ..\2.x\util\workWithZIP.prg
 ..\2.x\util\runExternalProgram.prg
