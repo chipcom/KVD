@@ -343,7 +343,7 @@ mfull_name:= IF(nKey==K_INS, SPACE(255),usl->full_name)
 mshifr    := if(nKey==K_INS, space(10), usl->shifr)
 mshifr1   := if(nKey==K_INS, space(10), usl->shifr1)
 m1PROFIL  := IF(nKey==K_INS, 0, usl->profil)
-mPROFIL   := inieditspr(A__MENUVERT, glob_V002, m1PROFIL)
+mPROFIL   := inieditspr(A__MENUVERT, getV002(), m1PROFIL)
 mcena     := IF(nKey==K_INS, 0, usl->cena)
 mcena_d   := IF(nKey==K_INS, 0, usl->cena_d)
 mpcena    := IF(nKey==K_INS, 0, usl->pcena)
@@ -919,7 +919,7 @@ mname     := IF(nKey==K_INS, SPACE(65), mosu->name)
 mshifr    := if(nKey==K_INS, space(10), mosu->shifr)
 mshifr1   := if(nKey==K_INS, space(20), mosu->shifr1)
 m1PROFIL  := IF(nKey==K_INS, 0, mosu->profil)
-mPROFIL   := inieditspr(A__MENUVERT, glob_V002, m1PROFIL)
+mPROFIL   := inieditspr(A__MENUVERT, getV002(), m1PROFIL)
 m1zf      := if(nKey==K_INS, .f., (mosu->zf==1))
 mzf       := inieditspr(A__MENUVERT, menu_nul, m1zf)
 //
@@ -4140,7 +4140,7 @@ do case
     k := maxrow()-19
     if fl_profil
       --k
-      mprofil := inieditspr(A__MENUVERT,glob_V002,m1profil)
+      mprofil := inieditspr(A__MENUVERT,getV002(),m1profil)
     endif
     box_shadow(k-1,0,maxrow()-1,79,,;
             if(nKey == K_INS,"Добавление","Редактирование")+" информации о сотруднике",color8)
@@ -4612,7 +4612,7 @@ arr[US_COLUMN   ] := {{" Наименование отделения",{|| name},blk},;
                       {" ",{|| iif(empty(KOD_PODR)," ","√")},blk},;
                       {"Сокр.",{|| short_name},blk},;
                       {" Вид листа учёта",{|| padr(inieditspr(A__MENUVERT,mm_tiplu,tiplu),19)},blk},;
-                      {" Профиль",{|| padr(inieditspr(A__MENUVERT,glob_V002,profil),15)},blk};
+                      {" Профиль",{|| padr(inieditspr(A__MENUVERT,getV002(),profil),15)},blk};
                      }
 arr[US_BLK_DEL  ] := {|_k| fdel_otd(_k) }
 arr[US_IM_PADEG ] := arr[US_SEMAPHORE] := "отделения"
@@ -4629,7 +4629,7 @@ arr[US_EDIT_SPR ] := {{"name","C",30,0,,,space(30),,"Наименование отделения"},;
                        "Является данное отделение приёмным покоем стационара"},;
                       {"PROFIL","N",3,0,,;
                        {|x|menu_reader(x,tmp_V002,A__MENUVERT_SPACE,,,.f.)},;
-                       0,{|x|inieditspr(A__MENUVERT,glob_V002,x)},;
+                       0,{|x|inieditspr(A__MENUVERT,getV002(),x)},;
                        "Профиль мед.помощи"},;
                       // {"PROFIL_K","N",3,0,,;
                       //  {|x|menu_reader(x,tmp_V020,A__MENUVERT_SPACE,,,.f.)},;

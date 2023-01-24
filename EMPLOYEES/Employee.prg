@@ -241,7 +241,7 @@ function editEmployee( oBrowse, aObjects, oEmployee, nKey )
 		k := maxrow() - 19
 		if fl_profil
 			--k
-			mprofil := inieditspr( A__MENUVERT, glob_V002, m1profil )
+			mprofil := inieditspr( A__MENUVERT, getV002(), m1profil )
 		endif
 		
 		buf1 := box_shadow( k - 1, 0, maxrow() - 1, 79, , ;

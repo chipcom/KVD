@@ -218,8 +218,8 @@ METHOD FUNCTION getProfilFormat() 		 CLASS TSubdivision
 	local ret := '', it
 
 	if ::FProfil != 0
-		if (it := ascan(glob_V002, {|x| x[2] == ::FProfil})) > 0
-			ret := glob_V002[ it, 1 ]
+		if (it := ascan(getV002(), {|x| x[2] == ::FProfil})) > 0
+			ret := getV002()[ it, 1 ]
 		endif
 	endif
 	return ret
