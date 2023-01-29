@@ -376,6 +376,7 @@ hbsqlit3.hbc
 ..\2.x\init\reconstruct_DB.prg
 ..\2.x\init\index.prg
 ..\2.x\init\index_base.prg
+..\2.x\init\index_work_dir.prg
 ..\2.x\init\initArrayFilesDB.prg
 ..\2.x\init\update_data_DB.prg
 #..\2.x\init\declare_public.prg
