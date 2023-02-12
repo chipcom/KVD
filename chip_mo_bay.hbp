@@ -512,9 +512,10 @@ hbsqlit3.hbc
 ..\2.x\dispanser\oms_dispans_naprav.prg
 ..\2.x\dispanser\oms_dispans_diagnoze.prg
 ..\2.x\dispanser\oms_dispans_func.prg
-..\2.x\DISPANSER\mo_omsna.prg
-..\2.x\DISPANSER\mo_r01.prg
-..\2.x\DISPANSER\mo_omsid.prg
+..\2.x\dispanser\mo_omsna.prg
+..\2.x\dispanser\mo_r01.prg
+..\2.x\dispanser\mo_omsid.prg
+..\2.x\dispanser\disp_nab_func.prg
 
 ..\2.x\EXCHANGE\reestrOMS_XML.prg
 ..\2.x\EXCHANGE\create_schet19_from_XML.prg
