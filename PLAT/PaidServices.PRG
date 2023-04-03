@@ -138,8 +138,10 @@ function printContract( oContract )
 		mnom     := oPatientExt:Passport:DocumentNumber	//DocumentNumber()
 		mser     := oPatientExt:Passport:DocumentSeries	//SeriesOfDocument()
 		mvid_ud := ''
-		if ( j := ascan( menu_vidud, { | x | x[ 2 ] == m1vid_ud } ) ) > 0
-			mvid_ud := menu_vidud[ j, 4 ]
+		// if ( j := ascan( menu_vidud, { | x | x[ 2 ] == m1vid_ud } ) ) > 0
+		// mvid_ud := menu_vidud[ j, 4 ]
+		if ( j := ascan( get_Name_Vid_Ud(), { | x | x[ 2 ] == m1vid_ud } ) ) > 0
+			mvid_ud := get_Name_Vid_Ud()[ j, 4 ]
 		endif
 	else
 		m1vid_ud := 0

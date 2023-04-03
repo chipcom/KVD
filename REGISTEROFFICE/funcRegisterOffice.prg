@@ -217,7 +217,7 @@ function findKartoteka_bay( oPatient, k, /*@*/lkod_k, oPolicyOMS )
 			&& mokato    := inieditspr(A__MENUVERT, glob_array_srf, m1okato)
 			&& mkomu     := inieditspr(A__MENUVERT, mm_komu, m1komu)
 			&& mismo     := init_ismo(m1ismo)
-			&& mvid_ud   := padr(inieditspr(A__MENUVERT, menu_vidud, m1vid_ud),23)
+			&& mvid_ud   := padr(inieditspr(A__MENUVERT, get_Name_Vid_Ud(), m1vid_ud),23)
 			&& madres_reg := ini_adres(1)
 			&& f_valid_komu(,-1)
 			&& if m1komu == 0
