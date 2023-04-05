@@ -465,7 +465,6 @@ hbsqlit3.hbc
 ..\2.x\oms\kiroANDkslp.prg
 ..\2.x\oms\f_1pac_definition_KSG.prg
 ..\2.x\oms\Change_Cena_OMS.prg
-..\2.x\oms\verify_1_sluch.prg
 ..\2.x\oms\conditionKSLP_21.prg
 ..\2.x\oms\conditionKSLP_22.prg
 ..\2.x\oms\conditionKSLP_23.prg
@@ -473,7 +472,6 @@ hbsqlit3.hbc
 ..\2.x\oms\mo_oms131.prg
 ..\2.x\oms\errorFromTFOMS.prg
 ..\2.x\oms\TFOMS_hodatajstvo.prg
-..\2.x\oms\verifyOMS.prg
 ..\2.x\oms\oms_lek_preparat.prg
 ..\2.x\oms\oms_implantant.prg
 ..\2.x\oms\oms_ser_number.prg
@@ -483,6 +481,9 @@ hbsqlit3.hbc
 ..\2.x\oms\oms_sluch_dializ.prg
 ..\2.x\oms\oms_sluch_onko_disp.prg
 ..\2.x\oms\oms_sluch_smp.prg
+..\2.x\oms\verify_func.prg
+..\2.x\oms\verify_oms.prg
+..\2.x\oms\verify_sluch.prg
 
 ..\2.x\personal\personal_func.prg
 
