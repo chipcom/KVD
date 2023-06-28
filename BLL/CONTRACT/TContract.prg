@@ -272,10 +272,10 @@ METHOD function getSendDoctorTabNom()				CLASS TContract
 
 
 METHOD function getFillColumnCheque()				CLASS TContract
-	local ret := '    '
+	local ret := '     '
 	
 	if( ::TypeService == PU_PLAT )
-		ret := { '    ', str( ::ReceiptNumber, 4 ), '' }[ ::IsCashbox + 1 ]
+		ret := { '     ', str( ::ReceiptNumber, 5 ), '' }[ ::IsCashbox + 1 ]
 	elseif( ::TypeService == PU_PR_VZ )
 		ret := '¢/§ '
 	elseif( ::TypeService == PU_D_SMO )

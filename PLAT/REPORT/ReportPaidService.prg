@@ -72,7 +72,7 @@ function ViewListContract( aHash )
 		endif
 		
 		aProperties := { { 'DepartmentShort', 'От-ние', 5, blcCodeColor }, { 'Patient', 'Пациент', 15, blcCodeColor }, ;
-						{ 'FillColumnCheque', 'N чек', 4, blcCodeColor }, { 'TotalBank_F', '', 2, blcCodeColor }, ;
+						{ 'FillColumnCheque', 'N чек', 5, blcCodeColor }, { 'TotalBank_F', '', 2, blcCodeColor }, ;
 						{ 'BeginTreatment', '  Дата  ', 10, blcCodeColor } }
 		if mem_naprvr == 2	// отображать табельный номер направившенго врача
 			aadd( aProperties, { { 'SendDoctorTabNom', 'Напр.', 5 } } )
