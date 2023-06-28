@@ -53,11 +53,11 @@ function begin_task_plat()
 	return ret
 
 function fillColumnCheque( obj )
-	local ret := '    '
+	local ret := '     '
 	
 	if obj != nil
 		if( obj:TypeService == PU_PLAT )
-			ret := { '    ', str( obj:ReceiptNumber, 4 ), '' }[ obj:IsCashbox + 1 ]
+			ret := { '     ', str( obj:ReceiptNumber, 5 ), '' }[ obj:IsCashbox + 1 ]
 		elseif( obj:TypeService == PU_PR_VZ )
 			ret := '¢/§ '
 		elseif( obj:TypeService == PU_D_SMO )
