@@ -1,11 +1,11 @@
-* 28.06.21 Services( obj ) - редактирование списка услуг платного договора
-* 13.11.18 viewServiceRow( oService ) - вывод информационной строки об услуге
-* 13.11.18 editService( oPayService, aObjects, nKey, lPayment, oContract ) - редактирование услуги входящей в платной договор
-* 12.11.18 editListServices( oBrowse, aObjects, oPayService, nKey, oContract ) - функция-обработчик нажатия клавиш в списке услуг
-* 25.10.18 viewTotalSum( oContract ) - вывод информационной строки об общей сумме платного договора
-* 12.06.17 getService( get, isAdult, treatment, aComplexService ) - получить информацию о выбранной услуге
-* 15.06.17 validQuantity( get ) - проверка и пересчет общей суммы услуги
-* 15.06.17 validTotal( get, iRow ) - проверка и отображения 'редактировалась' ли общая сумма усдуги
+// 28.06.21 Services( obj ) - редактирование списка услуг платного договора
+// 13.11.18 viewServiceRow( oService ) - вывод информационной строки об услуге
+// 13.11.18 editService( oPayService, aObjects, nKey, lPayment, oContract ) - редактирование услуги входящей в платной договор
+// 12.11.18 editListServices( oBrowse, aObjects, oPayService, nKey, oContract ) - функция-обработчик нажатия клавиш в списке услуг
+// 25.10.18 viewTotalSum( oContract ) - вывод информационной строки об общей сумме платного договора
+// 12.06.17 getService( get, isAdult, treatment, aComplexService ) - получить информацию о выбранной услуге
+// 15.06.17 validQuantity( get ) - проверка и пересчет общей суммы услуги
+// 15.06.17 validTotal( get, iRow ) - проверка и отображения 'редактировалась' ли общая сумма усдуги
 
 #include 'hbthread.ch'
 #include 'inkey.ch'
@@ -15,7 +15,7 @@
 #include 'chip_mo.ch'
 #include 'def_bay.ch'
 
-* 28.06.21 редактирование списка услуг платного договора
+// 03.08.23 редактирование списка услуг платного договора
 function Services( obj )
 	local flag := .f.
 	local lPayment := obj:HasCheque
@@ -72,8 +72,8 @@ function Services( obj )
 			aadd( aProperties, { 'Date_F', 'Дата ;услуг', 5 } )
 		endif
 		aadd( aProperties, { 'Subdivision_F', 'Отде-;ление', 5 } )
-		aadd( aProperties, { 'Service_Name_F', '  Наименование;  услуги', 16 } )
-		aadd( aProperties, { 'Doctor_F', 'Врач;    ', 4 } )
+		aadd( aProperties, { 'Service_Name_F', '  Наименование;  услуги', 15 } )
+		aadd( aProperties, { 'Doctor_F', 'Врач;    ', 5 } )
 		aadd( aProperties, { 'Assistant_F', 'Асс.;    ', 4 } )
 		aadd( aProperties, { 'Quantity_F', 'Кол.;   ', 3 } )
 		aadd( aProperties, { 'Total_F', ' Итого  ;        ', 8 } )
@@ -99,7 +99,7 @@ function Services( obj )
 	endif
 	return flag
 
-* 12.11.18 - функция-обработчик нажатия клавиш в списке услуг
+// 12.11.18 - функция-обработчик нажатия клавиш в списке услуг
 function editListServices( oBrowse, aObjects, oPayService, nKey, oContract )
 	local fl := .f.
 	local lPayment := oContract:HasCheque
@@ -120,7 +120,7 @@ function editListServices( oBrowse, aObjects, oPayService, nKey, oContract )
 	endcase
 	return fl
 
-* 13.11.18 - редактирование услуги входящей в платной договор
+// 13.11.18 - редактирование услуги входящей в платной договор
 function editService( oPayService, aObjects, nKey, lPayment, oContract )
 	local fl := .f.
 	local r1 := 13			// начальная строка экрана ввода
@@ -348,7 +348,7 @@ function editService( oPayService, aObjects, nKey, lPayment, oContract )
 	oBox := nil
 	return fl
 
-* 15.06.17 - проверка и отображения 'редактировалась' ли общая сумма усдуги
+// 15.06.17 - проверка и отображения 'редактировалась' ли общая сумма усдуги
 function validTotal( get, iRow )
 	local fl := .t.
 	local blk_sum := { | | mTotal := round_5( mu_cena * mQuantity, 2 ) }
@@ -363,7 +363,7 @@ function validTotal( get, iRow )
 	endif
 	return fl
 
-* 15.06.17 - проверка и пересчет общей суммы услуги
+// 15.06.17 - проверка и пересчет общей суммы услуги
 function validQuantity( get )
 	local fl := .t.
 	local blk_sum := { | | mTotal := round_5( mu_cena * mQuantity, 2 ) }
@@ -374,13 +374,13 @@ function validQuantity( get )
 	endif
 	return fl
 
-* 12.06.17 - получить информацию о выбранной услуге
+// 12.06.17 - получить информацию о выбранной услуге
 function getService( get, isAdult, treatment, aComplexService )
-*
-* isAdult - логическая переменная показывающая .t. - взрослый, .f. - ребенок
-* subdivision - код отделения
-* aComplexService - массив содержащий список услуг для комплексной услуги
-*
+//
+// isAdult - логическая переменная показывающая .t. - взрослый, .f. - ребенок
+// subdivision - код отделения
+// aComplexService - массив содержащий список услуг для комплексной услуги
+//
 	local fl := .t.
 	local oService := nil
 	local item := nil
@@ -444,7 +444,7 @@ function getService( get, isAdult, treatment, aComplexService )
 	endif
 	return fl
 
-* 13.11.18 - вывод информационной строки об услуге
+// 13.11.18 - вывод информационной строки об услуге
 function viewServiceRow( oService )
 	
 	if ! isnil( oService ) .and. ! isnil( oService:Service )

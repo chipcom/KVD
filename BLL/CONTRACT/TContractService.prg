@@ -4,7 +4,6 @@
 #include 'common.ch'
 #include 'function.ch'
 
-********************************
 // класс для строки состава услуг по платному договору файл hum_p_u.dbf
 CREATE CLASS TContractService	INHERIT	TBaseObjectBLL
 	VISIBLE:
@@ -112,9 +111,9 @@ METHOD function getDoctorFormat CLASS TContractService
 	local ret := ''
 	
 	if ! isnil( ::FExecutor[ 1 ] )
-		ret := put_val( ::FExecutor[ 1 ]:TabNom, 4 )
+		ret := put_val( ::FExecutor[ 1 ]:TabNom, 5 )
 	elseif ::FIDExecutor[ 1 ] > 0
-		ret := put_val( ::Doctor:TabNom, 4 )
+		ret := put_val( ::Doctor:TabNom, 5 )
 	endif
 	return ret
 
