@@ -372,14 +372,14 @@ function checkShifrService()
 	endif
 	return fl
 
-* 05.11.18 редактирование комплексных услуг
+// 04.08.23 редактирование комплексных услуг
 function editIntegratedServices()
 	local blkEditObject
 	local oBox, aEdit := {}
 	local aProperties
 	
 	blkEditObject := { | oBrowse, aObjects, object, nKey | editIntegratedService( oBrowse, aObjects, object, nKey ) }
-	aProperties := { { 'Shifr', 'Шифр', 10 }, { 'Name', 'Наименование комплексной услуги', 45 }, { 'Doctor_F', 'Врач', 5 }, { 'Assistant_F', 'Асс.', 5 } }
+	aProperties := { { 'Shifr', 'Шифр', 10 }, { 'Name', 'Наименование комплексной услуги', 45 }, { 'Doctor_F', 'Врач', 6 }, { 'Assistant_F', 'Асс.', 5 } }
 	
 	if hb_user_curUser:IsAdmin()
 		aEdit := { .t., .t., .t., .t. }

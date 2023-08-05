@@ -111,9 +111,9 @@ METHOD function getDoctorFormat CLASS TContractService
 	local ret := ''
 	
 	if ! isnil( ::FExecutor[ 1 ] )
-		ret := put_val( ::FExecutor[ 1 ]:TabNom, 5 )
+		ret := put_val( ::FExecutor[ 1 ]:TabNom, 6 )
 	elseif ::FIDExecutor[ 1 ] > 0
-		ret := put_val( ::Doctor:TabNom, 5 )
+		ret := put_val( ::Doctor:TabNom, 6 )
 	endif
 	return ret
 

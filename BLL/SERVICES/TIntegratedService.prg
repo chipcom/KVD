@@ -64,7 +64,7 @@ METHOD FUNCTION getDoctorFormat()				CLASS TIntegratedService
 	local ret := ''
 	
 	if ! isnil( ::FDoctor )
-		ret := str( ::FDoctor:TabNom, 5 )
+		ret := str( ::FDoctor:TabNom, 6 )
 	endif
 	return ret
 

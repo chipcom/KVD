@@ -15,7 +15,7 @@
 #include 'chip_mo.ch'
 #include 'def_bay.ch'
 
-// 03.08.23 редактирование списка услуг платного договора
+// 04.08.23 редактирование списка услуг платного договора
 function Services( obj )
 	local flag := .f.
 	local lPayment := obj:HasCheque
@@ -73,7 +73,7 @@ function Services( obj )
 		endif
 		aadd( aProperties, { 'Subdivision_F', 'Отде-;ление', 5 } )
 		aadd( aProperties, { 'Service_Name_F', '  Наименование;  услуги', 15 } )
-		aadd( aProperties, { 'Doctor_F', 'Врач;    ', 5 } )
+		aadd( aProperties, { 'Doctor_F', 'Врач;    ', 6 } )
 		aadd( aProperties, { 'Assistant_F', 'Асс.;    ', 4 } )
 		aadd( aProperties, { 'Quantity_F', 'Кол.;   ', 3 } )
 		aadd( aProperties, { 'Total_F', ' Итого  ;        ', 8 } )
