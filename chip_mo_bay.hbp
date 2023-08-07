@@ -483,6 +483,8 @@ hbsqlit3.hbc
 ..\2.x\oms\oms_sluch_dializ.prg
 ..\2.x\oms\oms_sluch_onko_disp.prg
 ..\2.x\oms\oms_sluch_smp.prg
+..\2.x\oms\oms_sluch_PrenD.prg
+..\2.x\oms\oms_sluch_g_cit.prg
 ..\2.x\oms\verify_func.prg
 ..\2.x\oms\verify_oms.prg
 ..\2.x\oms\verify_sluch.prg
@@ -520,6 +522,7 @@ hbsqlit3.hbc
 ..\2.x\dispanser\oms_dispans_func.prg
 ..\2.x\dispanser\mo_omsna.prg
 ..\2.x\dispanser\mo_r01.prg
+..\2.x\dispanser\mo_r11.prg
 ..\2.x\dispanser\mo_omsid.prg
 ..\2.x\dispanser\disp_nab_func.prg
 
