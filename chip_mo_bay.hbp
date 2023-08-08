@@ -485,6 +485,8 @@ hbsqlit3.hbc
 ..\2.x\oms\oms_sluch_smp.prg
 ..\2.x\oms\oms_sluch_PrenD.prg
 ..\2.x\oms\oms_sluch_g_cit.prg
+..\2.x\oms\oms_sluch_PREDN.prg
+..\2.x\oms\oms_sluch_PerN.prg
 ..\2.x\oms\verify_func.prg
 ..\2.x\oms\verify_oms.prg
 ..\2.x\oms\verify_sluch.prg
