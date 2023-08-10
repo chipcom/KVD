@@ -1616,6 +1616,46 @@ METHOD New() CLASS TStructFiles
 	hb_hSet( ::hbFiles, cClassName, TDBFile():New( cName, aIndex, cAlias, aEtalonDB, 'иногородние страховые компании' ) )
 //---------
 
+// сведения об иностранных гражданах
+	cClassName := Upper( 'TForeignCitizenDB' )
+	cName := dir_server + 'mo_kinos' + sdbf
+	aEtalonDB := { ;
+				{ 'KOD',		'N',	7,	0 }, ; // ID пациента
+				{ 'OSN_PREB',	'N',	2,	0 }, ; // основание пребывания в РФ
+				{ 'ADRES_PRO',	'C',	60,	0 }, ; // адрес проживания в Волг.обл.
+				{ 'MIGR_KARTA',	'C',	20,	0 }, ; // данные миграционной карты
+				{ 'DATE_P_G',	'D',	8,	0 }, ; // дата пересечения границы
+				{ 'DATE_R_M',	'D',	8,	0 } ;  // дата регистрации в миграционной службе
+				}
+	cAlias := 'TForeignCitizenDB'
+	aIndex := { ;
+				{ dir_server + 'mo_kinos', 'str( kod, 7 )' } ;
+				}
+	hb_hSet( ::hbFiles, cClassName, TDBFile():New( cName, aIndex, cAlias, aEtalonDB, 'сведения об иностранных гражданах' ) )
+//---------
+
+// справочник представителей
+	cClassName := Upper( 'TRepresentativeDB' )
+	cName := dir_server + 'mo_kpred' + sdbf
+	aEtalonDB := { ;
+				{ 'KOD',		'N',	7,	0 }, ;	// ID пациента
+				{ 'NN',			'N',	1,	0 }, ;	// номер представителя
+				{ 'FIO',		'C',	50,	0 }, ;	// Ф.И.О.
+				{ 'STATUS',		'N',	2,	0 }, ;	// Cтатус сопр.лица: 0-прочий,1-родитель,2-опекун
+				{ 'IS_UHOD',	'N',	1,	0 }, ; // 0-нет, 1-по уходу за больным
+				{ 'IS_FOOD',	'N',	1,	0 }, ; // 0-нет, 1-с питанием
+				{ 'DATE_R',		'D',	8,	0 }, ; // дата рождения
+				{ 'ADRES',		'C',	50,	0 }, ; // адрес
+				{ 'MR_DOL',		'C',	50,	0 }, ; // место работы
+				{ 'PHONE',		'C',	11,	0 }, ; // контактный телефон
+				{ 'PASPORT',	'C',	15,	0 }, ; // паспортные данные
+				{ 'POLIS',		'C',	25,	0 } ;  // данные о страховом полисе
+				}
+	cAlias := 'TRepresentative'
+	aIndex := { ;
+				{ dir_server + 'mo_kpred', 'str( kod, 7 ) + str( nn, 1 )' } ;
+				}
+	hb_hSet( ::hbFiles, cClassName, TDBFile():New( cName, aIndex, cAlias, aEtalonDB, 'справочник представителей' ) )
 //---------
 
 	::oSelf := Self

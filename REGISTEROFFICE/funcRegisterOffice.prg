@@ -39,14 +39,9 @@ function checkGetFIO( oGET, ltip, par, /*@*/msg )
 		msg := 'Пустое значение поля "' + arr_pole[ ltip ] + '" недопустимо'
 	endif
 	if par == 1  // для GET-системы
-		&& private tmp := readvar()
-		&& &tmp := padr( getString, 40 )
 		if empty( msg ) .and. nword > 0
-			&& if ( oGET := get_pointer( tmp ) ) != nil
-				r := oGET:Row
-			&& endif
+			r := oGET:Row
 			fl := .f.
-			&& MyBell()
 			if f_alert( { padc( 'В поле "' + arr_pole[ ltip ] + '" занесено ' + lstr( nword + 1 ) + ' слова', 60, '.' ) }, ;
 						{ ' Возврат в редактирование ', ' Правильное поле ' }, ;
 						1, 'W+/N', 'N+/N', r + 1, , 'W+/N,N/BG' ) == 2
@@ -79,19 +74,8 @@ function roCheckSNILS( oGet, oPatient )
 * 18.11.18 переопределение критерия "взрослый/ребёнок" по дате рождения и "_date"
 function roCheckDOB( oGet, oPatient, _data, fl_end )
 	local cy, k, ret := .t., mkod
-	&& local k, fl, cy, ldate_r := mdate_r
 
 	DEFAULT _data TO sys_date, fl_end TO .t.
-	&& if ctod( oGet:buffer ) == oGet:original
-		&& return ret
-	&& endif
-	
-	&& if type( 'M1NOVOR' ) == 'N' .and. M1NOVOR == 1 .and. type( 'mdate_r2' ) == 'D'
-		&& ldate_r := mdate_r2
-		&& k := 1
-	&& endif
-	&& mvozrast := cy := count_years( ldate_r, _data )
-	&& mdvozrast := year( _data ) - year( ldate_r )
 	cy := count_years( ctod( oGet:buffer ), _data )
 	if k == nil
 		if cy < 14
@@ -102,17 +86,7 @@ function roCheckDOB( oGet, oPatient, _data, fl_end )
 			k := 0  // взрослый
 		endif
 	endif
-	&& if type( 'm1vzros_reb' ) == 'N' .and. m1vzros_reb != k
-		&& m1vzros_reb := k
-		&& mvzros_reb := inieditspr( A__MENUVERT, menu_vzros, m1vzros_reb )
-		&& update_get( 'mvzros_reb' )
-	&& endif
 	if fl_end
-		&& if type( 'M1RAB_NERAB' ) == 'N' .and. m1vzros_reb == 1 .and. M1RAB_NERAB == 0
-			&& M1RAB_NERAB := 1
-			&& mrab_nerab := inieditspr( A__MENUVERT, menu_rab, m1rab_nerab )
-			&& update_get( 'mrab_nerab' )
-		&& endif
 		if type( 'm1vid_ud' ) == 'N' .and. empty( m1vid_ud )
 			m1vid_ud := iif( k == 1, 3, 14 )
 		endif
@@ -122,7 +96,7 @@ function roCheckDOB( oGet, oPatient, _data, fl_end )
 	endif
 	return ret
 
-* 19.11.18 поиск пациента в картотеке во время режима добавления
+// 10.08.23 поиск пациента в картотеке во время режима добавления
 function findKartoteka_bay( oPatient, k, /*@*/lkod_k, oPolicyOMS )
 	local s, buf, rec := 0
 	local obj
@@ -134,31 +108,12 @@ function findKartoteka_bay( oPatient, k, /*@*/lkod_k, oPolicyOMS )
 	if k == 1 .and. ! emptyany( oPatient:LastName, oPatient:FirstName, oPatient:DOB )
 		obj := TPatientDB():getByFIOAndDOB( oPatient:FIO, oPatient:DOB )
 	elseif k == 2	// .and. !empty( mnpolis ) .and. p_find_polis > 0
-		&& obj := TPatientDB():getByPolicy( mspolis, mnpolis )
 		obj := TPatientDB():getByPolicy( oPolicyOMS:PolicySeries, oPolicyOMS:PolicyNumber )
 	elseif k == 3 .and. ! empty( CHARREPL( '0', oPatient:SNILS, ' ' ) )
 		obj := TPatientDB():getBySNILS( oPatient:SNILS )
 	endif
 	//
-	&& R_Use( dir_server + 'kartotek', , 'KART' )
-	&& if k == 1 .and. !emptyany( mfam, mim, mdate_r )
-		&& mfio := padr( upper( rtrim( mfam ) + ' ' + rtrim( mim ) + ' ' + mot ), 50 )
-		&& set index to ( dir_server + 'kartoten' )
-		&& find ( '1' + mfio + dtos( mdate_r ) )
-		&& if found()
-			&& rec := recno()
-		&& endif
-	&& endif
-	&& if rec > 0
 	if ! isnil( obj )
-		&& R_Use(dir_server+"kartote2",,"KART2")
-		&& goto (rec)
-		&& R_Use(dir_server+"kartote_",,"KART_")
-		&& goto (rec)
-		&& buf := savescreen()
-		&& infoPatientToScreen( obj, 11, 18 )
-		&& @ 10,0 to 19,79 color "G+/B"
-		&& str_center( 10, ' В картотеке найден пациент ' + iif( k == 1, '', iif( k == 2, 'с таким полисом ', 'с таким СНИЛС ' ) ), 'G+/RB' )
 		oBox := TBox():New( 10, 0, 19, 79, .t. )
 		oBox:CaptionColor := 'G+/RB'
 		oBox:Color := 'G+/B'
@@ -175,79 +130,9 @@ function findKartoteka_bay( oPatient, k, /*@*/lkod_k, oPolicyOMS )
 					2, 'W+/N', 'N+/N', 20, , 'W+/N,N/BG' ) == 2
 			oPatient := obj
 			update_gets()
-			&& lkod_k := rec
-			&& mFIO        := kart->FIO
-			&& mpol        := kart->pol
-			&& mDATE_R     := kart->DATE_R
-			&& m1VZROS_REB := kart->VZROS_REB
-			&& mADRES      := kart->ADRES
-			&& mMR_DOL     := kart->MR_DOL
-			&& m1RAB_NERAB := kart->RAB_NERAB
-			&& msnils      := kart->snils
-			&& if kart->MI_GIT == 9
-				&& m1KOMU    := kart->KOMU
-				&& M1STR_CRB := kart->STR_CRB
-			&& endif
-			&& if kart->MEST_INOG == 9 // т.е. отдельно занесены Ф.И.О.
-				&& m1MEST_INOG := kart->MEST_INOG
-			&& endif
-			&& m1vidpolis  := kart_->VPOLIS // вид полиса (от 1 до 3);1-старый,2-врем.,3-новый
-			&& mspolis     := kart_->SPOLIS // серия полиса
-			&& mnpolis     := kart_->NPOLIS // номер полиса
-			&& msmo        := kart_->SMO    // реестровый номер СМО
-			&& m1vid_ud    := kart_->vid_ud   // вид удостоверения личности
-			&& mser_ud     := kart_->ser_ud   // серия удостоверения личности
-			&& mnom_ud     := kart_->nom_ud   // номер удостоверения личности
-			&& mokatog     := kart_->okatog       // код места жительства по ОКАТО
-			&& mmesto_r    := kart_->mesto_r      // место рождения
-			&& m1okato     := kart_->KVARTAL_D    // ОКАТО субъекта РФ территории страхования
-			&& //
-			&& arr := retFamImOt(1,.f.)
-			&& mfam := padr(arr[1],40)
-			&& mim  := padr(arr[2],40)
-			&& mot  := padr(arr[3],40)
-			&& if alltrim(msmo) == '34'
-				&& mnameismo := ret_inogSMO_name(1,@rec_inogSMO,.t.)
-			&& elseif left(msmo,2) == '34'
-				&& // Волгоградская область
-			&& elseif !empty(msmo)
-				&& m1ismo := msmo ; msmo := '34'
-			&& endif
-			&& mvidpolis := inieditspr(A__MENUVERT, mm_vid_polis, m1vidpolis)
-			&& mokato    := inieditspr(A__MENUVERT, glob_array_srf, m1okato)
-			&& mkomu     := inieditspr(A__MENUVERT, mm_komu, m1komu)
-			&& mismo     := init_ismo(m1ismo)
-			&& mvid_ud   := padr(inieditspr(A__MENUVERT, get_Name_Vid_Ud(), m1vid_ud),23)
-			&& madres_reg := ini_adres(1)
-			&& f_valid_komu(,-1)
-			&& if m1komu == 0
-				&& m1company := int(val(msmo))
-			&& elseif eq_any(m1komu,1,3)
-				&& m1company := m1str_crb
-			&& endif
-			&& mcompany := padr(inieditspr(A__MENUVERT, mm_company, m1company),38)
-			&& if m1company == 34
-				&& if !empty(mismo)
-					&& mcompany := padr(mismo,38)
-				&& elseif !empty(mnameismo)
-					&& mcompany := padr(mnameismo,38)
-				&& endif
-			&& endif
 		endif
-		&& kart_->(dbCloseArea())
-		&& kart2->(dbCloseArea())
 		oBox := nil
 	endif
-	&& kart->(dbCloseArea())
-	&& restscreen(buf)
-	&& if rec > 0 .and. lkod_k == rec
-		&& if type("p_edit_kartoteka") == "L"   
-			&& p_edit_kartoteka := .t.
-			&& ReadKill(.t.)
-		&& else
-			&& update_gets()
-		&& endif
-	&& endif
 	return .t.
 
 
@@ -495,26 +380,3 @@ function smo_to_screen_bay( ltip, obj )
 		endif
 	endif
 	return s
-
-***** 26.08.14 вернуть иногороднюю СМО
-&& Function ret_inogSMO_name(ltip,/*@*/rec,fl_close)
-&& Local s := space(100), fl := .f., tmp_select := select()
-&& DEFAULT fl_close TO .f.
-&& if select("SN") == 0
-  && R_Use(dir_server+iif(ltip==1,"mo_kismo","mo_hismo"),,"SN")
-  && index on str(kod,7) to (cur_dir+"tmp_ismo")
-  && fl := .t.
-&& endif
-&& select SN
-&& find (str(iif(ltip==1,kart->kod,human->kod),7))
-&& if found()
-  && s := sn->SMO_NAME
-  && rec := sn->(recno())
-&& endif
-&& if fl .and. fl_close
-  && sn->(dbCloseArea())
-&& endif
-&& select (tmp_select)
-&& return s
-
-

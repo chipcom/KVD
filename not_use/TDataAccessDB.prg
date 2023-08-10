@@ -165,6 +165,7 @@ METHOD Save( hbArray )	 CLASS TDataAccessDB
 					.and. upper( ::oDescr:AliasFile() ) != upper( 'Tk_prim1DB' ) ;
 					.and. upper( ::oDescr:AliasFile() ) != upper( 'TContractPayerDB' ) ;
 					.and. upper( ::oDescr:AliasFile() ) != upper( 'TDisabilityDB' ) ;
+					.and. upper( ::oDescr:AliasFile() ) != upper( 'TForeignCitizenDB' ) ;
 					.and. upper( ::oDescr:AliasFile() ) != upper( 'TDubleFIODB' ) ;
 					.and. upper( ::oDescr:AliasFile() ) != upper( 'TMOKISMODB' ) ;
 					.and. upper( ::oDescr:AliasFile() ) != upper( 'TMOHISMODB' ) ;
