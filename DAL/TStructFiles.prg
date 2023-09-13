@@ -57,7 +57,9 @@ METHOD New() CLASS TStructFiles
 					{ 'P7',      'C',  10,   0 }, ; // пароль1 для фискального регистратора
 					{ 'P8',      'C',  10,   0 }, ; // пароль2 для фискального регистратора
 					{ 'INN',     'C',  12,   0 }, ; // ИНН кассира
-					{ 'IDROLE',	 'N',  4,	 0 } ; // ID группы пользователей
+					{ 'IDROLE',  'N',   4,   0}, ;  // ID группы пользователей
+					{ 'DOV_DATA','C',   8,   0}, ; 	// Дата доверенности кассира 
+					{ 'DOV_NOM', 'C',  20,   0} ; 	// Номер доверенности кассира
 					}
 	cAlias := 'TUserDB'
 	aIndex := { }
@@ -770,26 +772,6 @@ METHOD New() CLASS TStructFiles
 	hb_hSet( ::hbFiles, cClassName, TDBFile( ):New( cName, aIndex, cAlias, aEtalonDB, 'Файл справочника услуг ФФОМС' ) )
 //---------
 
-// справочник услуги Минздрава РФ (ФФОМС) 2017 // группа файлов
-	cClassName := Upper( 'TServiceFFOMS7DB' )
-	cName := exe_dir + '_mo7uslf' + sdbf
-	aEtalonDB := 	{ ;
-					{ 'SHIFR',		'C',	20,	0 }, ; // 
-					{ 'NAME',		'C',  255,	0 }, ; // 
-					{ 'TIP',		'N',	1,	0 }, ; // 
-					{ 'GRP',		'N',	1,	0 }, ; // 
-					{ 'UETV',		'N',	5,	2 }, ; // 
-					{ 'UETD',		'N',	5,	2 }, ; // 
-					{ 'DATEBEG',	'D',	8,	0 }, ; // 
-					{ 'DATEEND',	'D',	8,	0 } ; // 
-					}
-	cAlias := 'TServiceFFOMS7DB'
-	aIndex := { ;
-				{ cur_dir + '_mo7uslf', 'shifr' } ;
-				}
-	hb_hSet( ::hbFiles, cClassName, TDBFile( ):New( cName, aIndex, cAlias, aEtalonDB, 'Файл справочника услуг ФФОМС 2017' ) )
-//---------
-
 // справочник совмещения наших услуг с услугами Минздрава РФ (ФФОМС)
 	cClassName := Upper( 'TMo_suDB' )
 	cName := dir_server + 'mo_su' + sdbf
@@ -1152,65 +1134,6 @@ METHOD New() CLASS TStructFiles
 	aIndex := { ;
 				}
 	hb_hSet( ::hbFiles, cClassName, TDBFile( ):New( cName, aIndex, cAlias, aEtalonDB, 'одна запись' ) )
-//---------
-// для госпитализации
-/////////////////
-
-	// cClassName := Upper( 'TServiceUSL' )
-	// cName := dir_server + 'uch_usl' + sdbf
-	// aEtalonDB :=	{ ;
-				// { 'KOD',		'N',	4,	0 }, ;	// код услуги
-				// { 'VKOEF_V',	'N',	7,	4 }, ;	// врач - УЕТ для взрослого
-				// { 'AKOEF_V',	'N',	7,	4 }, ;  // асс. - УЕТ для взрослого
-				// { 'VKOEF_R',	'N',	7,	4 }, ;  // врач - УЕТ для ребенка
-				// { 'AKOEF_R',	'N',	7,	4 }, ;  // асс. - УЕТ для ребенка
-				// { 'KOEF_V',		'N',	7,	4 }, ;  // итого УЕТ для взрослого
-				// { 'KOEF_R',		'N',	7,	4 } ;   // итого УЕТ для ребенка
-				// }             
-	// cAlias := 'TServiceUSL'
-	// aIndex :=	{ ;
-				// { dir_server + 'uch_usl', 'str( KOD, 4 )' } ;
-				// }
-	// hb_hSet( ::hbFiles, cClassName, TDBFile( ):New( cName, aIndex, cAlias, aEtalonDB, 'Файл для услуг' ) )
-//---------
-
-	// cClassName := Upper( 'TServiceUSL1' )
-	// cName := dir_server + 'uch_usl' + sdbf
-	// aEtalonDB :=	{ ;
-				// { 'KOD',		'N',	4,	0 }, ;	// код услуги
-				// { 'VKOEF_V',	'N',	7,	4 }, ;	// врач - УЕТ для взрослого
-				// { 'AKOEF_V',	'N',	7,	4 }, ;  // асс. - УЕТ для взрослого
-				// { 'VKOEF_R',	'N',	7,	4 }, ;  // врач - УЕТ для ребенка
-				// { 'AKOEF_R',	'N',	7,	4 }, ;  // асс. - УЕТ для ребенка
-				// { 'KOEF_V',		'N',	7,	4 }, ;  // итого УЕТ для взрослого
-				// { 'KOEF_R',		'N',	7,	4 }, ;   // итого УЕТ для ребенка
-				// { 'DATE_B',		'D',	8,	0 } ;    // дата начала действия
-				// }             
-	// cAlias := 'TServiceUSL1'
-	// aIndex :=	{ ;
-				// { dir_server + 'uch_usl1', 'str( KOD, 4 ) + dtos( DATE_B )' } ;
-				// }
-	// hb_hSet( ::hbFiles, cClassName, TDBFile( ):New( cName, aIndex, cAlias, aEtalonDB, 'Файл для услуг' ) )
-//---------
-
-// справочник группы услуг для способа оплаты = 7
-	// cClassName := Upper( 'TUSL_U7' )
-	// cName := dir_server + 'u_usl_7' + sdbf
-	// aEtalonDB := 	{ ;
-					// { 'NAME',      'C',  20, 0 }, ;
-					// { 'VARIANT',   'N',   1, 0 }, ;
-					// { 'V_UET_OMS', 'N',   6, 2 }, ;
-					// { 'A_UET_OMS', 'N',   6, 2 }, ;
-					// { 'V_UET_PL',  'N',   6, 2 }, ;
-					// { 'A_UET_PL',  'N',   6, 2 }, ;
-					// { 'V_UET_DMS', 'N',   6, 2 }, ;
-					// { 'A_UET_DMS', 'N',   6, 2 }, ;
-					// { 'USL_INS',   'C', 110, 0 }, ;
-					// { 'USL_DEL',   'C', 110, 0 } ;
-					// }
-	// cAlias := 'TUSL_U7'
-	// aIndex := { }
-	// hb_hSet( ::hbFiles, cClassName, TDBFile( ):New( cName, aIndex, cAlias, aEtalonDB, 'группы услуг для способа оплаты = 7' ) )
 //---------
 
 //

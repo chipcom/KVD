@@ -129,6 +129,10 @@ METHOD Save( oUser ) CLASS TUserDB
 		hb_hSet(aHash, 'P7',		crypt( str( oUser:PasswordFR, 10 ), ::cryptoKey() ) )
 		hb_hSet(aHash, 'P8',		crypt( str( oUser:PasswordFRSuper, 10 ), ::cryptoKey() ) )
 		hb_hSet(aHash, 'INN',		oUser:INN )
+		// hb_hSet(aHash, 'INN',		crypt( oUser:INN, ::cryptoKey() ) )
+		hb_hSet(aHash, 'IDROLE',	oUser:IDRole )
+		hb_hSet(aHash, 'DOV_DATA', dtos(crypt( oUser:Dov_Date, ::cryptoKey())))
+		hb_hSet(aHash, 'DOV_NOM',	crypt( oUser:Dov_Nom, ::cryptoKey() ) )
 		hb_hSet(aHash, 'IDROLE',	oUser:IDRole )
 		
 		hb_hSet(aHash, 'ID',		oUser:ID )
@@ -183,4 +187,7 @@ METHOD FillFromHash( hbArray )     CLASS TUserDB
 			hbArray[ 'DELETED' ] ;
 			)
 	obj:INN := hbArray[ 'INN' ]
+	// obj:INN := crypt( hbArray[ 'INN' ], ::cryptoKey() )
+	obj:Dov_Date := stod(crypt( hbArray[ 'DOV_DATA' ], ::cryptoKey() ))
+	obj:Dov_Nom := crypt( hbArray[ 'DOV_NOM' ], ::cryptoKey() )
 	return obj
