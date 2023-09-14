@@ -209,9 +209,9 @@ hbsqlit3.hbc
 .\FUNC\TINIFile.prg
 .\FUNC\exec.prg
 .\FUNC\winAPI_bay.prg
-.\FUNC\BrowseListObjects.prg
-.\FUNC\inp_bit_dep_bay.prg
-.\FUNC\inp_bit_task_bay.prg
+#.\FUNC\BrowseListObjects.prg
+#.\FUNC\inp_bit_dep_bay.prg
+#.\FUNC\inp_bit_task_bay.prg
 .\FUNC\inieditspr_bay.prg
 .\FUNC\retpopupedit_bay.prg
 .\FUNC\ReportFunc.prg
@@ -242,8 +242,10 @@ hbsqlit3.hbc
 
 # подсистема доступа и безопасности
 .\SECURITY\Audit.prg
-.\SECURITY\Users.prg
-.\SECURITY\Roles.prg
+..\2.x\SECURITY\Users.prg
+#.\SECURITY\Users.prg
+#.\SECURITY\Roles.prg
+..\2.x\\SECURITY\Roles.prg
 .\SECURITY\ReportUsersOutput.prg
 
 # Классы для описания документов
@@ -463,6 +465,9 @@ hbsqlit3.hbc
 ..\2.x\util\runExternalProgram.prg
 ..\2.x\util\workWithInternet.prg
 ..\2.x\util\backup.prg
+..\2.x\UTIL\BrowseListObjects.prg
+..\2.x\UTIL\inp_bit_dep_bay.prg
+..\2.x\UTIL\inp_bit_task_bay.prg
 
 ..\2.x\mo\external_mo.prg
 
