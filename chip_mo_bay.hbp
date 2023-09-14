@@ -49,11 +49,15 @@ hbsqlit3.hbc
 .\f1main_bay.prg
 
 ### подсистема доступа к данным
-.\DAL\TDBFile.prg
-.\DAL\TBaseObjectDB.prg
-.\DAL\TDescriptorDBF.prg
-.\DAL\TDataAccessDB.prg
+#.\DAL\TDBFile.prg
+#.\DAL\TBaseObjectDB.prg
+#.\DAL\TDescriptorDBF.prg
+#.\DAL\TDataAccessDB.prg
 .\DAL\TStructFiles.prg
+..\2.x\DAL\TDBFile.prg
+..\2.x\DAL\TBaseObjectDB.prg
+..\2.x\DAL\TDescriptorDBF.prg
+..\2.x\DAL\TDataAccessDB.prg
 # 
 .\DAL\ORGANIZATION\TOrganizationDB.prg
 .\DAL\ORGANIZATION\TDepartmentDB.prg
@@ -69,9 +73,12 @@ hbsqlit3.hbc
 .\DAL\ORGANIZATION\TPlaceOfWorkDB.prg
 .\DAL\ORGANIZATION\T_mo_smoDB.prg
 #
-.\DAL\SECURITY\TUserDB.prg
-.\DAL\SECURITY\TRoleUserDB.prg
-.\DAL\SECURITY\TAuditDB.prg
+#.\DAL\SECURITY\TUserDB.prg
+#.\DAL\SECURITY\TRoleUserDB.prg
+#.\DAL\SECURITY\TAuditDB.prg
+..\2.x\DAL\SECURITY\TUserDB.prg
+..\2.x\DAL\SECURITY\TRoleUserDB.prg
+..\2.x\DAL\SECURITY\TAuditDB.prg
 #
 .\DAL\DOCUMENTS\TPublisherDB.prg
 #
@@ -120,11 +127,15 @@ hbsqlit3.hbc
 
 
 # объекты бизнес-логики
-.\BLL\TBaseObjectBLL.prg
+#.\BLL\TBaseObjectBLL.prg
+..\2.x\BLL\TBaseObjectBLL.prg
 #
-.\BLL\SECURITY\TUser.prg
-.\BLL\SECURITY\TRoleUser.prg
-.\BLL\SECURITY\TAudit.prg
+#.\BLL\SECURITY\TUser.prg
+#.\BLL\SECURITY\TRoleUser.prg
+#.\BLL\SECURITY\TAudit.prg
+..\2.x\BLL\SECURITY\TUser.prg
+..\2.x\BLL\SECURITY\TRoleUser.prg
+..\2.x\BLL\SECURITY\TAudit.prg
 #
 .\BLL\ORGANIZATION\TOrganization.prg
 .\BLL\ORGANIZATION\TSubdivision.prg
@@ -241,12 +252,16 @@ hbsqlit3.hbc
 #
 
 # подсистема доступа и безопасности
-.\SECURITY\Audit.prg
-..\2.x\SECURITY\Users.prg
+#.\SECURITY\Audit.prg
 #.\SECURITY\Users.prg
 #.\SECURITY\Roles.prg
-..\2.x\\SECURITY\Roles.prg
-.\SECURITY\ReportUsersOutput.prg
+#.\SECURITY\ReportUsersOutput.prg
+..\2.x\SECURITY\Audit.prg
+..\2.x\SECURITY\Users.prg
+..\2.x\SECURITY\Roles.prg
+..\2.x\SECURITY\ReportUsersOutput.prg
+..\2.x\security\security.prg
+
 
 # Классы для описания документов
 #.\Documents\Passport.prg
@@ -376,8 +391,6 @@ hbsqlit3.hbc
 #..\2.x\init\declare_public.prg
 
 ..\2.x\information\view_list_uch.prg
-
-..\2.x\security\security.prg
 
 ..\2.x\calendar\calendar.prg
 ..\2.x\calendar\calendar_func.prg
