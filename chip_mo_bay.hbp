@@ -4,9 +4,6 @@
 -iC:\harbour\hwgui\include
 -LC:\harbour\hwgui\lib
 #
-xhb.hbc
-hbssl.hbc
-hbmzip.hbc
 
 # Include section
 -i..\include
@@ -14,9 +11,9 @@ hbmzip.hbc
 # Lib section
 -L..\LIB
 -lMyLib_HBT
--lMyLib_HBT
 -lFunLib
--lhblibxlsxwriter
+#-lhblibxlsxwriter
+-lhbxlsxwriter
 
 ############################
 -lxhb
@@ -32,11 +29,14 @@ hbmzip.hbc
 -lhbtip
 
 # библиотека для декодирования штрих-кодов ОМС
--lpcbcode
+#-lpcbcode
 
 hbtip.hbc
 hbziparc.hbc
 hbsqlit3.hbc
+xhb.hbc
+#hbssl.hbc
+#hbmzip.hbc
 
 #-shared
 -mt
@@ -53,7 +53,8 @@ hbsqlit3.hbc
 #.\DAL\TBaseObjectDB.prg
 #.\DAL\TDescriptorDBF.prg
 #.\DAL\TDataAccessDB.prg
-.\DAL\TStructFiles.prg
+#.\DAL\TStructFiles.prg
+..\2.x\DAL\TStructFiles.prg
 ..\2.x\DAL\TDBFile.prg
 ..\2.x\DAL\TBaseObjectDB.prg
 ..\2.x\DAL\TDescriptorDBF.prg
