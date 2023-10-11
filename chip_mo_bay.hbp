@@ -12,8 +12,8 @@
 -L..\LIB
 -lMyLib_HBT
 -lFunLib
--lhblibxlsxwriter
-#-lhbxlsxwriter
+#-lhblibxlsxwriter
+-lhbxlsxwriter
 
 ############################
 -lxhb
@@ -474,6 +474,7 @@ xhb.hbc
 ..\2.x\reports\create_xls_rdl.prg
 ..\2.x\reports\forma14_med_oms.prg
 ..\2.x\reports\forma1_ffoms.prg
+..\2.x\reports\nastr_report.prg
 
 ..\2.x\util\workWithZIP.prg
 ..\2.x\util\runExternalProgram.prg
