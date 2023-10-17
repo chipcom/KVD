@@ -357,10 +357,7 @@ xhb.hbc
 ..\2.x\mo_omso.prg
 ..\2.x\mo_omsp.prg
 ..\2.x\mo_omsi.prg
-..\2.x\mo_omsio.prg
 ..\2.x\mo_omsfo.prg
-..\2.x\mo_omsis.prg
-..\2.x\mo_omsit.prg
 ..\2.x\mo_omsif.prg
 ..\2.x\mo_omspr.prg
 ..\2.x\mo_omsf.prg
@@ -475,6 +472,9 @@ xhb.hbc
 ..\2.x\reports\forma14_med_oms.prg
 ..\2.x\reports\forma1_ffoms.prg
 ..\2.x\reports\nastr_report.prg
+..\2.x\reports\mo_omsio.prg
+..\2.x\reports\mo_omsis.prg
+..\2.x\reports\mo_omsit.prg
 
 ..\2.x\util\workWithZIP.prg
 ..\2.x\util\runExternalProgram.prg
