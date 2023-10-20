@@ -1,64 +1,17 @@
 
-############################
-#для HwGUI
--iC:\harbour\hwgui\include
--LC:\harbour\hwgui\lib
-#
-
-# Include section
--i..\include
-
-# Lib section
--L..\LIB
--lMyLib_HBT
--lFunLib
-#-lhblibxlsxwriter
--lhbxlsxwriter
-
-############################
--lxhb
--lhbxpp
--lhbct
--lhbwin
--lxhb
--lhbmzip
--lminizip
--gui
--lhwgui
--lhbnf
--lhbtip
-
-# библиотека для декодирования штрих-кодов ОМС
-#-lpcbcode
-
-hbtip.hbc
-hbziparc.hbc
-hbsqlit3.hbc
-xhb.hbc
-#hbssl.hbc
-#hbmzip.hbc
-
-#-shared
--mt
--inc
--workdir=..\TEMP\KVD
--ochip_mo
-
-
 ### главный модуль программы
 .\f1main_bay.prg
 
 ### подсистема доступа к данным
-#.\DAL\TDBFile.prg
-#.\DAL\TBaseObjectDB.prg
-#.\DAL\TDescriptorDBF.prg
-#.\DAL\TDataAccessDB.prg
-#.\DAL\TStructFiles.prg
 ..\2.x\DAL\TStructFiles.prg
 ..\2.x\DAL\TDBFile.prg
 ..\2.x\DAL\TBaseObjectDB.prg
 ..\2.x\DAL\TDescriptorDBF.prg
 ..\2.x\DAL\TDataAccessDB.prg
+#
+..\2.x\DAL\SECURITY\TUserDB.prg
+..\2.x\DAL\SECURITY\TRoleUserDB.prg
+..\2.x\DAL\SECURITY\TAuditDB.prg
 # 
 .\DAL\ORGANIZATION\TOrganizationDB.prg
 .\DAL\ORGANIZATION\TDepartmentDB.prg
@@ -70,16 +23,8 @@ xhb.hbc
 .\DAL\ORGANIZATION\TCompanyDMSDB.prg
 .\DAL\ORGANIZATION\TCompanyVzaimDB.prg
 .\DAL\ORGANIZATION\T_Mo_podrDB.prg
-#.\DAL\ORGANIZATION\CommonDB.prg
 .\DAL\ORGANIZATION\TPlaceOfWorkDB.prg
 .\DAL\ORGANIZATION\T_mo_smoDB.prg
-#
-#.\DAL\SECURITY\TUserDB.prg
-#.\DAL\SECURITY\TRoleUserDB.prg
-#.\DAL\SECURITY\TAuditDB.prg
-..\2.x\DAL\SECURITY\TUserDB.prg
-..\2.x\DAL\SECURITY\TRoleUserDB.prg
-..\2.x\DAL\SECURITY\TAuditDB.prg
 #
 .\DAL\DOCUMENTS\TPublisherDB.prg
 #
@@ -100,9 +45,8 @@ xhb.hbc
 .\DAL\Patient\Tk_prim1DB.prg
 .\DAL\Patient\TMo_kismoDB.prg
 .\DAL\Patient\TMo_hismoDB.prg
-#.\DAL\Patient\TForeignCitizenDB.prg
-#.\DAL\Patient\TRepresentativeDB.prg
 .\DAL\Patient\TDubleFIODB.prg
+
 # Адресная информация
 .\DAL\AddressInfo\T_okatorDB.prg
 .\DAL\AddressInfo\T_okatooDB.prg
@@ -110,10 +54,12 @@ xhb.hbc
 .\DAL\AddressInfo\T_okatos8DB.prg
 .\DAL\AddressInfo\T_okatoo8DB.prg
 .\DAL\AddressInfo\TAddressStringDB.prg
+
 # Платные услуги
 .\DAL\CONTRACT\TContractPayerDB.prg
 .\DAL\CONTRACT\TContractServiceDB.prg
 .\DAL\CONTRACT\TContractDB.prg
+
 # Услуги
 .\DAL\Services\TUsl_U5DB.prg
 .\DAL\Services\TServiceWoDoctorDB.prg
@@ -126,14 +72,9 @@ xhb.hbc
 # ОМС
 .\DAL\OMS\THumanDB.prg
 
-
 # объекты бизнес-логики
-#.\BLL\TBaseObjectBLL.prg
 ..\2.x\BLL\TBaseObjectBLL.prg
 #
-#.\BLL\SECURITY\TUser.prg
-#.\BLL\SECURITY\TRoleUser.prg
-#.\BLL\SECURITY\TAudit.prg
 ..\2.x\BLL\SECURITY\TUser.prg
 ..\2.x\BLL\SECURITY\TRoleUser.prg
 ..\2.x\BLL\SECURITY\TAudit.prg
@@ -174,9 +115,8 @@ xhb.hbc
 .\BLL\Patient\Tk_prim1.prg
 .\BLL\Patient\TMo_kismo.prg
 .\BLL\Patient\TMo_hismo.prg
-#.\BLL\Patient\TForeignCitizen.prg
-#.\BLL\Patient\TRepresentative.prg
 .\BLL\Patient\TDubleFIO.prg
+
 # Адресная информация
 .\BLL\AddressInfo\TAddressOKATO.prg
 .\BLL\AddressInfo\TAddressInfo.prg
@@ -187,10 +127,12 @@ xhb.hbc
 .\BLL\AddressInfo\T_okatoo8.prg
 .\BLL\AddressInfo\TAddressString.prg
 .\BLL\AddressInfo\TSRF.prg
+
 # Платные услуги
 .\BLL\CONTRACT\TContractPayer.prg
 .\BLL\CONTRACT\TContractService.prg
 .\BLL\CONTRACT\TContract.prg
+
 # Услуги
 .\BLL\Services\TUsl_U5.prg
 .\BLL\Services\TServiceWoDoctor.prg
@@ -205,7 +147,6 @@ xhb.hbc
 
 # системные функции
 .\SYSTEM\TWorkingUser.prg
-# .\SYSTEM\ChatMessages.prg
 .\SYSTEM\popup_f.prg
 .\SYSTEM\TVersion.prg
 .\SYSTEM\TListObjects.prg
@@ -214,16 +155,12 @@ xhb.hbc
 # система настройки
 .\SETTINGS\settingsSystem.prg
 .\SETTINGS\TSettingSystem.prg
-#.\SETTINGS\SettingsWorkPlace.prg
 
 # разные функции
 #
 .\FUNC\TINIFile.prg
 .\FUNC\exec.prg
 .\FUNC\winAPI_bay.prg
-#.\FUNC\BrowseListObjects.prg
-#.\FUNC\inp_bit_dep_bay.prg
-#.\FUNC\inp_bit_task_bay.prg
 .\FUNC\inieditspr_bay.prg
 .\FUNC\retpopupedit_bay.prg
 .\FUNC\ReportFunc.prg
@@ -235,7 +172,6 @@ xhb.hbc
 .\FUNC\HasNumberInString.prg
 .\FUNC\INIGetSetVar.prg
 .\FUNC\WaitingReport.prg
-#.\FUNC\UDPFunction.prg
 .\FUNC\ErrorSYS.prg
 .\FUNC\Print_Sh.prg
 .\FUNC\CreateReportHTML.prg
@@ -253,10 +189,6 @@ xhb.hbc
 #
 
 # подсистема доступа и безопасности
-#.\SECURITY\Audit.prg
-#.\SECURITY\Users.prg
-#.\SECURITY\Roles.prg
-#.\SECURITY\ReportUsersOutput.prg
 ..\2.x\SECURITY\Audit.prg
 ..\2.x\SECURITY\Users.prg
 ..\2.x\SECURITY\Roles.prg
@@ -277,7 +209,6 @@ xhb.hbc
 
 # подсистема для справочников услуг и все что с ними связано
 .\Services\Services.prg
-#.\Services\f3_es_uslugi.prg
 .\Services\Services_move_mo.prg
 .\Services\ReportServicesOutput.prg
 
@@ -297,7 +228,6 @@ xhb.hbc
 .\PLAT\REPORT\ReportPaid.prg
 .\PLAT\REPORT\ReportLogBookThread.prg
 .\PLAT\REPORT\StatisticsByDepartment.prg
-#.\PLAT\REPORT\RepPaidStatisticsOutput.prg
 .\PLAT\REPORT\ReportPaidSenderDoctor.prg
 .\PLAT\REPORT\ReportPaid_Old.prg
 .\PLAT\REPORT\StatisticsBySlugba.prg
@@ -310,7 +240,6 @@ xhb.hbc
 .\PLAT\FOR_OTHER_TASK\mo_kas_p_bay.prg
 .\PLAT\FOR_OTHER_TASK\mo_kas_o_bay.prg
 .\PLAT\FOR_OTHER_TASK\yes_o_check.prg
-#
 #
 # файлы для используемого оборудования .\EQUIPMENT\
 .\EQUIPMENT\TSettingKKT.prg
@@ -337,23 +266,13 @@ xhb.hbc
 #
 # файлы для ОМС
 #
-#для отладки
-#.\FUNC\xtoc.prg
-
 ..\2.x\xmlparse.c
 ..\2.x\mo_main.prg
 ..\2.x\chip_mo.rc
 ..\2.x\hxmldoc.prg
-..\2.x\KARTOTEK\mo_kart.prg
 ..\2.x\mo_adres.prg
-..\2.x\KARTOTEK\mo_regi.prg
-..\2.x\KARTOTEK\polikl1_kart.prg
-..\2.x\KARTOTEK\pripisnoe_naselenie.prg
-..\2.x\KARTOTEK\documents.prg
-..\2.x\KARTOTEK\prikreplenie.prg
 ..\2.x\mo_oms.prg
 ..\2.x\mo_oms1.prg
-#..\2.x\mo_oms14.prg
 ..\2.x\mo_omso.prg
 ..\2.x\mo_omsp.prg
 ..\2.x\mo_omsi.prg
@@ -362,20 +281,10 @@ xhb.hbc
 ..\2.x\mo_omspr.prg
 ..\2.x\mo_omsf.prg
 ..\2.x\mo_moder.prg
-..\2.x\mo_mzxml.prg
-..\2.x\PP\mo_pp.prg
-..\2.x\PP\mo_ppi.prg
-..\2.x\KASSA\mo_ortop.prg
-..\2.x\KEK\mo_kek.prg
-..\2.x\KEK\mo_keki.prg
-..\2.x\KEK\mo_keki_17.prg
 ..\2.x\mo_sds.prg
 ..\2.x\mo_serv.prg
 ..\2.x\mo_st39.prg
 ..\2.x\mo_vounc.prg
-..\2.x\263\mo_263.prg
-..\2.x\263\mo_263p.prg
-..\2.x\263\mo_263s.prg
 ..\2.x\mo_version.prg
 
 ..\2.x\init\mo_init.prg
@@ -386,12 +295,18 @@ xhb.hbc
 ..\2.x\init\index_work_dir.prg
 ..\2.x\init\initArrayFilesDB.prg
 ..\2.x\init\update_data_DB.prg
-#..\2.x\init\declare_public.prg
 
 ..\2.x\information\view_list_uch.prg
 
 ..\2.x\calendar\calendar.prg
 ..\2.x\calendar\calendar_func.prg
+
+..\2.x\KARTOTEK\mo_kart.prg
+..\2.x\KARTOTEK\mo_regi.prg
+..\2.x\KARTOTEK\polikl1_kart.prg
+..\2.x\KARTOTEK\pripisnoe_naselenie.prg
+..\2.x\KARTOTEK\documents.prg
+..\2.x\KARTOTEK\prikreplenie.prg
 
 ..\2.x\dictionary\mo_spr.prg
 ..\2.x\dictionary\mo_spri.prg
@@ -512,9 +427,27 @@ xhb.hbc
 ..\2.x\EXCHANGE\mo_omsr.prg
 ..\2.x\EXCHANGE\func_exchange.prg
 
+..\2.x\KASSA\mo_ortop.prg
+
+..\2.x\KEK\mo_kek.prg
+..\2.x\KEK\mo_keki.prg
+..\2.x\KEK\mo_keki_17.prg
+
+..\2.x\263\mo_263.prg
+..\2.x\263\mo_263p.prg
+..\2.x\263\mo_263s.prg
+
+..\2.x\PP\mo_pp.prg
+..\2.x\PP\mo_ppi.prg
+
 ..\2.x\SYSTEM\use_func.prg
 ..\2.x\SYSTEM\extension.prg
+
+..\2.x\OTHER\mo_mzxml.prg
 
 ..\2.x\TUNING\ret_days_for_akt_sverki.prg
 ..\2.x\TUNING\initPZarray.prg
 ..\2.x\TUNING\codeVMP.prg
+
+#для отладки
+#.\FUNC\xtoc.prg
