@@ -271,18 +271,11 @@
 ..\2.x\chip_mo.rc
 ..\2.x\hxmldoc.prg
 ..\2.x\mo_adres.prg
-..\2.x\mo_oms.prg
-..\2.x\mo_oms1.prg
 ..\2.x\mo_omso.prg
 ..\2.x\mo_omsp.prg
 ..\2.x\mo_omsi.prg
-..\2.x\mo_omsfo.prg
 ..\2.x\mo_omsif.prg
 ..\2.x\mo_omspr.prg
-..\2.x\mo_omsf.prg
-..\2.x\mo_moder.prg
-..\2.x\mo_sds.prg
-..\2.x\mo_serv.prg
 ..\2.x\mo_st39.prg
 ..\2.x\mo_vounc.prg
 ..\2.x\mo_version.prg
@@ -374,6 +367,9 @@
 ..\2.x\oms\verify_func.prg
 ..\2.x\oms\verify_oms.prg
 ..\2.x\oms\verify_sluch.prg
+..\2.x\oms\mo_oms.prg
+..\2.x\oms\mo_oms1.prg
+..\2.x\oms\mo_omsf.prg
 
 ..\2.x\personal\personal_func.prg
 
@@ -390,6 +386,7 @@
 ..\2.x\reports\mo_omsio.prg
 ..\2.x\reports\mo_omsis.prg
 ..\2.x\reports\mo_omsit.prg
+..\2.x\reports\mo_omsfo.prg
 
 ..\2.x\util\workWithZIP.prg
 ..\2.x\util\runExternalProgram.prg
@@ -444,6 +441,9 @@
 ..\2.x\SYSTEM\extension.prg
 
 ..\2.x\OTHER\mo_mzxml.prg
+..\2.x\OTHER\mo_serv.prg
+..\2.x\OTHER\mo_sds.prg
+..\2.x\OTHER\mo_moder.prg
 
 ..\2.x\TUNING\ret_days_for_akt_sverki.prg
 ..\2.x\TUNING\initPZarray.prg
