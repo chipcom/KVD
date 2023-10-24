@@ -449,5 +449,7 @@
 ..\2.x\TUNING\initPZarray.prg
 ..\2.x\TUNING\codeVMP.prg
 
+..\2.x\ORGANIZATION\dbOrg.prg
+
 #для отладки
 #.\FUNC\xtoc.prg
