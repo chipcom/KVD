@@ -172,7 +172,6 @@
 .\FUNC\HasNumberInString.prg
 .\FUNC\INIGetSetVar.prg
 .\FUNC\WaitingReport.prg
-.\FUNC\ErrorSYS.prg
 .\FUNC\Print_Sh.prg
 .\FUNC\CreateReportHTML.prg
 .\FUNC\findElementInListObjects.prg
@@ -266,16 +265,11 @@
 #
 # ä ©«ë ¤«ï ŽŒ‘
 #
-..\2.x\xmlparse.c
 ..\2.x\mo_main.prg
 ..\2.x\chip_mo.rc
-..\2.x\hxmldoc.prg
 ..\2.x\mo_adres.prg
-..\2.x\mo_omso.prg
-..\2.x\mo_omsp.prg
 ..\2.x\mo_omsi.prg
 ..\2.x\mo_omsif.prg
-..\2.x\mo_omspr.prg
 ..\2.x\mo_st39.prg
 ..\2.x\mo_vounc.prg
 ..\2.x\mo_version.prg
@@ -437,8 +431,17 @@
 ..\2.x\PP\mo_pp.prg
 ..\2.x\PP\mo_ppi.prg
 
+..\2.x\SYSTEM\cpru866m.c
+..\2.x\SYSTEM\cpru1251m.c
+..\2.x\SYSTEM\Errorsys.prg
+..\2.x\SYSTEM\xmlparse.c
+..\2.x\SYSTEM\hxmldoc.prg
 ..\2.x\SYSTEM\use_func.prg
 ..\2.x\SYSTEM\extension.prg
+
+..\2.x\ORDER\mo_omso.prg
+..\2.x\ORDER\mo_omsp.prg
+..\2.x\ORDER\mo_omspr.prg
 
 ..\2.x\OTHER\mo_mzxml.prg
 ..\2.x\OTHER\mo_serv.prg
