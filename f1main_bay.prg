@@ -1,10 +1,11 @@
+#include "common.ch"
 #include "set.ch"
 #include "inkey.ch"
 #include "function.ch"
 #include "edit_spr.ch"
 #include "chip_mo.ch"
 
-// 10.11.23
+// 15.12.23
 Function f1main(n_Task)
   Local it, s, k, fl := .t., cNameIcon
   
@@ -269,6 +270,12 @@ do case
       aadd(first_menu[4], "Работа ~операторов")
       aadd(first_message[4], "Статистика по работе операторов за день и за месяц")
       aadd(func_menu[4], "st_operator()")
+    endif
+
+    if ( ! isnil( edi_FindPath( PLUGINIFILE ) ) ) .and. ( control_podrazdel_ini( edi_FindPath( PLUGINIFILE ) ) )
+      AAdd( first_menu[ 4 ], "Дополнительные возможности" )
+      AAdd( first_message[ 4 ], "Дополнительные возможности" )
+      AAdd( func_menu[ 4 ], "Plugins()" )
     endif
     //
     aadd(cmain_menu,cmain_next_pos(3))
