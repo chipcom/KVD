@@ -65,6 +65,9 @@ METHOD Save( oPayer ) CLASS TContractPayerDB
 		hb_hSet(aHash, 'PASPORT',	oPayer:Passport )
 		hb_hSet(aHash, 'I_POST',    oPayer:Email )
 		hb_hSet(aHash, 'PHONE',		oPayer:Phone )
+		hb_hSet(aHash, 'KEMVYD',		oPayer:Kemvyd )
+		hb_hSet(aHash, 'KOGDAVYD',		oPayer:Datevyd )
+
 		hb_hSet(aHash, 'ID',		oPayer:ID )
 		hb_hSet(aHash, 'REC_NEW',	oPayer:IsNew )
 		hb_hSet(aHash, 'DELETED',	oPayer:IsDeleted )
@@ -84,7 +87,9 @@ METHOD FillFromHash( hbArray )     CLASS TContractPayerDB
 			)
 	obj:IDLU := hbArray[ 'KOD' ]
 	obj:Address := hbArray[ 'ADRES' ]
-    obj:Passport := hbArray[ 'PASPORT' ]
-    obj:EMail := hbArray[ 'I_POST' ]
-    obj:Phone := hbArray[ 'PHONE' ]
+  obj:Passport := hbArray[ 'PASPORT' ]
+  obj:EMail := hbArray[ 'I_POST' ]
+  obj:Phone := hbArray[ 'PHONE' ]
+	obj:Kemvyd := hbArray[ 'KEMVYD' ]
+	obj:Datevyd := hbArray[ 'KOGDAVYD' ]
 	return obj

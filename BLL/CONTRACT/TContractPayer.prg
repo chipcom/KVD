@@ -13,6 +13,8 @@ CREATE CLASS TContractPayer	INHERIT	TBaseObjectBLL
 		PROPERTY Passport AS STRING READ getPassport WRITE setPassport	// Паспорт плательщика
 		PROPERTY EMail AS STRING READ getEmail WRITE setEmail			// электронная почта
 		PROPERTY Phone AS STRING READ getPhone WRITE setPhone			// телефон
+		PROPERTY Kemvyd AS NUMERIC READ getKemvyd WRITE setKemvyd			// кем выдан
+		PROPERTY Datevyd AS Date READ getDatevyd WRITE setDatevyd			// дата выдачи
 
 		METHOD New( nId, lNew, lDeleted )
 	HIDDEN:
@@ -21,6 +23,8 @@ CREATE CLASS TContractPayer	INHERIT	TBaseObjectBLL
 		DATA FPassport	INIT space( 15 )
 		DATA FEmail		INIT space( 30 )
 		DATA FPhone		INIT space( 11 )
+		DATA FKemvyd	INIT 0
+		DATA FDatevyd INIT ctod('')
 		
 		METHOD getIDLU
 		METHOD setIDLU( nValue )
@@ -32,7 +36,11 @@ CREATE CLASS TContractPayer	INHERIT	TBaseObjectBLL
 		METHOD setEmail( cValue )
 		METHOD getPhone
 		METHOD setPhone( cValue )
-ENDCLASS
+		METHOD getKemvyd
+		METHOD setKemvyd( nValue )
+		METHOD getDatevyd
+		METHOD setDatevyd( nValue )
+	ENDCLASS
 
 METHOD function getIDLU()					CLASS TContractPayer
 	return ::FIDLU
@@ -67,6 +75,20 @@ METHOD function getPhone()				CLASS TContractPayer
 
 METHOD procedure setPhone( cValue )		CLASS TContractPayer
 	::FPhone := cValue
+	return
+
+METHOD function getKemvyd()				CLASS TContractPayer
+	return ::FKemvyd
+
+METHOD procedure setKemvyd( nValue )		CLASS TContractPayer
+	::FKemvyd := nValue
+	return
+
+METHOD function getDatevyd()				CLASS TContractPayer
+	return ::FDatevyd
+
+METHOD procedure setDatevyd( dValue )		CLASS TContractPayer
+	::FDatevyd := dValue
 	return
 
 METHOD New( nId, lNew, lDeleted ) 		CLASS TContractPayer
