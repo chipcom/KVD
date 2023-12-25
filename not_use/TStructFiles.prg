@@ -756,7 +756,7 @@ METHOD New() CLASS TStructFiles
 
 // справочник услуги Минздрава РФ (ФФОМС) // группа файлов
 	cClassName := Upper( 'TServiceFFOMSDB' )
-	cName := exe_dir + '_mo_uslf' + sdbf
+	cName := dir_exe + '_mo_uslf' + sdbf
 	aEtalonDB := 	{ ;
 					{ 'SHIFR',		'C',	20,	0 }, ; // 
 					{ 'NAME',		'C',  255,	0 }, ; // 
@@ -772,7 +772,7 @@ METHOD New() CLASS TStructFiles
 
 // справочник услуги Минздрава РФ (ФФОМС) 2017 // группа файлов
 	cClassName := Upper( 'TServiceFFOMS7DB' )
-	cName := exe_dir + '_mo7uslf' + sdbf
+	cName := dir_exe + '_mo7uslf' + sdbf
 	aEtalonDB := 	{ ;
 					{ 'SHIFR',		'C',	20,	0 }, ; // 
 					{ 'NAME',		'C',  255,	0 }, ; // 
@@ -1219,7 +1219,7 @@ METHOD New() CLASS TStructFiles
 
 // справочник _mo_form
 	cClassName := Upper( 'T_MO_FORM' )
-	cName := exe_dir + '_mo_form' + sdbf
+	cName := dir_exe + '_mo_form' + sdbf
 	aEtalonDB := 	{ ;
 					{ 'FORMA',		'N',	2, 0 }, ;
 					{ 'TABLE',		'N',	4, 0 }, ;
@@ -1237,7 +1237,7 @@ METHOD New() CLASS TStructFiles
 
 // справочник _mo_kek
 	cClassName := Upper( 'T_MO_KEK' )
-	cName := exe_dir + '_mo_kek' + sdbf
+	cName := dir_exe + '_mo_kek' + sdbf
 	aEtalonDB := 	{ ;
 					{ 'SHIFR',		'C',	8, 0 }, ;
 					{ 'NN',			'N',	3, 0 }, ;
@@ -1252,7 +1252,7 @@ METHOD New() CLASS TStructFiles
 
 // справочник _mo_kekd
 	cClassName := Upper( 'T_MO_KEKD' )
-	cName := exe_dir + '_mo_kekd' + sdbf
+	cName := dir_exe + '_mo_kekd' + sdbf
 	aEtalonDB := 	{ ;
 					{ 'SHIFR',		'C',	8, 0 }, ;
 					{ 'VZR',		'N',	1, 0 }, ;
@@ -1268,7 +1268,7 @@ METHOD New() CLASS TStructFiles
 
 // справочник подразделений из паспорта ЛПУ
 	cClassName := Upper( 'T_Mo_PodrDB' )
-	cName := exe_dir + '_mo_podr' + sdbf
+	cName := dir_exe + '_mo_podr' + sdbf
 	aEtalonDB := 	{ ;
 					{ 'CODEMO',		'C',	6, 0 }, ;
 					{ 'OGRN',		'C',   13, 0 }, ;
@@ -1285,7 +1285,7 @@ METHOD New() CLASS TStructFiles
 
 // справочник _mo_smo
 	cClassName := Upper( 'T_MO_SMODB' )
-	cName := exe_dir + '_mo_smo' + sdbf
+	cName := dir_exe + '_mo_smo' + sdbf
 	aEtalonDB := 	{ ;
 					{ 'OKATO',		'C',	5, 0 }, ;
 					{ 'SMO',		'C',	5, 0 }, ;
@@ -1305,7 +1305,7 @@ METHOD New() CLASS TStructFiles
 
 // справочник _okatoo
 	cClassName := Upper( 'T_OKATOODB' )
-	cName := exe_dir + '_okatoo' + sdbf
+	cName := dir_exe + '_okatoo' + sdbf
 	aEtalonDB := 	{ ;
 					{ 'OKATO',		'C',	5,	0 }, ;
 					{ 'NAME',		'C',   72,	0 }, ;
@@ -1324,7 +1324,7 @@ METHOD New() CLASS TStructFiles
 
 // справочник _okatoo8
 	cClassName := Upper( 'T_OKATOO8DB' )
-	cName := exe_dir + '_okatoo8' + sdbf
+	cName := dir_exe + '_okatoo8' + sdbf
 	aEtalonDB := 	{ ;
 					{ 'OKATO',		'C',	5,	0 }, ;
 					{ 'NAME',		'C',   72,	0 }, ;
@@ -1343,7 +1343,7 @@ METHOD New() CLASS TStructFiles
 
 // справочник _okator
 	cClassName := Upper( 'T_OKATORDB' )
-	cName := exe_dir + '_okator' + sdbf
+	cName := dir_exe + '_okator' + sdbf
 	aEtalonDB := 	{ ;
 					{ 'OKATO',		'C',	2,	0 }, ;
 					{ 'NAME',		'C',   72,	0 } ;
@@ -1358,7 +1358,7 @@ METHOD New() CLASS TStructFiles
 
 // справочник _okatos
 	cClassName := Upper( 'T_OKATOSDB' )
-	cName := exe_dir + '_okatos' + sdbf
+	cName := dir_exe + '_okatos' + sdbf
 	aEtalonDB := 	{ ;
 					{ 'OKATO',		'C',   11,	0 }, ;
 					{ 'NAME',		'C',   72,	0 }, ;
@@ -1377,7 +1377,7 @@ METHOD New() CLASS TStructFiles
 
 // справочник _okatos8
 	cClassName := Upper( 'T_OKATOS8DB' )
-	cName := exe_dir + '_okatos8' + sdbf
+	cName := dir_exe + '_okatos8' + sdbf
 	aEtalonDB := 	{ ;
 					{ 'OKATO',		'C',   11,	0 }, ;
 					{ 'NAME',		'C',   72,	0 }, ;
