@@ -463,5 +463,8 @@
 
 ..\2.x\ORGANIZATION\dbOrg.prg
 
+..\2.x\PLAN_ZAKAZ\pz_report.prg
+..\2.x\PLAN_ZAKAZ\pz_func.prg
+
 #для отладки
 #.\FUNC\xtoc.prg
