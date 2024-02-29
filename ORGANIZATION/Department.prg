@@ -219,23 +219,3 @@ function inputN_uch( r, c, date1, date2, /*@*/c_uch )
 function f_is_uch( arr_u, pole_u )
 
 	return ascan( arr_u, { | x | pole_u == x[ 1 ] } ) > 0
-
-*
-function titleN_uch( arr_u, lsh, c_uch )
-	local i, t_arr[ 2 ], s := ''
-	
-	if !(type( 'count_uch' )== 'N' )
-		count_uch := iif( c_uch == nil, 1, c_uch )
-	endif
-	if count_uch > 1
-		if count_uch == len( arr_u )
-			add_string( center( '[ по всем учреждениям ]', lsh ) )
-		else
-			aeval( arr_u, { | x | s += '"' + alltrim( x[ 2 ] ) + '", ' } )
-			s := substr( s, 1, len( s ) - 2 )
-			for i := 1 to perenos( t_arr, s, lsh )
-				add_string( center( alltrim( t_arr[ i ] ), lsh ) )
-			next
-		endif
-	endif
-	return nil

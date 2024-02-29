@@ -371,6 +371,7 @@
 ..\2.x\onkologiya\onko.prg
 
 ..\2.x\reports\reports.prg
+..\2.x\reports\reports_func.prg
 ..\2.x\reports\createXLS.prg
 ..\2.x\reports\hodotajstvoXLS.prg
 ..\2.x\reports\exportKartExcel.prg
