@@ -427,23 +427,3 @@ function inputN_otd( r, c, fl_all_uch, fl_all_otd, a_inp_uch, /*@*/c_otd )
 	endif
 	restscreen( buf )
 	return l_a_otd
-
-*
-function titleN_otd( arr_o, lsh, c_otd )
-	local i, t_arr[ 2 ], s := ''
-
-	if !( type( 'count_otd' ) == 'N' )
-		count_otd := iif( c_otd == nil, 1, c_otd )
-	endif
-	if count_otd > 1 .and. valtype( arr_o ) == 'A'
-		if count_otd == len( arr_o )
-			add_string( center( '[ по всем отделениям ]', lsh ) )
-		else
-			aeval( arr_o, { | x | s += '"' + alltrim( x[ 2 ] ) + '", ' } )
-			s := substr( s, 1, len( s ) - 2 )
-			for i := 1 to perenos( t_arr, s, lsh )
-				add_string( center( alltrim( t_arr[ i ] ), lsh ) )
-			next
-		endif
-	endif
-	return nil
