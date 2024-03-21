@@ -419,7 +419,8 @@
 ..\2.x\dispanser\disp_nab_func.prg
 
 ..\2.x\EXCHANGE\reestrOMS_XML.prg
-..\2.x\EXCHANGE\create_schet19_from_XML.prg
+..\2.x\EXCHANGE\schet_from_XML.prg
+..\2.x\EXCHANGE\rak_XML.prg
 ..\2.x\EXCHANGE\extract_reestr.prg
 ..\2.x\EXCHANGE\create_reestr.prg
 ..\2.x\EXCHANGE\mo_omss.prg
