@@ -417,6 +417,8 @@
 ..\2.x\dispanser\mo_r11.prg
 ..\2.x\dispanser\mo_omsid.prg
 ..\2.x\dispanser\disp_nab_func.prg
+..\2.x\dispanser\oms_dvn_drz.prg
+..\2.x\dispanser\oms_dvn_drz_func.prg
 
 ..\2.x\EXCHANGE\reestrOMS_XML.prg
 ..\2.x\EXCHANGE\schet_from_XML.prg
