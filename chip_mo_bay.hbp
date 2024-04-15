@@ -389,6 +389,7 @@
 ..\2.x\reports\forma_30.prg
 ..\2.x\reports\forma_39.prg
 ..\2.x\reports\forma_57.prg
+..\2.x\reports\inf_drz_excel.prg
 
 ..\2.x\util\workWithZIP.prg
 ..\2.x\util\runExternalProgram.prg
