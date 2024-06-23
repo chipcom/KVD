@@ -303,6 +303,7 @@
 ..\2.x\function\mo_func.prg
 ..\2.x\function\mo_func1.prg
 ..\2.x\function\mo_func2.prg
+..\2.x\function\test_func.prg
 
 ..\2.x\ref\initSpravFFOMS.prg
 ..\2.x\ref\dbAdditionalCriteria.prg
