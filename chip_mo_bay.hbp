@@ -438,9 +438,9 @@
 
 ..\2.x\KASSA\mo_ortop.prg
 
-..\2.x\KEK\mo_kek.prg
-..\2.x\KEK\mo_keki.prg
-..\2.x\KEK\mo_keki_17.prg
+#..\2.x\KEK\mo_kek.prg
+#..\2.x\KEK\mo_keki.prg
+#..\2.x\KEK\mo_keki_17.prg
 
 ..\2.x\263\mo_263.prg
 ..\2.x\263\mo_263p.prg

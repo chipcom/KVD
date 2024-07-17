@@ -669,47 +669,47 @@ do case
                     "fk_usl_dogov()",;
                     "fr_nastrojka()",;
                     "nastr_kassa(2)"})
-  case glob_task == X_KEK  //
-    if !between(hb_user_curUser:KEK, 1, 3)
-      n_message({"Недопустимая группа экспертизы (КЭК): "+lstr(hb_user_curUser:KEK),;
-                 '',;
-                 'Пользователям, которым разрешено работать в подзадаче "КЭК МО",',;
-                 'необходимо установить группу экспертизы (от 1 до 3)',;
-                 'в подзадаче "Редактирование справочников" в режиме "Справочники/Пароли"'},,;
-                "GR+/R","W+/R",,,"G+/R")
-    else
-      fl := begin_task_kek()
-      aadd(cmain_menu,1)
-      aadd(main_menu," ~КЭК ")
-      aadd(main_message,"Ввод данных по КЭК медицинской организации")
-      aadd(first_menu, {"~Добавление",;
-                        "~Редактирование",;
-                        "~Удаление"} )
-      aadd(first_message, { ;
-          "Добавление данных по экпертизе",;
-          "Редактирование данных по экпертизе",;
-          "Удаление данных по экпертизе";
-        } )
-      aadd(func_menu, {"kek_vvod(1)",;
-                       "kek_vvod(2)",;
-                       "kek_vvod(3)"} )
-      aadd(cmain_menu,34)
-      aadd(main_menu," ~Информация ")
-      aadd(main_message,"Просмотр / печать статистики по экспертизам")
-      aadd(first_menu, {"~Экспертная карта",;
-                        "Оценка ~качества"} )
-      aadd(first_message, {;
-          "Распечатка экспертной карты",;
-          "Распечатка раличных отчётов по оцеке качества экспертизы"} )
-      aadd(func_menu, {"kek_prn_eks()",;
-                       "kek_info2017()"})
-      aadd(cmain_menu,51)
-      aadd(main_menu," ~Справочники ")
-      aadd(main_message,"Ведение справочников")
-      aadd(first_menu, {"~Настройка"})
-      aadd(first_message, {"Настройка значений по умолчанию"} )
-      aadd(func_menu, {"kek_nastr()"})
-    endif
+  // case glob_task == X_KEK  //
+  //   if !between(hb_user_curUser:KEK, 1, 3)
+  //     n_message({"Недопустимая группа экспертизы (КЭК): "+lstr(hb_user_curUser:KEK),;
+  //                '',;
+  //                'Пользователям, которым разрешено работать в подзадаче "КЭК МО",',;
+  //                'необходимо установить группу экспертизы (от 1 до 3)',;
+  //                'в подзадаче "Редактирование справочников" в режиме "Справочники/Пароли"'},,;
+  //               "GR+/R","W+/R",,,"G+/R")
+  //   else
+  //     fl := begin_task_kek()
+  //     aadd(cmain_menu,1)
+  //     aadd(main_menu," ~КЭК ")
+  //     aadd(main_message,"Ввод данных по КЭК медицинской организации")
+  //     aadd(first_menu, {"~Добавление",;
+  //                       "~Редактирование",;
+  //                       "~Удаление"} )
+  //     aadd(first_message, { ;
+  //         "Добавление данных по экпертизе",;
+  //         "Редактирование данных по экпертизе",;
+  //         "Удаление данных по экпертизе";
+  //       } )
+  //     aadd(func_menu, {"kek_vvod(1)",;
+  //                      "kek_vvod(2)",;
+  //                      "kek_vvod(3)"} )
+  //     aadd(cmain_menu,34)
+  //     aadd(main_menu," ~Информация ")
+  //     aadd(main_message,"Просмотр / печать статистики по экспертизам")
+  //     aadd(first_menu, {"~Экспертная карта",;
+  //                       "Оценка ~качества"} )
+  //     aadd(first_message, {;
+  //         "Распечатка экспертной карты",;
+  //         "Распечатка раличных отчётов по оцеке качества экспертизы"} )
+  //     aadd(func_menu, {"kek_prn_eks()",;
+  //                      "kek_info2017()"})
+  //     aadd(cmain_menu,51)
+  //     aadd(main_menu," ~Справочники ")
+  //     aadd(main_message,"Ведение справочников")
+  //     aadd(first_menu, {"~Настройка"})
+  //     aadd(first_message, {"Настройка значений по умолчанию"} )
+  //     aadd(func_menu, {"kek_nastr()"})
+  //   endif
   case glob_task == X_MO //
     fl := my_mo_begin_task()
     my_mo_f1main()
