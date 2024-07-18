@@ -102,10 +102,10 @@ function edit_Users_bay()
 	local lWork
 	local aProperties
 	
-	if is_task( X_KEK )
-		c_1 := 2
-		c_2 := 77
-	endif
+//	if is_task( X_KEK )
+//		c_1 := 2
+//		c_2 := 77
+//	endif
 	blkEditObject := { | oBrowse, aObjects, object, nKey | editUser( oBrowse, aObjects, object, nKey ) }
 										
 	if hb_user_curUser:IsAdmin()
@@ -117,9 +117,9 @@ function edit_Users_bay()
 	endif
 	if lWork
 		aProperties := { { 'FIO', 'Ф.И.О.', 20 }, { 'DepShortName', 'Под-ние', 7 }, { 'Position', 'Должность', 20 }, { 'Type_F', 'Тип', 3 } }
-		if is_task( X_KEK )
-			aadd( aProperties, { 'KEK', 'КЭК', 3 } )
-		endif
+//		if is_task( X_KEK )
+//			aadd( aProperties, { 'KEK', 'КЭК', 3 } )
+//		endif
 		
 		oBox := TBox():New( T_ROW, c_1, maxrow() - 2, c_2, .t. )
 		oBox:Caption := 'Список пользователей'
@@ -176,13 +176,13 @@ static function editUser( oBrowse, aObjects, oUser, nKey )
 		m1Department := oUser:IDDepartment()
 		mDepartment := inieditspr( A__MENUVERT, TDepartmentDB():MenuDepartments(), m1Department )
 
-		if is_task( X_KEK )
-			m1gruppa := oUser:KEK
-			mgruppa := inieditspr( A__MENUVERT, mm_gruppa, m1gruppa )
-			--r1
-			c_1 := 2
-			c_2 := 77
-		endif
+//		if is_task( X_KEK )
+//			m1gruppa := oUser:KEK
+//			mgruppa := inieditspr( A__MENUVERT, mm_gruppa, m1gruppa )
+//			--r1
+//			c_1 := 2
+//			c_2 := 77
+//		endif
 		if is_task( X_PLATN ) .or. is_task( X_ORTO ) .or. is_task( X_KASSA )
 			--r1
 		endif
@@ -204,10 +204,10 @@ static function editUser( oBrowse, aObjects, oUser, nKey )
 								READER { | x | menu_reader( x, TUser():aMenuType, A__MENUVERT, , , .f. ) }
 		@ r1 + 7, c_1 + 3 say 'Пароль' get oUser:Password picture '@!' valid func_empty( oUser:Password ) .and. !PassExist( oUser, aObjects, oUser:Password )
 		i := 7
-		if is_task( X_KEK )
-			++i
-			@ r1 + i, c_1 + 3 say 'Группа КЭК' get mgruppa READER { | x | menu_reader( x, mm_gruppa, A__MENUVERT, , , .f. ) }
-		endif
+//		if is_task( X_KEK )
+//			++i
+//			@ r1 + i, c_1 + 3 say 'Группа КЭК' get mgruppa READER { | x | menu_reader( x, mm_gruppa, A__MENUVERT, , , .f. ) }
+//		endif
 		if is_task( X_PLATN ) .or. is_task( X_ORTO ) .or. is_task( X_KASSA )
 			++i
 			@ r1 + i, c_1 + 3 say 'Пароль для фискального регистратора' get oUser:PasswordFR picture '99999999'
