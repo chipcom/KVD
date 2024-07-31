@@ -437,6 +437,7 @@
 ..\2.x\EXCHANGE\func_exchange.prg
 
 ..\2.x\KASSA\mo_ortop.prg
+..\2.x\KASSA\mo_plat_func.prg
 
 #..\2.x\KEK\mo_kek.prg
 #..\2.x\KEK\mo_keki.prg
