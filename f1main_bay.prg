@@ -5,7 +5,7 @@
 #include "edit_spr.ch"
 #include "chip_mo.ch"
 
-// 15.12.23
+// 11.08.24
 Function f1main(n_Task)
   Local it, s, k, fl := .t., cNameIcon
   
@@ -743,7 +743,8 @@ hb_AIns( first_menu[ len( first_menu ) ], 5, '~Пользователи', .t. )
 hb_AIns( first_menu[ len( first_menu ) ], 6, '~Группы пользователей', .t. )
 hb_AIns( first_message[ len( first_message ) ], 4, 'Редактирование справочника пользователей системы', .t. )
 hb_AIns( first_message[ len( first_message ) ], 5, 'Редактирование справочника групп пользователей в системе', .t. )
-hb_AIns( func_menu[ len( func_menu ) ], 4, 'edit_Users_bay()', .t. )
+//hb_AIns( func_menu[ len( func_menu ) ], 4, 'edit_Users_bay()', .t. )
+hb_AIns( func_menu[ Len( func_menu ) ], 4, 'edit_password()', .t. )
 hb_AIns( func_menu[ len( func_menu ) ], 5, 'editRoles()', .t. )
 // конец перестройки меню
     //
