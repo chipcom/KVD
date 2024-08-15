@@ -15,7 +15,8 @@
 #
 ..\2.x\DAL\EMPLOYEES\TEmployeeDB.prg
 # 
-.\DAL\ORGANIZATION\TOrganizationDB.prg
+..\2.x\DAL\ORGANIZATION\TOrganizationDB.prg
+#
 .\DAL\ORGANIZATION\TDepartmentDB.prg
 .\DAL\ORGANIZATION\TSubdivisionDB.prg
 .\DAL\ORGANIZATION\TStddsDB.prg
@@ -83,7 +84,8 @@
 #
 ..\2.x\BLL\EMPLOYEES\TEmployee.prg
 #
-.\BLL\ORGANIZATION\TOrganization.prg
+..\2.x\BLL\ORGANIZATION\TOrganization.prg
+#
 .\BLL\ORGANIZATION\TSubdivision.prg
 .\BLL\ORGANIZATION\T_Mo_podr.prg
 .\BLL\ORGANIZATION\TDepartment.prg
