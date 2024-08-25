@@ -7,7 +7,7 @@
 
 #require 'hbtip'
 
-* 02.10.18 Журнал регистрации
+// 24.08.24 Журнал регистрации
 function ReportLogBookThread( aHash )
 	local oDoc, oNode, oTable, oRow, oCell, oHTable, oBTable
 	local totalAmount := 0, totalContract := 0
@@ -318,10 +318,13 @@ function ReportLogBookThread( aHash )
 	oNode:text	:= '&nbsp;'
 	oNode		:= oNode - 'td'
 
-	oNode		:= oRow + 'td'
-	oNode:attr	:= 'class="td613" width="100" align="left"'
-	oNode:text	:= iif( ( oChief := oDepartment:Chief() ) != nil, oChief:ShortFIO1251, '' )
-	oNode		:= oNode - 'td'
+	if oDepartment != nil
+		oNode		:= oRow + 'td'
+		oNode:attr	:= 'class="td613" width="100" align="left"'
+		oNode:text	:= iif( ( oChief := oDepartment:Chief() ) != nil, oChief:ShortFIO1251, '' )
+		oNode:text	:= ''
+		oNode		:= oNode - 'td'
+	endif
 	oRow		:= oRow - 'tr'
 	
 	oRow		:= oTable + 'tr'
