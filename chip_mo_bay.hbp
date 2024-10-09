@@ -299,6 +299,9 @@
 ..\2.x\KARTOTEK\pripisnoe_naselenie.prg
 ..\2.x\KARTOTEK\documents.prg
 ..\2.x\KARTOTEK\prikreplenie.prg
+..\2.x\KARTOTEK\delete_dubl_pacient.prg
+..\2.x\KARTOTEK\func_kartotek.prg
+..\2.x\KARTOTEK\func_smo.prg
 
 ..\2.x\dictionary\mo_spr.prg
 ..\2.x\dictionary\mo_spri.prg

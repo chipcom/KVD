@@ -193,7 +193,7 @@ function func_valid_ismo_bay( oGet, lkomu, sh, name_var )
 		endif
 	endif
 	return .t.
-
+/*
 * 29.11.18 
 function when_ismo( get, old )
 	local aObjects, item
@@ -208,6 +208,7 @@ function when_ismo( get, old )
 		mm_ismo := T_mo_smoDB():getListByOKATO( m1okato )
 	endif
 	return len( mm_ismo ) > 0
+*/
 
 * 17.12.18 вернуть иногороднюю СМО
 function ret_inogSMO_name_bay(  oPatient, oPolicyOMS )

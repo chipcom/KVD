@@ -163,6 +163,7 @@ function getListSRF()
 	next
 	return aReturn
 
+/*
 * 29.11.18 выбор субъекта ПФ из списка (за исключением Волгоградской Области ОКАТО = 18000)
 function get_srf( k, r, c )
 	local ret := { space( 5 ), space( 10 ) }
@@ -199,6 +200,7 @@ function get_srf( k, r, c )
 		ret := { selObject:OKATO, selObject:Name }
 	endif
 	return ret
+*/
 
 * 30.11.18 поиск в справочнике субъектов РФ
 static function editSRF( oBrowse, aObjects, oCommon, nKey )
