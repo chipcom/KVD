@@ -95,7 +95,7 @@ function printReferenceToFTS( oPatient, aContracts )
 	
 	private mPatient := oPatient
 	private mContracts := aContracts
-	print_shablon( alltrim( dir_exe + 'ReferenceToFTS.shb' ) )
+	print_shablon( alltrim( dir_exe() + 'ReferenceToFTS.shb' ) )
 	return nil
 
 * 13.11.18 - печать договора
@@ -161,7 +161,7 @@ function printContract( oContract )
 	else
 		private file_sh
 		if !empty( alltrim( mem_dogovor ) ) .and. ;
-				!empty( file_sh := menu_shablon( 3, 3, dir_exe + '*.' + upper( alltrim( mem_dogovor ) ), ;
+				!empty( file_sh := menu_shablon( 3, 3, dir_exe() + '*.' + upper( alltrim( mem_dogovor ) ), ;
 					color8, .f. ) )
 			f1_pr_shab( file_sh )
 		endif

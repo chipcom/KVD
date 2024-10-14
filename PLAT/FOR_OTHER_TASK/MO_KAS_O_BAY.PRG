@@ -1004,7 +1004,7 @@ Function prn_kas_ort(lnomer_n,fl_hu)
 	endif
 	Private file_sh
 	if !empty(mem_or_ext) .and. ;
-			!empty(file_sh := menu_shablon(3,3,dir_exe+"*."+mem_or_ext,color8,.f.,.f.))
+			!empty(file_sh := menu_shablon(3,3,dir_exe()+"*."+mem_or_ext,color8,.f.,.f.))
 			
 		Private t_arr_opl := {}, mvrach := "", mtexnik := "", ;
 			mtabn_vr := mtabn_tex := 0,;

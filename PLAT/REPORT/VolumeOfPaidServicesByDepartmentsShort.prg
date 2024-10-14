@@ -21,7 +21,7 @@ function CreateReportHTMLOld( cTitle )
 	tmpDir := hb_DirTemp()
 	// вначале запишем необходимые файлы во временный каталог
 	for each item in aFiles
-		cFile := dir_exe + item
+		cFile := dir_exe() + item
 		if file( cFile )
 			__CopyFile( cFile, tmpDir + item )
 		endif
