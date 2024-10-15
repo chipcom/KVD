@@ -577,13 +577,13 @@ FUNCTION f_end(yes_copy, lQuiet)
   if __mvExist( 'cur_dir' )
 	  filedelete(cur_dir + 'tmp*.dbf')
 	  filedelete(cur_dir + 'tmp*.ntx')
-	  filedelete(_tmp_dir1 + '*.*')
-	  if hb_DirExists(cur_dir + _tmp_dir) .and. hb_DirDelete(cur_dir + _tmp_dir) != 0
-		  //func_error(4, "Не могу удалить каталог "'+'cur_dir'+'_tmp_dir)
+	  filedelete(_tmp_dir1() + '*.*')
+	  if hb_DirExists(cur_dir + _tmp_dir()) .and. hb_DirDelete(cur_dir + _tmp_dir()) != 0
+		  //func_error(4, "Не могу удалить каталог "'+'cur_dir'+'_tmp_dir())
 	  endif
-	  filedelete(_tmp2dir1 + '*.*')
-	  if hb_DirExists(cur_dir + _tmp2dir) .and. hb_DirDelete(cur_dir + _tmp2dir) != 0
-		  //func_error(4, "Не могу удалить каталог " + cur_dir + _tmp2dir)
+	  filedelete(_tmp2dir1() + '*.*')
+	  if hb_DirExists(cur_dir + _tmp2dir()) .and. hb_DirDelete(cur_dir + _tmp2dir()) != 0
+		  //func_error(4, "Не могу удалить каталог " + cur_dir + _tmp2dir())
 	  endif
   endif
   // удалим файлы отчетов в формате '*.HTML' из временной директории
