@@ -441,7 +441,7 @@ function IncomeCashBayerPay( oCheck, nStartRow, cBorderColor, cBoxColor )
 	restscreen( buf )
 	return nil
 
-* 13.11.18 - работа с чеком
+// 17.10.24 - работа с чеком
 function printReceipt( oContract, nKey )
 	local numCheque
 	local s := ''
@@ -451,9 +451,21 @@ function printReceipt( oContract, nKey )
 	local buf := save_row( maxrow() )
 	local item := nil, oService := nil
 	
+
 	private ldate_op := date(), ltime_op := space( 5 ), lnchek := 0
 	private lsum_voz := 0
 	private lsum_voz_bank := 0
+
+
+	private m1oplata := 0
+	private mas_pmt := { 'наличные', ;
+							 'банк' }
+	private mas_msg := { 'оплата наличными', ;
+							'оплата банковской картой' }
+	private mas_fun := { 'm1oplata := 0', ;
+							 'm1oplata := 1' }
+	popup_prompt( 10, 20, 1, mas_pmt, mas_msg, mas_fun )
+altd()
 	do case
 		case nKey == K_CTRL_F10
 			if hb_user_curUser:IsAdmin()
@@ -475,6 +487,22 @@ function printReceipt( oContract, nKey )
 				endif
 			else
 				hb_Alert( 'Очистка оплаты чека возможна только администратором системы!' )
+			endif
+		case nKey == K_CTRL_F12
+				if oContract:HasCheque					// имеется пробитый чек
+					hb_Alert( 'Пробит чек.' + chr( 10 ) + 'Изменение не возможно!', , , 4 )
+				else
+					hb_Alert( 'Нажата клавиша Ctrl+F12', , , 4 )
+					oContract:IsCashbox := 1
+					oContract:ReceiptNumber := 999	//	oCheck:CheckNumber
+					// oContract:TotalBank := oCheck:TotalBank
+					oContract:DateCashbox := oContract:BeginTreatment	//	oCheck:DateFR
+					oContract:TimeCashBox := round_5( timetosec( Time() ), 0 )	//oCheck:TimeFR
+					oContract:DatePay := oContract:BeginTreatment	//	oCheck:DateFR
+					oContract:SerialNumberFR := 'CTRL_F12'	//	oCheck:SerialNumberFR
+					oContract:Cashier := hb_user_curUser
+altd()
+//					TContractDB():Save( oContract )
 			endif
 		case nKey == K_F10
 			if oContract:HasCheque

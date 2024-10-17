@@ -79,7 +79,7 @@ function kart_plat()
 	endif
 	return nil
 
-* 19.02.19 функция-обработчик нажатия клавиш в списке договоров
+// 17.10.24 функция-обработчик нажатия клавиш в списке договоров
 function editListContracts( oBrowse, aObjects, oContract, nKey, oPatient )
 	local fl := .f.
 	local err_close := 'Данный лист учета ЗАКРЫТ. Доступ разрешен только администратору системы!'
@@ -111,7 +111,8 @@ function editListContracts( oBrowse, aObjects, oContract, nKey, oPatient )
 			fl := printReferenceToFTS( oPatient, aObjects )
 		&& case nKey == K_F7 	// печать копии чека продажи
 			&& fl := printCopyReceipt( oContract )
-		case nKey == K_F10 .or. nKey == K_F8 .or. nKey == K_CTRL_F10 .or. nKey == K_CTRL_F8	// печать чека продажи или возврата
+		case nKey == K_F10 .or. nKey == K_F8 .or. nKey == K_CTRL_F10 .or. nKey == K_CTRL_F8	;
+				.or. nKey == K_CTRL_F12// печать чека продажи или возврата
 			fl := printReceipt( oContract, nKey )
 		case nKey == K_F9				// печать договора
 			if empty( oContract:Services() )
