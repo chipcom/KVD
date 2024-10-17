@@ -17,6 +17,7 @@
 * 03.11.17 yes_chek( oCheck, rm ) - запрос на ввод информации о платеже в чеке
 *******************************************************************************
 
+#include 'set.ch'
 #include 'hbthread.ch'
 #include 'inkey.ch'
 #include 'function.ch'
@@ -443,29 +444,20 @@ function IncomeCashBayerPay( oCheck, nStartRow, cBorderColor, cBoxColor )
 
 // 17.10.24 - работа с чеком
 function printReceipt( oContract, nKey )
-	local numCheque
+
 	local s := ''
 	local strIn := 'Введите номер чека: '
 	local oCheck												// объект для чека
 	local pict_chek := '999999'
 	local buf := save_row( maxrow() )
 	local item := nil, oService := nil
+	local i, r, c, mas_pmt
 	
 
 	private ldate_op := date(), ltime_op := space( 5 ), lnchek := 0
 	private lsum_voz := 0
 	private lsum_voz_bank := 0
 
-
-	private m1oplata := 0
-	private mas_pmt := { 'наличные', ;
-							 'банк' }
-	private mas_msg := { 'оплата наличными', ;
-							'оплата банковской картой' }
-	private mas_fun := { 'm1oplata := 0', ;
-							 'm1oplata := 1' }
-	popup_prompt( 10, 20, 1, mas_pmt, mas_msg, mas_fun )
-altd()
 	do case
 		case nKey == K_CTRL_F10
 			if hb_user_curUser:IsAdmin()
@@ -489,20 +481,30 @@ altd()
 				hb_Alert( 'Очистка оплаты чека возможна только администратором системы!' )
 			endif
 		case nKey == K_CTRL_F12
-				if oContract:HasCheque					// имеется пробитый чек
-					hb_Alert( 'Пробит чек.' + chr( 10 ) + 'Изменение не возможно!', , , 4 )
-				else
-					hb_Alert( 'Нажата клавиша Ctrl+F12', , , 4 )
-					oContract:IsCashbox := 1
-					oContract:ReceiptNumber := 999	//	oCheck:CheckNumber
-					// oContract:TotalBank := oCheck:TotalBank
-					oContract:DateCashbox := oContract:BeginTreatment	//	oCheck:DateFR
-					oContract:TimeCashBox := round_5( timetosec( Time() ), 0 )	//oCheck:TimeFR
-					oContract:DatePay := oContract:BeginTreatment	//	oCheck:DateFR
-					oContract:SerialNumberFR := 'CTRL_F12'	//	oCheck:SerialNumberFR
-					oContract:Cashier := hb_user_curUser
-altd()
-//					TContractDB():Save( oContract )
+			if oContract:HasCheque					// имеется пробитый чек
+				hb_Alert( 'Пробит чек.' + chr( 10 ) + 'Изменение не возможно!', , , 4 )
+			else
+				mas_pmt := {}
+				aadd( mas_pmt, 'оплата наличными' )
+				aadd( mas_pmt, 'банк' )
+			
+				i := 1
+				r := maxrow() - len( mas_pmt ) - 4
+				c := int( ( 80 - 3 ) / 2 )
+				if ( i := popup_prompt( r, c, i, mas_pmt ) ) == 0
+					return .t.
+				endif
+				oContract:IsCashbox := 1
+				oContract:ReceiptNumber := 9999	//	oCheck:CheckNumber
+				if i == 2
+					oContract:TotalBank := oContract:Total //	 oCheck:TotalBank
+				endif
+				oContract:DateCashbox := oContract:BeginTreatment	//	oCheck:DateFR
+				oContract:TimeCashBox := round_5( timetosec( Time() ), 0 )	//oCheck:TimeFR
+				oContract:DatePay := oContract:BeginTreatment	//	oCheck:DateFR
+				oContract:SerialNumberFR := 'CTRL_F12'	//	oCheck:SerialNumberFR
+				oContract:Cashier := hb_user_curUser
+				TContractDB():Save( oContract )
 			endif
 		case nKey == K_F10
 			if oContract:HasCheque
