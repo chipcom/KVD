@@ -337,6 +337,8 @@
 ..\2.x\oms\oms_func.prg
 ..\2.x\oms\oms_double.prg
 ..\2.x\oms\definition_KSG.prg
+..\2.x\oms\definition_KIRO.prg
+..\2.x\oms\definition_KSLP.prg
 ..\2.x\oms\oms_sluch.prg
 ..\2.x\oms\oms_sluch_main.prg
 ..\2.x\oms\oms_usl_sluch.prg
@@ -344,7 +346,6 @@
 ..\2.x\oms\f5editkusl.prg
 ..\2.x\oms\f_usl_definition_KSG.prg
 ..\2.x\oms\f_valid2ad_cr.prg
-..\2.x\oms\kiroANDkslp.prg
 ..\2.x\oms\f_1pac_definition_KSG.prg
 ..\2.x\oms\Change_Cena_OMS.prg
 ..\2.x\oms\conditionKSLP_21.prg
@@ -483,6 +484,9 @@
 
 ..\2.x\PLAN_ZAKAZ\pz_report.prg
 ..\2.x\PLAN_ZAKAZ\pz_func.prg
+
+#..\2.x\FUNC_LIB\prview.prg
+#..\2.x\FUNC_LIB\fastreph.prg
 
 #для отладки
 #.\FUNC\xtoc.prg
