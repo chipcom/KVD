@@ -432,6 +432,7 @@
 ..\2.x\dispanser\disp_nab_diag_usl.prg
 ..\2.x\dispanser\oms_dvn_drz.prg
 ..\2.x\dispanser\oms_dvn_drz_func.prg
+..\2.x\dispanser\diag_disp_nabl.prg
 
 ..\2.x\EXCHANGE\reestrOMS_XML.prg
 ..\2.x\EXCHANGE\schet_from_XML.prg
