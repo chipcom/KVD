@@ -5,7 +5,7 @@
 #include "edit_spr.ch"
 #include "chip_mo.ch"
 
-// 11.08.24
+// 24.12.24
 Function f1main(n_Task)
   Local it, s, k, fl := .t., cNameIcon
   
@@ -24,7 +24,7 @@ first_menu := {}
 first_message := {}
 func_menu := {}
 cmain_menu := {}
-put_icon(array_tasks[it,1] + ' [ЧИП + Учёт работы МО]' + __s_version(), cNameIcon)
+put_icon(array_tasks[it,1] + ' [ЧИП + Учёт работы МО]' + full_name_version(), cNameIcon)
 SETCOLOR(color1)
 FillScreen(p_char_screen,p_color_screen)
 do case

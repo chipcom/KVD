@@ -20,7 +20,7 @@ DYNAMIC f1forma_792_MIAC
 DYNAMIC monitoring_vid_pom
 DYNAMIC b_25_perinat_2
 
-** 19.07.22
+// 24.12.24
 procedure main( ... )
   local r, s, is_create := .f., is_copy := .f., is_index := .f., is_ftp := .f.
   local a_parol, buf, is_local_version := .t.
@@ -206,7 +206,7 @@ procedure main( ... )
   endif
 
   // инициализаия экрана
-  put_icon(__s_full_name() + __s_version(), 'MAIN_ICON')
+  put_icon(__s_full_name() + full_name_version(), 'MAIN_ICON')
   set key K_F1 to f_help()
   hard_err('create')
   FillScreen(p_char_screen, p_color_screen) //FillScreen("█","N+/N")
@@ -391,7 +391,7 @@ Function f_main(r0, is_local_version, a_parol)
         main_center_screen(r0)
       endif
       change_sys_date() // перечитать системную дату
-      put_icon(__s_full_name() + __s_version(), 'MAIN_ICON') // перевывести заголовок окна
+      put_icon(__s_full_name() + full_name_version(), 'MAIN_ICON') // перевывести заголовок окна
       @ r0,0 say full_date(sys_date) color "W+/N" // перевывести дату
       @ r0,maxcol()-4 say hour_min(seconds()) color "W+/N" // перевывести время
     enddo
@@ -399,7 +399,7 @@ Function f_main(r0, is_local_version, a_parol)
   endif
   return NIL
 
-** вывести верхние строки главного экрана
+// вывести верхние строки главного экрана
 Function main_up_screen()
   Local i, k, s, arr[2]
 
