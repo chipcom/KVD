@@ -448,6 +448,12 @@
 ..\2.x\KASSA\mo_ortop.prg
 ..\2.x\KASSA\mo_plat_func.prg
 
+..\2.x\FNS\fns.prg
+..\2.x\FNS\fns_func.prg
+..\2.x\FNS\fns_exchange.prg
+..\2.x\FNS\page1.prg
+..\2.x\FNS\page2.prg
+
 #..\2.x\KEK\mo_kek.prg
 #..\2.x\KEK\mo_keki.prg
 #..\2.x\KEK\mo_keki_17.prg

@@ -5,9 +5,9 @@
 #include "edit_spr.ch"
 #include "chip_mo.ch"
 
-// 24.12.24
+// 16.01.25
 Function f1main(n_Task)
-  Local it, s, k, fl := .t., cNameIcon
+  Local it, k, fl := .t., cNameIcon
   
 if (it := ascan(array_tasks, {|x| x[2] == n_Task})) == 0
   return func_error("Ошибка в вызове задачи")
@@ -477,6 +477,10 @@ do case
       aadd(first_message[2], "Информация по работе с кассой")
       aadd(func_menu[2], "inf_fr()")
     endif
+    AAdd( first_menu[ 2 ], 0 )
+    AAdd( first_menu[ 2 ], 'Справки для ~ФНС' )
+    AAdd( first_message[ 2 ], 'Составление и работа со справками для ФНС' )
+    AAdd( func_menu[ 2 ], 'inf_fns()' )
     if yes_parol
       aadd(first_menu[2], 0)
       aadd(first_menu[2], "Работа ~операторов")
@@ -554,6 +558,9 @@ do case
       aadd(first_message[2], "Информация по работе с кассой")
       aadd(func_menu[2], "inf_fr_orto()")
     endif
+    AAdd( first_menu[ 2 ], 'Справки для ~ФНС' )
+    AAdd( first_message[ 2 ], 'Составление и работа со справками для ФНС' )
+    AAdd( func_menu[ 2 ], 'inf_fns()' )
     if yes_parol
       aadd(first_menu[2], 0)
       aadd(first_menu[2], "Работа ~операторов")
@@ -669,6 +676,10 @@ do case
                     "fk_usl_dogov()",;
                     "fr_nastrojka()",;
                     "nastr_kassa(2)"})
+    AAdd( first_menu[ 2 ], 0 )
+    AAdd( first_menu[ 2 ], 'Справки для ~ФНС' )
+    AAdd( first_message[ 2 ], 'Составление и работа со справками для ФНС' )
+    AAdd( func_menu[ 2 ], 'inf_fns()' )
   // case glob_task == X_KEK  //
   //   if !between(hb_user_curUser:KEK, 1, 3)
   //     n_message({"Недопустимая группа экспертизы (КЭК): "+lstr(hb_user_curUser:KEK),;
