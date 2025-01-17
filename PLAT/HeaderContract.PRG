@@ -20,7 +20,7 @@
 #define BEGIN_THREATMENT	1
 #define END_THREATMENT		2
 
-* 19.02.19
+// 17.01.25
 function kart_plat()
 	local str_sem
 	local aContracts := {}
@@ -65,11 +65,11 @@ function kart_plat()
 		oBox:CaptionColor := col_tit_popup
 		oBox:Color := color0
 		if ! getDrvFR():IsFiscalReg
-			oBox:MessageLine := { '^<Ctrl+Enter>^-список услуг ^<F9>^-договор ^<F5>^-справка в ФНС', ;
+			oBox:MessageLine := { '^<Ctrl+Enter>^-список услуг ^<F9>^-договор ', ;
 						'^<Esc>^-выход ^<Ins>^-вставка ^<Del>^-удаление ^<Enter>^-редакт.' }
 		else
 			&& oBox:MessageLine := { '^<Ctrl+Enter>^-услуги ^<F8>^-возврат ^<F9>^-договор ^<F10>^-чек ^<F7>^-копия чека', ;
-			oBox:MessageLine := { '^<Ctrl+Enter>^-услуги ^<F8>^-возврат ^<F9>^-договор ^<F10>^-чек ^<F5>^-справка в ФНС', ;
+			oBox:MessageLine := { '^<Ctrl+Enter>^-услуги ^<F8>^-возврат ^<F9>^-договор ^<F10>^-чек ', ;
 								'^<Esc>^-выход ^<Ins>^-вставка ^<Del>^-удаление ^<Enter>^-редакт.' }
 		endif
 		
@@ -107,8 +107,8 @@ function editListContracts( oBrowse, aObjects, oContract, nKey, oPatient )
 				return .f.
 			endif
 			fl := Services( oContract )
-		case nKey == K_F5 	// печать справки для ФНС
-			fl := printReferenceToFTS( oPatient, aObjects )
+		// case nKey == K_F5 	// печать справки для ФНС
+		// 	fl := printReferenceToFTS( oPatient, aObjects )
 		&& case nKey == K_F7 	// печать копии чека продажи
 			&& fl := printCopyReceipt( oContract )
 		case nKey == K_F10 .or. nKey == K_F8 .or. nKey == K_CTRL_F10 .or. nKey == K_CTRL_F8	;
