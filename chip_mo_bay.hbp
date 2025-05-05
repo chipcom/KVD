@@ -311,6 +311,7 @@
 ..\2.x\function\mo_func.prg
 ..\2.x\function\mo_func1.prg
 ..\2.x\function\mo_func2.prg
+..\2.x\function\pdf_func.prg
 ..\2.x\function\test_func.prg
 
 ..\2.x\ref\initSpravFFOMS.prg
@@ -406,6 +407,11 @@
 ..\2.x\reports\forma_57.prg
 ..\2.x\reports\inf_drz_excel.prg
 
+..\2.x\invoice\mo_invoice.prg
+..\2.x\invoice\print_schet_reestr.prg
+..\2.x\invoice\doc_order_pdf.prg
+..\2.x\invoice\mo_invoice_other.prg
+
 ..\2.x\util\workWithZIP.prg
 ..\2.x\util\runExternalProgram.prg
 ..\2.x\util\workWithInternet.prg
@@ -480,7 +486,7 @@
 
 ..\2.x\ORDER\mo_omso.prg
 ..\2.x\ORDER\mo_omsp.prg
-..\2.x\ORDER\mo_omspr.prg
+#..\2.x\ORDER\mo_omspr.prg
 
 ..\2.x\OTHER\mo_mzxml.prg
 ..\2.x\OTHER\mo_serv.prg
