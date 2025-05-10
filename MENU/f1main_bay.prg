@@ -733,6 +733,8 @@ Function f1main( n_Task )
     fl := my_mo_begin_task()
     my_mo_f1main()
   Case glob_task == X_SPRAV //
+    fl := menu_X_sprav()
+/*
     fl := begin_task_sprav()
     //
     AAdd( cmain_menu, 1 )
@@ -775,6 +777,7 @@ Function f1main( n_Task )
       "Просмотр/печать общих справочников";
       } )
     AAdd( func_menu, { "o_sprav()" } )
+*/
   Case glob_task == X_SERVIS //
     AAdd( cmain_menu, 1 )
     AAdd( main_menu, " ~Сервисы " )

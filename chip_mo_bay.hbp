@@ -1,6 +1,10 @@
 
 ### главное меню программы
-.\MENU\f1main_bay.prg
+#.\MENU\f1main_bay.prg
+#.\MENU\menu_X_sprav_bay.prg
+..\2.x\MENU\f1main.prg
+..\2.x\MENU\menu_X_sprav.prg
+#..\2.x\MENU\menu_X_vounc.prg
 
 ### подсистема доступа к данным
 ..\2.x\DAL\TStructFiles.prg
@@ -273,9 +277,6 @@
 #
 ..\2.x\mo_main.prg
 ..\2.x\chip_mo.rc
-..\2.x\mo_adres.prg
-..\2.x\mo_st39.prg
-..\2.x\mo_vounc.prg
 ..\2.x\mo_version.prg
 
 ..\2.x\init\mo_init.prg
@@ -443,6 +444,7 @@
 ..\2.x\dispanser\oms_dvn_drz.prg
 ..\2.x\dispanser\oms_dvn_drz_func.prg
 ..\2.x\dispanser\diag_disp_nabl.prg
+..\2.x\dispanser\mo_st39.prg
 
 ..\2.x\EXCHANGE\reestrOMS_XML.prg
 ..\2.x\EXCHANGE\schet_from_XML.prg
@@ -501,6 +503,10 @@
 
 ..\2.x\PLAN_ZAKAZ\pz_report.prg
 ..\2.x\PLAN_ZAKAZ\pz_func.prg
+
+..\2.x\ADDRESS\mo_adres.prg
+
+..\2.x\VOUNC\mo_vounc.prg
 
 #..\2.x\FUNC_LIB\prview.prg
 #..\2.x\FUNC_LIB\fastreph.prg
