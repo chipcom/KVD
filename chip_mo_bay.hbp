@@ -3,7 +3,18 @@
 #.\MENU\f1main_bay.prg
 #.\MENU\menu_X_sprav_bay.prg
 ..\2.x\MENU\f1main.prg
+..\2.x\MENU\menu_X_registr.prg
+..\2.x\MENU\menu_X_prokoj.prg
+..\2.x\MENU\menu_X_oms.prg
+..\2.x\MENU\menu_X_platn.prg
+..\2.x\MENU\menu_X_orto.prg
+..\2.x\MENU\menu_X_kassa.prg
 ..\2.x\MENU\menu_X_sprav.prg
+..\2.x\MENU\menu_X_263.prg
+..\2.x\MENU\menu_X_servis.prg
+..\2.x\MENU\menu_X_copy.prg
+..\2.x\MENU\menu_X_index.prg
+..\2.x\MENU\menu_X_common.prg
 #..\2.x\MENU\menu_X_vounc.prg
 
 ### подсистема доступа к данным
@@ -306,7 +317,6 @@
 
 ..\2.x\dictionary\mo_spr.prg
 ..\2.x\dictionary\mo_spri.prg
-..\2.x\dictionary\spr_personal.prg
 ..\2.x\dictionary\spr_uslugi.prg
 ..\2.x\dictionary\spr_func.prg
 
@@ -384,6 +394,7 @@
 ..\2.x\oms\disability_certificate.prg
 ..\2.x\oms\mo_omsi.prg
 
+..\2.x\personal\spr_personal.prg
 ..\2.x\personal\personal_func.prg
 
 ..\2.x\onkologiya\onko.prg
