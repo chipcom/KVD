@@ -15,7 +15,7 @@
 ..\2.x\MENU\menu_X_copy.prg
 ..\2.x\MENU\menu_X_index.prg
 ..\2.x\MENU\menu_X_common.prg
-#..\2.x\MENU\menu_X_vounc.prg
+..\2.x\MENU\menu_X_vounc.prg
 
 ### подсистема доступа к данным
 ..\2.x\DAL\TStructFiles.prg

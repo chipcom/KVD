@@ -53,7 +53,7 @@ Function prn_k_fr(k)
 
 ***** 18.11.14 свод за смену
 Function prn_k_svod()
-	Local arr_m, buf, i, k, arr, n_file := "smena"+stxt, sh := 64, ;
+	Local arr_m, buf, i, k, arr, n_file := "smena.txt", sh := 64, ;
 		kol_pl := 0, sum_pl := 0, kol_or := 0, sum_or := 0,;
 		kol_pl_b := 0, sum_pl_b := 0, kol_or_b := 0, sum_or_b := 0
 		
@@ -176,7 +176,7 @@ Function prn_k_svod()
 
 ***** 25.09.14 вывод свода за период времени (по всем сменам)
 Function prn_k_svod_period()
-	Local arr_m, buf, i, k, arr, n_file := "kassa_sv"+stxt, sh := 64, ;
+	Local arr_m, buf, i, k, arr, n_file := "kassa_sv.txt", sh := 64, ;
 		kol_pl := 0, sum_pl := 0, kol_or := 0, sum_or := 0, HH := 60,;
 		kol_pl_b := 0, sum_pl_b := 0, kol_or_b := 0, sum_or_b := 0
 	
@@ -251,7 +251,7 @@ Function prn_k_svod_period()
 *****
 Function prn_k_plat()
 	Local buf, i, j, k, arr_m, s, sh, HH := 78, reg_print,;
-		arr_title, name_file := "kas_boln"+stxt,;
+		arr_title, name_file := "kas_boln.txt",;
 		ss := 0, skol := 0, susl := 0
 		
 	if (arr_m := year_month(T_ROW,T_COL+5,,1)) == NIL
@@ -399,7 +399,7 @@ Function prn_k_ort(k)
 *****
 Function prn_rees_ort()
 	Local buf, i, j, k, arr_m, s, sh, HH := 78, reg_print,;
-		arr_title, name_file := "kas_boln"+stxt,;
+		arr_title, name_file := "kas_boln.txt",;
 		ss[5], skol := 0, susl[5]
 		
 	if (arr_m := year_month(T_ROW,T_COL+5,,1)) == NIL
@@ -566,7 +566,7 @@ Function prn_rees_ort()
 *****
 Function prn_nez_nar()
 	Local buf := save_row(maxrow()), i, s1, s2, sh, HH := 60, reg_print, arr_title,;
-		name_file := "nez_nar"+stxt
+		name_file := "nez_nar.txt"
 		
 	mywait()
 	dbcreate("tmp", {{"kod_k", "N", 7,0},; // код больного по картотеке

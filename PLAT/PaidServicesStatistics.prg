@@ -390,8 +390,8 @@ Function st1_plat_fio()
 	Local reg := 1
 	Local vr_as, adbf, i, j, arr[2], begin_date, end_date, ;
 				fl_exit := .f., sh, HH := 57, reg_print, s, xx, n, nvr,;
-				arr_otd := {}, n_file := "plat_fio"+stxt, buf := save_maxrow()
-	Private krvz, arr_dms, d_file := "PLAT_FIO"+sdbf, otdeleni := {}
+				arr_otd := {}, n_file := "plat_fio.txt", buf := save_maxrow()
+	Private krvz, arr_dms, d_file := "PLAT_FIO"+sdbf(), otdeleni := {}
 	if !del_dbf_file(d_file)
 		return NIL
 	endif

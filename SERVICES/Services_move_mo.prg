@@ -145,7 +145,7 @@ function ob21v_usl( nKey, oBrow, regim, mtitul )
 					mywait()
 					rec := recno()
 					Private reg_print := 2
-					n_file := 'ob2_v_us' + stxt
+					n_file := 'ob2_v_us.txt'
 					fp := fcreate( n_file ) ; n_list := 1 ; tek_stroke := 0
 					add_string( '' )
 					add_string( center( mtitul, sh ) )

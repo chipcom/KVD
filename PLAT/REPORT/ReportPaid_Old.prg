@@ -70,7 +70,7 @@ static mm_g_selo :=  {{"город",1},{"село",2}}
 local mm_tmp := {}, k
 local buf := savescreen(), tmp_color := setcolor(cDataCGet),;
       mm_mest := {{"Волгоград или область",1},{"иногородние",2}},;
-      tmp_help := 0, hGauge, name_file := "pl_mnog"+stxt,;
+      tmp_help := 0, name_file := "pl_mnog.txt",;
       sh := 80, HH := 77, r1 := 2, a_diagnoz[3], a_uslugi[20],;
       k_usl, fl_stom := .f.,;
       mm_da_net := {{"нет",1},{"да ",2}}, lvid_doc := 0,;
@@ -1554,7 +1554,7 @@ return nil
 *****
 function vr_vzaimozach(regim)
 local i, j, k, fl, fl_exit := .f., buf := save_row(maxrow()),;
-      sh, HH := 60, reg_print := 2, arr_title, n_file := "vr_vzaim"+stxt
+      sh, HH := 60, reg_print := 2, arr_title, n_file := "vr_vzaim.txt"
 private arr_m
 if (arr_m := year_month()) == nil
   return nil
@@ -1688,7 +1688,7 @@ return nil
 function pr_opl_vz()
 local i, j, arr, begin_date, end_date, s, buf := save_row(maxrow()),;
       fl_exit := .f., sh, HH := 58, reg_print, ssumma := 0,;
-      arr_title, name_file := "vzoplata"+stxt, arr_m, adbf,;
+      arr_title, name_file := "vzoplata.txt", arr_m, adbf,;
       menu_opl := {{"безналичн.",0},;
                    {"наличными ",1},;
                    {"в/зачет   ",2}}
@@ -2615,7 +2615,7 @@ else
     endif
   endif
   SET(_SET_DELETED, .T.)
-  fp := fcreate("ob_stat"+stxt) ; tek_stroke := 0 ; n_list := 1
+  fp := fcreate("ob_stat.txt") ; tek_stroke := 0 ; n_list := 1
   add_string("ПЛАТНЫЕ УСЛУГИ")
   if k == 0
     add_string(center("Статистика по службам (с разбивкой по отделениям)",sh))
@@ -2950,7 +2950,7 @@ else
   endif
   fclose(fp)
   close databases
-  viewtext("ob_stat"+stxt,,,,(sh>80),,,regim)
+  viewtext("ob_stat.txt",,,,(sh>80),,,regim)
 endif
 return nil
 
@@ -2961,8 +2961,8 @@ function st_plat_fio(reg)
 static svr_as := 1, mas_pmt := {"~Врачи","~Ассистенты","~Медсестры","~Санитарки"}
 local vr_as, adbf, i, j, arr[2], begin_date, end_date, ;
       fl_exit := .f., sh, HH := 57, reg_print, s, xx, n, nvr,;
-      arr_otd := {}, n_file := "plat_fio"+stxt, buf := save_row(maxrow())
-private krvz, arr_dms, d_file := "PLAT_FIO"+sdbf
+      arr_otd := {}, n_file := "plat_fio.txt", buf := save_row(maxrow())
+private krvz, arr_dms, d_file := "PLAT_FIO"+sdbf()
 if !del_dbf_file(d_file)
   return nil
 endif
@@ -3225,7 +3225,7 @@ return nil
 
 *****
 function st_plat_ms(reg)
-local i, j, arr[2], begin_date, end_date, n_file := "plat_ms"+stxt,;
+local i, j, arr[2], begin_date, end_date, n_file := "plat_ms.txt",;
       fl_exit := .f., sh, HH := 57, reg_print := 1, s, arr_dms,;
       ss, ss1, ss2, ss3, arr_title, adbf, krvz, xx
 if (arr := year_month()) == nil
@@ -3237,8 +3237,8 @@ if (krvz := fbp_tip_usl(T_ROW,T_COL-5,@arr_dms)) == nil
   return nil
 endif
 if psz == 1
-  /*private usl_dop := rest_arr(dir_server+"usl_pl_d"+smem),;
-          usl_mat := rest_arr(dir_server+"usl_pl_m"+smem)*/
+  /*private usl_dop := rest_arr(dir_server+"usl_pl_d"+smem()),;
+          usl_mat := rest_arr(dir_server+"usl_pl_m"+smem())*/
 endif
 adbf := {;
      {"KOD",        "N",      4,      0},;  // код персонала
@@ -3386,7 +3386,7 @@ return nil
 function f1r_s_plat()
 local i, j, arr, begin_date, end_date, s, buf := save_row(maxrow()),;
       fl_exit := .f., sh, HH := 57, reg_print, lyear, slyear, speriod,;
-      arr_title, name_file := "r_dopl"+stxt, old_vr := 0,;
+      arr_title, name_file := "r_dopl.txt", old_vr := 0,;
       vstoim := 0, sstoim := 0, blk
 private arr_m, kv[2]
 if (arr_m := year_month()) == nil
@@ -3560,7 +3560,7 @@ function f2r_spl_plat(reg)
 static snomer := 1, sreg1 := 1
 local i, j, k, arr[2], s, buf := save_row(maxrow()), buf1, reg1,;
       fl_exit := .f., sh, HH := 57, reg_print,;
-      arr_title, name_file := "n_kvit"+stxt,;
+      arr_title, name_file := "n_kvit.txt",;
       vstoim := 0, sstoim := 0, old := 0, up_usl, ;
       speriod, begin_date, end_date, cp := " "
 if (mnomer := input_value(18,12,20,67,color1,;
@@ -3715,7 +3715,7 @@ function f3r_s_plat()
 static snomer := 1, sreg1 := 1
 local i, j, k, arr[2], s, buf := save_row(maxrow()), buf1, reg1,;
       fl_exit := .f., sh, HH := 57, reg_print,;
-      arr_title, name_file := "n_kvitan"+stxt,;
+      arr_title, name_file := "n_kvitan.txt",;
       vstoim := 0, sstoim := 0, old := 0,;
       speriod, begin_date, end_date, cp := " ", ss := 0
 if (mnomer := input_value(18,12,20,67,color1,;
@@ -3833,7 +3833,7 @@ local lyear, slyear, s_date, arr_kv := {{1,999999}}, buf, ;
       blk := {|b,ar,nDim,nElem,nKey| f1_s_vyruchka(b,ar,nDim,nElem,nKey)},;
       i, j, k, arr[2], s, buf1, reg1, min_date, max_date, ;
       fl_exit := .f., sh, HH := 78, reg_print,;
-      arr_title, name_file := "boln_usl"+stxt,;
+      arr_title, name_file := "boln_usl.txt",;
       vstoim := 0, sstoim := 0, old := 0, arr_otd,;
       speriod, begin_date, end_date, cp := " ", ss := 0
 if (lyear := input_value(20,15,22,64,color1,;
@@ -4051,7 +4051,7 @@ return nil
 
 *****
 function f5r_s_plat()
-local buf, i, k, mas12, arr_m, n_file := "spis_kvi"+stxt, sh := 64, ssum := 0
+local buf, i, k, mas12, arr_m, n_file := "spis_kvi.txt", sh := 64, ssum := 0
 if (arr_m := year_month()) == nil
   return nil
 endif
@@ -4140,7 +4140,7 @@ function Pl_vyruchka()
 local lyear, slyear, s_date, arr_kv := {{1,999999}}, buf, i, k,;
       mas12 := {{1," с ..."},{2,"по ..."}}, mpic := {{6,0},{6,0}},;
       blk := {|b,ar,nDim,nElem,nKey| f1_s_vyruchka(b,ar,nDim,nElem,nKey)},;
-      n_file := "s_vyruch"+stxt, sh := 64, ssum := 0, hGauge
+      n_file := "s_vyruch.txt", sh := 64, ssum := 0, hGauge
 if (lyear := input_value(20,15,22,64,color1,;
         "За какой год желаете получить информацию",;
         year(sys_date),"9999")) == nil
@@ -5088,7 +5088,7 @@ return nil
 *****
 function f1ob_ved_vz(nKey,oBrow,regim)
 local ret := -1, buf, fl := .f., rec, tmp_color, i, j, ;
-      s, sh, HH := 58, reg_print := 2, arr_title, name_file := "ob_ved"+stxt
+      s, sh, HH := 58, reg_print := 2, arr_title, name_file := "ob_ved.txt"
 do case
   case regim == "edit"
     do case
@@ -5522,7 +5522,7 @@ return flag
 function f2_pl_vzaim(nKey,oBrow,regim)
 static sf_nomer, sf_date, sa_nomer, sa_date
 local ret := -1, buf, fl := .f., rec, tmp_color, ah, ahu, i, j, k, fl_one,;
-      s, sh, HH := 76, reg_print, arr_title, name_file := "vzaimoza"+stxt,;
+      s, sh, HH := 76, reg_print, arr_title, name_file := "vzaimoza.txt",;
       d, sd, kol_usl, sk, ss, is_fio, is_sokr, old, mas_pmt
 do case
   case regim == "edit"
@@ -5797,7 +5797,7 @@ return nil
 
 *****
 function f4ob_ved_vz(par)
-local s, sh, HH := 58, reg_print, arr_title, n_file := "ob_ved"+stxt,;
+local s, sh, HH := 58, reg_print, arr_title, n_file := "ob_ved.txt",;
       buf := save_row(maxrow()), adbf, msaldo1, msaldo2, sum1, sum2
 mywait()
 adbf := {{"d_dokum","D", 8,0},;
@@ -6020,7 +6020,7 @@ _t->itogo := lstr(ss,15,2)
 _t->fio_ruk := alltrim(org->ruk)
 _t->fio_bux := alltrim(org->bux)
 close databases
-call_fr("mo_faktu"+sfr3)
+call_fr("mo_faktu"+sfr3())
 return nil
 
 ***** 04.04.14
@@ -6177,7 +6177,7 @@ _t->stoim := ss
 close databases
 rest_box(buf)
 message_fr_excel()
-call_fr("mo_reesdms"+sfr3)
+call_fr("mo_reesdms"+sfr3())
 return nil
 
 ***** 03.04.14 печать акта выполненных работ
@@ -6233,7 +6233,7 @@ _d->p_7 := lstr(ss,13,2)
 _t->stoim := lstr(ss,15,2)
 _t->sstoim := srub_kop(ss,.t.)
 close databases
-call_fr("mo_akt"+sfr3)
+call_fr("mo_akt"+sfr3())
 return nil
 
 *****
@@ -6506,7 +6506,7 @@ function rees2_vzaim( name_file )
 *****
 function f3ob_ved_vz( nKey, oBrow, regim )
 	local ret := -1, buf, fl := .f., rec, tmp_color, i, j, k, t_arr[ 2 ], ;
-		s, sh, HH := 58, reg_print := 2, arr_title, name_file := 'ob_ved' + stxt
+		s, sh, HH := 58, reg_print := 2, arr_title, name_file := 'ob_ved.txt'
 
 	do case
 		case regim == 'edit'
