@@ -425,9 +425,9 @@ Function st1_plat_fio()
 					 {"summa","N",12,2},;  // общая сумма лечения по данному отделению
 					 {"sm_vozvr","N",12,2}; // общая сумма лечения по данному отделению
 					}
-	dbcreate(cur_dir+"tmp",adbf)
-	use (cur_dir+"tmp") new
-	index on str(kod_k,7)+str(kod,7)+str(otd,3)+str(kod_p,4) to (cur_dir+"tmp")
+	dbcreate(cur_dir()+"tmp",adbf)
+	use (cur_dir()+"tmp") new
+	index on str(kod_k,7)+str(kod,7)+str(otd,3)+str(kod_p,4) to (cur_dir()+"tmp")
 	G_Use(dir_server+"hum_p_u",dir_server+"hum_p_u","HU")
 	G_Use(dir_server+"hum_p",,"HUMAN")
 	if pi1 == 3  // по дате закрытия листа учета
@@ -550,7 +550,7 @@ Function st1_plat_fio()
 		G_Use(dir_server+"hum_p_u",dir_server+"hum_p_u","HU")
 		set relation to u_kod into USL
 		G_Use(dir_server+"hum_p",,"HUMAN")
-		use (cur_dir+"tmp") new
+		use (cur_dir()+"tmp") new
 		set relation to otd into OTD, to kod_k into KART, to kod into HUMAN
 		if reg == 2
 			if vr_as < 3
@@ -563,7 +563,7 @@ Function st1_plat_fio()
 			endif
 		endif
 		index on upper(uch->name)+left(upper(otd->name),20)+left(upper(kart->fio),20)+str(kod_k,7)+dtos(human->k_data) ;
-					to (cur_dir+"tmp")
+					to (cur_dir()+"tmp")
 		fp := fcreate(n_file) ; tek_stroke := 0 ; n_list := 1
 		add_string("ПЛАТНЫЕ УСЛУГИ")
 		add_string(center("Статистика по работе персонала",sh))

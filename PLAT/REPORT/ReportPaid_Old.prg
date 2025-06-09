@@ -109,14 +109,14 @@ lvid_doc := setbit(lvid_doc,3)
 //
 private pdate_lech, pdate_schet, mstr_crb := 0, mslugba
 //
-dbcreate(cur_dir+"tmp", {;
+dbcreate(cur_dir()+"tmp", {;
    {"U_KOD"  ,    "N",      4,      0},;  // код услуги
    {"U_SHIFR",    "C",     10,      0},;  // шифр услуги
    {"U_NAME",     "C",     65,      0} ;  // наименование услуги
   })
-use (cur_dir+"tmp")
-index on str(u_kod,4) to (cur_dir+"tmpk")
-index on fsort_usl(u_shifr) to (cur_dir+"tmpn")
+use (cur_dir()+"tmp")
+index on str(u_kod,4) to (cur_dir()+"tmpk")
+index on fsort_usl(u_shifr) to (cur_dir()+"tmpn")
 tmp->(dbCloseArea())
 aadd(mm_tmp, {"date_lech","N",4,0,nil,;
               {|x|menu_reader(x,;
@@ -338,7 +338,7 @@ init_base(tmp_file,,mm_tmp,0)
 R_Use(dir_server+"plat_ms",dir_server+"plat_ms","MS")
 R_Use(dir_server+"mo_pers",dir_server+"mo_pers","PERSO")
 k := f_edit_spr(A__APPEND,mm_tmp,"множественному запросу",;
-                "g_use(cur_dir+'tmp_mn_p',,,.t.,.t.)",0,1,,,,,"pwrite_mn_p")
+                "g_use(cur_dir()+'tmp_mn_p',,,.t.,.t.)",0,1,,,,,"pwrite_mn_p")
 if k > 0
   mywait()
   use (tmp_file) new alias MN
@@ -428,7 +428,7 @@ if k > 0
     endif
   endif
   if mn->uslugi > 0
-    use (cur_dir+"tmp") index (cur_dir+"tmpn") new
+    use (cur_dir()+"tmp") index (cur_dir()+"tmpn") new
     go top
     dbeval({|| aadd(arr_usl, {tmp->u_kod,tmp->u_shifr,tmp->u_name,0,0}) })
     tmp->(dbCloseArea())
@@ -438,12 +438,12 @@ if k > 0
   if !flag_hu .and. is_oplata != 7
     flag_hu := (mn->med1 > 0 .or. mn->san1 > 0)
   endif
-  dbcreate(cur_dir+"tmp",{{"kod","N",7,0},;
+  dbcreate(cur_dir()+"tmp",{{"kod","N",7,0},;
                           {"stoim","N",10,2}})
-  use (cur_dir+"tmp") new
-  dbcreate(cur_dir+"tmp_k",{{"kod_k","N",7,0}})
-  use (cur_dir+"tmp_k") new
-  index on str(kod_k,7) to (cur_dir+"tmp_k")
+  use (cur_dir()+"tmp") new
+  dbcreate(cur_dir()+"tmp_k",{{"kod_k","N",7,0}})
+  use (cur_dir()+"tmp_k") new
+  index on str(kod_k,7) to (cur_dir()+"tmp_k")
   fl_exit := .f.
   Status_Key("^<Esc>^ - прервать поиск")
   G_Use(dir_server+"hum_p_u",dir_server+"hum_p_u","HU")
@@ -569,10 +569,10 @@ if k > 0
     set relation to recno() into KART_, to recno() into KART2
     R_Use(dir_server+"hum_p",,"HUMAN")
     set relation to kod_k into KART
-    use (cur_dir+"tmp_k") new
-    use (cur_dir+"tmp") new
+    use (cur_dir()+"tmp_k") new
+    use (cur_dir()+"tmp") new
     set relation to kod into HUMAN
-    index on upper(kart->fio)+dtos(human->k_data) to (cur_dir+"tmp")
+    index on upper(kart->fio)+dtos(human->k_data) to (cur_dir()+"tmp")
     //
     fp := fcreate(name_file) ; n_list := 1 ; tek_stroke := 0
     add_string("")
@@ -925,13 +925,13 @@ if (arr_m := year_month()) == nil
 endif
 //
 mywait()
-dbcreate(cur_dir+"tmp", {{"kod",     "N", 4,   0},;
+dbcreate(cur_dir()+"tmp", {{"kod",     "N", 4,   0},;
                          {"name",    "C", 60,  0},;
                          {"kod_1",   "C", 10,  0},;
                          {"kol_vo",  "N", 10,  0},;
                          {"summa",   "N", 12,  2}})
-use (cur_dir+"tmp") new
-index on kod to (cur_dir+"tmp_u")
+use (cur_dir()+"tmp") new
+index on kod to (cur_dir()+"tmp_u")
 R_Use(dir_server+"hum_p",,"HUM")
 R_Use(dir_server+"hum_p_U",dir_server+"hum_p_U","HUM_U")
 select HUM
@@ -974,7 +974,7 @@ do while !eof()
   skip
 enddo
 select TMP
-index on kod_1 to (cur_dir+"tmp_u")
+index on kod_1 to (cur_dir()+"tmp_u")
 fp := fcreate(n_file) ; n_list := 1 ; tek_stroke := 0
 add_string(center("Оплата услуг",sh))
 add_string(center("по дате начала лечения",sh))
@@ -1209,11 +1209,11 @@ R_Use(dir_server+"uslugi",,"USL")
 R_Use(dir_server+"hum_p_u",dir_server+"hum_p_u","HPU")
 R_Use(dir_server+"hum_p",,"HU")
 if glob_mo[_MO_KOD_TFOMS] == '171004' // КБ-4
-  index on dtos(N_data)+str(kv_cia,6) to (cur_dir+"tmp_hum") for between(N_data,arr_m[5],arr_m[6])
+  index on dtos(N_data)+str(kv_cia,6) to (cur_dir()+"tmp_hum") for between(N_data,arr_m[5],arr_m[6])
 else
-  index on pdate+str(kv_cia,6) to (cur_dir+"tmp_hum") for between(pdate,arr_m[7],arr_m[8])
+  index on pdate+str(kv_cia,6) to (cur_dir()+"tmp_hum") for between(pdate,arr_m[7],arr_m[8])
 endif
-set index to (dir_server+"hum_pkk"),(cur_dir+"tmp_hum")
+set index to (dir_server+"hum_pkk"),(cur_dir()+"tmp_hum")
 set order to 2
 //
 aeval(arr_title, {|x| add_string(x) } )
@@ -1425,7 +1425,7 @@ if (arr_m := year_month()) == nil
 endif
 WaitStatus("<Esc> - прервать поиск") ; mark_keys({"<Esc>"})
 //
-dbcreate(cur_dir+"tmp", {{"kod_k"  ,"N", 7,0},; // код больного по картотеке
+dbcreate(cur_dir()+"tmp", {{"kod_k"  ,"N", 7,0},; // код больного по картотеке
                          {"tip_usl","N", 1,0},; // 2-взаимозачет, 1-добр.СМО
                          {"pr_smo" ,"N", 6,0},; // код предприятия / СМО
                          {"KOL"    ,"N", 5,0},; // количество листов учета
@@ -1433,12 +1433,12 @@ dbcreate(cur_dir+"tmp", {{"kod_k"  ,"N", 7,0},; // код больного по картотеке
                          {"N_DATA" ,"D", 8,0},; // дата начала лечения
                          {"K_DATA" ,"D", 8,0},; // дата окончания лечения
                          {"STOIM"  ,"N",10,2}}) // итоговая стоимость услуг
-use (cur_dir+"tmp") new
-index on str(tip_usl,1)+str(pr_smo,6)+str(kod_k,7) to (cur_dir+"tmp")
-dbcreate(cur_dir+"tmp2", {{"rec_tmp","N", 6,0},;
+use (cur_dir()+"tmp") new
+index on str(tip_usl,1)+str(pr_smo,6)+str(kod_k,7) to (cur_dir()+"tmp")
+dbcreate(cur_dir()+"tmp2", {{"rec_tmp","N", 6,0},;
                           {"rec_hp" ,"N", 7,0},;
                           {"D_POLIS","C",25,0}}) // полис
-use (cur_dir+"tmp2") new
+use (cur_dir()+"tmp2") new
 if pi1 == 2  // по дате окончания лечения
   G_Use(dir_server+"hum_p",dir_server+"hum_pd","HP")
   dbseek(dtos(arr_m[5]),.t.)
@@ -1472,15 +1472,15 @@ else// pi1 == 3  // по дате закрытия листа учета
 endif
 j := tmp->(lastrec())
 if !fl_exit .and. j > 0
-  dbcreate(cur_dir+"tmp1", {{"name"   ,"C",30,0},; // наименование предприятия
+  dbcreate(cur_dir()+"tmp1", {{"name"   ,"C",30,0},; // наименование предприятия
                             {"tip_usl","N", 1,0},; // 2-взаимозачет, 1-добр.СМО
                             {"pr_smo" ,"N", 6,0},; // код предприятия / СМО
                             {"KOL"    ,"N", 6,0},; // количество больных
                             {"STOIM"  ,"N",11,2}}) // итоговая стоимость лечения
   G_Use(dir_server+"p_pr_vz",,"PRED")
   G_Use(dir_server+"p_d_smo",,"SMO")
-  use (cur_dir+"tmp1") new
-  index on str(tip_usl,1)+str(pr_smo,6) to (cur_dir+"tmp1")
+  use (cur_dir()+"tmp1") new
+  index on str(tip_usl,1)+str(pr_smo,6) to (cur_dir()+"tmp1")
   select TMP
   go top
   do while !eof()
@@ -1512,7 +1512,7 @@ if !fl_exit .and. j > 0
   j := tmp1->(lastrec())
   mywait()
   select TMP2
-  index on str(rec_tmp,6) to (cur_dir+"tmp2")
+  index on str(rec_tmp,6) to (cur_dir()+"tmp2")
 endif
 close databases
 rest_box(buf)
@@ -1542,8 +1542,8 @@ else
   t_arr[BR_EDIT] := {|nk,ob| f1_pl_vzaim(nk,ob,"edit") }
   t_arr[BR_STAT_MSG] := {|| ;
   status_key("^<Esc>^ - выход;  ^<Enter>^ - выбор для печати; ^<F9>^ - сводная печать") } //16.04.08
-  use (cur_dir+"tmp1") new
-  index on upper(name) to (cur_dir+"tmp1")
+  use (cur_dir()+"tmp1") new
+  index on upper(name) to (cur_dir()+"tmp1")
   go top
   edit_browse(t_arr)
   close databases
@@ -1561,15 +1561,15 @@ if (arr_m := year_month()) == nil
 endif
 WaitStatus("<Esc> - прервать поиск") ; mark_keys({"<Esc>"})
 //
-dbcreate(cur_dir+"tmp", {{"kod",        "N",      4,      0},; // код персонала
+dbcreate(cur_dir()+"tmp", {{"kod",        "N",      4,      0},; // код персонала
                  {"FIO",        "C",     50,      0},;  // Ф.И.О. врача
                  {"TRUDOEM",    "N",     11,      4},;  // трудоемкость услуг УЕТ
                  {"KOL"    ,    "N",      6,      0},;  // количество услуг
                  {"STOIM_OB",   "N",     12,      2},;  // итоговая стоимость услуг
                  {"STOIM"  ,    "N",     12,      2},;  // итоговая стоимость услуг
                  {"ZARPLATA",   "N",     12,      2}})  // на зарплату
-use (cur_dir+"tmp")
-index on str(kod,4) to (cur_dir+"tmp")
+use (cur_dir()+"tmp")
+index on str(kod,4) to (cur_dir()+"tmp")
 useUch_Usl()
 G_Use(dir_server+"uslugi",,"USL")
 if eq_any(is_oplata,5,6,7)
@@ -1650,8 +1650,8 @@ else
   add_string("")
   aeval(arr_title, {|x| add_string(x) } )
   skol := sstoim := sstoim_ob := szarplata := 0
-  use (cur_dir+"tmp") new
-  index on upper(fio) to (cur_dir+"tmp") for stoim > 0
+  use (cur_dir()+"tmp") new
+  index on upper(fio) to (cur_dir()+"tmp") for stoim > 0
   go top
   do while !eof()
     if verify_FF(HH,.t.,sh)
@@ -1713,7 +1713,7 @@ G_Use(dir_server+"kartotek",,"KART")
 G_Use(dir_server+"p_pr_vz",,"VZ")
 G_Use(dir_server+"p_d_smo",,"SMO")
 G_Use(dir_server+"plat_vz",,"OPL")
-index on dtos(date_opl)+str(tip,1)+str(pr_smo,6)+str(kod_k,7) to (cur_dir+"tmp") ;
+index on dtos(date_opl)+str(tip,1)+str(pr_smo,6)+str(kod_k,7) to (cur_dir()+"tmp") ;
       for between(date_opl,arr_m[5],arr_m[6]) progress
 go top
 do while !eof()
@@ -1765,13 +1765,13 @@ a_t[2] := "                              │  Сальдо на │            │            
 a_t[3] := "                              │  "+p_sb+"г.│    Дебет   │    Кредит  │  "+p_se+"г."
 a_t[4] := "──────────────────────────────┴────────────┴────────────┴────────────┴────────────"
 //
-dbcreate(cur_dir+"tmp", {{"kod_k"  ,"N", 7,0},; // код больного по картотеке
+dbcreate(cur_dir()+"tmp", {{"kod_k"  ,"N", 7,0},; // код больного по картотеке
                          {"pr_smo" ,"N", 6,0},; // код предприятия / СМО
                          {"SALDO1" ,"N",13,2},;
                          {"DEBET"  ,"N",13,2},;
                          {"KREDIT" ,"N",13,2},;
                          {"SALDO2" ,"N",13,2}}) //
-dbcreate(cur_dir+"tmp1", {{"name"   ,"C",30,0},; // наименование предприятия
+dbcreate(cur_dir()+"tmp1", {{"name"   ,"C",30,0},; // наименование предприятия
                           {"tip_usl","N", 1,0},; // 2-взаимозачет, 1-добр.СМО
                           {"pr_smo" ,"N", 6,0},; // код предприятия / СМО
                           {"SALDO1" ,"N",13,2},;
@@ -1780,12 +1780,12 @@ dbcreate(cur_dir+"tmp1", {{"name"   ,"C",30,0},; // наименование предприятия
                           {"SALDO2" ,"N",13,2}}) //
 R_Use(dir_server+"p_pr_vz",,"PRED")
 R_Use(dir_server+"p_d_smo",,"SMO")
-use (cur_dir+"tmp") new
-index on str(pr_smo,6)+str(kod_k,7) to (cur_dir+"tmp")
-use (cur_dir+"tmp1") new
-index on str(tip_usl,1)+str(pr_smo,6) to (cur_dir+"tmp1")
+use (cur_dir()+"tmp") new
+index on str(pr_smo,6)+str(kod_k,7) to (cur_dir()+"tmp")
+use (cur_dir()+"tmp1") new
+index on str(tip_usl,1)+str(pr_smo,6) to (cur_dir()+"tmp1")
 R_Use(dir_server+"hum_p",,"HP")
-index on kod_k to (cur_dir+"tmp_hp") ;
+index on kod_k to (cur_dir()+"tmp_hp") ;
       for equalany(hp->tip_usl,1,2) .and. hp->k_data <= arr_m[6] progress
 WaitStatus("<Esc> - прервать поиск") ; mark_keys({"<Esc>"})
 go top
@@ -1924,8 +1924,8 @@ else
   t_arr[BR_EDIT] := {|nk,ob| f1ob_ved_vz(nk,ob,"edit") }
   t_arr[BR_STAT_MSG] := {|| ;
     status_key("^<Esc>^ - выход;  ^<Enter>^ - выбор;  ^<F9>^ - печать") }
-  use (cur_dir+"tmp1") new
-  index on upper(name) to (cur_dir+"tmp1")
+  use (cur_dir()+"tmp1") new
+  index on upper(name) to (cur_dir()+"tmp1")
   go top
   edit_browse(t_arr)
   close databases
@@ -2034,13 +2034,13 @@ adbf2 := {;
      {"STOIM"  ,    "N",     16,      4};   // итоговая стоимость услуги
     }
 if k == 13 .and. !is_all
-  dbcreate(cur_dir+"tmp", adbf2)
-  use (cur_dir+"tmp")
-  index on str(u_kod,4) to (cur_dir+"tmpk")
-  index on fsort_usl(u_shifr) to (cur_dir+"tmpn")
+  dbcreate(cur_dir()+"tmp", adbf2)
+  use (cur_dir()+"tmp")
+  index on str(u_kod,4) to (cur_dir()+"tmpk")
+  index on fsort_usl(u_shifr) to (cur_dir()+"tmpn")
   close databases
   ob2_v_usl()
-  use (cur_dir+"tmp")
+  use (cur_dir()+"tmp")
   dbeval({|| aadd(arr_usl,tmp->u_kod) } )
   use
   if len(arr_usl) == 0
@@ -2048,65 +2048,65 @@ if k == 13 .and. !is_all
   endif
 endif
 if equalany(k,8,9,13,14)  // вывод списка больных
-  dbcreate(cur_dir+"tmp", adbf1)
+  dbcreate(cur_dir()+"tmp", adbf1)
 else
-  dbcreate(cur_dir+"tmp", adbf2)
+  dbcreate(cur_dir()+"tmp", adbf2)
 endif
 WaitStatus("<Esc> - прервать поиск") ; mark_keys({"<Esc>"})
-use (cur_dir+"tmp")
+use (cur_dir()+"tmp")
 do case
   case k == 0  // Количество услуг и сумма лечения по службам (с разбивкой по отделениям)
-    index on str(kod_vr,4)+str(otd,3) to (cur_dir+"tmpk")
-    index on str(kod_vr,4)+upper(left(u_name,20)) to (cur_dir+"tmpn")
+    index on str(kod_vr,4)+str(otd,3) to (cur_dir()+"tmpk")
+    index on str(kod_vr,4)+upper(left(u_name,20)) to (cur_dir()+"tmpn")
   case k == 1  // Количество услуг и сумма лечения по отделениям
-    index on str(otd,3) to (cur_dir+"tmpk")
-    index on fio to (cur_dir+"tmpn")
+    index on str(otd,3) to (cur_dir()+"tmpk")
+    index on fio to (cur_dir()+"tmpn")
   case k == 2  // Статистика по работе персонала в конкретном отделении
-    index on str(vr_as,1)+str(kod_vr,4) to (cur_dir+"tmpk")
-    index on upper(left(fio,30))+str(kod_vr,4)+str(vr_as,1) to (cur_dir+"tmpn")
+    index on str(vr_as,1)+str(kod_vr,4) to (cur_dir()+"tmpk")
+    index on upper(left(fio,30))+str(kod_vr,4)+str(vr_as,1) to (cur_dir()+"tmpn")
   case k == 3  // Статистика по услугам, оказанным в конкретном отделении
-    index on str(u_kod,4) to (cur_dir+"tmpk")
-    index on fsort_usl(u_shifr) to (cur_dir+"tmpn")
+    index on str(u_kod,4) to (cur_dir()+"tmpk")
+    index on fsort_usl(u_shifr) to (cur_dir()+"tmpn")
   case k == 4  // Статистика по работе персонала (плюс оказанные услуги) в конкретном отделении
-    index on str(vr_as,1)+str(kod_vr,4)+str(u_kod,4) to (cur_dir+"tmpk")
-    index on upper(left(fio,30))+str(kod_vr,4)+str(vr_as,1)+fsort_usl(u_shifr) to (cur_dir+"tmpn")
+    index on str(vr_as,1)+str(kod_vr,4)+str(u_kod,4) to (cur_dir()+"tmpk")
+    index on upper(left(fio,30))+str(kod_vr,4)+str(vr_as,1)+fsort_usl(u_shifr) to (cur_dir()+"tmpn")
   case k == 5  // Статистика по работе конкретного человека (плюс оказанные услуги)
-    index on str(vr_as,1)+str(kod_vr,4)+str(u_kod,4) to (cur_dir+"tmpk")
+    index on str(vr_as,1)+str(kod_vr,4)+str(u_kod,4) to (cur_dir()+"tmpk")
     if serv_arr == nil
-      index on str(vr_as,1)+fsort_usl(u_shifr) to (cur_dir+"tmpn")
+      index on str(vr_as,1)+fsort_usl(u_shifr) to (cur_dir()+"tmpn")
     else
-      index on upper(left(fio,30))+str(kod_vr,4)+str(vr_as,1)+fsort_usl(u_shifr) to (cur_dir+"tmpn")
+      index on upper(left(fio,30))+str(kod_vr,4)+str(vr_as,1)+fsort_usl(u_shifr) to (cur_dir()+"tmpn")
     endif
   case k == 6  // Статистика по конкретным услугам
-    index on str(u_kod,4) to (cur_dir+"tmpk")
-    index on fsort_usl(u_shifr) to (cur_dir+"tmpn")
+    index on str(u_kod,4) to (cur_dir()+"tmpk")
+    index on fsort_usl(u_shifr) to (cur_dir()+"tmpn")
     close databases
     ob2_v_usl()
   case k == 7  // Статистика по работе всего персонала
-    index on str(vr_as,1)+str(kod_vr,4) to (cur_dir+"tmpk")
-    index on upper(left(fio,30))+str(kod_vr,4)+str(vr_as,1) to (cur_dir+"tmpn")
+    index on str(vr_as,1)+str(kod_vr,4) to (cur_dir()+"tmpk")
+    index on upper(left(fio,30))+str(kod_vr,4)+str(vr_as,1) to (cur_dir()+"tmpn")
   case equalany(k,8,9)  // вывод списка больных
-    index on str(kod,7) to (cur_dir+"tmpk")
-    index on dtos(k_data)+upper(left(fio,30)) to (cur_dir+"tmpn")
+    index on str(kod,7) to (cur_dir()+"tmpk")
+    index on dtos(k_data)+upper(left(fio,30)) to (cur_dir()+"tmpn")
   case k == 10 // Статистика по услугам по всем службам
-    index on str(u_kod,4) to (cur_dir+"tmpk")
-    index on str(kod_vr,4)+fsort_usl(u_shifr) to (cur_dir+"tmpn")
+    index on str(u_kod,4) to (cur_dir()+"tmpk")
+    index on str(kod_vr,4)+fsort_usl(u_shifr) to (cur_dir()+"tmpn")
   case k == 11 // Статистика по услугам конкретной службы
-    index on str(u_kod,4) to (cur_dir+"tmpk")
-    index on fsort_usl(u_shifr) to (cur_dir+"tmpn")
+    index on str(u_kod,4) to (cur_dir()+"tmpk")
+    index on fsort_usl(u_shifr) to (cur_dir()+"tmpn")
   case k == 12 // Статистика по всем услугам
-    index on str(u_kod,4) to (cur_dir+"tmpk")
-    index on fsort_usl(u_shifr) to (cur_dir+"tmpn")
+    index on str(u_kod,4) to (cur_dir()+"tmpk")
+    index on fsort_usl(u_shifr) to (cur_dir()+"tmpn")
   case k == 13  // вывод услуг + списка больных
-    index on str(u_kod,4)+str(kod,7) to (cur_dir+"tmpk")
-    index on fsort_usl(u_shifr)+str(u_kod,4)+dtos(k_data)+upper(left(fio,30)) to (cur_dir+"tmpn")
+    index on str(u_kod,4)+str(kod,7) to (cur_dir()+"tmpk")
+    index on fsort_usl(u_shifr)+str(u_kod,4)+dtos(k_data)+upper(left(fio,30)) to (cur_dir()+"tmpn")
   case k == 14  // Статистика по конкретным услугам + список больных
-    index on str(u_kod,4)+str(kod,7) to (cur_dir+"tmpk")
-    index on fsort_usl(u_shifr)+str(u_kod,4)+dtos(k_data)+upper(left(fio,30)) to (cur_dir+"tmpn")
+    index on str(u_kod,4)+str(kod,7) to (cur_dir()+"tmpk")
+    index on fsort_usl(u_shifr)+str(u_kod,4)+dtos(k_data)+upper(left(fio,30)) to (cur_dir()+"tmpn")
     close databases
     ob2_v_usl()
 endcase
-use (cur_dir+"tmp") index (cur_dir+"tmpk"),(cur_dir+"tmpn") alias TMP
+use (cur_dir()+"tmp") index (cur_dir()+"tmpk"),(cur_dir()+"tmpn") alias TMP
 if mem_trudoem == 2
   useUch_Usl()
 endif
@@ -2534,7 +2534,7 @@ else
   endif
   sh := len(arr_title[1])
   SET(_SET_DELETED, .F.)
-  use (cur_dir+"tmp") index (cur_dir+"tmpk"),(cur_dir+"tmpn") NEW alias TMP
+  use (cur_dir()+"tmp") index (cur_dir()+"tmpk"),(cur_dir()+"tmpn") NEW alias TMP
   if !equalany(k,1,8,9)
     if equalany(k,0,10)
       R_Use(dir_server+"slugba",dir_server+"slugba","SL")
@@ -3000,9 +3000,9 @@ adbf := {{"kod",  "N", 7,0},;  // код л/у
          {"kod_p","N", 4,0},;  // код персонала
          {"otd",  "N", 3,0},;  // код отделения
          {"summa","N",12,2}}   // общая сумма лечения по данному отделению
-dbcreate(cur_dir+"tmp",adbf)
-use (cur_dir+"tmp") new
-index on str(kod_k,7)+str(kod,7)+str(otd,3)+str(kod_p,4) to (cur_dir+"tmp")
+dbcreate(cur_dir()+"tmp",adbf)
+use (cur_dir()+"tmp") new
+index on str(kod_k,7)+str(kod,7)+str(otd,3)+str(kod_p,4) to (cur_dir()+"tmp")
 R_Use(dir_server+"hum_p_u",dir_server+"hum_p_u","HU")
 R_Use(dir_server+"hum_p",,"HUMAN")
 if pi1 == 3  // по дате закрытия листа учета
@@ -3118,7 +3118,7 @@ else
   set relation to kod_lpu into UCH //, to recno() into OTD
   R_Use(dir_server+"kartotek",,"KART")
   R_Use(dir_server+"hum_p",,"HUMAN")
-  use (cur_dir+"tmp") new
+  use (cur_dir()+"tmp") new
   set relation to otd into OTD, to kod_k into KART, to kod into HUMAN
   if reg == 2
     if vr_as < 3
@@ -3133,10 +3133,10 @@ else
   endif
   if reg == 1
     index on left(upper(kart->fio),20)+str(kod_k,7)+dtos(human->k_data)+;
-             upper(uch->name)+upper(otd->short_name) to (cur_dir+"tmp")
+             upper(uch->name)+upper(otd->short_name) to (cur_dir()+"tmp")
   else
     index on left(upper(kart->fio),20)+str(kod_k,7)+upper(uch->name)+;
-             upper(otd->short_name)+upper(perso->fio) to (cur_dir+"tmp")
+             upper(otd->short_name)+upper(perso->fio) to (cur_dir()+"tmp")
   endif
   fp := fcreate(n_file) ; tek_stroke := 0 ; n_list := 1
   add_string("ПЛАТНЫЕ УСЛУГИ")
@@ -3250,10 +3250,10 @@ adbf := {;
      {"SUM3"   ,    "N",     14,      2},;  // материалы
      {"SUMMA",      "N",     18,      2};   // ст-ть услуг (зарплата)
     }
-dbcreate(cur_dir+"tmp", adbf)
+dbcreate(cur_dir()+"tmp", adbf)
 WaitStatus("<Esc> - прервать поиск") ; mark_keys({"<Esc>"})
-use (cur_dir+"tmp")
-index on str(kod,4) to (cur_dir+"tmp")
+use (cur_dir()+"tmp")
+index on str(kod,4) to (cur_dir()+"tmp")
 // по дате окончания лечения
 G_Use(dir_server+"uslugi",dir_server+"uslugi","USL")
 G_Use(dir_server+"hum_p_u",dir_server+"hum_p_u","HU")
@@ -3348,9 +3348,9 @@ else
   aeval(arr_title, {|x| add_string(x) } )
   G_Use(dir_server+"plat_ms",,"PMS")
   Store 0 to ss, ss1, ss2, ss3
-  use (cur_dir+"tmp") new
+  use (cur_dir()+"tmp") new
   set relation to kod into PMS
-  index on upper(pms->fio) to (cur_dir+"tmp")
+  index on upper(pms->fio) to (cur_dir()+"tmp")
   go top
   do while !eof()
     if verify_FF(HH,.t.,sh)
@@ -3397,31 +3397,31 @@ begin_date := arr_m[7]
 end_date := arr_m[8]
 WaitStatus("<Esc> - прервать поиск") ; mark_keys({"<Esc>"})
 //
-dbcreate(cur_dir+"tmp", {{"n_kvit","N", 5,0},; // номер квитанционной книжки
+dbcreate(cur_dir()+"tmp", {{"n_kvit","N", 5,0},; // номер квитанционной книжки
                  {"kv_cia","N", 6,0},; // номер квитанции
                  {"U_KOD" ,"N", 4,0},; // код услуги
                  {"SHIFR" ,"C",10,0},; // шифр услуги
                  {"KOD_VR","N", 4,0},; // код врача
                  {"KOL"   ,"N", 5,0},; // количество услуг
                  {"STOIM" ,"N",10,2}}) // итоговая стоимость услуги
-use (cur_dir+"tmp")
-index on str(kod_vr,4)+str(n_kvit,5)+str(u_kod,4) to (cur_dir+"tmpk")
-index on str(kod_vr,4)+str(n_kvit,5)+fsort_usl(shifr) to (cur_dir+"tmpn")
-dbcreate(cur_dir+"tmpt", {{"n_kvit","N", 5,0},; // номер квитанционной книжки
+use (cur_dir()+"tmp")
+index on str(kod_vr,4)+str(n_kvit,5)+str(u_kod,4) to (cur_dir()+"tmpk")
+index on str(kod_vr,4)+str(n_kvit,5)+fsort_usl(shifr) to (cur_dir()+"tmpn")
+dbcreate(cur_dir()+"tmpt", {{"n_kvit","N", 5,0},; // номер квитанционной книжки
                           {"STOIM" ,"N",10,2}}) // итоговая стоимость услуги
-use (cur_dir+"tmpt")
-index on str(n_kvit,5) to (cur_dir+"tmpt")
-dbcreate(cur_dir+"tmpu", {{"U_KOD" ,"N", 4,0},; // код услуги
+use (cur_dir()+"tmpt")
+index on str(n_kvit,5) to (cur_dir()+"tmpt")
+dbcreate(cur_dir()+"tmpu", {{"U_KOD" ,"N", 4,0},; // код услуги
                           {"SHIFR" ,"C",10,0},; // шифр услуги
                           {"KOL"   ,"N", 5,0},; // количество услуг
                           {"STOIM" ,"N",10,2}}) // итоговая стоимость услуги
-use (cur_dir+"tmpu")
-index on str(u_kod,4) to (cur_dir+"tmpuk")
-index on fsort_usl(shifr) to (cur_dir+"tmpun")
+use (cur_dir()+"tmpu")
+index on str(u_kod,4) to (cur_dir()+"tmpuk")
+index on fsort_usl(shifr) to (cur_dir()+"tmpun")
 close databases
-use (cur_dir+"tmp") index (cur_dir+"tmpk"),(cur_dir+"tmpn") new alias TMP
-use (cur_dir+"tmpt") index (cur_dir+"tmpt") new alias TMPT
-use (cur_dir+"tmpu") index (cur_dir+"tmpuk"),(cur_dir+"tmpun") new alias TMPU
+use (cur_dir()+"tmp") index (cur_dir()+"tmpk"),(cur_dir()+"tmpn") new alias TMP
+use (cur_dir()+"tmpt") index (cur_dir()+"tmpt") new alias TMPT
+use (cur_dir()+"tmpu") index (cur_dir()+"tmpuk"),(cur_dir()+"tmpun") new alias TMPU
 R_Use(dir_server+"uslugi",,"USL")
 R_Use(dir_server+"hum_p",,"HP")
 R_Use(dir_server+"hum_p_u",dir_server+"hum_p_ud","HPU")
@@ -3488,7 +3488,7 @@ else
   add_string("")
   aeval(arr_title, {|x| add_string(x) } )
   G_Use(dir_server+"mo_pers",,"PERSO")
-  use (cur_dir+"tmp") index (cur_dir+"tmpn") new alias TMP
+  use (cur_dir()+"tmp") index (cur_dir()+"tmpn") new alias TMP
   set relation to kod_vr into PERSO
   go top
   do while !eof()
@@ -3521,7 +3521,7 @@ else
     aeval(arr_title, {|x| add_string(x) } )
   endif
   add_string(space(15)+"в том числе:")
-  use (cur_dir+"tmpt") index (cur_dir+"tmpt") new
+  use (cur_dir()+"tmpt") index (cur_dir()+"tmpt") new
   go top
   do while !eof()
     if verify_FF(HH,.t.,sh)
@@ -3536,7 +3536,7 @@ else
     aeval(arr_title, {|x| add_string(x) } )
   endif
   add_string(space(15)+"в том числе:")
-  use (cur_dir+"tmpu") index (cur_dir+"tmpun") new
+  use (cur_dir()+"tmpu") index (cur_dir()+"tmpun") new
   go top
   do while !eof()
     if verify_FF(HH,.t.,sh)
@@ -3582,12 +3582,12 @@ endif
 sreg1 := reg1
 WaitStatus("<Esc> - прервать поиск") ; mark_keys({"<Esc>"})
 //
-dbcreate(cur_dir+"tmp", {{"U_KOD" ,"N", 4,0},; // код услуги
+dbcreate(cur_dir()+"tmp", {{"U_KOD" ,"N", 4,0},; // код услуги
                          {"KOD_VR","N", 4,0},; // код врача
                          {"KOL"   ,"N", 5,0},; // количество услуг
                          {"STOIM" ,"N",10,2}}) // итоговая стоимость услуги
-use (cur_dir+"tmp")
-index on str(kod_vr,4)+str(u_kod,4) to (cur_dir+"tmp")
+use (cur_dir()+"tmp")
+index on str(kod_vr,4)+str(u_kod,4) to (cur_dir()+"tmp")
 R_Use(dir_server+"uslugi",dir_server+"uslugi","USL")
 R_Use(dir_server+"hum_p_u",dir_server+"hum_p_u","HPU")
 R_Use(dir_server+"hum_p",dir_server+"hum_pv","HP")
@@ -3631,12 +3631,12 @@ else
   reg_print := 2
   R_Use(dir_server+"uslugi",,"USL")
   R_Use(dir_server+"mo_pers",,"PERSO")
-  use (cur_dir+"tmp") new alias TMP
+  use (cur_dir()+"tmp") new alias TMP
   set relation to kod_vr into PERSO, to u_kod into USL
   if reg == 1
-    index on str(kod_vr,4)+fsort_usl(usl->shifr) to (cur_dir+"tmp")
+    index on str(kod_vr,4)+fsort_usl(usl->shifr) to (cur_dir()+"tmp")
   elseif reg == 2
-    index on str(u_kod,4)+fsort_usl(usl->shifr)+str(kod_vr,4) to (cur_dir+"tmp")
+    index on str(u_kod,4)+fsort_usl(usl->shifr)+str(kod_vr,4) to (cur_dir()+"tmp")
   endif
   arr_title := {;
 "───────────────────────────────────────────────────────────┬─────┬─────────────",;
@@ -3737,12 +3737,12 @@ endif
 sreg1 := reg1
 WaitStatus("<Esc> - прервать поиск") ; mark_keys({"<Esc>"})
 //
-dbcreate(cur_dir+"tmp", {{"kod_k", "N", 7,0},; // код больного по картотеке
+dbcreate(cur_dir()+"tmp", {{"kod_k", "N", 7,0},; // код больного по картотеке
                          {"kv_cia","N", 6,0},; // номер квитанции
                          {"pdate", "C", 4,0},;
                          {"KOL"   ,"N", 5,0},; // количество услуг
                          {"STOIM" ,"N",10,2}}) // итоговая стоимость услуги
-use (cur_dir+"tmp")
+use (cur_dir()+"tmp")
 R_Use(dir_server+"hum_p_u",dir_server+"hum_p_u","HPU")
 R_Use(dir_server+"hum_p",dir_server+"hum_pv","HP")
 dbseek(str(mnomer,5))
@@ -3781,9 +3781,9 @@ else
   mywait()
   reg_print := 2
   R_Use(dir_server+"kartotek",,"KART")
-  use (cur_dir+"tmp") new alias TMP
+  use (cur_dir()+"tmp") new alias TMP
   set relation to kod_k into KART
-  index on str(kv_cia,6)+pdate to (cur_dir+"tmp")
+  index on str(kv_cia,6)+pdate to (cur_dir()+"tmp")
   arr_title := {;
 "───────────────────────────────────────────┬────────┬──────┬─────┬─────────────",;
 "                                           │  Дата  │№ кви-│ Кол.│  Стоимость  ",;
@@ -3858,15 +3858,15 @@ for i := k to 1 step -1
   endif
 next
 //
-dbcreate(cur_dir+"tmp", {{"kod_k", "N", 7,0},; // код больного по картотеке
+dbcreate(cur_dir()+"tmp", {{"kod_k", "N", 7,0},; // код больного по картотеке
                          {"rec_hp","N", 7,0},; // номер записи по базе "hum_p"
                          {"kv_cia","N", 6,0},; // номер квитанции
                          {"KOL"   ,"N", 5,0},; // количество услуг
                          {"STOIM" ,"N",10,2}}) // итоговая стоимость услуги
-use (cur_dir+"tmp")
+use (cur_dir()+"tmp")
 G_Use(dir_server+"hum_p_u",dir_server+"hum_p_u","HPU")
 G_Use(dir_server+"hum_p",,"HP")
-index on n_kvit to (cur_dir+"tmp_hp") ;
+index on n_kvit to (cur_dir()+"tmp_hp") ;
       for f_is_uch(st_a_uch,hp->lpu) .and. left(hp->pdate,2) == slyear ;
           .and. ascan(arr_kv, {|x| between(hp->kv_cia,x[1],x[2]) } ) > 0
 WaitStatus("<Esc> - прервать поиск") ; mark_keys({"<Esc>"})
@@ -3916,9 +3916,9 @@ else
   G_Use(dir_server+"hum_p",,"HP")
   set relation to otd into OTD
   G_Use(dir_server+"kartotek",,"KART")
-  use (cur_dir+"tmp") new alias TMP
+  use (cur_dir()+"tmp") new alias TMP
   set relation to kod_k into KART, to rec_hp into HP
-  index on str(kv_cia,6) to (cur_dir+"tmp")
+  index on str(kv_cia,6) to (cur_dir()+"tmp")
   arr_title := {;
 "─────┬──────────┬────────────────────────────────────────────┬──────┬─────┬─────────",;
 "Отде-│Номер амб.│ Ф.И.О. больного                            │№ кви-│ Кол.│Стоимость",;
@@ -4057,13 +4057,13 @@ if (arr_m := year_month()) == nil
 endif
 buf := save_row(maxrow())
 mywait()
-dbcreate(cur_dir+"tmp", {{"n_kvit","N", 5,0},; // номер квитанционной книжки
+dbcreate(cur_dir()+"tmp", {{"n_kvit","N", 5,0},; // номер квитанционной книжки
                          {"kv_cia","N", 6,0},; // номер квитанции
                          {"stoim", "N",10,2}}) // сумма квитанции
-use (cur_dir+"tmp")
-index on str(kv_cia,6) to (cur_dir+"tmp")
+use (cur_dir()+"tmp")
+index on str(kv_cia,6) to (cur_dir()+"tmp")
 G_Use(dir_server+"hum_p",,"HP")
-index on n_kvit to (cur_dir+"tmp_hp") ;
+index on n_kvit to (cur_dir()+"tmp_hp") ;
       for f_is_uch(st_a_uch,hp->lpu) .and. between(hp->pdate,arr_m[7],arr_m[8])
 go top
 do while !eof()
@@ -4081,7 +4081,7 @@ do while !eof()
 enddo
 //
 select TMP
-index on str(n_kvit,5)+str(kv_cia,6) to (cur_dir+"tmp")
+index on str(n_kvit,5)+str(kv_cia,6) to (cur_dir()+"tmp")
 go top
 mas12 := {} ; aadd(mas12, {tmp->n_kvit,tmp->kv_cia,tmp->kv_cia,0}) ; i := 1
 do while !eof()
@@ -4166,13 +4166,13 @@ if f_Esc_Enter("поиска")
       adel(arr_kv,i) ; --k
     endif
   next
-  dbcreate(cur_dir+"tmp", {{"n_kvit","N", 5,0},; // номер квитанционной книжки
+  dbcreate(cur_dir()+"tmp", {{"n_kvit","N", 5,0},; // номер квитанционной книжки
                            {"kv_cia","N", 6,0},; // номер квитанции
                            {"stoim", "N",10,2}}) // сумма квитанции
-  use (cur_dir+"tmp")
-  index on str(kv_cia,6) to (cur_dir+"tmp")
+  use (cur_dir()+"tmp")
+  index on str(kv_cia,6) to (cur_dir()+"tmp")
   G_Use(dir_server+"hum_p",,"HP")
-  index on n_kvit to (cur_dir+"tmp_hp") ;
+  index on n_kvit to (cur_dir()+"tmp_hp") ;
         for f_is_uch(st_a_uch,hp->lpu) .and. left(hp->pdate,2) == slyear ;
                 .and. ascan(arr_kv, {|x| between(hp->kv_cia,x[1],x[2]) } ) > 0
   go top
@@ -4191,7 +4191,7 @@ if f_Esc_Enter("поиска")
   enddo
   //
   select TMP
-  index on str(n_kvit,5)+str(kv_cia,6) to (cur_dir+"tmp")
+  index on str(n_kvit,5)+str(kv_cia,6) to (cur_dir()+"tmp")
   go top
   mas12 := {} ; aadd(mas12, {tmp->n_kvit,tmp->kv_cia,tmp->kv_cia,0}) ; i := 1
   do while !eof()
@@ -4889,33 +4889,33 @@ if regim == "edit" .and. nKey == K_ENTER
   t_arr[BR_STAT_MSG] := {|| ;
     status_key("^<Esc>^ - выход;  ^<Enter>^ - выбор для печати;  ^<F9>^ - печать реестра") }
   mywait()
-  use (cur_dir+"tmp2") index (cur_dir+"tmp2") new
+  use (cur_dir()+"tmp2") index (cur_dir()+"tmp2") new
   G_Use(dir_server+"kartotek",,"KART")
-  use (cur_dir+"tmp") new alias TMP
+  use (cur_dir()+"tmp") new alias TMP
   set relation to kod_k into KART
-  index on upper(kart->fio) to (cur_dir+"tmp") ;
+  index on upper(kart->fio) to (cur_dir()+"tmp") ;
         for tmp1->tip_usl == tmp->tip_usl .and. tmp1->pr_smo == tmp->pr_smo
   edit_browse(t_arr)
   close databases
   restscreen(buf)
-  use (cur_dir+"tmp1") index (cur_dir+"tmp1") new
+  use (cur_dir()+"tmp1") index (cur_dir()+"tmp1") new
   goto (rec_tmp1)
 elseif regim == "edit" .and. nKey == K_F9
   rec_tmp1 := tmp1->(recno())
   buf := savescreen()
   mywait()
-  dbcreate(cur_dir+"tmp9", {{"kod",     "N", 4,   0},;
+  dbcreate(cur_dir()+"tmp9", {{"kod",     "N", 4,   0},;
                             {"name",    "C", 60,  0},;
                             {"kod_1",   "C", 10,  0},;
                             {"kol_vo",  "N", 10,  0},;
                             {"summa",   "N", 12,  2}})
-  use (cur_dir+"tmp2") index (cur_dir+"tmp2") new
-  use (cur_dir+"tmp9") new
-  index on kod to (cur_dir+"tmp_u")
+  use (cur_dir()+"tmp2") index (cur_dir()+"tmp2") new
+  use (cur_dir()+"tmp9") new
+  index on kod to (cur_dir()+"tmp_u")
   G_Use(dir_server+"hum_p_U",dir_server+"hum_p_U","HUM_U",,,.T.)
   G_Use(dir_server+"hum_p",,"HP")
-  use (cur_dir+"tmp") new alias TMP
-  index on str(tmp->kol,6) to (cur_dir+"tmp") ;
+  use (cur_dir()+"tmp") new alias TMP
+  index on str(tmp->kol,6) to (cur_dir()+"tmp") ;
         for tmp1->tip_usl == tmp->tip_usl .and. tmp1->pr_smo == tmp->pr_smo
   go top
   do while !eof()
@@ -4955,7 +4955,7 @@ elseif regim == "edit" .and. nKey == K_F9
     skip
   enddo
   select TMP9
-  index on kod_1 to (cur_dir+"tmp_u")
+  index on kod_1 to (cur_dir()+"tmp_u")
   fp := fcreate(n_file) ; n_list := 1 ; tek_stroke := 0
   add_string(center("Оплата услуг",sh))
   add_string(center("по дате начала лечения",sh))
@@ -4990,7 +4990,7 @@ elseif regim == "edit" .and. nKey == K_F9
   fclose(fp)
   viewtext(n_file,,,,(sh>80),,,1)
   restscreen(buf)
-  use (cur_dir+"tmp1") index (cur_dir+"tmp1") new
+  use (cur_dir()+"tmp1") index (cur_dir()+"tmp1") new
   goto (rec_tmp1)
 endif
 return ret
@@ -5570,13 +5570,13 @@ do case
             rees2_vzaim(name_file)
           endif
           close databases
-          use (cur_dir+"tmp1") index (cur_dir+"tmp1") new
+          use (cur_dir()+"tmp1") index (cur_dir()+"tmp1") new
           goto (rec_tmp1)
-          use (cur_dir+"tmp2") index (cur_dir+"tmp2") new
+          use (cur_dir()+"tmp2") index (cur_dir()+"tmp2") new
           G_Use(dir_server+"kartotek",,"KART")
-          use (cur_dir+"tmp") new alias TMP
+          use (cur_dir()+"tmp") new alias TMP
           set relation to kod_k into KART
-          set index to (cur_dir+"tmp")
+          set index to (cur_dir()+"tmp")
           goto (rec)
         enddo
       case nKey == K_ENTER
@@ -5785,9 +5785,9 @@ t_arr[BR_EDIT] := {|nk,ob| f3ob_ved_vz(nk,ob,"edit") }
 t_arr[BR_STAT_MSG] := {|| ;
   status_key("^<Esc>^ выход;  ^<Enter>^ оборотка по человеку;  ^<F8>^ полная оборотка;  ^<F9>^ печать") }
 R_Use(dir_server+"kartotek",,"KART")
-use (cur_dir+"tmp") new alias TMP
+use (cur_dir()+"tmp") new alias TMP
 set relation to kod_k into KART
-index on upper(kart->fio) to (cur_dir+"tmp") for tmp1->pr_smo == tmp->pr_smo
+index on upper(kart->fio) to (cur_dir()+"tmp") for tmp1->pr_smo == tmp->pr_smo
 go top
 edit_browse(t_arr)
 tmp->(dbCloseArea())
@@ -5803,13 +5803,13 @@ mywait()
 adbf := {{"d_dokum","D", 8,0},;
          {"prim",   "C",30,0},;
          {"summa",  "N",11,2}}
-dbcreate(cur_dir+"tmp1_",adbf)
-dbcreate(cur_dir+"tmp2_",adbf)
-use (cur_dir+"tmp1_") new
+dbcreate(cur_dir()+"tmp1_",adbf)
+dbcreate(cur_dir()+"tmp2_",adbf)
+use (cur_dir()+"tmp1_") new
 R_Use(dir_server+"kartotek",,"KART")
 R_Use(dir_server+"hum_p",dir_server+"hum_pd","HP")
 dbseek(dtos(arr_m[5]),.t.)
-index on dtos(k_data) to (cur_dir+"tmp_hp") for &muslovie while hp->k_data <= arr_m[6]
+index on dtos(k_data) to (cur_dir()+"tmp_hp") for &muslovie while hp->k_data <= arr_m[6]
 go top
 do while !eof()
   kart->(dbGoto(hp->kod_k))
@@ -5822,9 +5822,9 @@ do while !eof()
   skip
 enddo
 //
-use (cur_dir+"tmp2_") new
+use (cur_dir()+"tmp2_") new
 R_Use(dir_server+"plat_vz",,"OPL")
-index on dtos(date_opl) to (cur_dir+"tmp_opl") for &ouslovie .and. between(date_opl,arr_m[5],arr_m[6])
+index on dtos(date_opl) to (cur_dir()+"tmp_opl") for &ouslovie .and. between(date_opl,arr_m[5],arr_m[6])
 go top
 do while !eof()
   select TMP2_
@@ -5884,10 +5884,10 @@ else
 endif
 aeval(arr_title, {|x| add_string(x) } )
 select TMP1_
-index on dtos(d_dokum)+prim to (cur_dir+"tmp1_")
+index on dtos(d_dokum)+prim to (cur_dir()+"tmp1_")
 go top
 select TMP2_
-index on dtos(d_dokum)+prim to (cur_dir+"tmp2_")
+index on dtos(d_dokum)+prim to (cur_dir()+"tmp2_")
 go top
 do while !( tmp1_->(eof()) .and. tmp2_->(eof()) )
   if verify_FF(HH,.t.,sh)

@@ -313,7 +313,6 @@
 ..\2.x\KARTOTEK\prikreplenie.prg
 ..\2.x\KARTOTEK\delete_dubl_pacient.prg
 ..\2.x\KARTOTEK\func_kartotek.prg
-..\2.x\KARTOTEK\func_smo.prg
 
 ..\2.x\dictionary\mo_spr.prg
 ..\2.x\dictionary\mo_spri.prg
@@ -505,6 +504,7 @@
 ..\2.x\OTHER\mo_mzxml.prg
 ..\2.x\OTHER\mo_serv.prg
 ..\2.x\OTHER\mo_sds.prg
+..\2.x\OTHER\control_start.prg
 #..\2.x\OTHER\mo_moder.prg
 
 ..\2.x\TUNING\ret_days_for_akt_sverki.prg
@@ -519,6 +519,9 @@
 ..\2.x\ADDRESS\mo_adres.prg
 
 ..\2.x\VOUNC\mo_vounc.prg
+
+..\2.x\INSURANCE\insurance_companies.prg
+..\2.x\INSURANCE\func_smo.prg
 
 #..\2.x\FUNC_LIB\prview.prg
 #..\2.x\FUNC_LIB\fastreph.prg

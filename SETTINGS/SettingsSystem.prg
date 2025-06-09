@@ -52,7 +52,7 @@ function settingsSystem()
 	
 && function SendFile()
 	&& local ret := .f.
-	&& local nameZipFile := cur_dir + "error.zip"
+	&& local nameZipFile := cur_dir() + "error.zip"
 	&& local serverSMTP, body, subject
 	&& local lSSL
 	&& local oIniSystem := TSettingSystem():New( dir_server + 'system' ) 

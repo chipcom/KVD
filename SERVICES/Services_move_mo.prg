@@ -70,7 +70,7 @@ function ob2_v_usl( is_get, r1, mtitul )
 	DEFAULT is_get TO .f., r1 TO T_ROW
 	if r1 > 14 ; r1 := 14 ; endif
 	R_Use( dir_server + 'uslugi', dir_server + 'uslugish', 'USL' )
-	use ( cur_dir + 'tmp' ) index ( cur_dir + 'tmpk' ), ( cur_dir + 'tmpn' ) new alias TMP
+	use ( cur_dir() + 'tmp' ) index ( cur_dir() + 'tmpk' ), ( cur_dir() + 'tmpn' ) new alias TMP
 	set order to 2
 	t_arr[ BR_TOP ] := r1
 	t_arr[ BR_BOTTOM ] := maxrow()-2
