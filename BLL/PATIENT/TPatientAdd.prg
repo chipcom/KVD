@@ -236,7 +236,7 @@ METHOD AttachmentInformation( param )			CLASS TPatientAdd
 			endif
 			ret += 'к нашей МО'
 		else
-			s := alltrim( inieditspr( A__MENUVERT, glob_arr_mo, ::FMOCodeAttachment ) )
+			s := alltrim( inieditspr( A__MENUVERT, glob_arr_mo(), ::FMOCodeAttachment ) )
 			if empty( s )
 				ret := 'Прикрепление --- неизвестно ---'
 			else

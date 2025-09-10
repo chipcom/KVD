@@ -299,6 +299,7 @@
 ..\2.x\init\initArrayFilesDB.prg
 ..\2.x\init\init_all_mem_public.prg
 ..\2.x\init\update_data_DB.prg
+..\2.x\init\init_func.prg
 
 ..\2.x\information\view_list_uch.prg
 

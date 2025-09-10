@@ -214,7 +214,7 @@ static function editSRF( oBrowse, aObjects, oCommon, nKey )
 	endif
 	return fl
 
-* 14.12.18
+// 09.09.25
 function infoPatientToScreen( oPatient, r1, r2 )
 	local i, s, s1, mmo_pr, arr := {}
 	
@@ -243,7 +243,7 @@ function infoPatientToScreen( oPatient, r1, r2 )
 				endif
 				mmo_pr += 'к нашей МО'
 			else
-				s1 := alltrim( inieditspr( A__MENUVERT, glob_arr_mo, oPatient:AddInfo:MOCodeAttachment ) )
+				s1 := alltrim( inieditspr( A__MENUVERT, glob_arr_mo(), oPatient:AddInfo:MOCodeAttachment ) )
 				if empty( s1 )
 					mmo_pr := 'Прикрепление --- неизвестно ---'
 				else
