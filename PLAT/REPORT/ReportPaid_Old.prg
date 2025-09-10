@@ -4,7 +4,7 @@
 #include 'edit_spr.ch'
 #include 'chip_mo.ch'
 
-***** 13.02.16
+// 13.02.16
 function k_statist(k)
 static si := 1, si1 := 1, si2 := 1
 local mas_pmt := {"~Реестр доплат",;
@@ -64,7 +64,7 @@ do case
 endcase
 return nil
 
-***** 22.03.17
+// 10.09.25
 function pl_mnog_poisk()
 static mm_g_selo :=  {{"город",1},{"село",2}}
 local mm_tmp := {}, k
@@ -77,7 +77,7 @@ local buf := savescreen(), tmp_color := setcolor(cDataCGet),;
       menu_plat := {{"платные    ",PU_PLAT },;
                     {"добр/страх.",PU_D_SMO},;
                     {"взаимозачет",PU_PR_VZ}},;
-      tmp_file := "tmp_mn_p"+sdbf
+      tmp_file := "tmp_mn_p"+sdbf()
       // help_code
 private ssumma := 0
 private = 0
@@ -906,7 +906,7 @@ close databases
 restscreen(buf) ; setcolor(tmp_color)
 return nil
 
-*****
+//
 function pl1_priemden()
 local fl := .t., buf := save_row(maxrow()), sm := 0, HH := 52,;
       n_file := "platn.txt", arr_m, sum3 := 0, sh, sm_sn := 0, arr_dms
@@ -1012,7 +1012,7 @@ viewtext(n_file,,,,(sh>80),,,1)
 rest_box(buf)
 return nil
 
-***** 01.03.19
+// 01.03.19
 Function pl_pl_2dogovor()
 Local buf := save_row(maxrow()), sh, HH := 49, arr_title, s, i, k, sk, ss,;
       arr2title, reg_print := 6, afio[10], lfio := 19, kfio, lsk, lss, adbf,;
@@ -1415,7 +1415,7 @@ Private yes_albom := .t.
 viewtext(name_file,,,,(sh>80),,,reg_print)
 return NIL
 
-***** 11.02.13
+// 11.02.13
 function pl_vzaimozach()
 local i, j, k, fl, fl_exit := .f., buf := save_row(maxrow()),;
       t_arr[BR_LEN], blk, fl1 := .f., fl2 := .f.
@@ -1551,7 +1551,7 @@ else
 endif
 return nil
 
-*****
+//
 function vr_vzaimozach(regim)
 local i, j, k, fl, fl_exit := .f., buf := save_row(maxrow()),;
       sh, HH := 60, reg_print := 2, arr_title, n_file := "vr_vzaim.txt"
@@ -1684,7 +1684,7 @@ else
 endif
 return nil
 
-*****
+//
 function pr_opl_vz()
 local i, j, arr, begin_date, end_date, s, buf := save_row(maxrow()),;
       fl_exit := .f., sh, HH := 58, reg_print, ssumma := 0,;
@@ -1750,7 +1750,7 @@ rest_box(buf)
 viewtext(name_file,,,,(sh>80),,,reg_print)
 return nil
 
-*****
+//
 function ob_ved_vz()
 local i, j, k, fl, fl_exit := .f., buf := save_row(maxrow()),;
       t_arr[BR_LEN], blk, fl1 := .f., fl2 := .f.
@@ -1933,7 +1933,7 @@ else
 endif
 return nil
 
-***** 26.02.17
+// 26.02.17
 function Pob2_statist(k,serv_arr,is_all)
 local i, j, arr[2], begin_date, end_date, bk := 1, ek := 99, al,;
       fl_exit := .f., sh := 80, HH := 57, regim := 2, s, fl_1_list := .t.,;
@@ -2954,7 +2954,7 @@ else
 endif
 return nil
 
-*****
+//
 function st_plat_fio(reg)
 // reg = 1 - Список больных с суммами лечения в каждом из отделений
 // reg = 2 - Список больных с разбивкой сумм лечения по каждому врачу (м/сестре, санитарке)
@@ -3223,7 +3223,7 @@ endif
 rest_box(buf)
 return nil
 
-*****
+//
 function st_plat_ms(reg)
 local i, j, arr[2], begin_date, end_date, n_file := "plat_ms.txt",;
       fl_exit := .f., sh, HH := 57, reg_print := 1, s, arr_dms,;
@@ -3382,7 +3382,7 @@ else
 endif
 return nil
 
-*****
+//
 function f1r_s_plat()
 local i, j, arr, begin_date, end_date, s, buf := save_row(maxrow()),;
       fl_exit := .f., sh, HH := 57, reg_print, lyear, slyear, speriod,;
@@ -3555,7 +3555,7 @@ return nil
 
 *
 
-*****
+//
 function f2r_spl_plat(reg)
 static snomer := 1, sreg1 := 1
 local i, j, k, arr[2], s, buf := save_row(maxrow()), buf1, reg1,;
@@ -3710,7 +3710,7 @@ return nil
 
 *
 
-*****
+//
 function f3r_s_plat()
 static snomer := 1, sreg1 := 1
 local i, j, k, arr[2], s, buf := save_row(maxrow()), buf1, reg1,;
@@ -3826,7 +3826,7 @@ return nil
 
 *
 
-*****
+//
 function f4r_s_plat()
 local lyear, slyear, s_date, arr_kv := {{1,999999}}, buf, ;
       mas12 := {{1," с ..."},{2,"по ..."}}, mpic := {{6,0},{6,0}},;
@@ -4049,7 +4049,7 @@ return nil
 
 *
 
-*****
+//
 function f5r_s_plat()
 local buf, i, k, mas12, arr_m, n_file := "spis_kvi.txt", sh := 64, ssum := 0
 if (arr_m := year_month()) == nil
@@ -4135,7 +4135,7 @@ rest_box(buf)
 viewtext(n_file)
 return nil
 
-*****
+//
 function Pl_vyruchka()
 local lyear, slyear, s_date, arr_kv := {{1,999999}}, buf, i, k,;
       mas12 := {{1," с ..."},{2,"по ..."}}, mpic := {{6,0},{6,0}},;
@@ -4249,7 +4249,7 @@ if f_Esc_Enter("поиска")
 endif
 return nil
 
-*****
+//
 Function pwrite_mn_p(k)
 Local fl := .t.
 if k == 1
@@ -4263,7 +4263,7 @@ if k == 1
 endif
 return fl
 
-***** 22.03.17
+// 22.03.17
 static function s1_mnog_poisk(cv,cf)
 local i, fl := .t., flu := .f., mkol, mstoim := 0, luch_doc := "", arr
 ++cv
@@ -4461,7 +4461,7 @@ endif
 @ row(),col() say lstr(cf) color cColorStMsg
 return nil
 
-*****
+//
 static function Pob3_statist(k, arr_otd, serv_arr, mkod_perso)
 local i, mtrud := {0,0,0}, koef_z := {1,1,1}, k1 := 2, s1 := "2"
 if ascan(krvz,human->tip_usl) == 0
@@ -4642,7 +4642,7 @@ return nil
 
 *
 
-*****
+//
 static function Pob4_statist(k, arr_otd, i, mkol, mstoim, serv_arr, mkod_perso)
 local mtrud := {0,0,0}, koef_z := {1,1,1}, k1 := 2, s1 := "2"
 if ascan(krvz,human->tip_usl) == 0
@@ -4820,7 +4820,7 @@ return nil
 
 *
 
-*****
+//
 static function Pob5_statist(k, arr_otd, serv_arr)
 if arr_otd != nil .and. ascan(arr_otd, {|x| hu->otd==x[1]}) == 0
   return nil
@@ -4851,7 +4851,7 @@ tmp->kol += hu->kol
 tmp->stoim += hu->stoim
 return nil
 
-*****
+//
 function f1_pl_vzaim(nKey,oBrow,regim)
 local ret := -1, buf, fl := .f., t_arr[BR_LEN]
 local sm := 0, HH := 52, n_file := "platn.txt", sum3 := 0, sh
@@ -4995,7 +4995,7 @@ elseif regim == "edit" .and. nKey == K_F9
 endif
 return ret
 
-*****
+//
 function f1_vr_vzaim(regim)
 local i, mtrud := 0, koef := 1, koef_z := {1,1,1}
 if hu->u_kod > 0 .and. (hu->kol > 0 .or. hu->stoim > 0)
@@ -5085,7 +5085,7 @@ if hu->u_kod > 0 .and. (hu->kol > 0 .or. hu->stoim > 0)
 endif
 return nil
 
-*****
+//
 function f1ob_ved_vz(nKey,oBrow,regim)
 local ret := -1, buf, fl := .f., rec, tmp_color, i, j, ;
       s, sh, HH := 58, reg_print := 2, arr_title, name_file := "ob_ved.txt"
@@ -5145,7 +5145,7 @@ do case
 endcase
 return ret
 
-*****
+//
 function f1_plat_fio(reg,vr_as)
 local i, k, arr := {}, koef_z := {1,1,1}, koef_ms := 1, koef_sn := 1
 if reg == 1
@@ -5207,7 +5207,7 @@ else
 endif
 return nil
 
-*****
+//
 function f1_plat_ms(reg)
 local pole_kol, pole_sum, s1, koef := 0
 if psz == 1
@@ -5327,7 +5327,7 @@ else
 endif
 return nil
 
-***** вернуть тип услуги (тип больного)
+// вернуть тип услуги (тип больного)
 function f_p_tip_usl(r,c)
 static sk := PU_PLAT
 local out_arr
@@ -5338,7 +5338,7 @@ if out_arr != nil
 endif
 return out_arr
 
-***** вернуть тип услуги (bit-овый вариант)
+// вернуть тип услуги (bit-овый вариант)
 function fbp_tip_usl(r,c,ret_arr)
 static sast := {.t.,.f.,.f.}
 local i, j, a, out_arr
@@ -5361,7 +5361,7 @@ if (a := bit_popup(r,c,menu_kb,sast)) != nil
 endif
 return out_arr
 
-*****
+//
 function tit_tip_usl(k,a_dms,sh)
 local i, s := "[ "
 if len(k) < 3
@@ -5384,7 +5384,7 @@ if len(k) < 3
 endif
 return nil
 
-***** 02.12.12
+// 02.12.12
 function inputNplpozic(r,c,fl_max)
 static st_pozic := {}
 local i, k, t_mas, ;
@@ -5444,7 +5444,7 @@ enddo
 restscreen(buf)
 return l_a_pozic
 
-***** 18.11.16 определение критерия "взрослый/ребёнок"
+// 18.11.16 определение критерия "взрослый/ребёнок"
 function fv_dog_date_r(_data,ldate_r)
 local k, cy
 cy := count_years(ldate_r,_data)
@@ -5453,7 +5453,7 @@ else       ; k := 0  // взрослый
 endif
 return k
 
-***** 11.02.13
+// 11.02.13
 function f3_pl_vzaim()
 select TMP
 find (str(hp->tip_usl,1)+str(hp->pr_smo,6)+str(hp->kod_k,7))
@@ -5487,7 +5487,7 @@ if tmp2->(lastrec()) % 5000 == 0
 endif
 return nil
 
-*****
+//
 function f1_s_vyruchka(b,ar,nDim,nElem,nKey)
 local nRow := ROW(), nCol := COL(), i, j, flag := .f., buf,;
       mpic := {"9999",}
@@ -5518,7 +5518,7 @@ ENDCASE
 @ nRow, nCol SAY ""
 return flag
 
-***** 03.04.14
+// 03.04.14
 function f2_pl_vzaim(nKey,oBrow,regim)
 static sf_nomer, sf_date, sa_nomer, sa_date
 local ret := -1, buf, fl := .f., rec, tmp_color, ah, ahu, i, j, k, fl_one,;
@@ -5758,12 +5758,12 @@ do case
 endcase
 return ret
 
-*****
+//
 function ret_koef_z(mkod_usl,mkod_vr,mkod_as)
 local mk := {0,0,0}
 return mk
 
-*****
+//
 function f2ob_ved_vz()
 local i, j, k, fl, buf := save_row(maxrow()), t_arr[BR_LEN]
 mywait()
@@ -5795,7 +5795,7 @@ kart->(dbCloseArea())
 rest_box(buf)
 return nil
 
-*****
+//
 function f4ob_ved_vz(par)
 local s, sh, HH := 58, reg_print, arr_title, n_file := "ob_ved.txt",;
       buf := save_row(maxrow()), adbf, msaldo1, msaldo2, sum1, sum2
@@ -5928,7 +5928,7 @@ rest_box(buf)
 viewtext(n_file,,,,(sh > 80),,,2)
 return nil
 
-***** 05.10.17 печать счёта-фактуры
+// 05.10.17 печать счёта-фактуры
 function pl_print_faktura(ret,sk,ss)
 local adbf := {}, ip := 0, s
 //
@@ -6023,7 +6023,7 @@ close databases
 call_fr("mo_faktu"+sfr3())
 return nil
 
-***** 04.04.14
+// 04.04.14
 function rees_new_vzaim(nd_faktura)
 local buf := save_row(maxrow()), s, i, j, k, ss, lss, adbf, km
 delFRfiles()
@@ -6180,7 +6180,7 @@ message_fr_excel()
 call_fr("mo_reesdms"+sfr3())
 return nil
 
-***** 03.04.14 печать акта выполненных работ
+// 03.04.14 печать акта выполненных работ
 function pl_print_akt(ret,sk,ss)
 local adbf := {}, s
 //
@@ -6236,7 +6236,7 @@ close databases
 call_fr("mo_akt"+sfr3())
 return nil
 
-*****
+//
 function rees1_vzaim(name_file)
 local buf := save_row(maxrow()), sh, HH := 58, arr_title, s, j, sk, ss, old,;
       reg_print := 2
@@ -6292,13 +6292,13 @@ rest_box(buf)
 viewtext(name_file,,,,(sh>80),,,reg_print)
 return nil
 
-***** 11.02.13
+// 10.09.25
 function rees2_vzaim( name_file )
 	local buf := save_row( maxrow() ), sh, HH := 52, arr_title, s, i, j, k, sk, ss, ;
 		arr2title, reg_print := 6, afio[ 10 ], lfio := 19, kfio, lsk, lss, adbf, ;
 		aadres[ 2 ], kadres, apolis[ 10 ], kpolis
 
-	private d_file := 'P_REESTR' + sdbf
+	private d_file := 'P_REESTR' + sdbf()
 	if ! del_dbf_file( d_file )
 		return nil
 	endif
@@ -6503,7 +6503,7 @@ function rees2_vzaim( name_file )
 	n_message( { 'Создан файл: ' + d_file + ' (для загрузки в Excel)' }, , cColorStMsg, cColorStMsg, , , cColorSt2Msg )
 	return nil
 
-*****
+//
 function f3ob_ved_vz( nKey, oBrow, regim )
 	local ret := -1, buf, fl := .f., rec, tmp_color, i, j, k, t_arr[ 2 ], ;
 		s, sh, HH := 58, reg_print := 2, arr_title, name_file := 'ob_ved.txt'
@@ -6586,7 +6586,7 @@ function f3ob_ved_vz( nKey, oBrow, regim )
 	endcase
 	return ret
 
-*****
+//
 static function add_diagnoz( ar )
 
 	if ! empty( hp->KOD_DIAG ) .and. ascan( ar, hp->KOD_DIAG ) == 0
@@ -6609,7 +6609,7 @@ static function add_diagnoz( ar )
 	endif
 	return nil
 
-*****
+//
 static function add_vrach( ar, lkod_vr )
 
 	if ! empty( lkod_vr ) .and. ascan( ar, lkod_vr ) == 0
@@ -6617,7 +6617,7 @@ static function add_vrach( ar, lkod_vr )
 	endif
 	return nil
 
-*****
+//
 static function ret_arr_vrach( ar )
 	local i, arr := {}
 	
@@ -6628,7 +6628,7 @@ static function ret_arr_vrach( ar )
 	asort( arr )
 	return arr
 
-***** 13.04.14
+// 13.04.14
 function message_fr_excel()
 	local n := 0, arr := { ;
 		'Для экспорта документа в Excel выполните следующие действия:', ;

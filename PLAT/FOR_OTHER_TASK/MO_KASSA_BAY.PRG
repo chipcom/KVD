@@ -1,6 +1,6 @@
-*******************************************************************************
+//////////////////////////////****
 * mo_kassa.prg
-*******************************************************************************
+//////////////////////////////****
 *          begin_task_kassa()
 *          fk_usl_cena()
 *          f0_usl_cen(oBrow)
@@ -28,7 +28,7 @@
 *          pl_2dogovor()
 *          inputNpozic(r,c,fl_max)
 *          f_is_pozic(arr_s,pozic)
-*******************************************************************************
+//////////////////////////////****
 #include "inkey.ch"
 #include "function.ch"
 #include "edit_spr.ch"
@@ -36,7 +36,7 @@
 
 Static smvzros_reb
 
-*****
+//
 Function begin_task_kassa()
 	Static n_zapusk := 0
 
@@ -80,12 +80,12 @@ Function begin_task_kassa()
 	return .t.
 
 
-*****
+//
 Function fk_usl_cena()
 	Local buf := savescreen(), adbf, i
 	Private fl_found := .f.
 	
-	if !myFileDeleted("tmp"+sdbf)
+	if !myFileDeleted("tmp"+sdbf())
 		return NIL
 	endif
 	mywait()
@@ -123,7 +123,7 @@ Function fk_usl_cena()
 	
 	return NIL
 
-*****
+//
 Function f0_usl_cen(oBrow)
 	Local oColumn
 	
@@ -135,7 +135,7 @@ Function f0_usl_cen(oBrow)
 	
 	return NIL
 
-*****
+//
 Function f1_usl_cen(nKey,oBrow)
 	LOCAL j := 0, k := -1, buf := save_row(maxrow()), buf1, fl := .f., rec,;
 		tmp_color := setcolor(), r1 := 14, c1 := 2, ;
@@ -212,7 +212,7 @@ Function f1_usl_cen(nKey,oBrow)
 	
 	return k
 
-*****
+//
 Function f2_usl_cen()
 	Local fl := valid_shifr()
 	
@@ -236,12 +236,12 @@ Function f2_usl_cen()
 	return fl
 
 
-*****
+//
 Function fk_usl_dogov()
 	Local buf := savescreen(), adbf, i
 	Private fl_found := .f.
 	
-	if !myFileDeleted("tmp"+sdbf)
+	if !myFileDeleted("tmp"+sdbf())
 		return NIL
 	endif
 	mywait()
@@ -279,7 +279,7 @@ Function fk_usl_dogov()
 	
 	return NIL
 
-*****
+//
 Function f1_usl_dogov(nKey,oBrow)
 	LOCAL j := 0, k := -1, buf := save_row(maxrow()), buf1, fl := .f., rec,;
 		tmp_color := setcolor(), r1 := 14, c1 := 2, ;
@@ -355,7 +355,7 @@ Function f1_usl_dogov(nKey,oBrow)
 	
 	return k
 
-*****
+//
 Function f2_usl_dogov()
 	Local fl := valid_shifr()
 	
@@ -379,7 +379,7 @@ Function f2_usl_dogov()
 	return fl
 
 
-*****
+//
 Function nastr_kassa(k)
 	Static mm_da_net := {{"нет",1},{"да ",2}}
 	Local mm_tmp := {}, buf, fl := .f., s
@@ -395,9 +395,9 @@ Function nastr_kassa(k)
 		else
 			save all like mem_* to _lpukas_
 		endif
-	***************
+	//////
 	elseif k == 2
-	***************
+	//////
 		buf := save_row(maxrow()) ; mywait()
 		close databases
 		delete file tmp.dbf
@@ -452,7 +452,7 @@ Function nastr_kassa(k)
 	return NIL
 
 
-***** 03.03.13
+// 03.03.13
 Function kassa_r_list_uch(par,name_func)
 // 1 - платные услуги
 // 2 - ортопедические услуги
@@ -574,7 +574,7 @@ Function kassa_r_list_uch(par,name_func)
 
 	return NIL
 
-*****
+//
 Function kas_plat()
 	Local buf, str_sem
 
@@ -610,7 +610,7 @@ Function kas_plat()
 	endif
 return NIL
 
-*****
+//
 Function f2_kas_plat(oBrow)
 	Local oColumn, blk := {|| iif(human->cena < 0, {3,4}, {1,2}) }
 	
@@ -641,7 +641,7 @@ Function f2_kas_plat(oBrow)
 	
 	return NIL
 
-*****
+//
 Function f21_ksa_plat(rec)
 	Local s := "", t_vr := 0, tmp_select := select()
 	Local oEmpl
@@ -660,7 +660,7 @@ Function f21_ksa_plat(rec)
 	
 	return s
 
-*****
+//
 Function f22_ksa_plat(rec)
 	Local mregistrator := "", tmp_select := select()
 	Local oUser
@@ -681,7 +681,7 @@ Function f22_ksa_plat(rec)
 	
 	return mregistrator
 
-*****
+//
 Function f3_kas_plat(nKey,oBrow)
 	LOCAL j := 0, flag := -1, buf := save_row(maxrow()), buf1, fl := .f., rec, mkod,;
 		tmp_color := setcolor(), r1 := 15, c1 := 2, v_summa, v_sdacha,;			// adbf, s,;
@@ -692,7 +692,7 @@ Function f3_kas_plat(nKey,oBrow)
 	Private ldate_voz, lsum_voz, nom_prihod := 0
 do case
   case nKey == K_F9 .and. !empty(human->cena)
-    if !myFileDeleted("tmp"+sdbf)
+    if !myFileDeleted("tmp"+sdbf())
       return flag
     endif
     rec := human->(recno())
@@ -824,7 +824,7 @@ endcase
 return flag
 
 
-***** 18.11.14
+// 18.11.14
 Function f4_kas_plat(fl_edit)
 	Local fl := .f., adbf, buf := savescreen(), tmp_color := setcolor(color1), ;
 		j, l_color, mtitle, ln_chek := 0, fl_opl_vozvr := 0, rec, t_date
@@ -1071,7 +1071,7 @@ Function f4_kas_plat(fl_edit)
 	
 	return fl
 
-*****
+//
 Function fe_kp_kusl(oBrow)
 	Local oColumn, blk_color := {|| iif(tmp->stoim < 0, {3,4}, {1,2}) }
 	
@@ -1101,14 +1101,14 @@ Function fe_kp_kusl(oBrow)
 
 	return NIL
 
-*****
+//
 Function f3e_kp_kusl()
 
 	@ 23,60 say padl("Итого: "+lstr(mcena,11,2),19) color "W+/N"
 
 	return NIL
 
-*****
+//
 Function f2e_kp_kusl(nKey,oBrow)
 LOCAL flag := -1, buf := savescreen(), fl := .f., rec, ;
       i1, k, j := 0, s := 0, so := 0, adbf, adbf1, tmp_color := setcolor(), ;
@@ -1290,7 +1290,7 @@ do case
 endcase
 return flag
 
-*****
+//
 Static Function summa_usl(s)
 	Local j := 0
 	
@@ -1306,7 +1306,7 @@ Static Function summa_usl(s)
 	return NIL
 
 
-*****
+//
 Function f5e_kp_kusl(get,when_valid,k,ipl_ort)
 	Local fl := .t., s, j, old_kod, mvar, ar,;
 		msg1_err := "Код врача равен коду техника! Это недопустимо.",;
@@ -1433,7 +1433,7 @@ Function f5e_kp_kusl(get,when_valid,k,ipl_ort)
 
 
 
-*****
+//
 Function regi_s_plat(k)
 	Static si1 := 1, si2 := 1, si3 := 1, si4 := 1
 	Local mas_pmt, mas_msg, mas_fun, j
@@ -1483,7 +1483,7 @@ Function regi_s_plat(k)
 	return NIL
 
 
-*****
+//
 Function f2r_s_plat(reg)
 	Static snomer := 1, sreg1 := 1
 	Local i, j, k, arr[2], s, buf := save_row(maxrow()), buf1, reg1,;
@@ -1501,7 +1501,7 @@ Function f2r_s_plat(reg)
 	if (arr_m := year_month()) == NIL
 		return NIL
 	endif
-	if !myFileDeleted("tmp"+sdbf)
+	if !myFileDeleted("tmp"+sdbf())
 		return NIL
 	endif
 	speriod := arr_m[4]
@@ -1663,7 +1663,7 @@ Function f2r_s_plat(reg)
 	return NIL
 
 
-*****
+//
 Function pl_priemden()
 	Local fl := .t., buf := save_row(maxrow()), sm := 0, HH := 59,;
       n_file := "platn.txt", arr_m, sum3 := 0, sh
@@ -1677,7 +1677,7 @@ Function pl_priemden()
 	if (arr_m := year_month()) == NIL
 		return NIL
 	endif
-	if !myFileDeleted("tmp"+sdbf)
+	if !myFileDeleted("tmp"+sdbf())
 		return NIL
 	endif
 	//
@@ -1753,7 +1753,7 @@ Function pl_priemden()
 	return NIL
 
 
-*****
+//
 Function pl_dogovor()
 Local buf := save_row(maxrow()), sh, HH := 49, arr_title, s, i, j, k, sk, ss,;
       arr2title, reg_print := 6, afio[10], lfio := 19, kfio, lsk, lss, adbf,;
@@ -1837,7 +1837,7 @@ Local buf := save_row(maxrow()), sh, HH := 49, arr_title, s, i, j, k, sk, ss,;
 	return NIL
 
 
-*****
+//
 Function pl_2dogovor()
 	Local buf := save_row(maxrow()), sh, HH := 49, arr_title, s, i, k, sk, ss,;
 		arr2title, reg_print := 6, afio[10], lfio := 19, kfio, lsk, lss, adbf,;
@@ -2089,7 +2089,7 @@ Function pl_2dogovor()
 	return NIL
 
 
-*****
+//
 Function inputNpozic(r,c,fl_max)
 	Static st_pozic := {}
 	Local i, k, t_mas, ;
@@ -2150,7 +2150,7 @@ Function inputNpozic(r,c,fl_max)
 	return l_a_pozic
 
 
-*****
+//
 Function f_is_pozic(arr_s,pozic)
 
 	return ( ascan(arr_s,{|x| pozic==x[1] }) > 0 )

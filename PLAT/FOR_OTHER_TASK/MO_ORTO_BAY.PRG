@@ -1,6 +1,6 @@
-*******************************************************************************
+//////////////////////////////****
 * mo_orto.prg
-*******************************************************************************
+//////////////////////////////****
 *          begin_task_orto()
 *          orto_diag()
 *          f1_orto_diag(nKey,oBrow,regim,lrec)
@@ -56,7 +56,7 @@
 *          title_uchast(st_a_uchast,sh)
 * 15.12.13 Ort_nar_material()
 * 16.04.15 verify_o_uva(reg)
-*******************************************************************************
+//////////////////////////////****
 #include "set.ch"
 #include "inkey.ch"
 #include "function.ch"
@@ -64,7 +64,7 @@
 #include "chip_mo.ch"
 #include "def_bay.ch"
 
-*****
+//
 Function begin_task_orto()
 Static n_zapusk := 0
 
@@ -91,7 +91,7 @@ Static n_zapusk := 0
 	endif
 	return .t.
 
-*****
+//
 Function orto_diag()
 Local t_arr[BR_LEN], ;
       mtitle := "Справочник ортопедических диагнозов"
@@ -123,7 +123,7 @@ t_arr[BR_EDIT] := {|nk,ob| f1_orto_diag(nk,ob,"edit") }
 edit_browse(t_arr)
 return NIL
 
-*****
+//
 Function f1_orto_diag(nKey,oBrow,regim,lrec)
 Local ret := -1
 Local buf, fl := .f., rec, rec1, k := 17, tmp_color
@@ -190,7 +190,7 @@ do case
 endcase
 return ret
 
-*****
+//
 Function f2_orto_diag(get,nKey)
 Local fl := .t., rec := 0
 if mshifr != get:original
@@ -208,13 +208,13 @@ return fl
 
 *
 
-*****
+//
 Function f_prich_pol()
 popup_edit(dir_server+"ort_brk",T_ROW,T_COL-10,T_ROW+11,,1,,;
            "fdel_prich",,,,,,"Причины поломок протезов",col_tit_popup)
 return NIL
 
-*****
+//
 Function fdel_prich(mkod)
 Local fl := .t., buf := save_row(maxrow())
 stat_msg("Ждите! Производится проверка на допустимость удаления данной причины")
@@ -230,7 +230,7 @@ return fl
 
 *
 
-*****
+//
 Function edit_ort(k)
 Static si1 := 1
 Local mas_pmt, mas_msg, mas_fun, j, buf
@@ -270,7 +270,7 @@ return NIL
 
 *
 
-*****
+//
 Function spr_t_orto()
 Static mas_edit := { "~Просмотр",;
                      "~Редактирование",;
@@ -306,7 +306,7 @@ enddo
 restscreen(buf)
 return NIL
 
-*****
+//
 Function dop_or_menu(tip,kod)
 Local mm_tmp := {}, buf, a_default, len_orto := 0, mas_pit :={}
 Local mm_tehnik := {{"ТЕХНИКОВ",0},;
@@ -404,12 +404,12 @@ close databases
 rest_box(buf)
 return NIL
 
-*****
+//
 Function fdel_t_orto(k)
 Local fl := .t., buf := save_row(maxrow())
 return fl
 
-*****
+//
 FUNCTION input_t_orto(r,c,mkod,top_bot)
 Static st := 0
 Local k, r1, r2, tmp_select
@@ -437,7 +437,7 @@ return k
 
 *
 
-*****
+//
 Function spr_ort_mat()
 Local str_sem, tip_gr
 str_sem := "Редактирование справочника материалов ОРТОПЕДИЯ"
@@ -450,12 +450,12 @@ popup_edit(dir_server+"ortoped",T_ROW,15,73,,1,,;
 G_SUnLock(str_sem)
 return NIL
 
-*****
+//
 Function del_ort_mat(mkod)
 Local fl := .f., tmp_select := select()
 return if(fl, func_error(4,"Удаление запрещено!"), .t.)
 
-*****
+//
 Function f_orto_uva()
 Local t_arr[BR_LEN], ;
       mtitle := "Услуги, где не вводится врач (техник/медсестра)"
@@ -478,7 +478,7 @@ t_arr[BR_EDIT] := {|nk,ob| f1_orto_uva(nk,ob,"edit") }
 edit_browse(t_arr)
 return NIL
 
-*****
+//
 Function f1_orto_uva(nKey,oBrow,regim,lrec)
 Local ret := -1, mm_da_net := {{"да ",0},{"НЕТ",1}}
 Local buf, fl := .f., rec, rec1, k := 16, tmp_color
@@ -552,7 +552,7 @@ return ret
 
 *
 
-***** Причины поломок протезов
+// Причины поломок протезов
 Function O_pr_polom()
 Local buf := save_row(maxrow()), sh, HH := 58, skol, arr, arr_title,;
       begin_date, end_date, name_file := "orto_pp.txt"
@@ -625,7 +625,7 @@ return NIL
 
 *
 
-***** Список больных по поломкам
+// Список больных по поломкам
 Function O_sb_pr_polom()
 Static sk
 Local buf := save_row(maxrow()), sh, HH := 58, skol, arr, arr_title,;
@@ -708,7 +708,7 @@ return NIL
 
 *
 
-*****
+//
 Function opl_kart(mkod_human,mkod_lpu)
 // mkod_human - код по БД human
 Local adbf, buf := savescreen(), j := 0, tmp_color := setcolor(color1), ;
@@ -748,7 +748,7 @@ Alpha_Browse(2,0,maxrow()-2,79,"fe_o_kopl",color1,mtitle,col_tit_popup,;
              {'═','░','═',l_color,.t.,180} )
 // были добавлены строки оплаты
 if yes_parol .and. (mvu[1,1] > 0 .or. mvu[2,1] > 0 .or. mvu[3,1] > 0) ;
-             .and. hb_FileExists(dir_server+"mo_opern"+sdbf)
+             .and. hb_FileExists(dir_server+"mo_opern"+sdbf())
   k := glob_task+iif(human->tip_usl==OU_B_PLAT,100,0)
   close databases
   if G_Use(dir_server+"mo_opern",dir_server+"mo_opern","OP")
@@ -764,7 +764,7 @@ setcolor(tmp_color)
 restscreen(buf)
 return mcena_opl
 
-*****
+//
 //19.07.14
 Function fe_o_kopl(oBrow)
 Local oColumn, blk_color
@@ -823,7 +823,7 @@ else
 endif
 return NIL
 
-*****
+//
 Function f1e_o_kopl()
 LOCAL nRow := ROW(), nCol := COL()
 if flag_1
@@ -833,12 +833,12 @@ endif
 @ nRow, nCol SAY ""
 return NIL
 
-*****
+//
 Function f3e_o_kopl()
 @ 23,2 say padl("Итого: "+lstr(mcena_opl,11,2),20) color "W+/N"
 return NIL
 
-***** 29.06.15
+// 29.06.15
 Function f2e_o_kopl( nKey, oBrow )
 
 	Static skod_vr := 0, sn_kvit := 0
@@ -1175,7 +1175,7 @@ Function f2e_o_kopl( nKey, oBrow )
 	help_code := tmp_help
 	return flag
 
-***** 29.06.15
+// 29.06.15
 Function kart_orto(r)
 Static snar_z := 0
 Local i, j, r2, ln, buf, str_sem, arr_n := {}
@@ -1284,14 +1284,14 @@ Local i, j, r2, ln, buf, str_sem, arr_n := {}
 	G_SUnLock(str_sem)
 	return NIL
 
-*****
+//
 Function f1_k_orto(oBrow)
 oBrow:addColumn(TBColumnNew("   Дата;  наряда",{|| full_date(tmp->data) }))
 oBrow:addColumn(TBColumnNew(center("Ф.И.О.",50),{|| tmp->fio }))
 status_key("^<Esc>^ - отказ от выбора;  ^<Enter>^ - выбор")
 return NIL
 
-*****
+//
 Function f2_k_orto(oBrow)
 //02.12.2012 Ю
 Local oColumn, blk := {|| if(human->cena > 0, {1,2}, {3,4}) }
@@ -1335,7 +1335,7 @@ oBrow:addColumn(oColumn)
 mark_keys({"<Esc>","<Enter>","<Ins>","<Del>","<F2>","<Ctrl>+<Enter>","<Ctrl>+<O>","<F9/F10>"},"R/W")
 return NIL
 
-*****
+//
 Function f3_k_orto(nKey,oBrow)
 LOCAL j := 0, flag := -1, buf := save_row(maxrow()), buf1, fl := .f., rec, mkod,;
       tmp_color := setcolor(), r, llpu, mkod_as, mn_data, buf2 := save_row(23)
@@ -1491,7 +1491,7 @@ return flag
 
 *
 
-*****
+//
 Function f_ort_kart(nKey)
 Static st_tip_usl := 0
 Local buf := savescreen(), tmp_color := setcolor(), str_1, fl, ;
@@ -1852,7 +1852,7 @@ return ret
 
 *
 
-*****
+//
 Function v_ort_diag()
 Local n := 6, fl := .t., mshifr, tmp_select := select()
 Private mvar := readvar()
@@ -1877,7 +1877,7 @@ return fl
 
 *
 
-*****
+//
 Static Function val_tip_usl(get,old,r)
 Local fl := .t., s := ""
 if !equalany(m1tip_usl,OU_D_SMO,OU_PR_VZ)
@@ -1915,7 +1915,7 @@ return fl
 
 *
 
-*****
+//
 Function usl_ort_kart(mkod_human,mkod_lpu)
 // mkod_human - код по БД human
 Local adbf, buf := savescreen(), j := 0, tmp_color := setcolor(color1), ;
@@ -2031,7 +2031,7 @@ if G_Use(dir_server+"hum_ort",,"HUMAN") .and. ;
                {"═","░","═",l_color,.t.,180} )
   if yes_parol .and. (mvu[1,1] > 0 .or. mvu[2,1] > 0 .or. mvu[3,1] > 0 .or. ;
                       mvp[1,1] > 0 .or. mvp[2,1] > 0 .or. mvp[3,1] > 0) ;
-               .and. hb_FileExists(dir_server+"mo_opern"+sdbf)
+               .and. hb_FileExists(dir_server+"mo_opern"+sdbf())
     close databases
     if G_Use(dir_server+"mo_opern",dir_server+"mo_opern","OP")
       for i := 1 to 3
@@ -2053,7 +2053,7 @@ setcolor(tmp_color)
 restscreen(buf)
 return mcena
 
-*****
+//
 Function fe_o_kusl(oBrow)
 Local oColumn, blk_color := {|| if(tmp->t_edit > 1, {3,4}, {1,2}) }
 blk_color := {|| {{1,2},{3,4},{5,6},{7,8}}[tmp->tip_usl+1] }
@@ -2098,7 +2098,7 @@ oBrow:addColumn(oColumn)
 status_key("^<Esc>^ выход; ^<Enter>^ ред-ие; ^<Ins>^ добавление; ^<Del>^ удаление; ^<F5>^ дублирование")
 return NIL
 
-*****
+//
 Function f1e_o_kusl()
 Local nRow := ROW(), nCol := COL()
 @ maxrow()-2,2 say tmp->name_u color cDataCSay
@@ -2111,12 +2111,12 @@ endif
 @ nRow, nCol SAY ""
 return NIL
 
-*****
+//
 Function f3e_o_kusl()
 @ maxrow()-4,55 say padl("Итого: "+lstr(mcena,11,2),20) color "W+/N"
 return NIL
 
-*****
+//
 Function f2e_o_kusl(nKey,oBrow)
 Static st_tip_usl := 0
 Local flag := -1, buf := savescreen(), fl := .f., rec, ;
@@ -2434,7 +2434,7 @@ help_code := tmp_help
 restuchotd(uch_otd)
 return flag
 
-*****
+//
 Static Function summa_usl(s)
 Local j := 0
 s := 0
@@ -2450,7 +2450,7 @@ return NIL
 
 *
 
-*****
+//
 Function f5e_o_kusl(get,when_valid,k)
 Local fl := .t., s, old_kod,;
       msg1_err := "Код врача равен коду зубного техника! Это недопустимо.",;
@@ -2625,7 +2625,7 @@ return fl
 
 *
 
-*****
+//
 Function pr_zak_nar(tip_print) //21.05.08
 Static st_tip_usl := 0
 Local i := 1, j, k, s, fl, buf := save_row(maxrow())
@@ -2790,7 +2790,7 @@ return NIL
 
 *
 
-*****
+//
 Function orto_list_uch(tip_print)
 Local sh := 80, HH := 55, buf := save_row(maxrow()), regim_print := 2
 Local i := 1, j, k, tmp[2], tmp1, w1 := 65, s, fl, rec
@@ -2812,7 +2812,7 @@ return NIL
 
 *
 
-***** поиск свободного номера наряда (на 1 больше максимального)
+// поиск свободного номера наряда (на 1 больше максимального)
 Function poisk_svob()
 Local myear, buf := save_row(maxrow()), arr, mvar := readvar(), ;
       psvob := 0, REC, i, old_plat := mnar_z, vr_sel, rec1,;
@@ -2870,7 +2870,7 @@ return NIL
 
 *
 
-*****
+//
 Function input_uchast()
 Local such := 0
 Local nuch, fl := .f.
@@ -2881,7 +2881,7 @@ if (nuch := input_value(18,10,20,69,color0,;
 endif
 return iif(fl, nuch, NIL)
 
-*****
+//
 Function ret_uchast(r,c)
 Static si1 := 1, such := 0
 Local mas_pmt, mas_msg, j, arr := {}, luch := "", s, i, k, k1, k2
@@ -2940,7 +2940,7 @@ if is_uchastok > 0
 endif
 return arr
 
-*****
+//
 Function get_uchast(r,c)
 // должен быть определен "Private arr_uchast := {}"
 Local k := ret_uchast(r,c)
@@ -2953,7 +2953,7 @@ else
 endif
 return {r,init_uchast(arr_uchast)}
 
-*****
+//
 Function init_uchast(arr)
 Local i, s := "все пациенты"
 if valtype(arr) == "A" .and. len(arr) > 0
@@ -2973,7 +2973,7 @@ if valtype(arr) == "A" .and. len(arr) > 0
 endif
 return s
 
-*****
+//
 Function f_is_uchast(st_a_uchast,luch)
 Local fl := .t.
 if len(st_a_uchast) > 0
@@ -2981,7 +2981,7 @@ if len(st_a_uchast) > 0
 endif
 return fl
 
-*****
+//
 Function title_uchast(st_a_uchast,sh)
 if st_a_uchast != NIL .and. len(st_a_uchast) > 0
   if len(st_a_uchast) == 1
@@ -2994,7 +2994,7 @@ return NIL
 
 *
 
-*****
+//
 Function Ort_nar_material()
 Local arr, sh, HH := 58, s, s1, s2, s3, fl,;
       begin_date, end_date, fl_exit := .f., name_file := "orto_mt.txt",;
@@ -3167,7 +3167,7 @@ if !fl_exit
 endif
 return NIL
 
-*****
+//
 Function verify_o_uva(reg)
 	Local i
 	DEFAULT reg TO 1
