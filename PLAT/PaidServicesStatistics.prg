@@ -385,7 +385,7 @@ Function Pob1_statist(k,k1)
 	
 	return nil
 
-//  14.02.13
+//  11.09.25
 Function st1_plat_fio()
 	Local reg := 1
 	Local vr_as, adbf, i, j, arr[2], begin_date, end_date, ;
@@ -657,7 +657,7 @@ Function st1_plat_fio()
 			find(str(human->(recno()),7))
 			do while human->(recno()) == hu->kod .and. !eof()
 				if hu->otd == tmp->otd
-					if glob_mo[_MO_KOD_TFOMS] == '171004' // Š-4
+					if glob_mo()[_MO_KOD_TFOMS] == '171004' // Š-4
 						add_string("  "+padr(usl->full_name,60)+" "+put_kop(hu->stoim,12))
 					else
 						add_string("  "+padr(usl->name,60)+" "+put_kop(hu->stoim,12))

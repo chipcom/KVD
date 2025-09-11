@@ -5,7 +5,7 @@
 #include "edit_spr.ch"
 #include "chip_mo.ch"
 
-// 14.10.24
+// 11.09.25
 Function f1main( n_Task )
   Local it, s, k, fl := .t., cNameIcon
 
@@ -49,7 +49,7 @@ Function f1main( n_Task )
       "view_kart(2)", ;
       "dubl_zap()";
       } )
-    If glob_mo[ _MO_IS_UCH ]
+    If glob_mo()[ _MO_IS_UCH ]
       AAdd( first_menu[ 1 ], "Прикреплённое ~население" )
       AAdd( first_message[ 1 ], "Работа с прикреплённым населением" )
       AAdd( func_menu[ 1 ], "pripisnoe_naselenie()" )
@@ -213,7 +213,7 @@ Function f1main( n_Task )
       "create_reestr()", ;
       "view_list_reestr()", ;
       "vozvrat_reestr()" } )
-    If glob_mo[ _MO_IS_UCH ]
+    If glob_mo()[ _MO_IS_UCH ]
       AAdd( first_menu[ 2 ], "П~рикрепления" )
       AAdd( first_message[ 2 ], "Просмотр файлов прикрепления (и ответов на них), запись файлов для ТФОМС" )
       AAdd( func_menu[ 2 ], "view_reestr_pripisnoe_naselenie()" )
@@ -783,7 +783,7 @@ Function f1main( n_Task )
     AAdd( main_menu, " ~Сервисы " )
     AAdd( main_message, "Сервисы и настройки" )
     //
-    If glob_mo[ _MO_KOD_TFOMS ] == '395301' // Камышин СТОМ
+    If glob_mo()[ _MO_KOD_TFOMS ] == '395301' // Камышин СТОМ
       AAdd( first_menu, { "~Проверка целостности", 0, ;
         "Изменение ~цен ОМС", 0, ;
         "~Импорт", ;
@@ -837,7 +837,7 @@ Function f1main( n_Task )
     AAdd( main_menu, " Прочие ~отчёты " )
     AAdd( main_message, "Редко используемые (устаревшие) отчёты" )
     //
-    If glob_mo[ _MO_KOD_TFOMS ] == '395301' // Камышин СТОМ
+    If glob_mo()[ _MO_KOD_TFOMS ] == '395301' // Камышин СТОМ
       AAdd( first_menu, { ;
         "~Новые пациенты", ;
         "Информация о количестве удалённых ~зубов", ;
@@ -967,11 +967,11 @@ Static Function cmain_next_pos( n )
 
   Return ATail( cmain_menu ) + Len( ATail( main_menu ) ) + n
 
-// 05.11.15
+// 11.09.25
 Function my_mo_f1main()
   Local old := is_uchastok
 
-  If glob_mo[ _MO_KOD_TFOMS ] == kod_VOUNC
+  If glob_mo()[ _MO_KOD_TFOMS ] == kod_VOUNC
     is_uchastok := 1 // буква + № участка + № в участке "У25/123"
     vounc_f1main()
     is_uchastok := old

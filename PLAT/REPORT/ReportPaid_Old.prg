@@ -1012,7 +1012,7 @@ viewtext(n_file,,,,(sh>80),,,1)
 rest_box(buf)
 return nil
 
-// 01.03.19
+// 11.09.25
 Function pl_pl_2dogovor()
 Local buf := save_row(maxrow()), sh, HH := 49, arr_title, s, i, k, sk, ss,;
       arr2title, reg_print := 6, afio[10], lfio := 19, kfio, lsk, lss, adbf,;
@@ -1208,7 +1208,7 @@ R_Use(dir_server+"kartotek",,"KART")
 R_Use(dir_server+"uslugi",,"USL")
 R_Use(dir_server+"hum_p_u",dir_server+"hum_p_u","HPU")
 R_Use(dir_server+"hum_p",,"HU")
-if glob_mo[_MO_KOD_TFOMS] == '171004' // Š-4
+if glob_mo()[_MO_KOD_TFOMS] == '171004' // Š-4
   index on dtos(N_data)+str(kv_cia,6) to (cur_dir()+"tmp_hum") for between(N_data,arr_m[5],arr_m[6])
 else
   index on pdate+str(kv_cia,6) to (cur_dir()+"tmp_hum") for between(pdate,arr_m[7],arr_m[8])
@@ -1263,7 +1263,7 @@ do while !eof()
         //goto (hpu->kod_as)
         //t_nas := "  "//fam_i_o(perso->fio)
         //
-        if glob_mo[_MO_KOD_TFOMS] == '171004' // Š-4
+        if glob_mo()[_MO_KOD_TFOMS] == '171004' // Š-4
           add_string(afio[1]+" "+;
                      iif(f_is_pozic(glob_pozic,0),full_date(kart->date_r)+" ","")+;
                      iif(f_is_pozic(glob_pozic,1),padr(lstr(hu->kod_k),7)+" ","")+;
@@ -1306,7 +1306,7 @@ do while !eof()
         ++kol_vo
       else
         ++i
-        if glob_mo[_MO_KOD_TFOMS] == '171004' // Š-4
+        if glob_mo()[_MO_KOD_TFOMS] == '171004' // Š-4
           add_string(iif(i<=kfio,afio[i],space(29))+" "+;
                      iif(f_is_pozic(glob_pozic,0),space(11),"")+;
                      iif(f_is_pozic(glob_pozic,1),space(8),"")+;

@@ -214,12 +214,12 @@ static function editSRF( oBrowse, aObjects, oCommon, nKey )
 	endif
 	return fl
 
-// 09.09.25
+// 11.09.25
 function infoPatientToScreen( oPatient, r1, r2 )
 	local i, s, s1, mmo_pr, arr := {}
 	
 	is_talon := .t. // пока так
-	if is_uchastok > 0 .or. glob_mo[ _MO_IS_UCH ]
+	if is_uchastok > 0 .or. glob_mo()[ _MO_IS_UCH ]
 		s := ''
 		if is_uchastok > 0
 			s := 'Тип ' + oPatient:Bukva
@@ -231,10 +231,10 @@ function infoPatientToScreen( oPatient, r1, r2 )
 			endif
 			s += space( 3 )
 		endif
-		if glob_mo[ _MO_IS_UCH ]
+		if glob_mo()[ _MO_IS_UCH ]
 			if left( oPatient:AddInfo:PC2, 1 ) == '1'
 				mmo_pr := 'По информации из ТФОМС пациент У_М_Е_Р'
-			elseif oPatient:AddInfo:MOCodeAttachment == glob_mo[ _MO_KOD_TFOMS ]
+			elseif oPatient:AddInfo:MOCodeAttachment == glob_mo()[ _MO_KOD_TFOMS ]
 				mmo_pr := 'Прикреплён '
 				if !empty( oPatient:AddInfo:PC4 )
 					mmo_pr += 'с ' + alltrim( oPatient:AddInfo:PC4 ) + ' '

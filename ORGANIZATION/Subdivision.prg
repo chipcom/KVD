@@ -202,7 +202,7 @@ function editSubdivision( oBrowse, aObjects, oSubdivision, nKey )
 			//oSubdivision:IDVMP := m1mIDVMP
 			
 /*if is_adres_podr()
-  if ( i := ascan( glob_adres_podr(), { | x | x[ 1 ] == glob_mo[ _MO_KOD_TFOMS ] } ) ) > 0
+  if ( i := ascan( glob_adres_podr(), { | x | x[ 1 ] == glob_mo()[ _MO_KOD_TFOMS ] } ) ) > 0
     for j := 1 to len( glob_adres_podr()[ i, 2 ] )
 	 aadd( mm_adres_podr, { glob_adres_podr()[ i, 2, j, 3 ], glob_adres_podr()[ i, 2, j, 2 ] } )
 	next
@@ -212,7 +212,7 @@ function editSubdivision( oBrowse, aObjects, oSubdivision, nKey )
                                 0,{|x|inieditspr(A__MENUVERT,mm_adres_podr,x)},;
                                 "Адрес удалённого подразделения для стационара"})
 endif                       
-if is_adres_podr() .and. (i := ascan(glob_adres_podr(), {|x| x[1] == glob_mo[_MO_KOD_TFOMS] })) > 0
+if is_adres_podr() .and. (i := ascan(glob_adres_podr(), {|x| x[1] == glob_mo()[_MO_KOD_TFOMS] })) > 0
  G_Use(dir_server+"mo_otd",,"OTD")
  go top
  do while !eof()
@@ -265,7 +265,7 @@ static function get_kod_podr( k, r, c )
 	
 	if isnil( arr ) // только при первом вызове
 		arr := {}
-		aObject := T_Mo_podrDB():GetListByCodeTFOMS( glob_mo[ _MO_KOD_TFOMS ] )
+		aObject := T_Mo_podrDB():GetListByCodeTFOMS( glob_mo()[ _MO_KOD_TFOMS ] )
 		for each item in aObject
 			aadd( arr, { '(' + alltrim( item:KodOtd ) + ') ' + alltrim( item:Name ), item:KodOtd } )
 		next

@@ -67,8 +67,8 @@ function settingsSystem()
 	&& cTo := 'vbaykin@mail.ru'
 	
 	&& serverSMTP := oIniSystem:ServerSMTP
-	&& body := "Файл ошибок: " + glob_mo[ _MO_FULL_NAME ]
-	&& subject := "Учреждение: " + glob_mo[ _MO_KOD_TFOMS ]
+	&& body := "Файл ошибок: " + glob_mo()[ _MO_FULL_NAME ]
+	&& subject := "Учреждение: " + glob_mo()[ _MO_KOD_TFOMS ]
 	
 	&& nameZipFile := dir_server + 'error.txt'
 	&& ret := hb_SendMail( ;
