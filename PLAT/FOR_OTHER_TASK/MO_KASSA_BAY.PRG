@@ -452,7 +452,7 @@ Function nastr_kassa(k)
 	return NIL
 
 
-// 03.03.13
+// 12.09.25
 Function kassa_r_list_uch(par,name_func)
 // 1 - платные услуги
 // 2 - ортопедические услуги
@@ -492,7 +492,8 @@ Function kassa_r_list_uch(par,name_func)
 	
 	mfio := upper(kart->fio)
 	mpolis := kart->polis
-	msnils := expand(transform(kart->SNILS,picture_pf))
+//	msnils := expand(transform(kart->SNILS,picture_pf))
+	msnils := expand( transform_SNILS( kart->SNILS ) )
 	mpol := kart->pol
 	mdate_r := full_date(kart->date_r)
 	madres := iif(emptyall(kart_->okatog,kart->adres), "",;

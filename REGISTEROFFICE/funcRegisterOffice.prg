@@ -214,7 +214,7 @@ static function editSRF( oBrowse, aObjects, oCommon, nKey )
 	endif
 	return fl
 
-// 11.09.25
+// 12.09.25
 function infoPatientToScreen( oPatient, r1, r2 )
 	local i, s, s1, mmo_pr, arr := {}
 	
@@ -265,7 +265,8 @@ function infoPatientToScreen( oPatient, r1, r2 )
 	s := 'Ñ†‚† ‡Æ¶§•≠®Ô: ' + full_date( oPatient:DOB ) + space( 5 ) + ;
 			'(' + alltrim( inieditspr( A__MENUVERT, menu_vzros, oPatient:Vzros_Reb ) ) + ')'
 	if !empty( oPatient:SNILS )
-		s += space( 5 ) + 'ëçàãë: ' + transform( oPatient:SNILS, picture_pf )
+//		s += space( 5 ) + 'ëçàãë: ' + transform( oPatient:SNILS, picture_pf )
+		s += space( 5 ) + 'ëçàãë: ' + transform_SNILS( oPatient:SNILS )
 	endif
 	aadd( arr, s )
 	oPatient:Passport:Format := 'TYPE SSS ¸ NNN ¢Î§†≠: DATE'

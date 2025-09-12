@@ -6,7 +6,7 @@
 
 #include "function.ch"
 
-* 06.11.18 печать списка сотрудников
+// 12.09.25 печать списка сотрудников
 function PrintEmployees( arr )
 	Local oDoc, oNode, oTable, oRow, oCell, oHTable, oBTable, oTH
 	Local item, counter := 0, s := ''
@@ -84,7 +84,8 @@ function PrintEmployees( arr )
 			// 3-я колонка
 			oCell		:= oRow + 'td'
 			oCell:attr	:= 'class="td1" valign="center" align="center"'
-			oCell:text	:= transform( item:SNILS, picture_pf )
+//			oCell:text	:= transform( item:SNILS, picture_pf )
+			oCell:text	:= transform_SNILS( item:SNILS )
 			oCell		:= oCell - 'td'
 			HB_SYMBOL_UNUSED( oCell )
 

@@ -373,7 +373,8 @@ METHOD function forJSON()    CLASS TPatient
 	hb_HSet( hItem, 'FIO', alltrim( ::FIO ) )
 	hb_HSet( hItem, 'Gender', alltrim( ::Gender ) )
 	hb_HSet( hItem, 'DOB', dtoc( ::DOB ) )
-	hb_HSet( hItem, 'SNILS', alltrim( transform( ::SNILS, picture_pf ) ) )
+//	hb_HSet( hItem, 'SNILS', alltrim( transform( ::SNILS, picture_pf ) ) )
+	hb_HSet( hItem, 'SNILS', alltrim( transform_SNILS( ::SNILS ) ) )
 	&& if ::Passport != nil
 		&& hb_HSet( hItem, 'Passport', ::Passport:forJSON() )
 	&& endif
