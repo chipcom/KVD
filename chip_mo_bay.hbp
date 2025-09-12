@@ -525,8 +525,8 @@
 ..\2.x\INSURANCE\insurance_companies.prg
 ..\2.x\INSURANCE\func_smo.prg
 
-#..\2.x\FUNC_LIB\prview.prg
-#..\2.x\FUNC_LIB\fastreph.prg
+..\2.x\FUNC_LIB\prview.prg
+..\2.x\FUNC_LIB\univ_spr.prg
 
 #для отладки
 #.\FUNC\xtoc.prg
