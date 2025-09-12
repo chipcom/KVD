@@ -926,7 +926,7 @@ Function f2e_o_kopl( nKey, oBrow )
 				@ r1+4,2 say "Вид платежа" get mtip_opl ;
 					reader {|x|menu_reader(x,menu_opl,A__MENUVERT,,,.f.)}
 				@ r1+5,2 say "Дата оплаты" get mdate_o
-				@ r1+6,2 say "Сумма оплаты" get mstoim pict pict_cena
+				@ r1+6,2 say "Сумма оплаты" get mstoim pict pict_cena()
 				ii := 7
 				if glob_kassa == 1
 					//
@@ -1039,7 +1039,7 @@ Function f2e_o_kopl( nKey, oBrow )
 						DisplBox(s,;
 							, ;                   // цвет окна (умолч. - cDataCGet)
 							{"ldate_voz","lsum_voz"},; // массив Private-переменных для редактирования
-							{,pict_cena},; // массив Picture для редактирования
+							{,pict_cena()},; // массив Picture для редактирования
 							17)
 						if lastkey() == K_ESC
 							//
@@ -2263,7 +2263,7 @@ do case
       @ r1+3,2 say "Шифр услуги" get mshifr pict "@!" ;
                when {|g| f5e_o_kusl(g,1,2) } ;
                valid {|g| f5e_o_kusl(g,2,2) }
-      @ row(),40 say "Цена услуги" get mu_cena pict pict_cena ;
+      @ row(),40 say "Цена услуги" get mu_cena pict pict_cena() ;
                 when .f. color color14
       @ r1+4,2 say "Услуга" get mname_u when .f. color color14
       ix := 4
@@ -2302,7 +2302,7 @@ do case
           endif
         endif
       next
-      @ r1+10,2 say "Общая стоимость услуги" get mstoim pict pict_cena ;
+      @ r1+10,2 say "Общая стоимость услуги" get mstoim pict pict_cena() ;
                when {|g| mem_edit_s==2 .and. f5e_o_kusl(g,1,7) } ;
                valid {|g| f5e_o_kusl(g,2,7) }
       if mt_edit > 1

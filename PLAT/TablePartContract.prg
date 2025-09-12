@@ -211,7 +211,7 @@ function editService( oPayService, aObjects, nKey, lPayment, oContract )
 		@ ++r1, 2 say 'Шифр услуги' get mshifr pict '@!' ;
 							valid { | g | getService( g, oPatient:IsAdult( oPayService:Date ), oContract, @aComplexService ) } ;
 							when ! lPayment
-		@ row(), 40 say 'Цена услуги' get mu_cena pict pict_cena when .f. color color14
+		@ row(), 40 say 'Цена услуги' get mu_cena pict pict_cena() when .f. color color14
 		@ ++r1, 2 say 'Услуга' get mname_u when .f. color color14
 		
 		for x := 1 to 3 
@@ -231,7 +231,7 @@ function editService( oPayService, aObjects, nKey, lPayment, oContract )
 								when ! lPayment
 			endif
 		next
-		@ ++r1, 2 say 'Общая стоимость услуги' get mTotal pict pict_cena ;
+		@ ++r1, 2 say 'Общая стоимость услуги' get mTotal pict pict_cena() ;
 					valid {| g | validTotal( g, r1 ) } ;
 					when { | g | ( mem_edit_s == 2 ) .and. ( len( aComplexService ) == 0 ) .and. !lPayment }
 		if mt_edit > 1

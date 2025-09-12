@@ -318,23 +318,23 @@ function BankGet( oCheck, buf, sizeFrame, sizeFrameBank )
 	endif
 	if getDrvFR():Change
 		@ ++r, 7 say 'Сумма переданная плательщиком (для подсчета сдачи)' ;
-			get vnos_summa picture pict_cena ;
+			get vnos_summa picture pict_cena() ;
 					valid { | g | RecalcCheck( g, oCheck, .t. ) } 
 	endif
 	If m1Bank == 1
 		if  getDrvFR():EnableTypePay2()
 			@ ++r, 7 say 'Сумма, видом оплаты (' +  Padr( getDrvFR():NameTypePay2(), 24 ) + ')' ;
-				get paymentType2 picture pict_cena ;
+				get paymentType2 picture pict_cena() ;
 					valid { | g | RecalcCheck( g, oCheck, .t. ) } 
 		endif
 		if  getDrvFR():EnableTypePay3()
 			@ ++r, 7 say 'Сумма, видом оплаты (' +  Padr( getDrvFR():NameTypePay3(), 24 ) + ')' ;
-				get paymentType3 picture pict_cena ;
+				get paymentType3 picture pict_cena() ;
 					valid { | g | RecalcCheck( g, oCheck, .t. ) } 
 		endif
 		if  getDrvFR():EnableTypePay4()
 			@ ++r, 7 say 'Сумма, видом оплаты (' +  Padr( getDrvFR():NameTypePay4(), 24 ) + ')' ;
-				get paymentType4 picture pict_cena ;
+				get paymentType4 picture pict_cena() ;
 					valid { | g | RecalcCheck( g, oCheck, .t. ) } 
 		endif
 	endif
@@ -577,7 +577,7 @@ function printReceipt( oContract, nKey )
 						' \'
 					DisplBox( s, , ;								// цвет окна (умолч. - cDataCGet)
 						{ 'ldate_op', 'lsum_voz_bank' }, ;	// массив private-переменных для редактирования
-						{ , pict_cena }, ;				// массив Picture для редактирования
+						{ , pict_cena() }, ;				// массив Picture для редактирования
 						17 )
 				else
 					s := ' \' + ;
@@ -587,7 +587,7 @@ function printReceipt( oContract, nKey )
 						' \'
 					DisplBox( s, , ;								// цвет окна (умолч. - cDataCGet)
 						{ 'ldate_op', 'lsum_voz' }, ;	// массив private-переменных для редактирования
-						{ , pict_cena }, ;				// массив Picture для редактирования
+						{ , pict_cena() }, ;				// массив Picture для редактирования
 						17 )
 				endif
 				if lastkey() == K_ESC

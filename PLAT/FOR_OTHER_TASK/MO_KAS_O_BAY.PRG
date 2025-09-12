@@ -662,13 +662,13 @@ Function f2e_ko_kusl(nKey,oBrow)
 				@ r1+3,2 say "Шифр услуги" get mshifr pict "@!" ;
 					when {|g| f5e_kp_kusl(g,1,1,2) } ;
 					valid {|g| f5e_kp_kusl(g,2,1,2) }
-				@ r1+4,2 say "Цена услуги" get mu_cena pict pict_cena ;
+				@ r1+4,2 say "Цена услуги" get mu_cena pict pict_cena() ;
 					when {|g| f5e_kp_kusl(g,1,2) } ;
 					valid {|g| f5e_kp_kusl(g,2,2) }
 				@ r1+5,2 say "Услуга" get mname_u when .f. color color14
 				@ r1+6,2 say "Количество услуг" get mkol pict "999" ;
 					valid {|g| f5e_kp_kusl(g,2,5) }
-				@ r1+7,2 say "Общая стоимость услуги" get mstoim pict pict_cena ;
+				@ r1+7,2 say "Общая стоимость услуги" get mstoim pict pict_cena() ;
 					when .f.
 				status_key("^<Esc>^ - выход без записи;  ^<PgDn>^ - подтверждение записи")
 				myread()
