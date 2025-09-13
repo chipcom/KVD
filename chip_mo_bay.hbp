@@ -1,7 +1,5 @@
 
 ### главное меню программы
-#.\MENU\f1main_bay.prg
-#.\MENU\menu_X_sprav_bay.prg
 ..\2.x\MENU\f1main.prg
 ..\2.x\MENU\menu_X_registr.prg
 ..\2.x\MENU\menu_X_prokoj.prg
@@ -443,6 +441,7 @@
 ..\2.x\dispanser\oms_DVN_func.prg
 ..\2.x\dispanser\oms_DDS.prg
 ..\2.x\dispanser\oms_DDS_func.prg
+..\2.x\DISPANSER\oms_DDS_init.prg
 ..\2.x\dispanser\oms_PN.prg
 ..\2.x\dispanser\oms_PN_func.prg
 ..\2.x\dispanser\oms_naprav_zno.prg
