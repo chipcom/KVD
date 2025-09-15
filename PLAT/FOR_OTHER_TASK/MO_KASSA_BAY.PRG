@@ -509,13 +509,13 @@ Function kassa_r_list_uch(par,name_func)
 	if alltrim(kart_->SMO) == '34'
 		s := ret_inogSMO_name(1)
 		mkomu += iif(empty(s), "ТФОМС (иногородние)", s)
-		mmest_inog := inieditspr(A__MENUVERT,glob_array_srf,kart_->KVARTAL_D) // ОКАТО субъекта РФ территории страхования
+		mmest_inog := inieditspr(A__MENUVERT,glob_array_srf(),kart_->KVARTAL_D) // ОКАТО субъекта РФ территории страхования
 	elseif left(kart_->SMO,2) == '34'
 		mkomu += alltrim(inieditspr(A__MENUVERT, glob_arr_smo, int(val(kart_->smo))))
 		mmest_inog := 'Волгоградская область'
 	elseif !empty(kart_->SMO)
 		mkomu += init_ismo(kart_->SMO)
-		mmest_inog := inieditspr(A__MENUVERT,glob_array_srf,kart_->KVARTAL_D) // ОКАТО субъекта РФ территории страхования
+		mmest_inog := inieditspr(A__MENUVERT,glob_array_srf(),kart_->KVARTAL_D) // ОКАТО субъекта РФ территории страхования
 	endif
 	mrab_nerab := upper(inieditspr(A__MENUVERT, menu_rab, kart->rab_nerab))
 	m1vid_ud := kart_->vid_ud

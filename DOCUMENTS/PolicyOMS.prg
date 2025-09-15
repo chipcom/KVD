@@ -43,7 +43,7 @@ function inputPolicyOMS( oPolicyOMS, oPatient )
 		dateEnd := oPolicyOMS:PolicyPeriod
 
 		m1okato := oPolicyOMS:OKATOInogSMO
-		mokato := inieditspr( A__MENUVERT, glob_array_srf, m1okato )
+		mokato := inieditspr( A__MENUVERT, glob_array_srf(), m1okato )
 		
 		msmo        := oPolicyOMS:SMO    // реестровый номер СМО
 		if alltrim( msmo ) == '34'

@@ -144,21 +144,21 @@ function getListSRF()
 	local aOKATOR := T_OKATORDB():getList()
 	local aOKATOO := T_OKATOODB():getList()
 
-	for i := 1 to len( glob_array_srf )
-		if  glob_array_srf[ i, 2 ] == '18000'
+	for i := 1 to len( glob_array_srf() )
+		if  glob_array_srf()[ i, 2 ] == '18000'
 			loop
 		endif
 		iFind := 0
-		if ( iFind := ascan( aOKATOO, { | x | x:OKATO == glob_array_srf[ i, 2 ] } ) ) > 0
-			glob_array_srf[ i, 1 ] := rtrim( aOKATOO[ iFind ]:Name )
+		if ( iFind := ascan( aOKATOO, { | x | x:OKATO == glob_array_srf()[ i, 2 ] } ) ) > 0
+			glob_array_srf()[ i, 1 ] := rtrim( aOKATOO[ iFind ]:Name )
 		else
-			if ( iFind := ascan( aOKATOR, { | x | x:OKATO == left( glob_array_srf[ i, 2 ], 2 ) } ) ) > 0
-				glob_array_srf[ i, 1 ] := rtrim( aOKATOR[ iFind ]:Name )
-			elseif left( glob_array_srf[ i, 2 ], 2 ) == '55'
-				glob_array_srf[ i, 1 ] := 'г.Байконур'
+			if ( iFind := ascan( aOKATOR, { | x | x:OKATO == left( glob_array_srf()[ i, 2 ], 2 ) } ) ) > 0
+				glob_array_srf()[ i, 1 ] := rtrim( aOKATOR[ iFind ]:Name )
+			elseif left( glob_array_srf()[ i, 2 ], 2 ) == '55'
+				glob_array_srf()[ i, 1 ] := 'г.Байконур'
 			endif
 		endif
-		oSRF := TSRF():New( glob_array_srf[ i, 2 ], iif( substr( glob_array_srf[ i, 2 ], 3, 1 ) == '0','', '  ' ) + glob_array_srf[ i, 1 ] )
+		oSRF := TSRF():New( glob_array_srf()[ i, 2 ], iif( substr( glob_array_srf()[ i, 2 ], 3, 1 ) == '0','', '  ' ) + glob_array_srf()[ i, 1 ] )
 		aadd( aReturn, oSRF )
 	next
 	return aReturn
@@ -379,7 +379,7 @@ function smo_to_screen_bay( ltip, obj )
 		&& lokato := iif( ltip == 1, kart_->KVARTAL_D, human_->okato )
 		lokato := iif( ltip == 1, obj:ExtendInfo:KvartalHouse, human_->okato )
 		if ! empty( lokato )
-			s += '/' + inieditspr( A__MENUVERT, glob_array_srf, lokato )
+			s += '/' + inieditspr( A__MENUVERT, glob_array_srf(), lokato )
 		endif
 	endif
 	return s
