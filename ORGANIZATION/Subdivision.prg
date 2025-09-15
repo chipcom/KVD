@@ -51,9 +51,9 @@ function editSubdivisions()
 		{ 'перитонеальный диализ'                ,TIP_LU_P_DIA } }   // 11
 	private mm1tiplu := aclone( mm_tiplu )
 	
-	if ascan( glob_klin_diagn, 1 ) > 0
+	if ascan( glob_klin_diagn(), 1 ) > 0
 		aadd( mm_tiplu, { 'жидкостная цитология рака шейки матки', TIP_LU_G_CIT } )
-	elseif ascan(glob_klin_diagn,2) > 0
+	elseif ascan(glob_klin_diagn(),2) > 0
 		aadd( mm_tiplu, { 'пренатальный скрининг наруш.внутр.разв.', TIP_LU_G_CIT } )
 	endif
 	
