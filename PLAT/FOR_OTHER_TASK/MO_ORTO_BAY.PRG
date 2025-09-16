@@ -2904,8 +2904,8 @@ if is_uchastok > 0
         arr := {luch} ; such := luch
       endif
     elseif j == 3
-      if hb_FileExists(file_uchast)
-        luch := filestr(file_uchast)
+      if hb_FileExists(file_uchast())
+        luch := filestr(file_uchast())
       endif
       if (luch := input_value(20,2,22,77,color1,;
               "Прикрепленные участки (напр.: 1-20,23)",;
@@ -2932,7 +2932,7 @@ if is_uchastok > 0
           arr := nil
           func_error(4,"Некорректно введен список прикрепленных участков.")
         else
-          strfile(alltrim(luch),file_uchast)
+          strfile(alltrim(luch),file_uchast())
         endif
       endif
     endif
@@ -2960,8 +2960,8 @@ if valtype(arr) == "A" .and. len(arr) > 0
   if len(arr) == 1
     s := "№ "+lstr(arr[1])
   else
-    if hb_FileExists(file_uchast)
-      s := filestr(file_uchast)
+    if hb_FileExists(file_uchast())
+      s := filestr(file_uchast())
     else
       s := ""
       for i := 1 to len(arr)
