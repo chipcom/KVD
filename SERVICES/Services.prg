@@ -209,14 +209,14 @@ function SelectService( arr_tfoms )
 	local oService := nil
 	local idService := 0
 	
-	ar := GetIniSect( tmp_ini, 'uslugi' )
+	ar := GetIniSect( tmp_ini(), 'uslugi' )
 	musl := padr( a2default( ar, 'shifr' ), 10 )
 	if (musl := input_value( 18, 6, 20, 73, color1, ;
 							space( 17 ) + '‚Ά¥¤¨β¥ θ¨δΰ γα«γ£¨', musl, '@K' ) ) != nil .and. !empty( musl )
 		buf := save_maxrow()
 		mywait()
 		musl := transform_shifr( musl )
-		SetIniSect( tmp_ini, 'uslugi', { { 'shifr', musl } } )
+		SetIniSect( tmp_ini(), 'uslugi', { { 'shifr', musl } } )
 		
 		oService := TServiceDB():getByShifr( musl )
 		if oService == nil
