@@ -442,7 +442,7 @@ Function spr_ort_mat()
 Local str_sem, tip_gr
 str_sem := "Редактирование справочника материалов ОРТОПЕДИЯ"
 if !G_SLock(str_sem)
-  return func_error(4,err_slock)
+  return func_error(4,err_slock())
 endif
 popup_edit(dir_server+"ortoped",T_ROW,15,73,,1,,;
              "del_ort_mat",,,,,,;
@@ -1254,7 +1254,7 @@ Local i, j, r2, ln, buf, str_sem, arr_n := {}
 	endif
 	str_sem := "ОРТ Редактирование человека "+lstr(glob_kartotek)
 	if !G_SLock(str_sem)
-		return func_error(4,err_slock)
+		return func_error(4,err_slock())
 	endif
 	buf := savescreen()
 	Private fl_found, str_find, muslovie, regim := r

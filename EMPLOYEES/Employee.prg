@@ -34,7 +34,7 @@
 
 static strEmployee := 'РЕДАКТИРОВАНИЕ СОТРУДНИКА'
 
-* 01.11.18 редактирование списка сотрудников
+// 15.09.25 редактирование списка сотрудников
 function editEmployees( nType )
 	local blkEditObject
 	local blcCodeColor
@@ -84,7 +84,7 @@ function editEmployees( nType )
 			hb_Alert( 'В данный момент сотрудников редактирует другой администратор. Ждите.', , , 4 )
 		endif
 	else
-		hb_Alert( err_admin, , , 4 )
+		hb_Alert( err_admin(), , , 4 )
 	endif
 	return nil
 

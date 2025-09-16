@@ -95,7 +95,7 @@ function Services( obj )
 		G_SUnLock( str_sem )
 		flag := .t.
 	else
-		hb_Alert( err_slock, , , 4 )
+		hb_Alert( err_slock(), , , 4 )
 	endif
 	return flag
 

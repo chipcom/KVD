@@ -582,7 +582,7 @@ Function kas_plat()
 	if polikl1_kart() > 0
 		str_sem := "KASSA - Редактирование человека "+lstr(glob_kartotek)
 		if !G_SLock(str_sem)
-			return func_error(4,err_slock)
+			return func_error(4,err_slock())
 		endif
 		buf := savescreen()
 		Private fl_found, str_find, muslovie

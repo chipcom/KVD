@@ -35,7 +35,7 @@ function kart_plat()
 	if polikl1_kart() > 0
 		str_sem := 'ПУ Редактирование человека ' + lstr( glob_kartotek )
 		if !G_SLock( str_sem )
-			hb_Alert( err_slock, , , 4 )
+			hb_Alert( err_slock(), , , 4 )
 			return .f.
 		endif
 	

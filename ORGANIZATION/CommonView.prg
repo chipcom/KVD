@@ -84,7 +84,7 @@ static function editCommon( oBrowse, aObjects, oCommon, nKey )
 	endif
 	Return fl
 	
-* удаление дубликатов организаций, выдающих документы
+// удаление дубликатов организаций, выдающих документы
 function removeDublicateTPublisher()
 	Static sk
 	Local buf, s1, s2, k1, k2, hGauge, r
@@ -97,7 +97,7 @@ function removeDublicateTPublisher()
 	if !hb_user_curUser:IsAdmin()
 		return func_error( 4, 'Оператору доступ в данный режим запрещен!' )
 	endif
-	if !G_SLock1Task( sem_task, sem_vagno )  // запрет доступа всем
+	if !G_SLock1Task( sem_task(), sem_vagno() )  // запрет доступа всем
 		return func_error( 'В данный момент УДАЛЕНИЕ ДУБЛИКАТА запрещено. Работает другая задача.' )
 	endif
 	n_message( { 'Данный режим предназначен для удаления одной строки', ;
@@ -132,7 +132,7 @@ function removeDublicateTPublisher()
 		
 	endif
 	restscreen( buf )
-	G_SUnLock( sem_vagno )
+	G_SUnLock( sem_vagno() )
 	return NIL
 
 function selectPublisher( row1, row2 )
