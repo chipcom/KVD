@@ -72,7 +72,8 @@ Function begin_task_kassa()
 		return func_error(4,"Неверно введен номер смены!")
 	endif
 	
-	blk_ekran := {|_s| _s := alltrim(fio_polzovat)+;
+//	blk_ekran := {|_s| _s := alltrim(fio_polzovat)+;
+	blk_ekran := {|_s| _s := alltrim(hb_user_curUser:FIO)+;
                          ", смена: "+lstr(glob_smena)+", "+;
                          full_date(sys_date),;
 						devpos(maxrow()-2,maxcol()-len(_s)), ;

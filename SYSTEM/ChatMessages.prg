@@ -64,7 +64,6 @@ procedure SendMessage()
 			cText1251 := win_OEMToAnsi( cText )
 			for each item in aSelectedUsers
 				udpSendMessage( 'MSG', item:IDTask, hb_user_curUser:Name1251, cText1251 ) // отправить всем
-				// udpSendMessage( cType, fio_polzovat, cText1251 )
 			next
 		endif
 	endif

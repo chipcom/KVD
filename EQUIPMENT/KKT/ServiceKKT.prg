@@ -462,7 +462,9 @@ function WriteErrKassa( info )
 		endif
 		_tmp += 'Касса № ' + alltrim( str( numPOS ) ) + '. Название: ' + alltrim( namePOS )
 		_tmp += chr( 13 ) + chr( 10 )
-		if type( 'fio_polzovat' ) == 'C' .and. !empty( fio_polzovat )
+//		if type( 'fio_polzovat' ) == 'C' .and. !empty( fio_polzovat )
+		if !empty( hb_user_curUser:FIO )
+//			_tmp += 'Кассир: ' + alltrim( hb_user_curUser:Name )
 			_tmp += 'Кассир: ' + alltrim( hb_user_curUser:Name )
 		endif
 		if type( 'p_name_comp' ) == 'C' .and. !empty( p_name_comp )
