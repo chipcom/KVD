@@ -48,7 +48,6 @@
 .\DAL\ICD10\TICD10ClassDB.prg
 .\DAL\ICD10\TICD10GroupDB.prg
 #
-#.\DAL\EMPLOYEES\TEmployeeDB.prg
 .\DAL\EMPLOYEES\TDistrictDoctorDB.prg
 .\DAL\EMPLOYEES\TPlannedMonthlyStaffDB.prg
 #
@@ -121,7 +120,6 @@
 .\BLL\ICD10\TICD10Class.prg
 .\BLL\ICD10\TICD10Group.prg
 #
-#.\BLL\EMPLOYEES\TEmployee.prg
 .\BLL\EMPLOYEES\TDistrictDoctor.prg
 .\BLL\EMPLOYEES\TPlannedMonthlyStaff.prg
 #
@@ -163,13 +161,6 @@
 
 # ОМС
 .\BLL\OMS\THuman.prg
-
-# системные функции
-.\SYSTEM\TWorkingUser.prg
-.\SYSTEM\popup_f.prg
-.\SYSTEM\TVersion.prg
-.\SYSTEM\TListObjects.prg
-.\SYSTEM\OSFunction.prg
 
 # система настройки
 .\SETTINGS\settingsSystem.prg
@@ -215,7 +206,6 @@
 
 
 # Классы для описания документов
-#.\Documents\Passport.prg
 .\Documents\Publisher.prg
 .\Documents\PolicyOMS.prg
 .\Documents\Disability.prg
@@ -258,6 +248,9 @@
 .\PLAT\FOR_OTHER_TASK\mo_kas_p_bay.prg
 .\PLAT\FOR_OTHER_TASK\mo_kas_o_bay.prg
 .\PLAT\FOR_OTHER_TASK\yes_o_check.prg
+#
+..\2.x\KASSA\mo_ortop.prg
+..\2.x\KASSA\mo_plat_func.prg
 #
 # файлы для используемого оборудования .\EQUIPMENT\
 .\EQUIPMENT\TSettingKKT.prg
@@ -467,18 +460,11 @@
 ..\2.x\EXCHANGE\mo_omsr.prg
 ..\2.x\EXCHANGE\func_exchange.prg
 
-..\2.x\KASSA\mo_ortop.prg
-..\2.x\KASSA\mo_plat_func.prg
-
 ..\2.x\FNS\fns.prg
 ..\2.x\FNS\fns_func.prg
 ..\2.x\FNS\fns_exchange.prg
 ..\2.x\FNS\page1.prg
 ..\2.x\FNS\page2.prg
-
-#..\2.x\KEK\mo_kek.prg
-#..\2.x\KEK\mo_keki.prg
-#..\2.x\KEK\mo_keki_17.prg
 
 ..\2.x\263\mo_263.prg
 ..\2.x\263\mo_263p.prg
@@ -500,13 +486,11 @@
 
 ..\2.x\ORDER\mo_omso.prg
 ..\2.x\ORDER\mo_omsp.prg
-#..\2.x\ORDER\mo_omspr.prg
 
 ..\2.x\OTHER\mo_mzxml.prg
 ..\2.x\OTHER\mo_serv.prg
 ..\2.x\OTHER\mo_sds.prg
 ..\2.x\OTHER\control_start.prg
-#..\2.x\OTHER\mo_moder.prg
 
 ..\2.x\TUNING\ret_days_for_akt_sverki.prg
 ..\2.x\TUNING\initPZarray.prg
