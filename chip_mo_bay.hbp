@@ -527,6 +527,7 @@
 ..\2.x\FUNC_LIB\prview.prg
 ..\2.x\FUNC_LIB\univ_spr.prg
 ..\2.x\FUNC_LIB\semaphor_bay.prg
+..\2.x\FUNC_LIB\net_moni.prg
 
 #для отладки
 #.\FUNC\xtoc.prg
