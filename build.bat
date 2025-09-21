@@ -6,4 +6,4 @@ copy chip_mo.js d:\_mo\chip\exe
 copy _dogovor.shb d:\_mo\chip\exe
 copy list_uch.shb d:\_mo\chip\exe
 rem copy ReferenceToFTS.shb d:\_mo\chip\exe
-rar a -ep d:\_mo\_build\KVD\chip_mo @my_chip_mo.lst
+C:\"Program Files"\WinRAR\Rar.exe a -ep d:\_mo\_build\KVD\chip_mo @my_chip_mo.lst
