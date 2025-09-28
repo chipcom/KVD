@@ -434,9 +434,10 @@
 ..\2.x\dispanser\oms_DVN_func.prg
 ..\2.x\dispanser\oms_DDS.prg
 ..\2.x\dispanser\oms_DDS_func.prg
-..\2.x\DISPANSER\oms_DDS_init.prg
+..\2.x\DISPANSER\oms_DDS_array.prg
 ..\2.x\dispanser\oms_PN.prg
 ..\2.x\dispanser\oms_PN_func.prg
+..\2.x\DISPANSER\oms_PN_array.prg
 ..\2.x\dispanser\oms_naprav_zno.prg
 ..\2.x\dispanser\oms_dispans_diagnoze.prg
 ..\2.x\dispanser\oms_dispans_func.prg
