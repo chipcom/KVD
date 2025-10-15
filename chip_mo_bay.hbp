@@ -453,6 +453,8 @@
 ..\2.x\dispanser\mo_st39.prg
 
 ..\2.x\EXCHANGE\reestrOMS_XML.prg
+..\2.x\EXCHANGE\create2reestr19.prg
+..\2.x\EXCHANGE\f1_create2reestr19.prg
 ..\2.x\EXCHANGE\schet_from_XML.prg
 ..\2.x\EXCHANGE\rak_XML.prg
 ..\2.x\EXCHANGE\extract_reestr.prg
