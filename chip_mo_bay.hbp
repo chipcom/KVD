@@ -438,6 +438,7 @@
 ..\2.x\dispanser\oms_PN.prg
 ..\2.x\dispanser\oms_PN_func.prg
 ..\2.x\DISPANSER\oms_PN_array.prg
+..\2.x\DISPANSER\oms_PN_DDS_func.prg
 ..\2.x\dispanser\oms_naprav_zno.prg
 ..\2.x\dispanser\oms_dispans_diagnoze.prg
 ..\2.x\dispanser\oms_dispans_func.prg
@@ -462,6 +463,8 @@
 ..\2.x\EXCHANGE\mo_omss.prg
 ..\2.x\EXCHANGE\mo_omsr.prg
 ..\2.x\EXCHANGE\func_exchange.prg
+..\2.x\EXCHANGE\elem_reestr_pacient.prg
+..\2.x\EXCHANGE\elem_reestr_sluch.prg
 
 ..\2.x\FNS\fns.prg
 ..\2.x\FNS\fns_func.prg
