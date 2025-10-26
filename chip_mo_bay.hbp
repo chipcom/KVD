@@ -465,6 +465,7 @@
 ..\2.x\EXCHANGE\func_exchange.prg
 ..\2.x\EXCHANGE\elem_reestr_pacient.prg
 ..\2.x\EXCHANGE\elem_reestr_sluch.prg
+..\2.x\EXCHANGE\elem_func.prg
 
 ..\2.x\FNS\fns.prg
 ..\2.x\FNS\fns_func.prg
