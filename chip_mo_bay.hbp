@@ -435,6 +435,7 @@
 ..\2.x\dispanser\oms_DDS.prg
 ..\2.x\dispanser\oms_DDS_func.prg
 ..\2.x\DISPANSER\oms_DDS_array.prg
+..\2.x\DISPANSER\information_DDS.prg
 ..\2.x\dispanser\oms_PN.prg
 ..\2.x\dispanser\oms_PN_func.prg
 ..\2.x\DISPANSER\oms_PN_array.prg
