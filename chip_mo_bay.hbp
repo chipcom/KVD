@@ -522,3 +522,8 @@
 ..\2.x\FUNC_LIB\semaphor_bay.prg
 ..\2.x\FUNC_LIB\net_moni.prg
 ..\2.x\FUNC_LIB\v_text.prg
+
+### 2026
+#..\2.x\oms\verify_oms26.prg
+#..\2.x\exchange\create_reestr26.prg
+#..\2.x\exchange\reestr_XML26.prg
