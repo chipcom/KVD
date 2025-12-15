@@ -528,4 +528,5 @@
 ..\2.x\exchange\create_reestr25.prg
 ..\2.x\exchange\create_reestr26.prg
 ..\2.x\exchange\reestr_XML26.prg
+..\2.x\exchange\read_flk_26.prg
 ..\2.x\oms\verify_oms26.prg
