@@ -456,19 +456,6 @@
 ..\2.x\dispanser\diag_disp_nabl.prg
 ..\2.x\dispanser\mo_st39.prg
 
-..\2.x\EXCHANGE\create_reestr_main.prg
-..\2.x\EXCHANGE\reestrOMS_XML.prg
-..\2.x\EXCHANGE\create2reestr19.prg
-..\2.x\EXCHANGE\f1_create2reestr19.prg
-..\2.x\EXCHANGE\schet_from_XML.prg
-..\2.x\EXCHANGE\rak_XML.prg
-..\2.x\EXCHANGE\extract_reestr.prg
-..\2.x\EXCHANGE\mo_omss.prg
-..\2.x\EXCHANGE\mo_omsr.prg
-..\2.x\EXCHANGE\func_exchange.prg
-..\2.x\EXCHANGE\elem_reestr_pacient.prg
-..\2.x\EXCHANGE\elem_reestr_sluch.prg
-..\2.x\EXCHANGE\elem_func.prg
 
 ..\2.x\FNS\fns.prg
 ..\2.x\FNS\fns_func.prg
@@ -526,8 +513,42 @@
 ..\2.x\FUNC_LIB\net_moni.prg
 ..\2.x\FUNC_LIB\v_text.prg
 
+#..\2.x\EXCHANGE\create_reestr_main.prg
+#..\2.x\EXCHANGE\reestrOMS_XML.prg
+#..\2.x\EXCHANGE\create2reestr19.prg
+#..\2.x\EXCHANGE\f1_create2reestr19.prg
+#..\2.x\EXCHANGE\schet_from_XML.prg
+#..\2.x\EXCHANGE\rak_XML.prg
+#..\2.x\EXCHANGE\extract_reestr.prg
+#..\2.x\EXCHANGE\mo_omss.prg
+#..\2.x\EXCHANGE\mo_omsr.prg
+#..\2.x\EXCHANGE\func_exchange.prg
+#..\2.x\EXCHANGE\elem_reestr_pacient.prg
+#..\2.x\EXCHANGE\elem_reestr_sluch.prg
+#..\2.x\EXCHANGE\elem_func.prg
 ### 2026
-..\2.x\exchange\create_reestr25.prg
+#..\2.x\exchange\create_reestr25.prg
+#..\2.x\exchange\create_reestr26.prg
+#..\2.x\EXCHANGE\create2reestr26.prg
+#..\2.x\exchange\reestr_XML26.prg
+#..\2.x\exchange\read_flk_26.prg
+#..\2.x\EXCHANGE\extract_reestr26.prg
+#..\2.x\exchange\oms_files_TFOMS.prg
+#..\2.x\oms\verify_oms26.prg
+
+
+
+..\2.x\EXCHANGE\create_reestr_main.prg
+..\2.x\EXCHANGE\schet_from_XML.prg
+..\2.x\EXCHANGE\rak_XML.prg
+..\2.x\EXCHANGE\extract_reestr.prg
+..\2.x\EXCHANGE\mo_omss.prg
+..\2.x\EXCHANGE\mo_omsr.prg
+..\2.x\EXCHANGE\func_exchange.prg
+..\2.x\EXCHANGE\elem_reestr_pacient.prg
+..\2.x\EXCHANGE\elem_reestr_sluch.prg
+..\2.x\EXCHANGE\elem_func.prg
+### 2026
 ..\2.x\exchange\create_reestr26.prg
 ..\2.x\EXCHANGE\create2reestr26.prg
 ..\2.x\exchange\reestr_XML26.prg
@@ -535,3 +556,10 @@
 ..\2.x\EXCHANGE\extract_reestr26.prg
 ..\2.x\exchange\oms_files_TFOMS.prg
 ..\2.x\oms\verify_oms26.prg
+
+..\2.x\exchange\new_create.prg
+..\2.x\EXCHANGE\f1_create2reestrCommon.prg
+
+#..\2.x\EXCHANGE\create2reestr19.prg
+#..\2.x\exchange\create_reestr25.prg
+#..\2.x\EXCHANGE\reestrOMS_XML.prg
