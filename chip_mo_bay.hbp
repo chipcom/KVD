@@ -428,7 +428,7 @@
 
 ..\2.x\mo\external_mo.prg
 
-..\2.x\dispanser\oms_DVN_setup.prg
+..\2.x\dispanser\oms_DVN_array.prg
 ..\2.x\dispanser\oms_DVN_COVID.prg
 ..\2.x\dispanser\oms_DVN_func_COVID.prg
 ..\2.x\dispanser\oms_DVN.prg
