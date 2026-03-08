@@ -428,11 +428,12 @@
 
 ..\2.x\mo\external_mo.prg
 
-..\2.x\DISPANSER\oms_DVN_array.prg
+..\2.x\DISPANSER\DVN\oms_DVN_array.prg
+..\2.x\DISPANSER\DVN\oms_DVN_array_early.prg
+..\2.x\DISPANSER\DVN\oms_DVN.prg
+..\2.x\DISPANSER\DVN\oms_DVN_func.prg
 ..\2.x\DISPANSER\oms_DVN_COVID.prg
 ..\2.x\DISPANSER\oms_DVN_func_COVID.prg
-..\2.x\DISPANSER\oms_DVN.prg
-..\2.x\DISPANSER\oms_DVN_func.prg
 ..\2.x\DISPANSER\oms_DDS.prg
 ..\2.x\DISPANSER\oms_DDS_func.prg
 ..\2.x\DISPANSER\oms_DDS_array.prg
