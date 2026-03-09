@@ -428,21 +428,30 @@
 
 ..\2.x\mo\external_mo.prg
 
+# диспансеризация взрослого населения
 ..\2.x\DISPANSER\DVN\oms_DVN_array.prg
 ..\2.x\DISPANSER\DVN\oms_DVN_array_early.prg
 ..\2.x\DISPANSER\DVN\oms_DVN.prg
 ..\2.x\DISPANSER\DVN\oms_DVN_func.prg
-..\2.x\DISPANSER\oms_DVN_COVID.prg
-..\2.x\DISPANSER\oms_DVN_func_COVID.prg
-..\2.x\DISPANSER\oms_DDS.prg
-..\2.x\DISPANSER\oms_DDS_func.prg
-..\2.x\DISPANSER\oms_DDS_array.prg
-..\2.x\DISPANSER\information_DDS.prg
-..\2.x\DISPANSER\oms_PN.prg
-..\2.x\DISPANSER\oms_PN_func.prg
-..\2.x\DISPANSER\oms_PN_array.prg
-..\2.x\DISPANSER\information_PN.prg
-..\2.x\DISPANSER\oms_PN_DDS_func.prg
+# диспансеризация репродуктивного здоровья
+..\2.x\DISPANSER\DRZ\oms_dvn_drz.prg
+..\2.x\DISPANSER\DRZ\oms_dvn_drz_func.prg
+..\2.x\DISPANSER\DRZ\oms_dvn_DRZ_array.prg
+# углубленная диспансеризация
+..\2.x\DISPANSER\COVID\oms_DVN_COVID.prg
+..\2.x\DISPANSER\COVID\oms_DVN_func_COVID.prg
+# диспансеризация детей-сирот и под опекой
+..\2.x\DISPANSER\DDS\oms_DDS.prg
+..\2.x\DISPANSER\DDS\oms_DDS_func.prg
+..\2.x\DISPANSER\DDS\oms_DDS_array.prg
+..\2.x\DISPANSER\DDS\information_DDS.prg
+# профилактика несовершеннолетних
+..\2.x\DISPANSER\PN\oms_PN.prg
+..\2.x\DISPANSER\PN\oms_PN_func.prg
+..\2.x\DISPANSER\PN\oms_PN_array.prg
+..\2.x\DISPANSER\PN\information_PN.prg
+..\2.x\DISPANSER\PN\oms_PN_DDS_func.prg
+#
 ..\2.x\DISPANSER\oms_naprav_zno.prg
 ..\2.x\DISPANSER\oms_dispans_diagnoze.prg
 ..\2.x\DISPANSER\oms_dispans_func.prg
@@ -452,9 +461,6 @@
 ..\2.x\DISPANSER\mo_omsid.prg
 ..\2.x\DISPANSER\disp_nab_func.prg
 ..\2.x\DISPANSER\disp_nab_diag_usl.prg
-..\2.x\DISPANSER\oms_dvn_drz.prg
-..\2.x\DISPANSER\oms_dvn_drz_func.prg
-..\2.x\DISPANSER\oms_dvn_DRZ_array.prg
 ..\2.x\DISPANSER\diag_disp_nabl.prg
 ..\2.x\DISPANSER\mo_st39.prg
 
