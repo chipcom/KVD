@@ -538,7 +538,7 @@
 ..\2.x\exchange\oms_files_TFOMS.prg
 ..\2.x\oms\verify_oms26.prg
 
-..\2.x\exchange\new_create.prg
+#..\2.x\exchange\new_create.prg
 ..\2.x\exchange\f1_create2reestrCommon.prg
 ..\2.x\exchange\delete_reestr.prg
 
