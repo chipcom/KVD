@@ -488,7 +488,6 @@
 ..\2.x\SYSTEM\system.prg
 ..\2.x\SYSTEM\func_path.prg
 
-..\2.x\ORDER\mo_omso.prg
 ..\2.x\ORDER\mo_omsp.prg
 
 ..\2.x\OTHER\mo_mzxml.prg
@@ -541,6 +540,7 @@
 #..\2.x\exchange\new_create.prg
 ..\2.x\exchange\f1_create2reestrCommon.prg
 ..\2.x\exchange\delete_reestr.prg
+..\2.x\exchange\mo_rak.prg
 
 #..\2.x\exchange\create2reestr19.prg
 #..\2.x\exchange\create_reestr25.prg
