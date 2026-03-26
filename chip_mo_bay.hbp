@@ -511,6 +511,9 @@
 ..\2.x\INSURANCE\insurance_companies.prg
 ..\2.x\INSURANCE\func_smo.prg
 
+..\2.x\FUNC_LIB\mng_file.prg
+..\2.x\FUNC_LIB\fmanager.prg
+..\2.x\FUNC_LIB\g_rlock.prg
 ..\2.x\FUNC_LIB\prview.prg
 ..\2.x\FUNC_LIB\iniedspr.prg
 ..\2.x\FUNC_LIB\menuread.prg
