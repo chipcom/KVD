@@ -545,6 +545,7 @@
 ..\2.x\exchange\f1_create2reestrCommon.prg
 ..\2.x\exchange\delete_reestr.prg
 ..\2.x\exchange\mo_rak.prg
+..\2.x\exchange\check_reestr.prg
 
 #..\2.x\exchange\create2reestr19.prg
 #..\2.x\exchange\create_reestr25.prg
