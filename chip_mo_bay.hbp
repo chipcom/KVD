@@ -465,6 +465,8 @@
 ..\2.x\DISPANSER\disp_nab_diag_usl.prg
 ..\2.x\DISPANSER\diag_disp_nabl.prg
 ..\2.x\DISPANSER\mo_st39.prg
+..\2.x\DISPANSER\svod_KZVO_children.prg
+..\2.x\DISPANSER\writexlsx_inf_children.prg
 
 ..\2.x\FNS\fns.prg
 ..\2.x\FNS\fns_func.prg
