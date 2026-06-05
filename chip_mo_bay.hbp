@@ -515,6 +515,7 @@
 ..\2.x\INSURANCE\insurance_companies.prg
 ..\2.x\INSURANCE\func_smo.prg
 
+..\2.x\FUNC_LIB\alphbrow.prg
 ..\2.x\FUNC_LIB\mng_file.prg
 ..\2.x\FUNC_LIB\fmanager.prg
 ..\2.x\FUNC_LIB\g_rlock.prg
