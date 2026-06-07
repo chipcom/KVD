@@ -149,7 +149,7 @@ function inputPolicyOMS( oPolicyOMS, oPatient )
 	my_restkey( tmp_keys )
 	return nil
 
-* 26.11.18
+// 07.06.26
 function func_valid_ismo_bay( oGet, lkomu, sh, name_var )
 	local r1, r2, n := 4, buf, tmp_keys, tmp_list, tmp_color
 	local oBox
@@ -175,9 +175,12 @@ function func_valid_ismo_bay( oGet, lkomu, sh, name_var )
 		oBox:View()
 		
 		@ r1 + 1, 4 say '‘ã¡ê¥ªâ ”' get mokato ;
-					reader { | x | menu_reader( x, ;
-					{ { | k, r, c | get_srf( k, r, c ) }, 62 }, A__FUNCTION, , , .f. ) } ;
-					valid { | g, o | when_ismo( g, o ) }
+      reader {| x| menu_reader( x, glob_array_srf(), A__MENUVERT, , , .f. ) } ;
+      valid {| g, o| when_ismo( g, o ) }
+
+//      reader {| x| menu_reader( x, ;
+//      { {| k, r, c| get_srf( k, r, c ) }, 62 }, A__FUNCTION, , , .f. ) } ;
+
 		@ r1 + 2,4 say '‘ŒŽ' get mismo ;
 					reader { | x | menu_reader( x, mm_ismo, A__MENUVERT, , , .f. ) } ;
 					when { | | len( mm_ismo ) > 0 .and. empty( mnameismo ) } ;
