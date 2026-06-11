@@ -340,7 +340,7 @@
 ..\2.x\ref\dbMinzdravRF.prg
 
 ..\2.x\KSG\KSG_func.prg
-..\2.x\KSG\defenition_KSG.prg
+#..\2.x\KSG\defenition_KSG.prg
 ..\2.x\KSG\defenition_KSG_2026.prg
 ..\2.x\KSG\defenition_KIRO.prg
 ..\2.x\KSG\defenition_KSLP.prg
