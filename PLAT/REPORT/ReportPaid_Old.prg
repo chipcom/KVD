@@ -189,7 +189,7 @@ aadd(mm_tmp, {"pol","C",1,0,"!",;
               " ",nil,;
               "Пол", {|| mpol $ " МЖ" } })
 aadd(mm_tmp, {"vzros_reb","N",2,0,nil,;
-              {|x|menu_reader(x,menu_vzros,A__MENUVERT)},;
+              {|x|menu_reader(x,menu_vzros(),A__MENUVERT)},;
               -1,{|| space(10) },;
               "Возрастная принадлежность"})
 aadd(mm_tmp, {"god_r_min","D",8,0,,;
@@ -630,7 +630,7 @@ if k > 0
     endif
     if mn->vzros_reb >= 0
       add_string("Возрастная принадлежность: "+;
-                 inieditspr(A__MENUVERT, menu_vzros, mn->vzros_reb))
+                 inieditspr(A__MENUVERT, menu_vzros(), mn->vzros_reb))
     endif
     if !empty(mn->god_r_min) .or. !empty(mn->god_r_max)
       if empty(mn->god_r_min)

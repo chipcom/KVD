@@ -453,7 +453,7 @@ Function nastr_kassa(k)
 	return NIL
 
 
-// 12.09.25
+// 09.07.26
 Function kassa_r_list_uch(par,name_func)
 // 1 - платные услуги
 // 2 - ортопедические услуги
@@ -502,7 +502,7 @@ Function kassa_r_list_uch(par,name_func)
 	mmr_dol := kart->mr_dol
 	mtime := hour_min(seconds())
 	msrok_polis := full_date(c4tod(kart->srok_polis))
-	mvzros_reb := upper(inieditspr(A__MENUVERT, menu_vzros, kart->vzros_reb))
+	mvzros_reb := upper(inieditspr(A__MENUVERT, menu_vzros(), kart->vzros_reb))
 	mmi_git    := okato_mi_git(kart_->okatog)
 	mrajon_git := okato_rajon(kart_->okatog)
 	mmest_inog := mrajon_fin := ""

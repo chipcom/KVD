@@ -263,7 +263,7 @@ function infoPatientToScreen( oPatient, r1, r2 )
 	s := 'Ф.И.О.: ' + oPatient:FIO + space( 7 ) + iif( oPatient:Gender == 'М', 'мужчина', 'женщина' )
 	aadd( arr, s )
 	s := 'Дата рождения: ' + full_date( oPatient:DOB ) + space( 5 ) + ;
-			'(' + alltrim( inieditspr( A__MENUVERT, menu_vzros, oPatient:Vzros_Reb ) ) + ')'
+			'(' + alltrim( inieditspr( A__MENUVERT, menu_vzros(), oPatient:Vzros_Reb ) ) + ')'
 	if !empty( oPatient:SNILS )
 //		s += space( 5 ) + 'СНИЛС: ' + transform( oPatient:SNILS, picture_pf )
 		s += space( 5 ) + 'СНИЛС: ' + transform_SNILS( oPatient:SNILS )
@@ -301,7 +301,7 @@ function infoPatientToScreen( oPatient, r1, r2 )
 		s += alltrim( oPatient:ExtendInfo:PolicySeries ) + ' '
 	endif
 	s += alltrim( oPatient:ExtendInfo:PolicyNumber ) + ' (' + ;
-		alltrim( inieditspr( A__MENUVERT, mm_vid_polis, oPatient:ExtendInfo:PolicyType ) ) + ') ' + ;
+		alltrim( inieditspr( A__MENUVERT, mm_vid_polis(), oPatient:ExtendInfo:PolicyType ) ) + ') ' + ;
 		smo_to_screen_bay( 1, oPatient )
 	aadd( arr, s )
 	if eq_any( glob_task, X_REGIST, X_OMS, X_PLATN, X_ORTO, X_KASSA, X_PPOKOJ, X_MO )
