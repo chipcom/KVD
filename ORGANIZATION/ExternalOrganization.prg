@@ -290,7 +290,7 @@ static function editCommittee( oBrowse, aObjects, oCommon, nKey, typeClass )
 		m1paraclinika	:= oCommon:Paraclinika
 		m1mist_fin	:= oCommon:SourceFinance
 		
-		mparaclinika   := inieditspr_bay( A__MENUVERT, mm_danet, m1paraclinika )
+		mparaclinika   := inieditspr_bay( A__MENUVERT, mm_danet(), m1paraclinika )
 		mmist_fin   := inieditspr_bay( A__MENUVERT, mm_ist_fin, m1mist_fin )
 		
 		k := maxrow() - 19
@@ -313,7 +313,7 @@ static function editCommittee( oBrowse, aObjects, oCommon, nKey, typeClass )
 		@ k + 10, 7 say 'ОКОНХ' get oCommon:OKONH picture '999999999999999'
 		@ k + 11, 7 say 'ОКПО' get oCommon:OKPO picture '999999999999999'
 		@ k + 12, 7 say "Включать ПАРАКЛИНИКУ в сумму счета по данной компании" get mparaclinika ;
-				reader { | x | menu_reader( x, mm_danet, A__MENUVERT, , , .f. ) }
+				reader { | x | menu_reader( x, mm_danet(), A__MENUVERT, , , .f. ) }
 		
 		@ k + 13, 7 say 'Источник финансирования' get mmist_fin ;
 				reader { | x | menu_reader( x, mm_ist_fin, A__MENUVERT, , , .f. ) }
