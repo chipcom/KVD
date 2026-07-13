@@ -203,6 +203,7 @@
 ..\2.x\SECURITY\Roles.prg
 ..\2.x\SECURITY\ReportUsersOutput.prg
 ..\2.x\security\security.prg
+..\2.x\security\operators.prg
 
 
 # Классы для описания документов
