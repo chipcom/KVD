@@ -31,6 +31,7 @@ xhb.hbc
 hbct.hbc
 #hbssl.hbc
 #hbmzip.hbc
+sddodbc.hbc
 
 # библиотека для декодирования штрих-кодов ОМС
 #-lpcbcode
