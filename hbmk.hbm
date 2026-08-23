@@ -22,15 +22,14 @@
 #-lhblibxlsxwriter
 -lhbxlsxwriter
 
-
+xhb.hbc
 hbtip.hbc
 hbziparc.hbc
 hbsqlit3.hbc
+#sddsqlite3.hbc
+sddsqlt3.hbc
 hbhpdf.hbc
-xhb.hbc
 hbct.hbc
-#hbssl.hbc
-#hbmzip.hbc
 sddodbc.hbc
 
 # библиотека для декодирования штрих-кодов ОМС
