@@ -484,6 +484,7 @@
 
 ..\2.x\PP\mo_pp.prg
 ..\2.x\PP\mo_ppi.prg
+..\2.x\PP\mo_pp_setup.prg
 
 ..\2.x\SYSTEM\cpru866m.c
 ..\2.x\SYSTEM\cpru1251m.c
