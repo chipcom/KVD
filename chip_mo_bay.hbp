@@ -496,6 +496,7 @@
 ..\2.x\SYSTEM\plugins.prg
 ..\2.x\SYSTEM\system.prg
 ..\2.x\SYSTEM\func_path.prg
+..\2.x\SYSTEM\ping.prg
 
 ..\2.x\ORDER\mo_omsp.prg
 
