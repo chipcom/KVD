@@ -536,6 +536,7 @@
 ..\2.x\FUNC_LIB\print1.prg
 ..\2.x\FUNC_LIB\print2.prg
 ..\2.x\FUNC_LIB\initbase.prg
+..\2.x\FUNC_LIB\escenter.prg
 
 ..\2.x\exchange\create_reestr_main.prg
 ..\2.x\exchange\rak_XML.prg
