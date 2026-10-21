@@ -502,7 +502,7 @@
 
 ..\2.x\OTHER\mo_mzxml.prg
 ..\2.x\OTHER\mo_serv.prg
-..\2.x\OTHER\mo_sds.prg
+#..\2.x\OTHER\mo_sds.prg
 ..\2.x\OTHER\control_start.prg
 
 ..\2.x\TUNING\ret_days_for_akt_sverki.prg
